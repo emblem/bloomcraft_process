@@ -16,7 +16,7 @@ module.exports = {
             //            handles all elm dependencies relative to `elmFolder`
             mainModules: ["elm/Main.elm"],
 	    outputFolder: 'public',
-	    outputFile: 'index.html'	    
+	    outputFile: 'elm.js'	    
 	}
     }
 };

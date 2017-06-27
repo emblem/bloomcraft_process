@@ -130,3 +130,7 @@ WSGI_APPLICATION = 'ws4redis.django_runserver.application'
 
 SESSION_ENGINE = 'redis_sessions.session'
 SESSION_REDIS_PREFIX = 'session'
+
+ALLOWED_HOSTS = ['localhost', '192.168.1.21']
+
+AUTH_USER_MODEL = 'budgeting.User'

@@ -6,10 +6,17 @@ from django.views.static import serve as static_serve
 
 from . import views
 
+
 urlpatterns = [
-    url('^', include('django.contrib.auth.urls')),
+    url("^login.json", views.login_view),
+    url("^logout.json", views.logout_view),
+    url("^budget.json", views.budget_view),
+    url("^user.json", views.user_view)
 ]
 
 if settings.DEBUG:
-    urlpatterns += url(
-        r'^$', static_serve, kwargs={'document_root': settings.STATIC_ROOT, 'path': 'index.html'}),
+    urlpatterns += [url(
+        r'^$', static_serve, kwargs={'document_root': settings.STATIC_ROOT, 'path': 'index.html'})]
+    
+    urlpatterns += [url(
+        r'^elm.js', static_serve, kwargs={'document_root': settings.STATIC_ROOT, 'path': 'elm.js'})]

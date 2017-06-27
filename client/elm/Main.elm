@@ -50,7 +50,7 @@ view : Model -> Html Msg
 view model = div []
              [ Nav.menu NavMsg model.navbar
              , mainContent model
-             , modal model
+             , Budget.rentChangeModal model.budget BudgetMsg
              ]
 
 mainContent : Model -> Html Msg

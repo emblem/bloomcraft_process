@@ -1,6 +1,6 @@
 module Budget exposing (..)
 
-import Svg exposing (..)
+import Svg exposing (line,svg,g,text_)
 import Svg.Attributes exposing (..)
 import BarPlot exposing (..)
 import Html exposing (Html, div, text)
@@ -10,6 +10,8 @@ import Json.Decode exposing (..)
 import Bootstrap.Button as Button
 import Bootstrap.Grid as Grid
 import Bootstrap.Modal as Modal
+import Bootstrap.Form.InputGroup as InputGroup
+import Bootstrap.Form.Input as Input
 
 type alias Model =
     { loading : Bool
@@ -22,7 +24,7 @@ type alias Budget = {
         rents : List (Float, String)
     }
     
-type Msg = NewBudget (Result Http.Error String) | ChangeRent Modal.State
+type Msg = NewBudget (Result Http.Error String) | DisplayRentChangeModal Modal.State | ChangeRent
     
 init : Model
 init = (Model True (Budget 0 []) Modal.hiddenState)
@@ -42,7 +44,7 @@ changeRentView model msg =
     Button.button
         [ Button.primary
         , Button.large
-        , Button.onClick <| msg (ChangeRent Modal.visibleState)
+        , Button.onClick <| msg (DisplayRentChangeModal Modal.visibleState)
         ]
     [ Html.text "Change My Rent" ]
                      
@@ -62,6 +64,29 @@ topLineSvg model =
                   ]
             ]
 
+rentChangeModal : Model -> (Msg -> a) -> Html a
+rentChangeModal model msg =
+    Modal.config (DisplayRentChangeModal >> msg)
+        |> Modal.large
+        |> Modal.h4 [] [ text "Getting started ?" ]
+        |> Modal.body []
+           [ Grid.containerFluid []
+                 [ Grid.row []
+                       [ Grid.col []
+                             [ InputGroup.config
+                               ( InputGroup.text [ Input.placeholder (toString 0)] )
+--                             |> InputGroup.large
+                             |> InputGroup.predecessors
+                                   [ InputGroup.span [] [text "$"] ]
+                             |> InputGroup.successors
+                                   [ InputGroup.button [ Button.primary, Button.onClick <| msg ChangeRent ] [ text "Change" ] ]
+                             |> InputGroup.view
+                             ]
+                       ]
+                 ]
+           ]
+        |> Modal.view model.change_modal
+
 viewRent : (Float, String) -> Html a
 viewRent (rent, name) =
     svg [ viewBox "0 0 100 10", width "75%" ]
@@ -79,7 +104,8 @@ update model msg =
             case (decodeString budgetDecoder str) of
                 Err err -> (Debug.log (toString err) model, Cmd.none)
                 Ok budget -> (Debug.log "Model Updated:" {model | budget = budget, loading = False}, Cmd.none )
-        ChangeRent state -> ({ model | change_modal = state }, Cmd.none)
+        DisplayRentChangeModal state -> ({ model | change_modal = state }, Cmd.none)
+        ChangeRent -> (model, Cmd.none)
 
 requestBudget : Cmd Msg
 requestBudget =

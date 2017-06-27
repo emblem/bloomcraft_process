@@ -7,7 +7,6 @@ module.exports = {
 
     paths: {
 	watched: ["elm"],
-	public: '../static/'
     },
 
     plugins: {

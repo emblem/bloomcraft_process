@@ -15,7 +15,7 @@ class Lease(models.Model):
     sqft = models.IntegerField(default=0)
     original_rent = models.IntegerField(default=0)
     rent = models.IntegerField(default=0)
-    admin = models.ForeignKey(User
+    admin = models.OneToOneField(User
                               , on_delete=models.SET(get_sentinel_user)
                               , related_name="lease_admin" )
     members = models.ManyToManyField(User, blank = True)
@@ -42,6 +42,9 @@ class RentalRate(models.Model):
     rent = models.IntegerField(default=0)
     budget = models.ForeignKey(Budget, on_delete=models.CASCADE)
     lease = models.ForeignKey(Lease, on_delete=models.CASCADE)
+
+    class Meta:
+        unique_together = ('lease', 'budget')
     
     def __str__(self):
         return str(self.budget) + " / " + self.lease.name

@@ -5,33 +5,32 @@ import Html.Attributes exposing (..)
 import Html.Events exposing (..)
 import Http exposing (..)
 import Json.Decode exposing (Decoder, string, field)
-import Json.Encode exposing (object, string)
+import API
 
 type Msg = UserName String |
     Password String |
     Login |
-    Auth (Result Error AuthResponse ) |
     Logout |
+    LoginResponse API.APIResponse |
     LoggedOut (Result Error String) |
     User (Result Error UserInfo)
 
 type alias UserInfo = {
         username : String
     }
-
-type alias AuthResponse = { csrf_token : String, username : String }
     
-type alias Model = {
+type alias Model a = {
         username : Maybe String,
         password : String,
         csrf_token : String,
-        entered_username : String
+        entered_username : String,
+        selfRouter : (Msg -> a)
     }
 
-init : (Model, Cmd Msg)
-init  = ((Model Nothing "" "" ""), requestUser)
+init : (Msg -> a) -> (Model a, Cmd Msg)
+init selfRouter = ((Model Nothing "" "" "" selfRouter), requestUser)
     
-loginView : Model -> (Msg -> a) -> Html a
+loginView : (Model a) -> (Msg -> a) -> Html a
 loginView model msg =
     div [] [
          text "Bloomcraft Login",
@@ -41,40 +40,21 @@ loginView model msg =
          button [ onClick (msg Logout) ] [ text "Logout" ]
         ]
          
-update : Msg -> Model -> (Model, Cmd Msg)
+update : Msg -> (Model a) -> (Model a, Cmd Msg, Maybe (API.Msg a))
 update msg model =
-    case msg of
-        Password password -> { model | password = password } ! []
-        UserName username -> { model | entered_username = username } ! []
-        Login -> model ! [postLoginRequest model]
-        Logout -> model ! [postLogoutRequest model]
-        Auth (Ok response) -> {model | csrf_token = response.csrf_token, username = Just response.username } ! []
-        Auth (Result.Err error) -> (Debug.log ("Auth Failed:" ++ (toString error)) model) ! []
-        LoggedOut _ -> (model, Cmd.none)
-        User (Ok userInfo) -> {model | username = Just userInfo.username} ! []
-        User (Result.Err error) -> (Debug.log ("Get User Failed: " ++ (toString error)) model) ! []
-
-
-postLoginRequest : Model -> Cmd Msg
-postLoginRequest model =
     let
-        body = Http.jsonBody <|
-               Json.Encode.object 
-               [
-                ("username", Json.Encode.string model.entered_username),
-                ("password", Json.Encode.string "development")
-               ]               
-        request =  Http.post "login.json" body (loginResponseDecoder)
+        newModel = case msg of        
+                       Password password -> { model | password = password }
+                       UserName username -> { model | entered_username = username }
+                       _ -> model
+        cmd = Cmd.none
+        apiMsg = case msg of
+                     Login -> Just <| API.login model.entered_username "development" (LoginResponse >> model.selfRouter)
+                     _ -> Nothing
     in
-        Http.send Auth request
+        (newModel, cmd, apiMsg)
 
-loginResponseDecoder : Json.Decode.Decoder AuthResponse
-loginResponseDecoder =
-    Json.Decode.map2 AuthResponse
-        (field "csrf_token" Json.Decode.string)
-        (field "username" Json.Decode.string)
-
-postLogoutRequest : Model -> Cmd Msg
+postLogoutRequest : Model a -> Cmd Msg
 postLogoutRequest model =
     let
         request = Http.request {
@@ -98,7 +78,7 @@ userDecoder : Decoder UserInfo
 userDecoder =
     Json.Decode.map UserInfo (field "username" Json.Decode.string)
 
-accountView : Model -> Html a
+accountView : Model a -> Html b
 accountView model =
     case model.username of
         Just user -> Html.text ("Hello, " ++ user)

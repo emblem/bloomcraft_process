@@ -16,6 +16,7 @@ import Navigation
 import BudgetNav as Nav
 import Authentication
 import Budget
+import API
 
 import Bootstrap.Navbar as Navbar
 import Bootstrap.Grid as Grid
@@ -41,9 +42,10 @@ type alias Model =
     , animationActive : Bool
     , remoteVal : String
     , page : Nav.Page
-    , auth : Authentication.Model
-    , budget : Budget.Model
+    , auth : Authentication.Model Msg
+    , budget : Budget.Model Msg
     , navbar : Navbar.State
+    , api : API.State Msg
     }
     
 view : Model -> Html Msg
@@ -92,21 +94,29 @@ init : Navigation.Location -> (Model, Cmd Msg)
 init location =
     let
         page = (Nav.urlChange location)
-        (auth, authCmd) = Authentication.init
+        (auth, authCmd) = Authentication.init AuthMsg
         (navbarState, navbarCmd) = Navbar.initialState NavMsg
               
     in
-        ((Model 20 (easeMove 50 50 0 0) 0 0 False "" page auth Budget.init navbarState) !
+        ((Model 20 (easeMove 50 50 0 0) 0 0 False "" page auth (Budget.init BudgetMsg) navbarState (API.init ApiMsg) ) !
              [case page of
                  Nav.Home -> Cmd.none
                  Nav.Login -> Cmd.none
-                 Nav.Budget -> Debug.log "Loading Budget" Cmd.map BudgetMsg Budget.requestBudget
+                 Nav.Budget -> Cmd.map BudgetMsg Budget.requestBudget
                  Nav.Expenses -> Cmd.none
              , Cmd.map AuthMsg authCmd, navbarCmd ]
         )
 
         
-type Msg = Animate Time | ChangeValue Float | TimeMsg TimeMsg | RemoteUpdate String | LocationChange Nav.Page | AuthMsg Authentication.Msg | BudgetMsg Budget.Msg | NavMsg Navbar.State
+type Msg = Animate Time
+         | ChangeValue Float
+         | TimeMsg TimeMsg
+         | RemoteUpdate String
+         | LocationChange Nav.Page
+         | AuthMsg Authentication.Msg
+         | BudgetMsg Budget.Msg
+         | NavMsg Navbar.State
+         | ApiMsg (API.Msg Msg)
     
 type TimeMsg = TickThen Msg | Tock Msg Time
 
@@ -138,16 +148,43 @@ update msg model =
                                ]
         AuthMsg authMsg ->
             let
-                (newAuthModel, authCmd) = Authentication.update authMsg model.auth
+                (authModel, authCmd, apiMsg) = authUpdate authMsg model                
+                (apiModel, apiCmd) = apiUpdate apiMsg authModel
             in
-                ({ model | auth = newAuthModel }, Cmd.map AuthMsg authCmd)
+                apiModel ! [authCmd, apiCmd]
         BudgetMsg msg ->
             let
-                (budget, cmd) = Budget.update model.budget msg
+                (bModel, bCmd, apiMsg) = budgetUpdate msg model
+                (aModel, aCmd) = apiUpdate apiMsg bModel
             in
-                { model | budget = budget} ! [Cmd.map BudgetMsg cmd]
-        NavMsg state ->
-            ( { model | navbar = state }, Cmd.none )
+                aModel ! [bCmd, aCmd]
+                
+        NavMsg state -> ( { model | navbar = state }, Cmd.none )
+        ApiMsg msg -> apiUpdate (Just msg) model
+
+authUpdate : Authentication.Msg -> Model -> (Model, Cmd Msg, Maybe (API.Msg Msg))
+authUpdate msg model =
+    let
+        (authModel, authCmd, apiMsg) = Authentication.update msg model.auth
+    in
+        ({model | auth = authModel}, Cmd.map AuthMsg authCmd, apiMsg)
+                      
+budgetUpdate : Budget.Msg -> Model -> (Model, Cmd Msg, Maybe (API.Msg Msg))
+budgetUpdate msg model =
+    let
+        (budgetModel, budgetCmd, apiMsg) = Budget.update model.budget msg
+    in
+        ({model | budget = budgetModel}, Cmd.map BudgetMsg budgetCmd, apiMsg)
+                      
+apiUpdate : Maybe (API.Msg Msg) -> Model -> (Model, Cmd Msg)
+apiUpdate maybemsg model =
+    let
+        (apiState, apiCmd) = case maybemsg of
+                                 Just message -> API.update message model.api
+                                 Nothing -> (model.api, Cmd.none)
+    in
+        ({ model | api = apiState }, apiCmd)
+
 
 startMove : Model -> Float -> Model
 startMove model newValue =

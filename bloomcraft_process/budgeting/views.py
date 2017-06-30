@@ -35,16 +35,33 @@ def logout_view(request):
     return HttpResponse()
 
 @require_http_methods(["GET"])
+@login_required
 def budget_view(request):
     budget = current_budget()
 
     rental_rates = RentalRate.objects.filter(budget = budget)
-    
-    budgetJson = {
+    budget = {
         "core_expenses" : budget.core_expenses,
-        "rents" : [{"rent" : rate.rent, "lease" : rate.lease.name} for rate in rental_rates]
-    }
-    return JsonResponse(budgetJson)
+        "leases" :
+        [
+            {
+                "proposed_rent" : rate.rent,
+                "current_rent" : rate.lease.rent,
+                "name" : rate.lease.name,
+                "admin_name" : rate.lease.admin.get_full_name()
+            }
+            for rate in rental_rates
+        ]
+        , "lease_member" : [lease.name for lease in request.user.lease_set.all()]
+        }
+
+    try:
+        budget['lease_admin'] = request.user.lease_admin.name
+    except Lease.DoesNotExist:
+        pass
+
+    
+    return JsonResponse(budget)
 
 def user_view(request):
     userJson = {}

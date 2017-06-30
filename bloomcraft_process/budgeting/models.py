@@ -11,7 +11,7 @@ def get_sentinel_user():
 
 class Lease(models.Model):
     #Name of the Leaseholding Entity
-    name = models.CharField(max_length=200)
+    name = models.CharField(max_length=200, unique = True)
     sqft = models.IntegerField(default=0)
     original_rent = models.IntegerField(default=0)
     rent = models.IntegerField(default=0)
@@ -30,12 +30,19 @@ class Budget(models.Model):
     def __str__(self):
         return str(self.start_date)
 
+def current_income():
+    return sum(lease.rent for lease in Lease.objects.all())
+    
 @receiver(models.signals.post_save, sender = Budget)
 def create_default_rental_rates(sender, instance, created, *args, **kwargs):
     if not created: return
 
+    budget = instance
+
+    base_change = budget.core_expenses / current_income()
+        
     for lease in Lease.objects.all():
-        RentalRate(rent = lease.rent, budget = instance, lease = lease).save()
+        RentalRate(rent = lease.rent * base_change, budget = instance, lease = lease).save()
     
 class RentalRate(models.Model):
     #Monthly rent

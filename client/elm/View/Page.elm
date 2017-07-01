@@ -30,20 +30,25 @@ viewHeader toMsg navState page session isLoading =
     Navbar.config toMsg
         |> Navbar.withAnimation
         |> Navbar.brand [href "#"] [text "Bloomcraft"]
-        |> Navbar.items           
-           [ Navbar.itemLink [href "#login"] [text "Sign in"]
-           , Navbar.itemLink [href "#budget"] [text "Rental Income"]
-           , Navbar.itemLink [href "#expense"] [text "Expenses"]
-           ]
-        |> Navbar.view navState |> Debug.log "Nav"
+        |> Navbar.items
+           (case session.user of
+               Just user ->
+                   [ Navbar.itemLink [Route.href Route.Profile] [text user.fullname]
+                   , Navbar.itemLink [Route.href Route.Budget] [text "Income"]
+                   , Navbar.itemLink [Route.href Route.Expense] [text "Expenses"]
+                   ]
+
+               Nothing ->
+                   [ Navbar.itemLink [Route.href Route.Login] [text "Sign in"] ])
+        |> Navbar.view navState
 
 navLink : Bool -> Route -> List (Html a) -> Navbar.Item a
 navLink isActive route content =
     let
         link = if isActive then Navbar.itemLinkActive else Navbar.itemLink
     in
-        link [ href <| Route.routeToString route ] content            
-
+        link [ Route.href route ] content            
+            
 viewFooter : Html a
 viewFooter =
     Grid.container [] [ span [ class "attribution" ] [ text "Stoneship, LLC. 2017. MIT license." ] ]

@@ -5,7 +5,6 @@ import Html.Attributes exposing (..)
 import Html.Events exposing (..)
 import Http exposing (..)
 import Json.Decode exposing (Decoder, string, field)
-import API
 
 type Msg = UserName String |
     Password String |

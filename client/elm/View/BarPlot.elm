@@ -1,4 +1,4 @@
-module BarPlot exposing (..)
+module View.BarPlot exposing (..)
 
 import Svg exposing (..)
 import Svg.Attributes exposing (..)

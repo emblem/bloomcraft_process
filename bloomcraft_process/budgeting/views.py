@@ -12,24 +12,26 @@ import pprint
 from .models import *
 
 @csrf_exempt
-@ensure_csrf_cookie
 def login_view(request):
     data = json.loads(request.body.decode('utf-8'))
-    user = authenticate(request, username = data['username'], password = data['password'])
+    credentials = data['credentials']
+    user = authenticate(request, username = credentials['username'], password = credentials['password'])
 
     response = {}
     
     if user is not None:
-        login(request, user)
-        response['logged_in'] = True
-        response['username'] = user.username
+        login(request, user)        
+        response['user'] = {
+            'username' : user.username,
+            'fullname' : user.get_full_name(),
+            'auth_token' : csrf.get_token(request)
+            }
     else:
-        response['logged_in'] = False
-
-    response['csrf_token'] = csrf.get_token(request)
+        response['user'] = None
 
     return JsonResponse(response)
 
+@login_required
 def logout_view(request):
     logout(request)
     return HttpResponse()
@@ -61,7 +63,7 @@ def budget_view(request):
         pass
 
     
-    return JsonResponse(budget)
+    return JsonResponse({"budget" : budget})
 
 def user_view(request):
     userJson = {}
@@ -89,14 +91,15 @@ def rent_view(request):
 
 def session_view(request):
     response = {}
-    if request.user:
+    if request.user.is_authenticated():
         user = request.user
         response['user'] = {
             "username" : user.username,
             "fullname" : user.get_full_name(),
-            "auth_token" : csrf.get_token(request)
         }
     else :
         response['user'] = None
+        
+    response['auth_token'] = csrf.get_token(request)
 
     return JsonResponse(response)

@@ -1,23 +1,19 @@
 module Main exposing (main)
 
-import Http exposing (send)
-import Html exposing (Html)
-import Task
-import Navigation exposing (Location)
 import Bootstrap.Navbar as Navbar
-import Request.Session
-
 import Data.Session exposing (Session)
-
-import View.Page as Page exposing (ActivePage)
-
+import Html exposing (Html)
+import Http exposing (send)
+import Navigation exposing (Location)
+import Page.Budget as Budget
 import Page.Errored as Errored exposing (PageLoadError, pageLoadError)
 import Page.Home as Home
-import Page.Budget as Budget
 import Page.Login as Login
-
+import Request.Session
 import Route exposing (Route)
+import Task
 import Util exposing ((=>))
+import View.Page as Page exposing (ActivePage)
 
 
 type Page
@@ -45,7 +41,7 @@ init location =
         (navState, navCmd) = Navbar.initialState NavMsg
         (model, cmd) = setRoute (Route.fromLocation location)
                        { pageState = Loaded Blank
-                       , session = Nothing
+                       , session = { user = Nothing, authToken = Nothing }
                        , navState = navState
                        }
     in
@@ -86,13 +82,27 @@ viewPage model isLoading page =
                        
             Home subModel ->
                 Home.view session subModel |> frame Page.Home
-                    
+
+            Budget subModel ->
+                Budget.view session subModel
+                    |> Html.map BudgetMsg
+                    |> frame Page.Budget
+                                               
+            Login subModel ->
+                Login.view subModel
+                    |> Html.map LoginMsg
+                    |> frame Page.Login
+                       
             _ -> Html.text "Unsupported View" |> frame Page.Other
 
 
 subscriptions : Model -> Sub Msg
 subscriptions model =
-    Sub.batch [ ]
+    case model.pageState of
+        Loaded (Budget subModel) ->
+            Budget.subscriptions subModel |> Sub.map BudgetMsg
+                
+        _ -> Sub.none                
     
 -- UPDATE --
 
@@ -101,6 +111,8 @@ type Msg
     | SetRoute (Maybe Route)
     | BudgetLoaded (Result PageLoadError Budget.Model)
     | NavMsg Navbar.State
+    | BudgetMsg Budget.Msg
+    | LoginMsg Login.Msg
 
 
 setRoute : Maybe Route -> Model -> (Model, Cmd Msg)
@@ -123,7 +135,9 @@ setRoute maybeRoute model =
             Just Route.Expense ->
                 errored Page.Expense "Expense isn't working yet, sorry!"
             Just Route.Login ->
-                errored Page.Login "Login isn't working yet, sorry!"
+                { model | pageState = Loaded (Login Login.initialModel) } => Cmd.none
+            Just Route.Profile ->
+                errored Page.Other "Profile doesn't work yet."
 
 pageErrored : Model -> ActivePage -> String -> ( Model, Cmd msg )
 pageErrored model activePage errorMessage =
@@ -148,6 +162,12 @@ updatePage page msg model =
                 ( newModel, newCmd ) = subUpdate subMsg subModel
             in
                 ( { model | pageState = Loaded (toModel newModel) }, Cmd.map toMsg newCmd )
+
+        toPageWithOut toModel toMsg subUpdate subMsg subModel =
+            let
+                ( newModel, newCmd, outMsg ) = subUpdate subMsg subModel
+            in
+                ( { model | pageState = Loaded (toModel newModel) }, Cmd.map toMsg newCmd, outMsg )                    
     in
         case (msg, page) of
             (SetRoute route, _) ->
@@ -155,7 +175,7 @@ updatePage page msg model =
                     
             (SetSession (Ok session), _) ->
                 let
-                    cmd = if session /= model.session && session == Nothing then
+                    cmd = if session.user /= model.session.user && session.user == Nothing then
                               Route.modifyUrl Route.Home
                           else
                               Cmd.none
@@ -172,12 +192,25 @@ updatePage page msg model =
                 { model | pageState = Loaded (Errored error) } => Cmd.none
 
             (NavMsg navState, _) ->
-                    { model | navState = navState } => Cmd.none
+                { model | navState = navState } => Cmd.none
+
+            (BudgetMsg subMsg, Budget subModel) ->
+                toPage Budget BudgetMsg (Budget.update session) subMsg subModel
+
+            (LoginMsg subMsg, Login subModel) ->
+                let
+                    (newModel, cmd, outMsg) = toPageWithOut Login LoginMsg Login.update subMsg subModel
+                in
+                    case outMsg of
+                        Just (Login.SetSession newSession) -> ( {newModel | session = newSession}, Cmd.none )
+
+                        Nothing -> (newModel, cmd)
+                        
             --(_, NotFound) ->
             --  model => Cmd.none
                     
-            --(_, _) ->
-            --    model => Cmd.none
+            (_, _) ->
+                model => Cmd.none
 
 -- MAIN --
 

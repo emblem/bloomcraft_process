@@ -389,20 +389,6 @@ requestBudget =
     Http.send NewBudget <|
         Http.getString "budget.json"
             
-budgetDecoder : Decoder Budget
-budgetDecoder =
-    let
-        rent = Json.Decode.map4 Lease
-               (field "current_rent" float)
-               (field "proposed_rent" float)
-               (field "name" Json.Decode.string)
-               (field "admin_name" Json.Decode.string)
-    in
-        Json.Decode.map4 Budget
-            (field "core_expenses" float)
-            (field "leases" (list rent))
-            (maybe <| field "lease_admin" Json.Decode.string)
-            (field "lease_member" (list Json.Decode.string))                
 
         
 interpolateBudget : Budget -> Float -> Budget-> Budget

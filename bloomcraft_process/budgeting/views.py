@@ -87,3 +87,16 @@ def rent_view(request):
     
     return JsonResponse({"lease" : lease.name, "rate" : rental_rate.rent })
 
+def session_view(request):
+    response = {}
+    if request.user:
+        user = request.user
+        response['user'] = {
+            "username" : user.username,
+            "fullname" : user.get_full_name(),
+            "auth_token" : csrf.get_token(request)
+        }
+    else :
+        response['user'] = None
+
+    return JsonResponse(response)

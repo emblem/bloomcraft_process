@@ -6,19 +6,24 @@ from django.views.static import serve as static_serve
 
 from . import views
 
+urlpatterns = []
 
-urlpatterns = [
-    url("^login.json", views.login_view),
-    url("^logout.json", views.logout_view),
-    url("^budget.json", views.budget_view),
-    url("^user.json", views.user_view),
-    url("^rent.json", views.rent_view),
-    url("^session.json", views.session_view)
+
+urlpatterns += [
+    url("^api/login.json", views.login_view),
+    url("^api/logout.json", views.logout_view),
+    url("^api/budget.json", views.budget_view),
+    url("^api/user.json", views.user_view),
+    url("^api/rent.json", views.rent_view),
+    url("^api/session.json", views.session_view)
 ]
 
 if settings.DEBUG:
     urlpatterns += [url(
-        r'^$', static_serve, kwargs={'document_root': settings.STATIC_ROOT, 'path': 'index.html'})]
-    
-    urlpatterns += [url(
         r'^elm.js', static_serve, kwargs={'document_root': settings.STATIC_ROOT, 'path': 'elm.js'})]
+
+    urlpatterns += [url(
+        r'^(?!api/).*', static_serve, kwargs={'document_root': settings.STATIC_ROOT, 'path': 'index.html'})]
+
+
+

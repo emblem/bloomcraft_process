@@ -15,6 +15,7 @@ type ActivePage
     | Budget
     | Expense
     | Login
+    | Profile
     | Other
 
 frame : (Navbar.State -> a) -> Navbar.State -> Bool -> Session -> ActivePage -> Html a -> Html a
@@ -29,26 +30,26 @@ viewHeader : (Navbar.State -> a) -> Navbar.State -> ActivePage -> Session -> Boo
 viewHeader toMsg navState page session isLoading =
     Navbar.config toMsg
         |> Navbar.withAnimation
-        |> Navbar.brand [href "#"] [text "Bloomcraft"]
+        |> Navbar.brand [Route.href Route.Home] [text "Bloomcraft"]
         |> Navbar.items
            (case session.user of
                Just user ->
-                   [ Navbar.itemLink [Route.href Route.Profile] [text user.fullname]
-                   , Navbar.itemLink [Route.href Route.Budget] [text "Income"]
-                   , Navbar.itemLink [Route.href Route.Expense] [text "Expenses"]
+                   [ activeLinkIf Profile page [Route.href Route.Profile ] [text user.fullname]
+                   , activeLinkIf Budget page [Route.href Route.Budget] [text "Income"]
+                   , activeLinkIf Expense page [Route.href Route.Expense] [text "Expenses"]
                    ]
 
                Nothing ->
-                   [ Navbar.itemLink [Route.href Route.Login] [text "Sign in"] ])
+                   [ activeLinkIf Login page [Route.href Route.Login] [text "Sign in"] ])
         |> Navbar.view navState
 
-navLink : Bool -> Route -> List (Html a) -> Navbar.Item a
-navLink isActive route content =
-    let
-        link = if isActive then Navbar.itemLinkActive else Navbar.itemLink
-    in
-        link [ Route.href route ] content            
-            
+activeLinkIf : ActivePage -> ActivePage -> List (Html.Attribute msg) -> List (Html msg) -> Navbar.Item msg
+activeLinkIf activePage page =
+    if activePage == page then
+        Navbar.itemLinkActive
+    else
+        Navbar.itemLink        
+                       
 viewFooter : Html a
 viewFooter =
     Grid.container [] [ span [ class "attribution" ] [ text "Stoneship, LLC. 2017. MIT license." ] ]

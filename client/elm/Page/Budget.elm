@@ -13,7 +13,7 @@ import Bootstrap.Grid.Col as Col
 import Bootstrap.ListGroup as ListGroup
 import Data.Budget exposing (Budget, Lease)
 import Data.Session exposing (Session)
-import Html exposing (Html,text,div)
+import Html exposing (Html,text,div, p)
 import Html.Attributes exposing (class)
 import Http
 import Page.Errored exposing (pageLoadError, PageLoadError)
@@ -120,10 +120,12 @@ view session model =
     let
         animatedBudget = animate model
     in
-        Grid.row [] <| List.concat
-            [ [ Grid.col [Col.md6] [ explainerText animatedBudget ] ]
-            , leaseDetailViews model animatedBudget
-            , [ Grid.col [Col.md12] <| [compareRentsView animatedBudget] ]
+        Grid.container []
+            [ Grid.row [] <| List.concat
+                  [ [ Grid.col [Col.md12] [ explainerText animatedBudget ] ]
+                  , [ Grid.col [Col.md8] <| [compareRentsView animatedBudget] ]
+                  , leaseDetailViews model animatedBudget
+                  ]
             ]
 
 
@@ -136,12 +138,13 @@ animate {time, animation, budget}  =
                 Nothing -> justAnimation.budget 0 0 budget
                            
         Nothing -> budget
-
+                   
 explainerText : Budget -> Html Msg
 explainerText budget =
     let
         income = totalIncome budget
         coreExpense = budget.coreExpenses
+        currentIncome = startingIncome budget
 
         format num =
             let
@@ -151,20 +154,45 @@ explainerText budget =
             
                       
         showPct num = (format num) ++ "%"
+
+        surplusOrDeficit val = if val >= 0 then "surplus" else "deficit"
+
+        defaultIncreasePct = showPct <| requiredPctIncrease budget
+
+        increaseOrDecrease val = if val >= 0 then "increase" else "decrease"
+        changeWord val = if val >= 0 then "an increase" else "a decrease"
+                             
+        summaryExplainerText : Budget -> Html a
+        summaryExplainerText budget =
+            "This page show proposed changes to rents, and how those changes affect Bloomcraft's budget."
+            ++ " To cover our core expenses, total rental income needs to "
+            ++ increaseOrDecrease (coreExpense - currentIncome)
+            ++ " by $"
+            ++ toString (coreExpense - currentIncome)
+            ++ ", " ++ changeWord (requiredPctIncrease budget) ++ " of "
+            ++ defaultIncreasePct
+            ++ ".  Currently there is a projected $"
+            ++ toString (round (income - coreExpense))
+            ++ " "
+            ++ surplusOrDeficit (income - coreExpense)
+            ++ "."
+            ++ " If we have a surplus, those funds will be available for discretionary spending at the end of the upcoming quarter."
+                |> text
                       
     in
         Card.config [ Card.attrs [class "mt-2" ]]
             |> Card.headerH3 []
-               [ text "Summary of Budget"
+               [ text "Summary of Proposed Budget"
                ]
             |> Card.block []
                [ Card.custom <| 
                      div [] [ Grid.row [] [ Grid.col [] [ topLineSvg budget ] ]
-                            , summaryRow "Core Expenses:" <| "$" ++ (toString <| round budget.coreExpenses)
+                            , p [class "lead"] [ summaryExplainerText budget]
+{--                            , summaryRow "Core Expenses:" <| "$" ++ (toString <| round budget.coreExpenses)
                             , summaryRow "Proposed Income:" <| "$" ++ (toString <| round (totalIncome budget))
                             , summaryRow "Current Income:" <| "$" ++ (toString <| startingIncome budget)
                             , summaryRow "Discretionary:" <| "$" ++ toString (round (Basics.max 0 (income - coreExpense)))
-                            , summaryRow "Default Increase:" <| showPct <| requiredPctIncrease budget
+                            , summaryRow "Default Increase:" defaultIncreasePct--}
                             ]
                ]
             |> Card.view
@@ -178,26 +206,53 @@ leaseDetailViews model budget =
         detailCards : List (Html Msg)
         detailCards = List.map (leaseDetailView model budget) leases
     in
-        List.map (\x -> (Grid.col [Col.md6] [x])) detailCards        
+        List.map (\x -> (Grid.col [Col.md4] [x])) detailCards        
 
+detailSummaryText : Lease -> Float -> Html a
+detailSummaryText lease defaultRent=
+    let
+        rentDiff lease  = lease.proposedRent - lease.currentRent
+        moreOrLess val = if val >= 0 then "more" else "less"
+        raiseOrLower lease = if rentDiff lease  >= 0 then "raise" else "lower"
+    in
+        "The current proposal is to "
+        ++ raiseOrLower lease
+        ++ " "
+        ++ lease.name
+        ++ "'s monthly rent by $"
+        ++ toString (round <| abs (rentDiff lease))
+        ++ " to $"
+        ++ toString (round lease.proposedRent)
+        ++ ".  This is $"
+        ++ toString (round (abs (lease.proposedRent - defaultRent)))
+        ++ " "
+        ++ moreOrLess (lease.proposedRent - defaultRent)
+        ++ " than the minimum recommended new rent of $"
+        ++ toString (round defaultRent)
+        ++ "."
+        |> text
            
 leaseDetailView : Model -> Budget -> Lease -> Html Msg
 leaseDetailView model budget lease =
-    Card.config [ Card.attrs [class "mt-2" ]]
-        |> Card.headerH3 []
-           [ text lease.name
-           ]
-        |> Card.block []
-           [ Card.custom <| div []
-                 [ summaryRow "Proposed New Rent:" ("$" ++ toString (round lease.proposedRent))
+    let
+        defaultRent = (ceiling (lease.currentRent * (1 + requiredPctIncrease budget)))
+    in
+        Card.config [ Card.attrs [class "mt-2" ]]
+            |> Card.headerH3 []
+               [ text <| "Detail: " ++ lease.name
+               ]
+            |> Card.block []
+               [ Card.custom <| div []
+                 [ p [class "lead"] [detailSummaryText lease (toFloat defaultRent)]
+{--                 , summaryRow "Proposed New Rent:" ("$" ++ toString (round lease.proposedRent))
                  , summaryRow "Current Rent:" ("$" ++ toString lease.currentRent)
-                 , summaryRow "Default New Rent:" ("$" ++ toString (round (lease.currentRent * (1 + requiredPctIncrease budget))))
+                 , summaryRow "Default New Rent:" ("$" ++ toString defaultRent)--}
                  ]
-           ]
-        |> Card.listGroup           
-           [ ListGroup.li [] [changeRentView model budget lease]
-           ]
-        |> Card.view
+               ]
+            |> Card.listGroup           
+               [ ListGroup.li [] [changeRentView model budget lease]
+               ]
+            |> Card.view
 
                
 changeRentView : Model -> Budget -> Lease -> Html Msg
@@ -206,8 +261,10 @@ changeRentView model budget viewLease =
         nonAdminView = div [ class "mt-4" ] [ Alert.info [ text <| viewLease.adminName ++ " is able to change the proposed " ++ viewLease.name ++ " rent"] ]
 
         changeRentButton budget adminLease =
-            div [ class "text-center" ]
-                  [ rentInputView model ]
+            Alert.info
+                [text "Change proposed rent"
+                , rentInputView model
+                ]            
     in
         case budget.leaseAdmin of
             Just adminLease ->
@@ -222,24 +279,33 @@ topLineSvg budget =
     let
         income = totalIncome budget
         coreExpenses = budget.coreExpenses
-        scaleMax = 1.5 * (Basics.max income coreExpenses)
+        scaleMax = 1.25 * (Basics.max income coreExpenses)
         plotParam = BarPlot 0 scaleMax 10
+        currentIncome = startingIncome budget
     in
         Grid.row []
             [ Grid.col []
                   [ svg [ viewBox "0 0 110 30", width "100%" ]
-                        [g [ transform "translate(5,10)" ]
+                        [g [ transform "translate(5,10)" ] <| List.append
+                             ( if income > currentIncome then
+                                   [annotate plotParam [Text "New Income", Type (Bracket  currentIncome income)]]
+                               else
+                                   [annotate plotParam [Type (TextOnly 0)]]
+                             )
                              (if income >= coreExpenses then
                                  [ drawBox plotParam (0, income, lightBlueColor )
                                  , drawBox plotParam (0, coreExpenses, blueColor)
-                                 , annotate plotParam [Text "Proposed Rent", Type (Bracket 0 income)]
+                                 , annotate plotParam [Text "Current Income", Type (Bracket 0 currentIncome)]
                                  , annotate plotParam [Text "Core Expenses", Type (Bracket 0 coreExpenses), Location Above]
+                                 , annotate plotParam [Text "Surplus", Type (Bracket coreExpenses income), Location Above]
+                                 --, annotate plotParam [Type (Separator currentIncome), Location Below]
                                  ]
                              else 
                                  [ drawBox plotParam (0, coreExpenses, redColor )
                                  , drawBox plotParam (0, income, blueColor)
-                                 , annotate plotParam [Text "Proposed Rent", Type <| Bracket 0 income]
-                                 --                             , drawSeparator plotParam coreExpenses
+                                 , annotate plotParam [Text "Current Rent", Type (Bracket 0 currentIncome)]
+                                 --, annotate plotParam [Text "Proposed Rent", Type <| Bracket 0 income]
+                                 --, drawSeparator plotParam coreExpenses
                                  , annotate plotParam  [Text "Core Expenses", Type <| Bracket 0 coreExpenses, Location Above]
                                  ]
                              )
@@ -261,7 +327,7 @@ rentInputView model =
                                             Ok _ -> []
                                             Err _ -> [Button.disabled True]
                                        )
-                                       [ Button.primary, Button.onClick <| ChangeRent ]
+                                       [ Button.primary, Button.onClick ChangeRent ]
                                   ) [ text "Change" ] ]
         |> InputGroup.view
         , Form.validationText [] (case model.requestedRent of
@@ -279,7 +345,7 @@ compareRentsView : Budget -> Html Msg
 compareRentsView budget =
     Card.config [ Card.attrs [class "mt-2"] ]
         |> Card.headerH3 []
-           [ text "Proposed Changes"
+           [ text "Proposed New Rents"
            ]
         |> Card.block []
            [ Card.custom <|
@@ -294,7 +360,7 @@ compareRentsByPctChangePlot budget =
         increasePct = requiredPctIncrease budget
                          
         changes = List.map change leases
-        maxChange = Basics.max (increasePct + 0.05) (List.maximum changes |> Maybe.withDefault 0)
+        maxChange = Basics.max (increasePct * 1.2) (List.maximum changes |> Maybe.withDefault 0)
         minChange = Basics.min 0 (List.minimum changes |> Maybe.withDefault 0)
 
         barWidth = (BarPlot minChange maxChange)
@@ -321,9 +387,9 @@ compareRentsByPctChangePlot budget =
                   List.concat
                       [ List.indexedMap drawLease leases
                       , [ annotate (barWidth ((toFloat nLease) * (pp.height+1)))
-                              [Text "Default" , Location Above, Type (Separator increasePct), Size "3px"]
+                              [Text "Default New Rent" , Location Above, Type (Separator increasePct), Size "3px"]
                         , annotate (barWidth ((toFloat nLease) * (pp.height+1)))
-                              [Text "Current", Location Above, Type (Separator 0), Size "3px"]
+                              [Text "Current Rent", Location Above, Type (Separator 0), Size "3px"]
                         ] 
                       ]
             ]
@@ -345,9 +411,17 @@ viewRent pp lease baseLine =
                     redColor
 
     in
-        g [] [drawBox pp (0, val, color)
-             , annotate pp [Text lease.name, Location (Inside Left), Type (TextOnly 0), Size "3px"]
-             , annotate pp [Text <| pctStr (val-baseLine), Location (Inside Right), Type (TextOnly 0), Size "3px"]
+        g [] <| List.append
+              (if val > baseLine then
+                  [ drawBox pp (0, baseLine, blueColor)
+                  , drawBox pp (baseLine, val, lightBlueColor)
+                  ]
+              else
+                  [ drawBox pp (0, val, blueColor)                        
+                  , drawBox pp (val, baseLine, lightRedColor)
+                  ])
+             [ annotate pp [Text <| lease.name {-- ++ ": " ++ pctStr (val-baseLine) --}, Location (Inside Right), Type (TextOnly 0), Size "3px"]
+--             , annotate pp [Text <| , Location (Inside Right), Type (TextOnly 0), Size "3px"]
              ]            
 
 startingIncome : Budget -> Float

@@ -3,6 +3,8 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.models import AbstractUser
 from django.dispatch import receiver
 
+import math
+
 class User(AbstractUser):
     pass
 
@@ -42,7 +44,7 @@ def create_default_rental_rates(sender, instance, created, *args, **kwargs):
     base_change = budget.core_expenses / current_income()
         
     for lease in Lease.objects.all():
-        RentalRate(rent = lease.rent * base_change, budget = instance, lease = lease).save()
+        RentalRate(rent = math.ceil(lease.rent * base_change), budget = instance, lease = lease).save()
     
 class RentalRate(models.Model):
     #Monthly rent

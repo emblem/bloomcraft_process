@@ -16,7 +16,7 @@ type Route
 route : Parser (Route -> a) a
 route =
     oneOf
-        [ Url.map Home (s "")
+        [ Url.map Home (s "home")
         , Url.map Login (s "login")
         , Url.map Budget (s "budget")
         , Url.map Expense (s "expense")
@@ -26,15 +26,15 @@ route =
 routeToString : Route -> String
 routeToString page =
     case page of
-        Home -> "home"
-        Login -> "login"
-        Budget -> "budget"
-        Expense -> "expense"
-        Profile -> "profile"
+        Home -> "app#home"
+        Login -> "app#login"
+        Budget -> "app#budget"
+        Expense -> "app#expense"
+        Profile -> "app#profile"
 
 href : Route -> Html.Attribute a
 href route =
-    Html.Attributes.href <| "#" ++ routeToString route
+    Html.Attributes.href <| routeToString route
       
 modifyUrl : Route -> Cmd msg
 modifyUrl =
@@ -45,4 +45,4 @@ fromLocation location =
     if String.isEmpty location.hash then
         Just Home
     else
-        parseHash route location
+        Debug.log "Route" <| parseHash route <| Debug.log "Location" location

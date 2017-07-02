@@ -24,17 +24,24 @@ def login_view(request):
         response['user'] = {
             'username' : user.username,
             'fullname' : user.get_full_name(),
-            'auth_token' : csrf.get_token(request)
             }
     else:
         response['user'] = None
+
+    response['auth_token'] = csrf.get_token(request)
 
     return JsonResponse(response)
 
 @login_required
 def logout_view(request):
     logout(request)
-    return HttpResponse()
+
+    response = {
+        'user' : None,
+        'auth_token' : csrf.get_token(request)
+        }
+    
+    return JsonResponse(response)
 
 @require_http_methods(["GET"])
 @login_required

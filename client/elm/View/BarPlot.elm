@@ -82,7 +82,7 @@ annotate params optList =
                                      _ -> initTextCenter
                                          
         (yPos, textBaseline) = case options.location of
-                                       Above -> (-3.5, "bottom")
+                                       Above -> (-4, "bottom")
                                        Below -> (params.height + 3.5, "hanging")
                                        Inside _ -> (params.height/2, "central")
         anchor = case options.location of
@@ -111,7 +111,7 @@ bracket params location pleft pright =
     let
         left = plotToVis params pleft
         right = plotToVis params pright
-        midpoint = toString <| (left + right)/2
+        midpoint = (left + right)/2                   
         position = case location of
                        Above -> "translate (0,-0.5) scale(1, -1)"
                        Below -> "translate (0, 10.5)"
@@ -119,11 +119,15 @@ bracket params location pleft pright =
 
     in
         g [ transform position ] [ polyline [ stroke "#000000", strokeWidth ".5", fill "none",
-                     points (polyPoints [(left, 0), (left, 1.5), (right, 1.5), (right, 0)])
+                     points (polyPoints [ (left, 0)
+                                        , (Basics.min (left+1.5) midpoint, 1.5)
+                                        , (Basics.max (right-1.5) midpoint, 1.5)
+                                        , (right, 0)
+                                        ])
                    ] []
-        , line [ x1 midpoint
+        , line [ x1 <| toString midpoint
                , y1 "1.5"
-               , x2 midpoint
+               , x2 <| toString midpoint
                , y2 "2.5"
                , stroke "#000000"
                , strokeWidth "0.5"

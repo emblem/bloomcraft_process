@@ -7,4 +7,7 @@ admin.site.register(User, UserAdmin)
 admin.site.register(Lease)
 admin.site.register(RentalRate)
 admin.site.register(Budget)
+admin.site.register(DiscretionaryAllocation)
+admin.site.register(DiscretionaryExpense)
+admin.site.register(DiscretionaryVote)
 

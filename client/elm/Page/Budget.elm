@@ -161,18 +161,22 @@ explainerText budget =
 
         increaseOrDecrease val = if val >= 0 then "increase" else "decrease"
         changeWord val = if val >= 0 then "an increase" else "a decrease"
-                             
+
         summaryExplainerText : Budget -> Html a
         summaryExplainerText budget =
-            "This page show proposed changes to rents, and how those changes affect Bloomcraft's budget."
-            ++ " To cover our core expenses, total rental income needs to "
+            "This page shows proposed changes to rents, and how those changes would affect Bloomcraft's budget."
+            ++ " To cover our core expenses, the proposed budget must "
             ++ increaseOrDecrease (coreExpense - currentIncome)
-            ++ " by $"
+            ++ " total rental income by $"
             ++ toString (coreExpense - currentIncome)
             ++ ", " ++ changeWord (requiredPctIncrease budget) ++ " of "
             ++ defaultIncreasePct
-            ++ ".  Currently there is a projected $"
-            ++ toString (round (income - coreExpense))
+            ++ ".  Currently the proposed rents will "
+            ++ increaseOrDecrease (income - currentIncome)
+            ++ " income by $"
+            ++ toString (round (income - currentIncome))
+            ++ ".  This change will create a projected $"
+            ++ toString (abs (round (income - coreExpense)))
             ++ " "
             ++ surplusOrDeficit (income - coreExpense)
             ++ "."
@@ -241,6 +245,9 @@ leaseDetailView model budget lease =
             |> Card.headerH3 []
                [ text <| "Detail: " ++ lease.name
                ]
+            |> Card.listGroup           
+               [ ListGroup.li [] [changeRentView model budget lease]
+               ]
             |> Card.block []
                [ Card.custom <| div []
                  [ p [class "lead"] [detailSummaryText lease (toFloat defaultRent)]
@@ -248,9 +255,6 @@ leaseDetailView model budget lease =
                  , summaryRow "Current Rent:" ("$" ++ toString lease.currentRent)
                  , summaryRow "Default New Rent:" ("$" ++ toString defaultRent)--}
                  ]
-               ]
-            |> Card.listGroup           
-               [ ListGroup.li [] [changeRentView model budget lease]
                ]
             |> Card.view
 
@@ -303,7 +307,7 @@ topLineSvg budget =
                              else 
                                  [ drawBox plotParam (0, coreExpenses, redColor )
                                  , drawBox plotParam (0, income, blueColor)
-                                 , annotate plotParam [Text "Current Rent", Type (Bracket 0 currentIncome)]
+                                 , annotate plotParam [Text "Current Income", Type (Bracket 0 currentIncome)]
                                  --, annotate plotParam [Text "Proposed Rent", Type <| Bracket 0 income]
                                  --, drawSeparator plotParam coreExpenses
                                  , annotate plotParam  [Text "Core Expenses", Type <| Bracket 0 coreExpenses, Location Above]

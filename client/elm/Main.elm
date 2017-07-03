@@ -10,6 +10,7 @@ import Page.Profile as Profile
 import Page.Errored as Errored exposing (PageLoadError, pageLoadError)
 import Page.Home as Home
 import Page.Login as Login
+import Page.Expense as Expense
 import Request.Session
 import Route exposing (Route)
 import Task
@@ -25,7 +26,7 @@ type Page
     | Login Login.Model
     | Budget Budget.Model
     | Profile Profile.Model
-    | Expense
+    | Expense Expense.Model
 
 type PageState
     = Loaded Page
@@ -113,6 +114,11 @@ viewPage model isLoading page =
                 Profile.view session subModel
                     |> Html.map ProfileMsg
                     |> frame Page.Profile
+
+            Expense subModel ->
+                Expense.view subModel
+                    |> Html.map ExpenseMsg
+                    |> frame Page.Expense
                        
             _ -> Html.text "Unsupported View" |> frame Page.Other
 
@@ -137,10 +143,12 @@ type Msg
     = SetSession (Result Http.Error Session)
     | SetRoute (Maybe Route)
     | BudgetLoaded (Result PageLoadError Budget.Model)
+    | ExpenseLoaded (Result PageLoadError Expense.Model)
     | NavMsg Navbar.State
     | BudgetMsg Budget.Msg
     | LoginMsg Login.Msg
     | ProfileMsg Profile.Msg
+    | ExpenseMsg Expense.Msg
 
 
 setRoute : Maybe Route -> Model -> (Model, Cmd Msg)
@@ -167,7 +175,7 @@ setRoute maybeRoute model =
                     (model, Route.modifyUrl Route.Login)
             Just Route.Expense ->
                 if loggedIn then
-                    errored Page.Expense "Expense isn't working yet, sorry!"
+                    transition ExpenseLoaded Expense.init
                 else
                     (model, Route.modifyUrl Route.Login)
             Just Route.Login ->
@@ -256,6 +264,13 @@ updatePage page msg model =
                     
             (BudgetLoaded (Err error), _) ->
                 { model | pageState = Loaded (Errored error) } => Cmd.none
+
+            (ExpenseLoaded (Ok subModel), _) ->
+                { model | pageState = Loaded (Expense subModel) } => Cmd.none
+                    
+            (ExpenseLoaded (Err error), _) ->
+                { model | pageState = Loaded (Errored error) } => Cmd.none
+
 
             (NavMsg navState, _) ->
                 { model | navState = navState } => Cmd.none

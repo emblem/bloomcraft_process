@@ -1,6 +1,6 @@
 --From rtfeldman/elm-spa-example, licensing uncertain
 
-module Util exposing ((=>), appendErrors, onClickStopPropagation, pair, viewIf)
+module Util exposing ((=>), appendErrors, onClickStopPropagation, pair, viewIf, rotateList)
 
 import Html exposing (Attribute, Html)
 import Html.Events exposing (defaultOptions, onWithOptions)
@@ -48,3 +48,9 @@ onClickStopPropagation msg =
 appendErrors : { model | errors : List error } -> List error -> { model | errors : List error }
 appendErrors model errors =
     { model | errors = model.errors ++ errors }
+
+rotateList : List a -> List a
+rotateList list =
+    case list of
+        [] -> []
+        a :: rest -> List.append rest [a]

@@ -9,6 +9,8 @@ from django.core import serializers
 import json
 import pprint
 
+from .allocation import allocation_to_json
+
 from .models import *
 
 @csrf_exempt
@@ -83,6 +85,9 @@ def user_view(request):
 def current_budget():
     return Budget.objects.latest('id')
 
+def current_allocation():
+    return Allocation.objects.latest('id')
+
 @login_required
 @require_http_methods(['POST'])
 def rent_view(request):
@@ -110,3 +115,10 @@ def session_view(request):
     response['auth_token'] = csrf.get_token(request)
 
     return JsonResponse(response)
+
+@login_required
+def allocation_view(request):
+    allocation = current_allocation()
+    allocation_json = allocation_to_json(allocation)
+    
+    return JsonResponse({'allocation' : allocation_json})

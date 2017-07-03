@@ -1,0 +1,12 @@
+def expense_to_json(expense):
+    expense_json = {
+        'name' : expense.name
+        'owner' : expense.owner.get_full_name()
+        'requested_funds' : expense.requested_funds
+
+def allocation_to_json(allocation):
+    allocation_json = {
+        'amount' : allocation.amount
+        'expenses' : [expense_to_json(expense) for expense in allocation.allocationexpense_set.all()]
+        }
+    return allocation_json

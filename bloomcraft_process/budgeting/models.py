@@ -59,7 +59,7 @@ class RentalRate(models.Model):
         return str(self.budget) + " / " + self.lease.name
 
     
-class DiscretionaryAllocation(models.Model):
+class Allocation(models.Model):
     decision_date = models.DateField()
     amount = models.IntegerField(default=0)
 
@@ -67,34 +67,34 @@ class DiscretionaryAllocation(models.Model):
         return str(self.decision_date) + ": $" + str(self.amount)
 
     
-class DiscretionaryExpense(models.Model):
+class AllocationExpense(models.Model):
     name = models.CharField(max_length=200, unique = True)
 
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
-    allocations = models.ManyToManyField(DiscretionaryAllocation)    
+    allocations = models.ManyToManyField(Allocation)    
 
-    partialAllowed = models.BooleanField(default = True)
-    excessAllowed = models.BooleanField(default = False)
-    requestedFunds = models.IntegerField()
-    allocatedFunds = models.IntegerField()
+    partial_allowed = models.BooleanField(default = True)
+    excess_allowed = models.BooleanField(default = False)
+    requested_funds = models.IntegerField()
+    current_allocated_funds = models.IntegerField()
 
     def __str__(self):
         return self.name + " by " + self.owner.username
         
         
-class DiscretionaryVote(models.Model):
+class AllocationVote(models.Model):
     user = models.ForeignKey(User, on_delete = models.CASCADE)
-    expense = models.ForeignKey(DiscretionaryExpense, on_delete = models.CASCADE)
+    expense = models.ForeignKey(AllocationExpense, on_delete = models.CASCADE)
 
     weight = models.FloatField()
-    personal_abs_max = models.IntegerField()
-    global_abs_max = models.IntegerField()
+    personal_abs_max = models.IntegerField(blank=True, null=True)
+    global_abs_max = models.IntegerField(blank=True, null=True)
 
-    personal_pct_max = models.FloatField()
-    global_pct_max = models.FloatField()
+    personal_pct_max = models.FloatField(blank=True, null=True)
+    global_pct_max = models.FloatField(blank=True, null=True)
     
     class Meta:
         unique_together = ('user', 'expense')
 
     def __str__(self):
-        return "Vote by " + self.user.name + " on " + self.expense.name + " for " + self.expense.allocation
+        return "Vote by " + self.user.username + " on " + self.expense.name

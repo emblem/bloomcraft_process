@@ -34,13 +34,13 @@ class RankedAllocator:
         return (allowed_global_allocation, allowed_personal_allocation)
 
     def get_top_open_expense(self, votes, expenses, working_allocation, working_user_allocation):
-        vote_iter = iter( sorted(votes, key=(lambda v: v.weight), reverse=True) )
-        for vote in vote_iter:
-            votes_with_same_weight = [vote]
+        votes = sorted(votes, key=(lambda v: v.weight), reverse=True)
+        for idx in range(0, len(votes)):
+            votes_with_same_weight = [votes[idx]]
             
-            for other_vote in vote_iter:
-                if other_vote.weight == vote.weight:
-                    votes_with_same_weight.append(other_vote)
+            for idx2 in range(idx+1, len(votes)):
+                if votes[idx2].weight == votes[idx].weight:
+                    votes_with_same_weight.append(votes[idx2])
                 else:
                     break
 
@@ -82,7 +82,7 @@ class RankedAllocator:
             for expense in expenses:
                 round_sums[expense] += round_allocation[user][expense]
 
-                #import pdb; pdb.set_trace()        
+
 
 #        pprint.pprint(round_sums)
  #       pprint.pprint(round_allocation)
@@ -142,6 +142,7 @@ class RankedAllocator:
         working_user_allocation = defaultdict(lambda: defaultdict(float))
     
         while amount_remaining > epsilon:
+#            import pdb; pdb.set_trace()
             voter_count = len(user_votes)
             if voter_count == 0:
                 break

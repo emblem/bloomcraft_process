@@ -143,6 +143,8 @@ class RankedAllocator:
     
         while amount_remaining > epsilon:
             voter_count = len(user_votes)
+            if voter_count == 0:
+                break
             print ("\nNew Round: $" + str(amount_remaining))
         
             amount_per_user = amount_remaining/voter_count

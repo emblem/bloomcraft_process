@@ -44,6 +44,10 @@ allocationSummary : Model -> Html a
 allocationSummary model =
     let
         allocation = model.allocation
+        amtPerPerson = if allocation.numVoters > 0 then
+                           (ceiling (toFloat allocation.amount/toFloat allocation.numVoters))
+                       else
+                           allocation.amount        
         summaryText =
             "This page shows how the $"
             ++ toString allocation.amount
@@ -51,7 +55,7 @@ allocationSummary model =
             ++ " Because "
             ++ toString allocation.numVoters
             ++ " Bloomcraft keyholders have participated so far, you have "
-            ++ "$" ++ toString (ceiling (toFloat allocation.amount/toFloat allocation.numVoters))
+            ++ "$" ++ toString amtPerPerson
             ++ " to allocate. Use the vote buttons to share your preferences, and the allocation will change to reflect them." 
     in
         Card.config [ Card.attrs [class "mt-2" ]]

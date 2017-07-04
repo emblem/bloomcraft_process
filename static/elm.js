@@ -21498,6 +21498,8 @@ var _user$project$Page_Expense$allocationPieSummary = function (allocation) {
 };
 var _user$project$Page_Expense$allocationSummary = function (model) {
 	var allocation = model.allocation;
+	var amtPerPerson = (_elm_lang$core$Native_Utils.cmp(allocation.numVoters, 0) > 0) ? _elm_lang$core$Basics$ceiling(
+		_elm_lang$core$Basics$toFloat(allocation.amount) / _elm_lang$core$Basics$toFloat(allocation.numVoters)) : allocation.amount;
 	var summaryText = A2(
 		_elm_lang$core$Basics_ops['++'],
 		'This page shows how the $',
@@ -21521,9 +21523,7 @@ var _user$project$Page_Expense$allocationSummary = function (model) {
 								'$',
 								A2(
 									_elm_lang$core$Basics_ops['++'],
-									_elm_lang$core$Basics$toString(
-										_elm_lang$core$Basics$ceiling(
-											_elm_lang$core$Basics$toFloat(allocation.amount) / _elm_lang$core$Basics$toFloat(allocation.numVoters))),
+									_elm_lang$core$Basics$toString(amtPerPerson),
 									' to allocate. Use the vote buttons to share your preferences, and the allocation will change to reflect them.'))))))));
 	return _rundis$elm_bootstrap$Bootstrap_Card$view(
 		A3(

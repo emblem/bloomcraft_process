@@ -236,10 +236,7 @@ startupUpdate msg startModel =
             
 update : Msg -> Model -> (Model, Cmd Msg)
 update msg model =
-    let
-        x = Debug.log "Msg" msg
-    in
-        updatePage (getPage model.pageState) msg model
+    updatePage (getPage model.pageState) msg model
 
         
 updatePage : Page -> Msg -> Model -> ( Model, Cmd Msg )
@@ -270,7 +267,7 @@ updatePage page msg model =
             in
                 ( { model | pageState = Loaded (toModel newModel) }, Cmd.map toMsg newCmd, outMsg )                    
     in
-        Debug.log "Result" <| case (msg, page) of
+        case (msg, page) of
             (SetRoute route, _) ->
                 setRoute route model
                     

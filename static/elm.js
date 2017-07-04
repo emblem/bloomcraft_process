@@ -22912,170 +22912,164 @@ var _user$project$Main$updatePage = F3(
 					});
 			});
 		var session = model.session;
-		return A2(
-			_elm_lang$core$Debug$log,
-			'Result',
-			function () {
-				var _p12 = {ctor: '_Tuple2', _0: msg, _1: page};
-				_v7_14:
-				do {
-					switch (_p12._0.ctor) {
-						case 'SetRoute':
-							return A2(_user$project$Main$setRoute, _p12._0._0, model);
-						case 'SetSession':
-							if (_p12._0._0.ctor === 'Ok') {
-								return A3(setSession, model, _elm_lang$core$Platform_Cmd$none, _p12._0._0._0);
-							} else {
-								return _elm_lang$core$Tuple$first(
-									{
-										ctor: '_Tuple2',
-										_0: A3(_user$project$Main$pageErrored, model, _user$project$View_Page$Home, 'Failed to get session state from server'),
-										_1: A2(_elm_lang$core$Debug$log, 'Load Error: ', _p12._0._0._0)
-									});
-							}
-						case 'BudgetLoaded':
-							if (_p12._0._0.ctor === 'Ok') {
-								return A2(
-									_user$project$Util_ops['=>'],
-									_elm_lang$core$Native_Utils.update(
-										model,
-										{
-											pageState: _user$project$Main$Loaded(
-												_user$project$Main$Budget(_p12._0._0._0))
-										}),
-									_elm_lang$core$Platform_Cmd$none);
-							} else {
-								return A2(
-									_user$project$Util_ops['=>'],
-									_elm_lang$core$Native_Utils.update(
-										model,
-										{
-											pageState: _user$project$Main$Loaded(
-												_user$project$Main$Errored(_p12._0._0._0))
-										}),
-									_elm_lang$core$Platform_Cmd$none);
-							}
-						case 'ExpenseLoaded':
-							if (_p12._0._0.ctor === 'Ok') {
-								return A2(
-									_user$project$Util_ops['=>'],
-									_elm_lang$core$Native_Utils.update(
-										model,
-										{
-											pageState: _user$project$Main$Loaded(
-												_user$project$Main$Expense(_p12._0._0._0))
-										}),
-									_elm_lang$core$Platform_Cmd$none);
-							} else {
-								return A2(
-									_user$project$Util_ops['=>'],
-									_elm_lang$core$Native_Utils.update(
-										model,
-										{
-											pageState: _user$project$Main$Loaded(
-												_user$project$Main$Errored(_p12._0._0._0))
-										}),
-									_elm_lang$core$Platform_Cmd$none);
-							}
-						case 'ExpenseDetailLoaded':
-							if (_p12._0._0.ctor === 'Ok') {
-								return A2(
-									_user$project$Util_ops['=>'],
-									_elm_lang$core$Native_Utils.update(
-										model,
-										{
-											pageState: _user$project$Main$Loaded(
-												_user$project$Main$ExpenseDetail(_p12._0._0._0))
-										}),
-									_elm_lang$core$Platform_Cmd$none);
-							} else {
-								return A2(
-									_user$project$Util_ops['=>'],
-									_elm_lang$core$Native_Utils.update(
-										model,
-										{
-											pageState: _user$project$Main$Loaded(
-												_user$project$Main$Errored(_p12._0._0._0))
-										}),
-									_elm_lang$core$Platform_Cmd$none);
-							}
-						case 'NavMsg':
-							return A2(
-								_user$project$Util_ops['=>'],
-								_elm_lang$core$Native_Utils.update(
-									model,
-									{navState: _p12._0._0}),
-								_elm_lang$core$Platform_Cmd$none);
-						case 'BudgetMsg':
-							if (_p12._1.ctor === 'Budget') {
-								return A5(
-									toPage,
-									_user$project$Main$Budget,
-									_user$project$Main$BudgetMsg,
-									_user$project$Page_Budget$update(session),
-									_p12._0._0,
-									_p12._1._0);
-							} else {
-								break _v7_14;
-							}
-						case 'LoginMsg':
-							if (_p12._1.ctor === 'Login') {
-								var _p13 = A5(toPageWithOut, _user$project$Main$Login, _user$project$Main$LoginMsg, _user$project$Page_Login$update, _p12._0._0, _p12._1._0);
-								var newModel = _p13._0;
-								var cmd = _p13._1;
-								var outMsg = _p13._2;
-								var _p14 = outMsg;
-								if (_p14.ctor === 'Just') {
-									return A3(setSession, newModel, cmd, _p14._0._0);
-								} else {
-									return {ctor: '_Tuple2', _0: newModel, _1: cmd};
-								}
-							} else {
-								break _v7_14;
-							}
-						case 'ProfileMsg':
-							if (_p12._1.ctor === 'Profile') {
-								var _p15 = A5(
-									toPageWithOut,
-									_user$project$Main$Profile,
-									_user$project$Main$ProfileMsg,
-									_user$project$Page_Profile$update(session),
-									_p12._0._0,
-									_p12._1._0);
-								var newModel = _p15._0;
-								var cmd = _p15._1;
-								var outMsg = _p15._2;
-								var _p16 = outMsg;
-								if (_p16.ctor === 'Just') {
-									return A3(setSession, newModel, cmd, _p16._0._0);
-								} else {
-									return {ctor: '_Tuple2', _0: newModel, _1: cmd};
-								}
-							} else {
-								break _v7_14;
-							}
-						case 'ExpenseDetailMsg':
-							if (_p12._1.ctor === 'ExpenseDetail') {
-								return A5(
-									toPage,
-									_user$project$Main$ExpenseDetail,
-									_user$project$Main$ExpenseDetailMsg,
-									_user$project$Page_ExpenseDetail$update(session),
-									_p12._0._0,
-									_p12._1._0);
-							} else {
-								break _v7_14;
-							}
-						default:
-							break _v7_14;
+		var _p12 = {ctor: '_Tuple2', _0: msg, _1: page};
+		_v7_14:
+		do {
+			switch (_p12._0.ctor) {
+				case 'SetRoute':
+					return A2(_user$project$Main$setRoute, _p12._0._0, model);
+				case 'SetSession':
+					if (_p12._0._0.ctor === 'Ok') {
+						return A3(setSession, model, _elm_lang$core$Platform_Cmd$none, _p12._0._0._0);
+					} else {
+						return _elm_lang$core$Tuple$first(
+							{
+								ctor: '_Tuple2',
+								_0: A3(_user$project$Main$pageErrored, model, _user$project$View_Page$Home, 'Failed to get session state from server'),
+								_1: A2(_elm_lang$core$Debug$log, 'Load Error: ', _p12._0._0._0)
+							});
 					}
-				} while(false);
-				return A2(_user$project$Util_ops['=>'], model, _elm_lang$core$Platform_Cmd$none);
-			}());
+				case 'BudgetLoaded':
+					if (_p12._0._0.ctor === 'Ok') {
+						return A2(
+							_user$project$Util_ops['=>'],
+							_elm_lang$core$Native_Utils.update(
+								model,
+								{
+									pageState: _user$project$Main$Loaded(
+										_user$project$Main$Budget(_p12._0._0._0))
+								}),
+							_elm_lang$core$Platform_Cmd$none);
+					} else {
+						return A2(
+							_user$project$Util_ops['=>'],
+							_elm_lang$core$Native_Utils.update(
+								model,
+								{
+									pageState: _user$project$Main$Loaded(
+										_user$project$Main$Errored(_p12._0._0._0))
+								}),
+							_elm_lang$core$Platform_Cmd$none);
+					}
+				case 'ExpenseLoaded':
+					if (_p12._0._0.ctor === 'Ok') {
+						return A2(
+							_user$project$Util_ops['=>'],
+							_elm_lang$core$Native_Utils.update(
+								model,
+								{
+									pageState: _user$project$Main$Loaded(
+										_user$project$Main$Expense(_p12._0._0._0))
+								}),
+							_elm_lang$core$Platform_Cmd$none);
+					} else {
+						return A2(
+							_user$project$Util_ops['=>'],
+							_elm_lang$core$Native_Utils.update(
+								model,
+								{
+									pageState: _user$project$Main$Loaded(
+										_user$project$Main$Errored(_p12._0._0._0))
+								}),
+							_elm_lang$core$Platform_Cmd$none);
+					}
+				case 'ExpenseDetailLoaded':
+					if (_p12._0._0.ctor === 'Ok') {
+						return A2(
+							_user$project$Util_ops['=>'],
+							_elm_lang$core$Native_Utils.update(
+								model,
+								{
+									pageState: _user$project$Main$Loaded(
+										_user$project$Main$ExpenseDetail(_p12._0._0._0))
+								}),
+							_elm_lang$core$Platform_Cmd$none);
+					} else {
+						return A2(
+							_user$project$Util_ops['=>'],
+							_elm_lang$core$Native_Utils.update(
+								model,
+								{
+									pageState: _user$project$Main$Loaded(
+										_user$project$Main$Errored(_p12._0._0._0))
+								}),
+							_elm_lang$core$Platform_Cmd$none);
+					}
+				case 'NavMsg':
+					return A2(
+						_user$project$Util_ops['=>'],
+						_elm_lang$core$Native_Utils.update(
+							model,
+							{navState: _p12._0._0}),
+						_elm_lang$core$Platform_Cmd$none);
+				case 'BudgetMsg':
+					if (_p12._1.ctor === 'Budget') {
+						return A5(
+							toPage,
+							_user$project$Main$Budget,
+							_user$project$Main$BudgetMsg,
+							_user$project$Page_Budget$update(session),
+							_p12._0._0,
+							_p12._1._0);
+					} else {
+						break _v7_14;
+					}
+				case 'LoginMsg':
+					if (_p12._1.ctor === 'Login') {
+						var _p13 = A5(toPageWithOut, _user$project$Main$Login, _user$project$Main$LoginMsg, _user$project$Page_Login$update, _p12._0._0, _p12._1._0);
+						var newModel = _p13._0;
+						var cmd = _p13._1;
+						var outMsg = _p13._2;
+						var _p14 = outMsg;
+						if (_p14.ctor === 'Just') {
+							return A3(setSession, newModel, cmd, _p14._0._0);
+						} else {
+							return {ctor: '_Tuple2', _0: newModel, _1: cmd};
+						}
+					} else {
+						break _v7_14;
+					}
+				case 'ProfileMsg':
+					if (_p12._1.ctor === 'Profile') {
+						var _p15 = A5(
+							toPageWithOut,
+							_user$project$Main$Profile,
+							_user$project$Main$ProfileMsg,
+							_user$project$Page_Profile$update(session),
+							_p12._0._0,
+							_p12._1._0);
+						var newModel = _p15._0;
+						var cmd = _p15._1;
+						var outMsg = _p15._2;
+						var _p16 = outMsg;
+						if (_p16.ctor === 'Just') {
+							return A3(setSession, newModel, cmd, _p16._0._0);
+						} else {
+							return {ctor: '_Tuple2', _0: newModel, _1: cmd};
+						}
+					} else {
+						break _v7_14;
+					}
+				case 'ExpenseDetailMsg':
+					if (_p12._1.ctor === 'ExpenseDetail') {
+						return A5(
+							toPage,
+							_user$project$Main$ExpenseDetail,
+							_user$project$Main$ExpenseDetailMsg,
+							_user$project$Page_ExpenseDetail$update(session),
+							_p12._0._0,
+							_p12._1._0);
+					} else {
+						break _v7_14;
+					}
+				default:
+					break _v7_14;
+			}
+		} while(false);
+		return A2(_user$project$Util_ops['=>'], model, _elm_lang$core$Platform_Cmd$none);
 	});
 var _user$project$Main$update = F2(
 	function (msg, model) {
-		var x = A2(_elm_lang$core$Debug$log, 'Msg', msg);
 		return A3(
 			_user$project$Main$updatePage,
 			_user$project$Main$getPage(model.pageState),

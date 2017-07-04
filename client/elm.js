@@ -11205,6 +11205,1110 @@ var _evancz$url_parser$UrlParser$intParam = function (name) {
 	return A2(_evancz$url_parser$UrlParser$customParam, name, _evancz$url_parser$UrlParser$intParamHelp);
 };
 
+var _folkertdev$svg_path_dsl$Svg_Path_Point$angleWithX = function (_p0) {
+	var _p1 = _p0;
+	var _p4 = _p1._1;
+	var _p3 = _p1._0;
+	var partial = _elm_lang$core$Native_Utils.eq(_p3, 0) ? 0 : _elm_lang$core$Basics$atan(
+		A2(_elm_lang$core$Debug$log, 'y / x', _p4 / _p3));
+	var _p2 = A2(
+		_elm_lang$core$Debug$log,
+		'x, y',
+		{ctor: '_Tuple2', _0: _p3, _1: _p4});
+	return (_elm_lang$core$Native_Utils.cmp(partial, 0) < 0) ? (_elm_lang$core$Basics$pi + partial) : partial;
+};
+var _folkertdev$svg_path_dsl$Svg_Path_Point$rotate = F2(
+	function (angle, _p5) {
+		var _p6 = _p5;
+		var _p9 = _p6._1;
+		var _p8 = _p6._0;
+		var _p7 = {
+			ctor: '_Tuple2',
+			_0: _elm_lang$core$Basics$cos(angle),
+			_1: _elm_lang$core$Basics$sin(angle)
+		};
+		var cs = _p7._0;
+		var sn = _p7._1;
+		return {ctor: '_Tuple2', _0: (_p8 * cs) - (_p9 * sn), _1: (_p8 * sn) + (_p9 * cs)};
+	});
+var _folkertdev$svg_path_dsl$Svg_Path_Point$length = function (_p10) {
+	var _p11 = _p10;
+	var _p13 = _p11._1;
+	var _p12 = _p11._0;
+	return _elm_lang$core$Basics$sqrt((_p12 * _p12) + (_p13 * _p13));
+};
+var _folkertdev$svg_path_dsl$Svg_Path_Point$mul = F2(
+	function (_p14, n) {
+		var _p15 = _p14;
+		return {ctor: '_Tuple2', _0: n * _p15._0, _1: n * _p15._1};
+	});
+var _folkertdev$svg_path_dsl$Svg_Path_Point$point = F2(
+	function (x, y) {
+		return {ctor: '_Tuple2', _0: x, _1: y};
+	});
+var _folkertdev$svg_path_dsl$Svg_Path_Point$div = F2(
+	function (p, n) {
+		return _elm_lang$core$Native_Utils.eq(n, 0) ? A2(_folkertdev$svg_path_dsl$Svg_Path_Point$point, 0, 0) : A2(_folkertdev$svg_path_dsl$Svg_Path_Point$mul, p, 1 / n);
+	});
+var _folkertdev$svg_path_dsl$Svg_Path_Point$normalize = function (v) {
+	return A2(
+		_folkertdev$svg_path_dsl$Svg_Path_Point$div,
+		v,
+		_folkertdev$svg_path_dsl$Svg_Path_Point$length(v));
+};
+var _folkertdev$svg_path_dsl$Svg_Path_Point$negate = function (_p16) {
+	var _p17 = _p16;
+	return {ctor: '_Tuple2', _0: 0 - _p17._0, _1: 0 - _p17._1};
+};
+var _folkertdev$svg_path_dsl$Svg_Path_Point$add = F2(
+	function (_p19, _p18) {
+		var _p20 = _p19;
+		var _p21 = _p18;
+		return {ctor: '_Tuple2', _0: _p20._0 + _p21._0, _1: _p20._1 + _p21._1};
+	});
+var _folkertdev$svg_path_dsl$Svg_Path_Point$sub = F2(
+	function (a, b) {
+		return A2(
+			_folkertdev$svg_path_dsl$Svg_Path_Point$add,
+			a,
+			_folkertdev$svg_path_dsl$Svg_Path_Point$negate(b));
+	});
+var _folkertdev$svg_path_dsl$Svg_Path_Point$direction = F2(
+	function (x, y) {
+		var _p22 = A2(
+			_elm_lang$core$Debug$log,
+			'x, y',
+			{ctor: '_Tuple2', _0: x, _1: y});
+		return A2(
+			_elm_lang$core$Debug$log,
+			'the direction',
+			_folkertdev$svg_path_dsl$Svg_Path_Point$normalize(
+				A2(_folkertdev$svg_path_dsl$Svg_Path_Point$sub, x, y)));
+	});
+
+var _folkertdev$svg_path_dsl$Svg_Path_Instruction$propagate = F2(
+	function (instruction, _p0) {
+		var _p1 = _p0;
+		var _p20 = _p1;
+		var _p19 = _p1.start;
+		var _p18 = _p1.current;
+		var resultContinuation = F2(
+			function (continuation, state) {
+				var _p2 = continuation;
+				switch (_p2.ctor) {
+					case 'QuadContAbsolute':
+						return _elm_lang$core$Native_Utils.update(
+							state,
+							{current: _p2._0});
+					case 'QuadContRelative':
+						return _elm_lang$core$Native_Utils.update(
+							state,
+							{
+								current: A2(_folkertdev$svg_path_dsl$Svg_Path_Point$add, state.current, _p2._0)
+							});
+					case 'CubiContAbsolute':
+						return _elm_lang$core$Native_Utils.update(
+							state,
+							{current: _p2._1});
+					default:
+						return _elm_lang$core$Native_Utils.update(
+							state,
+							{
+								current: A2(_folkertdev$svg_path_dsl$Svg_Path_Point$add, state.current, _p2._1)
+							});
+				}
+			});
+		var _p3 = _p18;
+		var cx = _p3._0;
+		var cy = _p3._1;
+		var _p4 = instruction;
+		switch (_p4.ctor) {
+			case 'Absolute':
+				switch (_p4._0.ctor) {
+					case 'Move':
+						var _p5 = _p4._0._0;
+						return _elm_lang$core$Native_Utils.update(
+							_p20,
+							{
+								current: _p5,
+								direction: A2(_folkertdev$svg_path_dsl$Svg_Path_Point$direction, _p5, _p20.current)
+							});
+					case 'Line':
+						var _p6 = _p4._0._0;
+						return _elm_lang$core$Native_Utils.update(
+							_p20,
+							{
+								current: _p6,
+								direction: A2(_folkertdev$svg_path_dsl$Svg_Path_Point$direction, _p18, _p6)
+							});
+					case 'Vertical':
+						var _p7 = _p4._0._0;
+						return _elm_lang$core$Native_Utils.update(
+							_p20,
+							{
+								current: A2(_folkertdev$svg_path_dsl$Svg_Path_Point$point, cx, _p7),
+								direction: A2(
+									_folkertdev$svg_path_dsl$Svg_Path_Point$direction,
+									_p18,
+									A2(_folkertdev$svg_path_dsl$Svg_Path_Point$point, cx, _p7))
+							});
+					case 'Horizontal':
+						var _p8 = _p4._0._0;
+						return _elm_lang$core$Native_Utils.update(
+							_p20,
+							{
+								current: A2(_folkertdev$svg_path_dsl$Svg_Path_Point$point, _p8, cy),
+								direction: A2(
+									_folkertdev$svg_path_dsl$Svg_Path_Point$direction,
+									_p18,
+									A2(_folkertdev$svg_path_dsl$Svg_Path_Point$point, _p8, cy))
+							});
+					case 'Arc':
+						var _p15 = _p4._0._3;
+						return _elm_lang$core$Native_Utils.update(
+							_p20,
+							{
+								current: _p15,
+								direction: A2(_folkertdev$svg_path_dsl$Svg_Path_Point$direction, _p20.current, _p15)
+							});
+					case 'Quadratic':
+						var _p16 = _p4._0._1;
+						return _elm_lang$core$Native_Utils.update(
+							_p20,
+							{
+								current: _p16,
+								direction: A2(_folkertdev$svg_path_dsl$Svg_Path_Point$direction, _p20.current, _p16)
+							});
+					case 'Cubic':
+						var _p17 = _p4._0._2;
+						return _elm_lang$core$Native_Utils.update(
+							_p20,
+							{
+								current: _p17,
+								direction: A2(_folkertdev$svg_path_dsl$Svg_Path_Point$direction, _p18, _p17)
+							});
+					default:
+						switch (_p4._0._0.ctor) {
+							case 'LineMany':
+								var _p12 = _p4._0._0._0;
+								var _p9 = A2(
+									_elm_lang$core$List$drop,
+									_elm_lang$core$List$length(_p12) - 2,
+									_p12);
+								_v3_2:
+								do {
+									if (_p9.ctor === '::') {
+										if (_p9._1.ctor === '::') {
+											if (_p9._1._1.ctor === '[]') {
+												var _p10 = _p9._1._0;
+												return _elm_lang$core$Native_Utils.update(
+													_p20,
+													{
+														current: _p10,
+														direction: A2(_folkertdev$svg_path_dsl$Svg_Path_Point$direction, _p9._0, _p10)
+													});
+											} else {
+												break _v3_2;
+											}
+										} else {
+											var _p11 = _p9._0;
+											return _elm_lang$core$Native_Utils.update(
+												_p20,
+												{
+													current: _p11,
+													direction: A2(_folkertdev$svg_path_dsl$Svg_Path_Point$direction, _p20.current, _p11)
+												});
+										}
+									} else {
+										break _v3_2;
+									}
+								} while(false);
+								return _p20;
+							case 'QuadraticMany':
+								var newState = A3(
+									_elm_lang$core$List$foldl,
+									resultContinuation,
+									_elm_lang$core$Native_Utils.update(
+										_p20,
+										{current: _p4._0._0._1}),
+									_p4._0._0._2);
+								return _elm_lang$core$Native_Utils.update(
+									newState,
+									{
+										direction: A2(_folkertdev$svg_path_dsl$Svg_Path_Point$direction, _p18, newState.current)
+									});
+							default:
+								var newState = A3(
+									_elm_lang$core$List$foldl,
+									resultContinuation,
+									_elm_lang$core$Native_Utils.update(
+										_p20,
+										{current: _p4._0._0._2}),
+									_p4._0._0._3);
+								return _elm_lang$core$Native_Utils.update(
+									newState,
+									{
+										direction: A2(_folkertdev$svg_path_dsl$Svg_Path_Point$direction, _p18, newState.current)
+									});
+						}
+				}
+			case 'Relative':
+				switch (_p4._0.ctor) {
+					case 'Move':
+						return _elm_lang$core$Native_Utils.update(
+							_p20,
+							{
+								current: A2(_folkertdev$svg_path_dsl$Svg_Path_Point$add, _p4._0._0, _p18)
+							});
+					case 'Line':
+						return _elm_lang$core$Native_Utils.update(
+							_p20,
+							{
+								current: A2(_folkertdev$svg_path_dsl$Svg_Path_Point$add, _p18, _p4._0._0)
+							});
+					case 'Vertical':
+						return _elm_lang$core$Native_Utils.update(
+							_p20,
+							{
+								current: A2(_folkertdev$svg_path_dsl$Svg_Path_Point$point, cx, cy + _p4._0._0)
+							});
+					case 'Horizontal':
+						return _elm_lang$core$Native_Utils.update(
+							_p20,
+							{
+								current: A2(_folkertdev$svg_path_dsl$Svg_Path_Point$point, cx + _p4._0._0, cy)
+							});
+					case 'Arc':
+						var $new = A2(_folkertdev$svg_path_dsl$Svg_Path_Point$add, _p18, _p4._0._3);
+						return _elm_lang$core$Native_Utils.update(
+							_p20,
+							{
+								current: $new,
+								direction: A2(_folkertdev$svg_path_dsl$Svg_Path_Point$direction, _p18, $new)
+							});
+					case 'Quadratic':
+						var $new = A2(_folkertdev$svg_path_dsl$Svg_Path_Point$add, _p18, _p4._0._1);
+						return _elm_lang$core$Native_Utils.update(
+							_p20,
+							{
+								current: $new,
+								direction: A2(_folkertdev$svg_path_dsl$Svg_Path_Point$direction, _p18, $new)
+							});
+					case 'Cubic':
+						var $new = A2(_folkertdev$svg_path_dsl$Svg_Path_Point$add, _p18, _p4._0._2);
+						return _elm_lang$core$Native_Utils.update(
+							_p20,
+							{
+								current: $new,
+								direction: A2(_folkertdev$svg_path_dsl$Svg_Path_Point$direction, _p18, $new)
+							});
+					default:
+						switch (_p4._0._0.ctor) {
+							case 'LineMany':
+								var _p14 = _p4._0._0._0;
+								var newState = A3(
+									_elm_lang$core$List$foldl,
+									F2(
+										function (rel, newState) {
+											return _elm_lang$core$Native_Utils.update(
+												newState,
+												{
+													current: A2(_folkertdev$svg_path_dsl$Svg_Path_Point$add, rel, newState.current)
+												});
+										}),
+									_p20,
+									_p14);
+								var _p13 = A2(
+									_elm_lang$core$List$drop,
+									_elm_lang$core$List$length(_p14) - 2,
+									_p14);
+								_v4_2:
+								do {
+									if (_p13.ctor === '::') {
+										if (_p13._1.ctor === '::') {
+											if (_p13._1._1.ctor === '[]') {
+												return _elm_lang$core$Native_Utils.update(
+													newState,
+													{
+														direction: A2(_folkertdev$svg_path_dsl$Svg_Path_Point$direction, _p13._0, _p13._1._0)
+													});
+											} else {
+												break _v4_2;
+											}
+										} else {
+											return _elm_lang$core$Native_Utils.update(
+												newState,
+												{
+													direction: _folkertdev$svg_path_dsl$Svg_Path_Point$normalize(_p13._0)
+												});
+										}
+									} else {
+										break _v4_2;
+									}
+								} while(false);
+								return newState;
+							case 'QuadraticMany':
+								var newState = A3(
+									_elm_lang$core$List$foldl,
+									resultContinuation,
+									_elm_lang$core$Native_Utils.update(
+										_p20,
+										{
+											current: A2(_folkertdev$svg_path_dsl$Svg_Path_Point$add, _p18, _p4._0._0._1)
+										}),
+									_p4._0._0._2);
+								return _elm_lang$core$Native_Utils.update(
+									newState,
+									{
+										direction: A2(_folkertdev$svg_path_dsl$Svg_Path_Point$direction, _p18, newState.current)
+									});
+							default:
+								var newState = A3(
+									_elm_lang$core$List$foldl,
+									resultContinuation,
+									_elm_lang$core$Native_Utils.update(
+										_p20,
+										{
+											current: A2(_folkertdev$svg_path_dsl$Svg_Path_Point$add, _p18, _p4._0._0._2)
+										}),
+									_p4._0._0._3);
+								return _elm_lang$core$Native_Utils.update(
+									newState,
+									{
+										direction: A2(_folkertdev$svg_path_dsl$Svg_Path_Point$direction, _p18, newState.current)
+									});
+						}
+				}
+			default:
+				return _elm_lang$core$Native_Utils.update(
+					_p20,
+					{
+						current: _p19,
+						direction: A2(_folkertdev$svg_path_dsl$Svg_Path_Point$direction, _p18, _p19)
+					});
+		}
+	});
+var _folkertdev$svg_path_dsl$Svg_Path_Instruction$fixed = F2(
+	function (i, n) {
+		var pow = _elm_lang$core$Basics$toFloat(
+			Math.pow(10, i));
+		var nInt = _elm_lang$core$Basics$round(n * pow);
+		return _elm_lang$core$Basics$toString(
+			_elm_lang$core$Basics$toFloat(nInt) / pow);
+	});
+var _folkertdev$svg_path_dsl$Svg_Path_Instruction$roundToAtMost = function (doRound) {
+	var _p21 = doRound;
+	if (_p21.ctor === 'Nothing') {
+		return _elm_lang$core$Basics$toString;
+	} else {
+		return _folkertdev$svg_path_dsl$Svg_Path_Instruction$fixed(_p21._0);
+	}
+};
+var _folkertdev$svg_path_dsl$Svg_Path_Instruction$formatPointWithPrecision = F2(
+	function (dp, _p22) {
+		var _p23 = _p22;
+		return A2(
+			_elm_lang$core$Basics_ops['++'],
+			A2(_folkertdev$svg_path_dsl$Svg_Path_Instruction$roundToAtMost, dp, _p23._0),
+			A2(
+				_elm_lang$core$Basics_ops['++'],
+				',',
+				A2(_folkertdev$svg_path_dsl$Svg_Path_Instruction$roundToAtMost, dp, _p23._1)));
+	});
+var _folkertdev$svg_path_dsl$Svg_Path_Instruction$Relative = function (a) {
+	return {ctor: 'Relative', _0: a};
+};
+var _folkertdev$svg_path_dsl$Svg_Path_Instruction$Absolute = function (a) {
+	return {ctor: 'Absolute', _0: a};
+};
+var _folkertdev$svg_path_dsl$Svg_Path_Instruction$ClosePath = {ctor: 'ClosePath'};
+var _folkertdev$svg_path_dsl$Svg_Path_Instruction$Many = function (a) {
+	return {ctor: 'Many', _0: a};
+};
+var _folkertdev$svg_path_dsl$Svg_Path_Instruction$Cubic = F3(
+	function (a, b, c) {
+		return {ctor: 'Cubic', _0: a, _1: b, _2: c};
+	});
+var _folkertdev$svg_path_dsl$Svg_Path_Instruction$Quadratic = F2(
+	function (a, b) {
+		return {ctor: 'Quadratic', _0: a, _1: b};
+	});
+var _folkertdev$svg_path_dsl$Svg_Path_Instruction$instructionToString = F2(
+	function (dp, instruction) {
+		var concatMapString = function (f) {
+			return A2(
+				_elm_lang$core$List$foldl,
+				F2(
+					function (e, accum) {
+						return A2(
+							_elm_lang$core$Basics_ops['++'],
+							accum,
+							f(e));
+					}),
+				'');
+		};
+		var doRound = _folkertdev$svg_path_dsl$Svg_Path_Instruction$roundToAtMost(dp);
+		var letterAndFloat = F2(
+			function (letter, num) {
+				return A2(
+					_elm_lang$core$Basics_ops['++'],
+					letter,
+					doRound(num));
+			});
+		var formatPoint = _folkertdev$svg_path_dsl$Svg_Path_Instruction$formatPointWithPrecision(dp);
+		var letterAndPoint = F2(
+			function (letter, point) {
+				return A2(
+					_elm_lang$core$Basics_ops['++'],
+					letter,
+					formatPoint(point));
+			});
+		var letterAndPoints = F2(
+			function (letter, points) {
+				return A2(
+					_elm_lang$core$Basics_ops['++'],
+					letter,
+					A2(
+						_elm_lang$core$String$join,
+						' ',
+						A2(_elm_lang$core$List$map, formatPoint, points)));
+			});
+		var letterAndPoint2 = F3(
+			function (letter, p1, p2) {
+				return A2(
+					_elm_lang$core$Basics_ops['++'],
+					letter,
+					A2(
+						_elm_lang$core$Basics_ops['++'],
+						formatPoint(p1),
+						A2(
+							_elm_lang$core$Basics_ops['++'],
+							' ',
+							formatPoint(p2))));
+			});
+		var formatCurveContinuation = function (continuation) {
+			var _p24 = continuation;
+			switch (_p24.ctor) {
+				case 'QuadContAbsolute':
+					return A2(letterAndPoint, 'T', _p24._0);
+				case 'QuadContRelative':
+					return A2(letterAndPoint, 't', _p24._0);
+				case 'CubiContAbsolute':
+					return A3(letterAndPoint2, 'S', _p24._0, _p24._1);
+				default:
+					return A3(letterAndPoint2, 's', _p24._0, _p24._1);
+			}
+		};
+		var letterAndPoint3 = F4(
+			function (letter, p1, p2, p3) {
+				return A2(
+					_elm_lang$core$Basics_ops['++'],
+					letter,
+					A2(
+						_elm_lang$core$Basics_ops['++'],
+						formatPoint(p1),
+						A2(
+							_elm_lang$core$Basics_ops['++'],
+							' ',
+							A2(
+								_elm_lang$core$Basics_ops['++'],
+								formatPoint(p2),
+								A2(
+									_elm_lang$core$Basics_ops['++'],
+									' ',
+									formatPoint(p3))))));
+			});
+		var _p25 = instruction;
+		switch (_p25.ctor) {
+			case 'ClosePath':
+				return 'Z';
+			case 'Absolute':
+				switch (_p25._0.ctor) {
+					case 'Move':
+						return A2(letterAndPoint, 'M', _p25._0._0);
+					case 'Line':
+						return A2(letterAndPoint, 'L', _p25._0._0);
+					case 'Vertical':
+						return A2(letterAndFloat, 'V', _p25._0._0);
+					case 'Horizontal':
+						return A2(letterAndFloat, 'H', _p25._0._0);
+					case 'Quadratic':
+						return A3(letterAndPoint2, 'Q', _p25._0._0, _p25._0._1);
+					case 'Cubic':
+						return A4(letterAndPoint3, 'C', _p25._0._0, _p25._0._1, _p25._0._2);
+					case 'Many':
+						switch (_p25._0._0.ctor) {
+							case 'LineMany':
+								var _p27 = _p25._0._0._0;
+								var _p26 = _p27;
+								if (_p26.ctor === '[]') {
+									return '';
+								} else {
+									return A2(letterAndPoints, 'L', _p27);
+								}
+							case 'QuadraticMany':
+								return A2(
+									_elm_lang$core$Basics_ops['++'],
+									A2(
+										_folkertdev$svg_path_dsl$Svg_Path_Instruction$instructionToString,
+										dp,
+										_folkertdev$svg_path_dsl$Svg_Path_Instruction$Absolute(
+											A2(_folkertdev$svg_path_dsl$Svg_Path_Instruction$Quadratic, _p25._0._0._0, _p25._0._0._1))),
+									A2(concatMapString, formatCurveContinuation, _p25._0._0._2));
+							default:
+								return A2(
+									_elm_lang$core$Basics_ops['++'],
+									A2(
+										_folkertdev$svg_path_dsl$Svg_Path_Instruction$instructionToString,
+										dp,
+										_folkertdev$svg_path_dsl$Svg_Path_Instruction$Absolute(
+											A3(_folkertdev$svg_path_dsl$Svg_Path_Instruction$Cubic, _p25._0._0._0, _p25._0._0._1, _p25._0._0._2))),
+									A2(concatMapString, formatCurveContinuation, _p25._0._0._3));
+						}
+					default:
+						var sweep = function () {
+							var _p30 = _p25._0._2._1;
+							if (_p30.ctor === 'AntiClockwise') {
+								return '0';
+							} else {
+								return '1';
+							}
+						}();
+						var arc = function () {
+							var _p31 = _p25._0._2._0;
+							if (_p31.ctor === 'Smallest') {
+								return '0';
+							} else {
+								return '1';
+							}
+						}();
+						return A2(
+							_elm_lang$core$Basics_ops['++'],
+							'A',
+							A2(
+								_elm_lang$core$Basics_ops['++'],
+								formatPoint(
+									{ctor: '_Tuple2', _0: _p25._0._0._0, _1: _p25._0._0._1}),
+								A2(
+									_elm_lang$core$Basics_ops['++'],
+									' ',
+									A2(
+										_elm_lang$core$Basics_ops['++'],
+										doRound(_p25._0._1),
+										A2(
+											_elm_lang$core$Basics_ops['++'],
+											' ',
+											A2(
+												_elm_lang$core$Basics_ops['++'],
+												arc,
+												A2(
+													_elm_lang$core$Basics_ops['++'],
+													',',
+													A2(
+														_elm_lang$core$Basics_ops['++'],
+														sweep,
+														A2(
+															_elm_lang$core$Basics_ops['++'],
+															' ',
+															formatPoint(
+																{ctor: '_Tuple2', _0: _p25._0._3._0, _1: _p25._0._3._1}))))))))));
+				}
+			default:
+				switch (_p25._0.ctor) {
+					case 'Move':
+						return A2(letterAndPoint, 'm', _p25._0._0);
+					case 'Line':
+						return A2(letterAndPoint, 'l', _p25._0._0);
+					case 'Vertical':
+						return A2(letterAndFloat, 'v', _p25._0._0);
+					case 'Horizontal':
+						return A2(letterAndFloat, 'h', _p25._0._0);
+					case 'Quadratic':
+						return A3(letterAndPoint2, 'q', _p25._0._0, _p25._0._1);
+					case 'Cubic':
+						return A4(letterAndPoint3, 'c', _p25._0._0, _p25._0._1, _p25._0._2);
+					case 'Many':
+						switch (_p25._0._0.ctor) {
+							case 'LineMany':
+								var _p29 = _p25._0._0._0;
+								var _p28 = _p29;
+								if (_p28.ctor === '[]') {
+									return '';
+								} else {
+									return A2(letterAndPoints, 'l', _p29);
+								}
+							case 'QuadraticMany':
+								return A2(
+									_elm_lang$core$Basics_ops['++'],
+									A2(
+										_folkertdev$svg_path_dsl$Svg_Path_Instruction$instructionToString,
+										dp,
+										_folkertdev$svg_path_dsl$Svg_Path_Instruction$Relative(
+											A2(_folkertdev$svg_path_dsl$Svg_Path_Instruction$Quadratic, _p25._0._0._0, _p25._0._0._1))),
+									A2(concatMapString, formatCurveContinuation, _p25._0._0._2));
+							default:
+								return A2(
+									_elm_lang$core$Basics_ops['++'],
+									A2(
+										_folkertdev$svg_path_dsl$Svg_Path_Instruction$instructionToString,
+										dp,
+										_folkertdev$svg_path_dsl$Svg_Path_Instruction$Relative(
+											A3(_folkertdev$svg_path_dsl$Svg_Path_Instruction$Cubic, _p25._0._0._0, _p25._0._0._1, _p25._0._0._2))),
+									A2(concatMapString, formatCurveContinuation, _p25._0._0._3));
+						}
+					default:
+						var sweep = function () {
+							var _p32 = _p25._0._2._1;
+							if (_p32.ctor === 'AntiClockwise') {
+								return '0';
+							} else {
+								return '1';
+							}
+						}();
+						var arc = function () {
+							var _p33 = _p25._0._2._0;
+							if (_p33.ctor === 'Smallest') {
+								return '0';
+							} else {
+								return '1';
+							}
+						}();
+						return A2(
+							_elm_lang$core$Basics_ops['++'],
+							'a',
+							A2(
+								_elm_lang$core$Basics_ops['++'],
+								formatPoint(
+									{ctor: '_Tuple2', _0: _p25._0._0._0, _1: _p25._0._0._1}),
+								A2(
+									_elm_lang$core$Basics_ops['++'],
+									' ',
+									A2(
+										_elm_lang$core$Basics_ops['++'],
+										doRound(_p25._0._1),
+										A2(
+											_elm_lang$core$Basics_ops['++'],
+											' ',
+											A2(
+												_elm_lang$core$Basics_ops['++'],
+												arc,
+												A2(
+													_elm_lang$core$Basics_ops['++'],
+													',',
+													A2(
+														_elm_lang$core$Basics_ops['++'],
+														sweep,
+														A2(
+															_elm_lang$core$Basics_ops['++'],
+															' ',
+															formatPoint(
+																{ctor: '_Tuple2', _0: _p25._0._3._0, _1: _p25._0._3._1}))))))))));
+				}
+		}
+	});
+var _folkertdev$svg_path_dsl$Svg_Path_Instruction$Arc = F4(
+	function (a, b, c, d) {
+		return {ctor: 'Arc', _0: a, _1: b, _2: c, _3: d};
+	});
+var _folkertdev$svg_path_dsl$Svg_Path_Instruction$Horizontal = function (a) {
+	return {ctor: 'Horizontal', _0: a};
+};
+var _folkertdev$svg_path_dsl$Svg_Path_Instruction$Vertical = function (a) {
+	return {ctor: 'Vertical', _0: a};
+};
+var _folkertdev$svg_path_dsl$Svg_Path_Instruction$Line = function (a) {
+	return {ctor: 'Line', _0: a};
+};
+var _folkertdev$svg_path_dsl$Svg_Path_Instruction$Move = function (a) {
+	return {ctor: 'Move', _0: a};
+};
+var _folkertdev$svg_path_dsl$Svg_Path_Instruction$CubicMany = F4(
+	function (a, b, c, d) {
+		return {ctor: 'CubicMany', _0: a, _1: b, _2: c, _3: d};
+	});
+var _folkertdev$svg_path_dsl$Svg_Path_Instruction$QuadraticMany = F3(
+	function (a, b, c) {
+		return {ctor: 'QuadraticMany', _0: a, _1: b, _2: c};
+	});
+var _folkertdev$svg_path_dsl$Svg_Path_Instruction$LineMany = function (a) {
+	return {ctor: 'LineMany', _0: a};
+};
+var _folkertdev$svg_path_dsl$Svg_Path_Instruction$CubiContRelative = F2(
+	function (a, b) {
+		return {ctor: 'CubiContRelative', _0: a, _1: b};
+	});
+var _folkertdev$svg_path_dsl$Svg_Path_Instruction$CubiContAbsolute = F2(
+	function (a, b) {
+		return {ctor: 'CubiContAbsolute', _0: a, _1: b};
+	});
+var _folkertdev$svg_path_dsl$Svg_Path_Instruction$QuadContRelative = function (a) {
+	return {ctor: 'QuadContRelative', _0: a};
+};
+var _folkertdev$svg_path_dsl$Svg_Path_Instruction$QuadContAbsolute = function (a) {
+	return {ctor: 'QuadContAbsolute', _0: a};
+};
+var _folkertdev$svg_path_dsl$Svg_Path_Instruction$mapAbsoluteCurveCont = F2(
+	function (f, curveCont) {
+		var _p34 = curveCont;
+		switch (_p34.ctor) {
+			case 'QuadContAbsolute':
+				return _folkertdev$svg_path_dsl$Svg_Path_Instruction$QuadContAbsolute(
+					f(_p34._0));
+			case 'CubiContAbsolute':
+				return A2(
+					_folkertdev$svg_path_dsl$Svg_Path_Instruction$CubiContAbsolute,
+					f(_p34._0),
+					f(_p34._1));
+			default:
+				return curveCont;
+		}
+	});
+var _folkertdev$svg_path_dsl$Svg_Path_Instruction$mapAbsolute = F2(
+	function (f, instruction) {
+		var _p35 = instruction;
+		switch (_p35.ctor) {
+			case 'ClosePath':
+				return _folkertdev$svg_path_dsl$Svg_Path_Instruction$ClosePath;
+			case 'Relative':
+				var _p36 = _p35._0;
+				if (_p36.ctor === 'Many') {
+					var _p38 = _p36._0;
+					var _p37 = _p38;
+					switch (_p37.ctor) {
+						case 'QuadraticMany':
+							return _folkertdev$svg_path_dsl$Svg_Path_Instruction$Relative(
+								_folkertdev$svg_path_dsl$Svg_Path_Instruction$Many(
+									A3(
+										_folkertdev$svg_path_dsl$Svg_Path_Instruction$QuadraticMany,
+										_p37._0,
+										_p37._1,
+										A2(
+											_elm_lang$core$List$map,
+											_folkertdev$svg_path_dsl$Svg_Path_Instruction$mapAbsoluteCurveCont(f),
+											_p37._2))));
+						case 'CubicMany':
+							return _folkertdev$svg_path_dsl$Svg_Path_Instruction$Relative(
+								_folkertdev$svg_path_dsl$Svg_Path_Instruction$Many(
+									A4(
+										_folkertdev$svg_path_dsl$Svg_Path_Instruction$CubicMany,
+										_p37._0,
+										_p37._1,
+										_p37._2,
+										A2(
+											_elm_lang$core$List$map,
+											_folkertdev$svg_path_dsl$Svg_Path_Instruction$mapAbsoluteCurveCont(f),
+											_p37._3))));
+						default:
+							return _folkertdev$svg_path_dsl$Svg_Path_Instruction$Relative(
+								_folkertdev$svg_path_dsl$Svg_Path_Instruction$Many(_p38));
+					}
+				} else {
+					return instruction;
+				}
+			default:
+				return _folkertdev$svg_path_dsl$Svg_Path_Instruction$Absolute(
+					function () {
+						var _p39 = _p35._0;
+						switch (_p39.ctor) {
+							case 'Move':
+								return _folkertdev$svg_path_dsl$Svg_Path_Instruction$Move(
+									f(_p39._0));
+							case 'Line':
+								return _folkertdev$svg_path_dsl$Svg_Path_Instruction$Line(
+									f(_p39._0));
+							case 'Arc':
+								return A4(
+									_folkertdev$svg_path_dsl$Svg_Path_Instruction$Arc,
+									_p39._0,
+									_p39._1,
+									_p39._2,
+									f(_p39._3));
+							case 'Quadratic':
+								return A2(
+									_folkertdev$svg_path_dsl$Svg_Path_Instruction$Quadratic,
+									f(_p39._0),
+									f(_p39._1));
+							case 'Cubic':
+								return A3(
+									_folkertdev$svg_path_dsl$Svg_Path_Instruction$Cubic,
+									f(_p39._0),
+									f(_p39._1),
+									f(_p39._2));
+							case 'Horizontal':
+								return _folkertdev$svg_path_dsl$Svg_Path_Instruction$Horizontal(
+									_elm_lang$core$Tuple$first(
+										f(
+											{ctor: '_Tuple2', _0: _p39._0, _1: 0})));
+							case 'Vertical':
+								return _folkertdev$svg_path_dsl$Svg_Path_Instruction$Vertical(
+									_elm_lang$core$Tuple$second(
+										f(
+											{ctor: '_Tuple2', _0: 0, _1: _p39._0})));
+							default:
+								var _p40 = _p39._0;
+								switch (_p40.ctor) {
+									case 'LineMany':
+										return _folkertdev$svg_path_dsl$Svg_Path_Instruction$Many(
+											_folkertdev$svg_path_dsl$Svg_Path_Instruction$LineMany(
+												A2(_elm_lang$core$List$map, f, _p40._0)));
+									case 'QuadraticMany':
+										return _folkertdev$svg_path_dsl$Svg_Path_Instruction$Many(
+											A3(
+												_folkertdev$svg_path_dsl$Svg_Path_Instruction$QuadraticMany,
+												_p40._0,
+												_p40._1,
+												A2(
+													_elm_lang$core$List$map,
+													_folkertdev$svg_path_dsl$Svg_Path_Instruction$mapAbsoluteCurveCont(f),
+													_p40._2)));
+									default:
+										return _folkertdev$svg_path_dsl$Svg_Path_Instruction$Many(
+											A4(
+												_folkertdev$svg_path_dsl$Svg_Path_Instruction$CubicMany,
+												_p40._0,
+												_p40._1,
+												_p40._2,
+												A2(
+													_elm_lang$core$List$map,
+													_folkertdev$svg_path_dsl$Svg_Path_Instruction$mapAbsoluteCurveCont(f),
+													_p40._3)));
+								}
+						}
+					}());
+		}
+	});
+var _folkertdev$svg_path_dsl$Svg_Path_Instruction$Largest = {ctor: 'Largest'};
+var _folkertdev$svg_path_dsl$Svg_Path_Instruction$Smallest = {ctor: 'Smallest'};
+var _folkertdev$svg_path_dsl$Svg_Path_Instruction$Clockwise = {ctor: 'Clockwise'};
+var _folkertdev$svg_path_dsl$Svg_Path_Instruction$AntiClockwise = {ctor: 'AntiClockwise'};
+
+var _folkertdev$svg_path_dsl$Svg_Path_Subpath$subpathToInstructions = F2(
+	function (_p0, accum) {
+		var _p1 = _p0;
+		var _p3 = _p1._0._0;
+		var _p2 = _p1._2;
+		return _p1._1._0 ? A2(
+			_elm_lang$core$Basics_ops['++'],
+			{ctor: '::', _0: _p3, _1: _p2},
+			{ctor: '::', _0: _folkertdev$svg_path_dsl$Svg_Path_Instruction$ClosePath, _1: accum}) : A2(
+			_elm_lang$core$Basics_ops['++'],
+			{ctor: '::', _0: _p3, _1: _p2},
+			accum);
+	});
+var _folkertdev$svg_path_dsl$Svg_Path_Subpath$Subpath = F3(
+	function (a, b, c) {
+		return {ctor: 'Subpath', _0: a, _1: b, _2: c};
+	});
+var _folkertdev$svg_path_dsl$Svg_Path_Subpath$subpath = _folkertdev$svg_path_dsl$Svg_Path_Subpath$Subpath;
+var _folkertdev$svg_path_dsl$Svg_Path_Subpath$CloseOption = function (a) {
+	return {ctor: 'CloseOption', _0: a};
+};
+var _folkertdev$svg_path_dsl$Svg_Path_Subpath$StartingPoint = function (a) {
+	return {ctor: 'StartingPoint', _0: a};
+};
+var _folkertdev$svg_path_dsl$Svg_Path_Subpath$mapAbsolute = F2(
+	function (f, _p4) {
+		var _p5 = _p4;
+		return A3(
+			_folkertdev$svg_path_dsl$Svg_Path_Subpath$Subpath,
+			_folkertdev$svg_path_dsl$Svg_Path_Subpath$StartingPoint(
+				A2(_folkertdev$svg_path_dsl$Svg_Path_Instruction$mapAbsolute, f, _p5._0._0)),
+			_p5._1,
+			A2(
+				_elm_lang$core$List$map,
+				_folkertdev$svg_path_dsl$Svg_Path_Instruction$mapAbsolute(f),
+				_p5._2));
+	});
+
+var _folkertdev$svg_path_dsl$Svg_Path$quadraticContinueBy = _folkertdev$svg_path_dsl$Svg_Path_Instruction$QuadContRelative;
+var _folkertdev$svg_path_dsl$Svg_Path$quadraticContinueTo = _folkertdev$svg_path_dsl$Svg_Path_Instruction$QuadContAbsolute;
+var _folkertdev$svg_path_dsl$Svg_Path$cubicContinueBy = _folkertdev$svg_path_dsl$Svg_Path_Instruction$CubiContRelative;
+var _folkertdev$svg_path_dsl$Svg_Path$cubicContinueTo = _folkertdev$svg_path_dsl$Svg_Path_Instruction$CubiContAbsolute;
+var _folkertdev$svg_path_dsl$Svg_Path$cubicByMany = F3(
+	function (c1, c2, p) {
+		return function (_p0) {
+			return _folkertdev$svg_path_dsl$Svg_Path_Instruction$Absolute(
+				_folkertdev$svg_path_dsl$Svg_Path_Instruction$Many(
+					A4(_folkertdev$svg_path_dsl$Svg_Path_Instruction$CubicMany, c1, c2, p, _p0)));
+		};
+	});
+var _folkertdev$svg_path_dsl$Svg_Path$cubicToMany = F3(
+	function (c1, c2, p) {
+		return function (_p1) {
+			return _folkertdev$svg_path_dsl$Svg_Path_Instruction$Absolute(
+				_folkertdev$svg_path_dsl$Svg_Path_Instruction$Many(
+					A4(_folkertdev$svg_path_dsl$Svg_Path_Instruction$CubicMany, c1, c2, p, _p1)));
+		};
+	});
+var _folkertdev$svg_path_dsl$Svg_Path$cubicBy = F3(
+	function (c1, c2, p) {
+		return _folkertdev$svg_path_dsl$Svg_Path_Instruction$Relative(
+			A3(_folkertdev$svg_path_dsl$Svg_Path_Instruction$Cubic, c1, c2, p));
+	});
+var _folkertdev$svg_path_dsl$Svg_Path$cubicTo = F3(
+	function (c1, c2, p) {
+		return _folkertdev$svg_path_dsl$Svg_Path_Instruction$Absolute(
+			A3(_folkertdev$svg_path_dsl$Svg_Path_Instruction$Cubic, c1, c2, p));
+	});
+var _folkertdev$svg_path_dsl$Svg_Path$quadraticByMany = F3(
+	function (c, p, cs) {
+		return function (_p2) {
+			return _folkertdev$svg_path_dsl$Svg_Path_Instruction$Relative(
+				_folkertdev$svg_path_dsl$Svg_Path_Instruction$Many(_p2));
+		}(
+			A3(_folkertdev$svg_path_dsl$Svg_Path_Instruction$QuadraticMany, c, p, cs));
+	});
+var _folkertdev$svg_path_dsl$Svg_Path$quadraticToMany = F3(
+	function (c, p, cs) {
+		return function (_p3) {
+			return _folkertdev$svg_path_dsl$Svg_Path_Instruction$Absolute(
+				_folkertdev$svg_path_dsl$Svg_Path_Instruction$Many(_p3));
+		}(
+			A3(_folkertdev$svg_path_dsl$Svg_Path_Instruction$QuadraticMany, c, p, cs));
+	});
+var _folkertdev$svg_path_dsl$Svg_Path$quadraticBy = function (c) {
+	return function (_p4) {
+		return _folkertdev$svg_path_dsl$Svg_Path_Instruction$Relative(
+			A2(_folkertdev$svg_path_dsl$Svg_Path_Instruction$Quadratic, c, _p4));
+	};
+};
+var _folkertdev$svg_path_dsl$Svg_Path$quadraticTo = function (c) {
+	return function (_p5) {
+		return _folkertdev$svg_path_dsl$Svg_Path_Instruction$Absolute(
+			A2(_folkertdev$svg_path_dsl$Svg_Path_Instruction$Quadratic, c, _p5));
+	};
+};
+var _folkertdev$svg_path_dsl$Svg_Path$toStart = _folkertdev$svg_path_dsl$Svg_Path_Instruction$ClosePath;
+var _folkertdev$svg_path_dsl$Svg_Path$smallestArc = _folkertdev$svg_path_dsl$Svg_Path_Instruction$Smallest;
+var _folkertdev$svg_path_dsl$Svg_Path$largestArc = _folkertdev$svg_path_dsl$Svg_Path_Instruction$Largest;
+var _folkertdev$svg_path_dsl$Svg_Path$antiClockwise = _folkertdev$svg_path_dsl$Svg_Path_Instruction$AntiClockwise;
+var _folkertdev$svg_path_dsl$Svg_Path$clockwise = _folkertdev$svg_path_dsl$Svg_Path_Instruction$Clockwise;
+var _folkertdev$svg_path_dsl$Svg_Path$arcBy = F4(
+	function (radius, xstartangle, _p6, point) {
+		var _p7 = _p6;
+		return _folkertdev$svg_path_dsl$Svg_Path_Instruction$Relative(
+			A4(
+				_folkertdev$svg_path_dsl$Svg_Path_Instruction$Arc,
+				radius,
+				xstartangle,
+				{ctor: '_Tuple2', _0: _p7._0, _1: _p7._1},
+				point));
+	});
+var _folkertdev$svg_path_dsl$Svg_Path$arcTo = F4(
+	function (radius, xstartangle, _p8, point) {
+		var _p9 = _p8;
+		return _folkertdev$svg_path_dsl$Svg_Path_Instruction$Absolute(
+			A4(
+				_folkertdev$svg_path_dsl$Svg_Path_Instruction$Arc,
+				radius,
+				xstartangle,
+				{ctor: '_Tuple2', _0: _p9._0, _1: _p9._1},
+				point));
+	});
+var _folkertdev$svg_path_dsl$Svg_Path$horizontalBy = function (_p10) {
+	return _folkertdev$svg_path_dsl$Svg_Path_Instruction$Relative(
+		_folkertdev$svg_path_dsl$Svg_Path_Instruction$Horizontal(_p10));
+};
+var _folkertdev$svg_path_dsl$Svg_Path$horizontalTo = function (_p11) {
+	return _folkertdev$svg_path_dsl$Svg_Path_Instruction$Absolute(
+		_folkertdev$svg_path_dsl$Svg_Path_Instruction$Horizontal(_p11));
+};
+var _folkertdev$svg_path_dsl$Svg_Path$verticalBy = function (_p12) {
+	return _folkertdev$svg_path_dsl$Svg_Path_Instruction$Relative(
+		_folkertdev$svg_path_dsl$Svg_Path_Instruction$Vertical(_p12));
+};
+var _folkertdev$svg_path_dsl$Svg_Path$verticalTo = function (_p13) {
+	return _folkertdev$svg_path_dsl$Svg_Path_Instruction$Absolute(
+		_folkertdev$svg_path_dsl$Svg_Path_Instruction$Vertical(_p13));
+};
+var _folkertdev$svg_path_dsl$Svg_Path$lineByMany = function (_p14) {
+	return _folkertdev$svg_path_dsl$Svg_Path_Instruction$Relative(
+		_folkertdev$svg_path_dsl$Svg_Path_Instruction$Many(
+			_folkertdev$svg_path_dsl$Svg_Path_Instruction$LineMany(_p14)));
+};
+var _folkertdev$svg_path_dsl$Svg_Path$lineBy = function (_p15) {
+	return _folkertdev$svg_path_dsl$Svg_Path_Instruction$Relative(
+		_folkertdev$svg_path_dsl$Svg_Path_Instruction$Line(_p15));
+};
+var _folkertdev$svg_path_dsl$Svg_Path$lineToMany = function (_p16) {
+	return _folkertdev$svg_path_dsl$Svg_Path_Instruction$Absolute(
+		_folkertdev$svg_path_dsl$Svg_Path_Instruction$Many(
+			_folkertdev$svg_path_dsl$Svg_Path_Instruction$LineMany(_p16)));
+};
+var _folkertdev$svg_path_dsl$Svg_Path$lineTo = function (_p17) {
+	return _folkertdev$svg_path_dsl$Svg_Path_Instruction$Absolute(
+		_folkertdev$svg_path_dsl$Svg_Path_Instruction$Line(_p17));
+};
+var _folkertdev$svg_path_dsl$Svg_Path$instructionsToString = function (maxNumOfDecimals) {
+	return function (_p18) {
+		return A2(
+			_elm_lang$core$String$join,
+			' ',
+			A2(
+				_elm_lang$core$List$map,
+				_folkertdev$svg_path_dsl$Svg_Path_Instruction$instructionToString(maxNumOfDecimals),
+				_p18));
+	};
+};
+var _folkertdev$svg_path_dsl$Svg_Path$instructionsToAttribute = function (maxNumOfDecimals) {
+	return function (_p19) {
+		return _elm_lang$svg$Svg_Attributes$d(
+			A2(_folkertdev$svg_path_dsl$Svg_Path$instructionsToString, maxNumOfDecimals, _p19));
+	};
+};
+var _folkertdev$svg_path_dsl$Svg_Path$instructionToString = _folkertdev$svg_path_dsl$Svg_Path_Instruction$instructionToString;
+var _folkertdev$svg_path_dsl$Svg_Path$open = _folkertdev$svg_path_dsl$Svg_Path_Subpath$CloseOption(false);
+var _folkertdev$svg_path_dsl$Svg_Path$closed = _folkertdev$svg_path_dsl$Svg_Path_Subpath$CloseOption(true);
+var _folkertdev$svg_path_dsl$Svg_Path$moveBy = function (_p20) {
+	return _folkertdev$svg_path_dsl$Svg_Path_Subpath$StartingPoint(
+		_folkertdev$svg_path_dsl$Svg_Path_Instruction$Relative(
+			_folkertdev$svg_path_dsl$Svg_Path_Instruction$Move(_p20)));
+};
+var _folkertdev$svg_path_dsl$Svg_Path$startAt = function (_p21) {
+	return _folkertdev$svg_path_dsl$Svg_Path_Subpath$StartingPoint(
+		_folkertdev$svg_path_dsl$Svg_Path_Instruction$Absolute(
+			_folkertdev$svg_path_dsl$Svg_Path_Instruction$Move(_p21)));
+};
+var _folkertdev$svg_path_dsl$Svg_Path$subpath = _folkertdev$svg_path_dsl$Svg_Path_Subpath$subpath;
+var _folkertdev$svg_path_dsl$Svg_Path$emptySubpath = A3(
+	_folkertdev$svg_path_dsl$Svg_Path$subpath,
+	_folkertdev$svg_path_dsl$Svg_Path$moveBy(
+		{ctor: '_Tuple2', _0: 0, _1: 0}),
+	_folkertdev$svg_path_dsl$Svg_Path$open,
+	{ctor: '[]'});
+var _folkertdev$svg_path_dsl$Svg_Path$pathToStringWithPrecision = F2(
+	function (decimalPlaces, path) {
+		return A2(
+			_folkertdev$svg_path_dsl$Svg_Path$instructionsToString,
+			_elm_lang$core$Maybe$Just(decimalPlaces),
+			A3(
+				_elm_lang$core$List$foldr,
+				_folkertdev$svg_path_dsl$Svg_Path_Subpath$subpathToInstructions,
+				{ctor: '[]'},
+				path));
+	});
+var _folkertdev$svg_path_dsl$Svg_Path$pathToAttribute = function (path) {
+	return _elm_lang$svg$Svg_Attributes$d(
+		A2(
+			_folkertdev$svg_path_dsl$Svg_Path$instructionsToString,
+			_elm_lang$core$Maybe$Nothing,
+			A3(
+				_elm_lang$core$List$foldr,
+				_folkertdev$svg_path_dsl$Svg_Path_Subpath$subpathToInstructions,
+				{ctor: '[]'},
+				path)));
+};
+var _folkertdev$svg_path_dsl$Svg_Path$pathToString = function (path) {
+	return A2(
+		_folkertdev$svg_path_dsl$Svg_Path$instructionsToString,
+		_elm_lang$core$Maybe$Nothing,
+		A3(
+			_elm_lang$core$List$foldr,
+			_folkertdev$svg_path_dsl$Svg_Path_Subpath$subpathToInstructions,
+			{ctor: '[]'},
+			path));
+};
+
 var _lukewestby$elm_http_builder$HttpBuilder$replace = F2(
 	function (old, $new) {
 		return function (_p0) {
@@ -16364,6 +17468,585 @@ var _rundis$elm_bootstrap$Bootstrap_Navbar$dropdownHeader = function (children) 
 			children));
 };
 
+var _rundis$elm_bootstrap$Bootstrap_Table$roleOption = function (role) {
+	var _p0 = role;
+	switch (_p0.ctor) {
+		case 'Active':
+			return 'active';
+		case 'Success':
+			return 'success';
+		case 'Warning':
+			return 'warning';
+		case 'Danger':
+			return 'danger';
+		default:
+			return 'info';
+	}
+};
+var _rundis$elm_bootstrap$Bootstrap_Table$cellAttribute = function (option) {
+	var _p1 = option;
+	switch (_p1.ctor) {
+		case 'RoledCell':
+			return _elm_lang$html$Html_Attributes$class(
+				A2(
+					_elm_lang$core$Basics_ops['++'],
+					'table-',
+					_rundis$elm_bootstrap$Bootstrap_Table$roleOption(_p1._0)));
+		case 'InversedCell':
+			return _elm_lang$html$Html_Attributes$class(
+				A2(
+					_elm_lang$core$Basics_ops['++'],
+					'bg-',
+					_rundis$elm_bootstrap$Bootstrap_Table$roleOption(_p1._0)));
+		default:
+			return _p1._0;
+	}
+};
+var _rundis$elm_bootstrap$Bootstrap_Table$cellAttributes = function (options) {
+	return A2(_elm_lang$core$List$map, _rundis$elm_bootstrap$Bootstrap_Table$cellAttribute, options);
+};
+var _rundis$elm_bootstrap$Bootstrap_Table$rowClass = function (option) {
+	var _p2 = option;
+	switch (_p2.ctor) {
+		case 'RoledRow':
+			return _elm_lang$html$Html_Attributes$class(
+				A2(
+					_elm_lang$core$Basics_ops['++'],
+					'table-',
+					_rundis$elm_bootstrap$Bootstrap_Table$roleOption(_p2._0)));
+		case 'InversedRow':
+			return _elm_lang$html$Html_Attributes$class(
+				A2(
+					_elm_lang$core$Basics_ops['++'],
+					'bg-',
+					_rundis$elm_bootstrap$Bootstrap_Table$roleOption(_p2._0)));
+		default:
+			return _p2._0;
+	}
+};
+var _rundis$elm_bootstrap$Bootstrap_Table$rowAttributes = function (options) {
+	return A2(_elm_lang$core$List$map, _rundis$elm_bootstrap$Bootstrap_Table$rowClass, options);
+};
+var _rundis$elm_bootstrap$Bootstrap_Table$theadAttribute = function (option) {
+	var _p3 = option;
+	switch (_p3.ctor) {
+		case 'InversedHead':
+			return _elm_lang$html$Html_Attributes$class('thead-inverse');
+		case 'DefaultHead':
+			return _elm_lang$html$Html_Attributes$class('thead-default');
+		default:
+			return _p3._0;
+	}
+};
+var _rundis$elm_bootstrap$Bootstrap_Table$theadAttributes = function (options) {
+	return A2(_elm_lang$core$List$map, _rundis$elm_bootstrap$Bootstrap_Table$theadAttribute, options);
+};
+var _rundis$elm_bootstrap$Bootstrap_Table$tableClass = function (option) {
+	var _p4 = option;
+	switch (_p4.ctor) {
+		case 'Inversed':
+			return _elm_lang$core$Maybe$Just(
+				_elm_lang$html$Html_Attributes$class('table-inverse'));
+		case 'Striped':
+			return _elm_lang$core$Maybe$Just(
+				_elm_lang$html$Html_Attributes$class('table-striped'));
+		case 'Bordered':
+			return _elm_lang$core$Maybe$Just(
+				_elm_lang$html$Html_Attributes$class('table-bordered'));
+		case 'Hover':
+			return _elm_lang$core$Maybe$Just(
+				_elm_lang$html$Html_Attributes$class('table-hover'));
+		case 'Small':
+			return _elm_lang$core$Maybe$Just(
+				_elm_lang$html$Html_Attributes$class('table-sm'));
+		case 'Responsive':
+			return _elm_lang$core$Maybe$Nothing;
+		case 'Reflow':
+			return _elm_lang$core$Maybe$Just(
+				_elm_lang$html$Html_Attributes$class('table-reflow'));
+		default:
+			return _elm_lang$core$Maybe$Just(_p4._0);
+	}
+};
+var _rundis$elm_bootstrap$Bootstrap_Table$tableAttributes = function (options) {
+	return {
+		ctor: '::',
+		_0: _elm_lang$html$Html_Attributes$class('table'),
+		_1: A2(
+			_elm_lang$core$List$filterMap,
+			_elm_lang$core$Basics$identity,
+			A2(_elm_lang$core$List$map, _rundis$elm_bootstrap$Bootstrap_Table$tableClass, options))
+	};
+};
+var _rundis$elm_bootstrap$Bootstrap_Table$renderCell = function (cell) {
+	var _p5 = cell;
+	if (_p5.ctor === 'Td') {
+		return A2(
+			_elm_lang$html$Html$td,
+			_rundis$elm_bootstrap$Bootstrap_Table$cellAttributes(_p5._0.options),
+			_p5._0.children);
+	} else {
+		return A2(
+			_elm_lang$html$Html$th,
+			_rundis$elm_bootstrap$Bootstrap_Table$cellAttributes(_p5._0.options),
+			_p5._0.children);
+	}
+};
+var _rundis$elm_bootstrap$Bootstrap_Table$renderRow = function (row) {
+	var _p6 = row;
+	if (_p6.ctor === 'Row') {
+		return A2(
+			_elm_lang$html$Html$tr,
+			_rundis$elm_bootstrap$Bootstrap_Table$rowAttributes(_p6._0.options),
+			A2(_elm_lang$core$List$map, _rundis$elm_bootstrap$Bootstrap_Table$renderCell, _p6._0.cells));
+	} else {
+		return A3(
+			_elm_lang$html$Html_Keyed$node,
+			'tr',
+			_rundis$elm_bootstrap$Bootstrap_Table$rowAttributes(_p6._0.options),
+			A2(
+				_elm_lang$core$List$map,
+				function (_p7) {
+					var _p8 = _p7;
+					return {
+						ctor: '_Tuple2',
+						_0: _p8._0,
+						_1: _rundis$elm_bootstrap$Bootstrap_Table$renderCell(_p8._1)
+					};
+				},
+				_p6._0.cells));
+	}
+};
+var _rundis$elm_bootstrap$Bootstrap_Table$renderTHead = function (_p9) {
+	var _p10 = _p9;
+	return A2(
+		_elm_lang$html$Html$thead,
+		_rundis$elm_bootstrap$Bootstrap_Table$theadAttributes(_p10._0.options),
+		A2(_elm_lang$core$List$map, _rundis$elm_bootstrap$Bootstrap_Table$renderRow, _p10._0.rows));
+};
+var _rundis$elm_bootstrap$Bootstrap_Table$wrapResponsiveWhen = F2(
+	function (isResponsive, table) {
+		return isResponsive ? A2(
+			_elm_lang$html$Html$div,
+			{
+				ctor: '::',
+				_0: _elm_lang$html$Html_Attributes$class('table-responsive'),
+				_1: {ctor: '[]'}
+			},
+			{
+				ctor: '::',
+				_0: table,
+				_1: {ctor: '[]'}
+			}) : table;
+	});
+var _rundis$elm_bootstrap$Bootstrap_Table$RowConfig = F2(
+	function (a, b) {
+		return {options: a, cells: b};
+	});
+var _rundis$elm_bootstrap$Bootstrap_Table$CellConfig = F2(
+	function (a, b) {
+		return {options: a, children: b};
+	});
+var _rundis$elm_bootstrap$Bootstrap_Table$TableAttr = function (a) {
+	return {ctor: 'TableAttr', _0: a};
+};
+var _rundis$elm_bootstrap$Bootstrap_Table$attr = function (attr) {
+	return _rundis$elm_bootstrap$Bootstrap_Table$TableAttr(attr);
+};
+var _rundis$elm_bootstrap$Bootstrap_Table$Reflow = {ctor: 'Reflow'};
+var _rundis$elm_bootstrap$Bootstrap_Table$reflow = _rundis$elm_bootstrap$Bootstrap_Table$Reflow;
+var _rundis$elm_bootstrap$Bootstrap_Table$Responsive = {ctor: 'Responsive'};
+var _rundis$elm_bootstrap$Bootstrap_Table$responsive = _rundis$elm_bootstrap$Bootstrap_Table$Responsive;
+var _rundis$elm_bootstrap$Bootstrap_Table$Small = {ctor: 'Small'};
+var _rundis$elm_bootstrap$Bootstrap_Table$small = _rundis$elm_bootstrap$Bootstrap_Table$Small;
+var _rundis$elm_bootstrap$Bootstrap_Table$Hover = {ctor: 'Hover'};
+var _rundis$elm_bootstrap$Bootstrap_Table$hover = _rundis$elm_bootstrap$Bootstrap_Table$Hover;
+var _rundis$elm_bootstrap$Bootstrap_Table$Bordered = {ctor: 'Bordered'};
+var _rundis$elm_bootstrap$Bootstrap_Table$bordered = _rundis$elm_bootstrap$Bootstrap_Table$Bordered;
+var _rundis$elm_bootstrap$Bootstrap_Table$Striped = {ctor: 'Striped'};
+var _rundis$elm_bootstrap$Bootstrap_Table$striped = _rundis$elm_bootstrap$Bootstrap_Table$Striped;
+var _rundis$elm_bootstrap$Bootstrap_Table$Inversed = {ctor: 'Inversed'};
+var _rundis$elm_bootstrap$Bootstrap_Table$inversed = _rundis$elm_bootstrap$Bootstrap_Table$Inversed;
+var _rundis$elm_bootstrap$Bootstrap_Table$HeadAttr = function (a) {
+	return {ctor: 'HeadAttr', _0: a};
+};
+var _rundis$elm_bootstrap$Bootstrap_Table$headAttr = function (attr) {
+	return _rundis$elm_bootstrap$Bootstrap_Table$HeadAttr(attr);
+};
+var _rundis$elm_bootstrap$Bootstrap_Table$DefaultHead = {ctor: 'DefaultHead'};
+var _rundis$elm_bootstrap$Bootstrap_Table$defaultHead = _rundis$elm_bootstrap$Bootstrap_Table$DefaultHead;
+var _rundis$elm_bootstrap$Bootstrap_Table$InversedHead = {ctor: 'InversedHead'};
+var _rundis$elm_bootstrap$Bootstrap_Table$inversedHead = _rundis$elm_bootstrap$Bootstrap_Table$InversedHead;
+var _rundis$elm_bootstrap$Bootstrap_Table$RowAttr = function (a) {
+	return {ctor: 'RowAttr', _0: a};
+};
+var _rundis$elm_bootstrap$Bootstrap_Table$rowAttr = function (attr) {
+	return _rundis$elm_bootstrap$Bootstrap_Table$RowAttr(attr);
+};
+var _rundis$elm_bootstrap$Bootstrap_Table$InversedRow = function (a) {
+	return {ctor: 'InversedRow', _0: a};
+};
+var _rundis$elm_bootstrap$Bootstrap_Table$RoledRow = function (a) {
+	return {ctor: 'RoledRow', _0: a};
+};
+var _rundis$elm_bootstrap$Bootstrap_Table$CellAttr = function (a) {
+	return {ctor: 'CellAttr', _0: a};
+};
+var _rundis$elm_bootstrap$Bootstrap_Table$cellAttr = function (attr) {
+	return _rundis$elm_bootstrap$Bootstrap_Table$CellAttr(attr);
+};
+var _rundis$elm_bootstrap$Bootstrap_Table$InversedCell = function (a) {
+	return {ctor: 'InversedCell', _0: a};
+};
+var _rundis$elm_bootstrap$Bootstrap_Table$RoledCell = function (a) {
+	return {ctor: 'RoledCell', _0: a};
+};
+var _rundis$elm_bootstrap$Bootstrap_Table$Info = {ctor: 'Info'};
+var _rundis$elm_bootstrap$Bootstrap_Table$rowInfo = _rundis$elm_bootstrap$Bootstrap_Table$RoledRow(_rundis$elm_bootstrap$Bootstrap_Table$Info);
+var _rundis$elm_bootstrap$Bootstrap_Table$cellInfo = _rundis$elm_bootstrap$Bootstrap_Table$RoledCell(_rundis$elm_bootstrap$Bootstrap_Table$Info);
+var _rundis$elm_bootstrap$Bootstrap_Table$Danger = {ctor: 'Danger'};
+var _rundis$elm_bootstrap$Bootstrap_Table$rowDanger = _rundis$elm_bootstrap$Bootstrap_Table$RoledRow(_rundis$elm_bootstrap$Bootstrap_Table$Danger);
+var _rundis$elm_bootstrap$Bootstrap_Table$cellDanger = _rundis$elm_bootstrap$Bootstrap_Table$RoledCell(_rundis$elm_bootstrap$Bootstrap_Table$Danger);
+var _rundis$elm_bootstrap$Bootstrap_Table$Warning = {ctor: 'Warning'};
+var _rundis$elm_bootstrap$Bootstrap_Table$rowWarning = _rundis$elm_bootstrap$Bootstrap_Table$RoledRow(_rundis$elm_bootstrap$Bootstrap_Table$Warning);
+var _rundis$elm_bootstrap$Bootstrap_Table$cellWarning = _rundis$elm_bootstrap$Bootstrap_Table$RoledCell(_rundis$elm_bootstrap$Bootstrap_Table$Warning);
+var _rundis$elm_bootstrap$Bootstrap_Table$Success = {ctor: 'Success'};
+var _rundis$elm_bootstrap$Bootstrap_Table$rowSuccess = _rundis$elm_bootstrap$Bootstrap_Table$RoledRow(_rundis$elm_bootstrap$Bootstrap_Table$Success);
+var _rundis$elm_bootstrap$Bootstrap_Table$cellSuccess = _rundis$elm_bootstrap$Bootstrap_Table$RoledCell(_rundis$elm_bootstrap$Bootstrap_Table$Success);
+var _rundis$elm_bootstrap$Bootstrap_Table$Active = {ctor: 'Active'};
+var _rundis$elm_bootstrap$Bootstrap_Table$rowActive = _rundis$elm_bootstrap$Bootstrap_Table$RoledRow(_rundis$elm_bootstrap$Bootstrap_Table$Active);
+var _rundis$elm_bootstrap$Bootstrap_Table$cellActive = _rundis$elm_bootstrap$Bootstrap_Table$RoledCell(_rundis$elm_bootstrap$Bootstrap_Table$Active);
+var _rundis$elm_bootstrap$Bootstrap_Table$KeyedRow = function (a) {
+	return {ctor: 'KeyedRow', _0: a};
+};
+var _rundis$elm_bootstrap$Bootstrap_Table$keyedTr = F2(
+	function (options, keyedCells) {
+		return _rundis$elm_bootstrap$Bootstrap_Table$KeyedRow(
+			{options: options, cells: keyedCells});
+	});
+var _rundis$elm_bootstrap$Bootstrap_Table$Row = function (a) {
+	return {ctor: 'Row', _0: a};
+};
+var _rundis$elm_bootstrap$Bootstrap_Table$tr = F2(
+	function (options, cells) {
+		return _rundis$elm_bootstrap$Bootstrap_Table$Row(
+			{options: options, cells: cells});
+	});
+var _rundis$elm_bootstrap$Bootstrap_Table$Th = function (a) {
+	return {ctor: 'Th', _0: a};
+};
+var _rundis$elm_bootstrap$Bootstrap_Table$addScopeIfTh = function (cell) {
+	var _p11 = cell;
+	if (_p11.ctor === 'Th') {
+		var _p12 = _p11._0;
+		return _rundis$elm_bootstrap$Bootstrap_Table$Th(
+			_elm_lang$core$Native_Utils.update(
+				_p12,
+				{
+					options: {
+						ctor: '::',
+						_0: _rundis$elm_bootstrap$Bootstrap_Table$cellAttr(
+							_elm_lang$html$Html_Attributes$scope('row')),
+						_1: _p12.options
+					}
+				}));
+	} else {
+		return cell;
+	}
+};
+var _rundis$elm_bootstrap$Bootstrap_Table$maybeAddScopeToFirstCell = function (row) {
+	var _p13 = row;
+	if (_p13.ctor === 'Row') {
+		var _p14 = _p13._0.cells;
+		if (_p14.ctor === '[]') {
+			return row;
+		} else {
+			return _rundis$elm_bootstrap$Bootstrap_Table$Row(
+				{
+					options: _p13._0.options,
+					cells: {
+						ctor: '::',
+						_0: _rundis$elm_bootstrap$Bootstrap_Table$addScopeIfTh(_p14._0),
+						_1: _p14._1
+					}
+				});
+		}
+	} else {
+		var _p15 = _p13._0.cells;
+		if (_p15.ctor === '[]') {
+			return row;
+		} else {
+			return _rundis$elm_bootstrap$Bootstrap_Table$KeyedRow(
+				{
+					options: _p13._0.options,
+					cells: {
+						ctor: '::',
+						_0: {
+							ctor: '_Tuple2',
+							_0: _p15._0._0,
+							_1: _rundis$elm_bootstrap$Bootstrap_Table$addScopeIfTh(_p15._0._1)
+						},
+						_1: _p15._1
+					}
+				});
+		}
+	}
+};
+var _rundis$elm_bootstrap$Bootstrap_Table$renderTBody = function (body) {
+	var _p16 = body;
+	if (_p16.ctor === 'TBody') {
+		return A2(
+			_elm_lang$html$Html$tbody,
+			_p16._0.attributes,
+			A2(
+				_elm_lang$core$List$map,
+				function (row) {
+					return _rundis$elm_bootstrap$Bootstrap_Table$renderRow(
+						_rundis$elm_bootstrap$Bootstrap_Table$maybeAddScopeToFirstCell(row));
+				},
+				_p16._0.rows));
+	} else {
+		return A3(
+			_elm_lang$html$Html_Keyed$node,
+			'tbody',
+			_p16._0.attributes,
+			A2(
+				_elm_lang$core$List$map,
+				function (_p17) {
+					var _p18 = _p17;
+					return {
+						ctor: '_Tuple2',
+						_0: _p18._0,
+						_1: _rundis$elm_bootstrap$Bootstrap_Table$renderRow(
+							_rundis$elm_bootstrap$Bootstrap_Table$maybeAddScopeToFirstCell(_p18._1))
+					};
+				},
+				_p16._0.rows));
+	}
+};
+var _rundis$elm_bootstrap$Bootstrap_Table$th = F2(
+	function (options, children) {
+		return _rundis$elm_bootstrap$Bootstrap_Table$Th(
+			{options: options, children: children});
+	});
+var _rundis$elm_bootstrap$Bootstrap_Table$Td = function (a) {
+	return {ctor: 'Td', _0: a};
+};
+var _rundis$elm_bootstrap$Bootstrap_Table$mapInversedCell = function (cell) {
+	var inverseOptions = function (options) {
+		return A2(
+			_elm_lang$core$List$map,
+			function (opt) {
+				var _p19 = opt;
+				if (_p19.ctor === 'RoledCell') {
+					return _rundis$elm_bootstrap$Bootstrap_Table$InversedCell(_p19._0);
+				} else {
+					return opt;
+				}
+			},
+			options);
+	};
+	var _p20 = cell;
+	if (_p20.ctor === 'Th') {
+		var _p21 = _p20._0;
+		return _rundis$elm_bootstrap$Bootstrap_Table$Th(
+			_elm_lang$core$Native_Utils.update(
+				_p21,
+				{
+					options: inverseOptions(_p21.options)
+				}));
+	} else {
+		var _p22 = _p20._0;
+		return _rundis$elm_bootstrap$Bootstrap_Table$Td(
+			_elm_lang$core$Native_Utils.update(
+				_p22,
+				{
+					options: inverseOptions(_p22.options)
+				}));
+	}
+};
+var _rundis$elm_bootstrap$Bootstrap_Table$mapInversedRow = function (row) {
+	var inversedOptions = function (options) {
+		return A2(
+			_elm_lang$core$List$map,
+			function (opt) {
+				var _p23 = opt;
+				if (_p23.ctor === 'RoledRow') {
+					return _rundis$elm_bootstrap$Bootstrap_Table$InversedRow(_p23._0);
+				} else {
+					return opt;
+				}
+			},
+			options);
+	};
+	var _p24 = row;
+	if (_p24.ctor === 'Row') {
+		return _rundis$elm_bootstrap$Bootstrap_Table$Row(
+			{
+				options: inversedOptions(_p24._0.options),
+				cells: A2(_elm_lang$core$List$map, _rundis$elm_bootstrap$Bootstrap_Table$mapInversedCell, _p24._0.cells)
+			});
+	} else {
+		return _rundis$elm_bootstrap$Bootstrap_Table$KeyedRow(
+			{
+				options: inversedOptions(_p24._0.options),
+				cells: A2(
+					_elm_lang$core$List$map,
+					function (_p25) {
+						var _p26 = _p25;
+						return {
+							ctor: '_Tuple2',
+							_0: _p26._0,
+							_1: _rundis$elm_bootstrap$Bootstrap_Table$mapInversedCell(_p26._1)
+						};
+					},
+					_p24._0.cells)
+			});
+	}
+};
+var _rundis$elm_bootstrap$Bootstrap_Table$td = F2(
+	function (options, children) {
+		return _rundis$elm_bootstrap$Bootstrap_Table$Td(
+			{options: options, children: children});
+	});
+var _rundis$elm_bootstrap$Bootstrap_Table$THead = function (a) {
+	return {ctor: 'THead', _0: a};
+};
+var _rundis$elm_bootstrap$Bootstrap_Table$maybeMapInversedTHead = F2(
+	function (isTableInversed, _p27) {
+		var _p28 = _p27;
+		var _p29 = _p28._0;
+		var isHeadInversed = A2(
+			_elm_lang$core$List$any,
+			function (opt) {
+				return _elm_lang$core$Native_Utils.eq(opt, _rundis$elm_bootstrap$Bootstrap_Table$InversedHead);
+			},
+			_p29.options);
+		return _rundis$elm_bootstrap$Bootstrap_Table$THead(
+			(isTableInversed || isHeadInversed) ? _elm_lang$core$Native_Utils.update(
+				_p29,
+				{
+					rows: A2(_elm_lang$core$List$map, _rundis$elm_bootstrap$Bootstrap_Table$mapInversedRow, _p29.rows)
+				}) : _p29);
+	});
+var _rundis$elm_bootstrap$Bootstrap_Table$thead = F2(
+	function (options, rows) {
+		return _rundis$elm_bootstrap$Bootstrap_Table$THead(
+			{options: options, rows: rows});
+	});
+var _rundis$elm_bootstrap$Bootstrap_Table$simpleThead = function (cells) {
+	return A2(
+		_rundis$elm_bootstrap$Bootstrap_Table$thead,
+		{ctor: '[]'},
+		{
+			ctor: '::',
+			_0: A2(
+				_rundis$elm_bootstrap$Bootstrap_Table$tr,
+				{ctor: '[]'},
+				cells),
+			_1: {ctor: '[]'}
+		});
+};
+var _rundis$elm_bootstrap$Bootstrap_Table$KeyedTBody = function (a) {
+	return {ctor: 'KeyedTBody', _0: a};
+};
+var _rundis$elm_bootstrap$Bootstrap_Table$keyedTBody = F2(
+	function (attributes, rows) {
+		return _rundis$elm_bootstrap$Bootstrap_Table$KeyedTBody(
+			{attributes: attributes, rows: rows});
+	});
+var _rundis$elm_bootstrap$Bootstrap_Table$TBody = function (a) {
+	return {ctor: 'TBody', _0: a};
+};
+var _rundis$elm_bootstrap$Bootstrap_Table$maybeMapInversedTBody = F2(
+	function (isTableInversed, tbody) {
+		var _p30 = {ctor: '_Tuple2', _0: isTableInversed, _1: tbody};
+		if (_p30._0 === false) {
+			return tbody;
+		} else {
+			if (_p30._1.ctor === 'TBody') {
+				var _p31 = _p30._1._0;
+				return _rundis$elm_bootstrap$Bootstrap_Table$TBody(
+					_elm_lang$core$Native_Utils.update(
+						_p31,
+						{
+							rows: A2(_elm_lang$core$List$map, _rundis$elm_bootstrap$Bootstrap_Table$mapInversedRow, _p31.rows)
+						}));
+			} else {
+				var _p34 = _p30._1._0;
+				return _rundis$elm_bootstrap$Bootstrap_Table$KeyedTBody(
+					_elm_lang$core$Native_Utils.update(
+						_p34,
+						{
+							rows: A2(
+								_elm_lang$core$List$map,
+								function (_p32) {
+									var _p33 = _p32;
+									return {
+										ctor: '_Tuple2',
+										_0: _p33._0,
+										_1: _rundis$elm_bootstrap$Bootstrap_Table$mapInversedRow(_p33._1)
+									};
+								},
+								_p34.rows)
+						}));
+			}
+		}
+	});
+var _rundis$elm_bootstrap$Bootstrap_Table$table = function (_p35) {
+	var _p36 = _p35;
+	var _p37 = _p36.options;
+	var isInversed = A2(
+		_elm_lang$core$List$any,
+		function (opt) {
+			return _elm_lang$core$Native_Utils.eq(opt, _rundis$elm_bootstrap$Bootstrap_Table$Inversed);
+		},
+		_p37);
+	var isResponsive = A2(
+		_elm_lang$core$List$any,
+		function (opt) {
+			return _elm_lang$core$Native_Utils.eq(opt, _rundis$elm_bootstrap$Bootstrap_Table$Responsive);
+		},
+		_p37);
+	var classOptions = A2(
+		_elm_lang$core$List$filter,
+		function (opt) {
+			return !_elm_lang$core$Native_Utils.eq(opt, _rundis$elm_bootstrap$Bootstrap_Table$Responsive);
+		},
+		_p37);
+	return A2(
+		_rundis$elm_bootstrap$Bootstrap_Table$wrapResponsiveWhen,
+		isResponsive,
+		A2(
+			_elm_lang$html$Html$table,
+			_rundis$elm_bootstrap$Bootstrap_Table$tableAttributes(classOptions),
+			{
+				ctor: '::',
+				_0: _rundis$elm_bootstrap$Bootstrap_Table$renderTHead(
+					A2(_rundis$elm_bootstrap$Bootstrap_Table$maybeMapInversedTHead, isInversed, _p36.thead)),
+				_1: {
+					ctor: '::',
+					_0: _rundis$elm_bootstrap$Bootstrap_Table$renderTBody(
+						A2(_rundis$elm_bootstrap$Bootstrap_Table$maybeMapInversedTBody, isInversed, _p36.tbody)),
+					_1: {ctor: '[]'}
+				}
+			}));
+};
+var _rundis$elm_bootstrap$Bootstrap_Table$simpleTable = function (_p38) {
+	var _p39 = _p38;
+	return _rundis$elm_bootstrap$Bootstrap_Table$table(
+		{
+			options: {ctor: '[]'},
+			thead: _p39._0,
+			tbody: _p39._1
+		});
+};
+var _rundis$elm_bootstrap$Bootstrap_Table$tbody = F2(
+	function (attributes, rows) {
+		return _rundis$elm_bootstrap$Bootstrap_Table$TBody(
+			{attributes: attributes, rows: rows});
+	});
+
 var _user$project$Animation$lerp = F3(
 	function (x0, x1, u) {
 		return (u * x1) + ((1 - u) * x0);
@@ -18068,7 +19751,7 @@ var _user$project$Page_Budget$topLineSvg = function (budget) {
 											_0: A2(
 												_user$project$View_BarPlot$drawBox,
 												plotParam,
-												{ctor: '_Tuple3', _0: 0, _1: income, _2: _user$project$View_Colors$blueColor}),
+												{ctor: '_Tuple3', _0: 0, _1: income, _2: _user$project$View_Colors$lightBlueColor}),
 											_1: {
 												ctor: '::',
 												_0: A2(
@@ -18828,11 +20511,2632 @@ var _user$project$Page_Budget$update = F3(
 		}
 	});
 
+var _user$project$Request_User$logout = function (session) {
+	return _lukewestby$elm_http_builder$HttpBuilder$toRequest(
+		A2(
+			_user$project$Data_Session$withAuthorization,
+			session,
+			A2(
+				_lukewestby$elm_http_builder$HttpBuilder$withExpect,
+				_elm_lang$http$Http$expectJson(_user$project$Data_Session$decoder),
+				_lukewestby$elm_http_builder$HttpBuilder$post(
+					_user$project$Request_Helpers$apiUrl('/logout.json')))));
+};
+var _user$project$Request_User$login = F2(
+	function (username, password) {
+		var credentials = _elm_lang$core$Json_Encode$object(
+			{
+				ctor: '::',
+				_0: A2(
+					_user$project$Util_ops['=>'],
+					'username',
+					_elm_lang$core$Json_Encode$string(username)),
+				_1: {
+					ctor: '::',
+					_0: A2(
+						_user$project$Util_ops['=>'],
+						'password',
+						_elm_lang$core$Json_Encode$string(password)),
+					_1: {ctor: '[]'}
+				}
+			});
+		var body = _elm_lang$core$Json_Encode$object(
+			{
+				ctor: '::',
+				_0: A2(_user$project$Util_ops['=>'], 'credentials', credentials),
+				_1: {ctor: '[]'}
+			});
+		return _lukewestby$elm_http_builder$HttpBuilder$toRequest(
+			A2(
+				_lukewestby$elm_http_builder$HttpBuilder$withJsonBody,
+				body,
+				A2(
+					_lukewestby$elm_http_builder$HttpBuilder$withExpect,
+					_elm_lang$http$Http$expectJson(_user$project$Data_Session$decoder),
+					_lukewestby$elm_http_builder$HttpBuilder$post(
+						_user$project$Request_Helpers$apiUrl('/login.json')))));
+	});
+
+var _user$project$Page_Profile$init = {ctor: '_Tuple0'};
+var _user$project$Page_Profile$LoggedOut = function (a) {
+	return {ctor: 'LoggedOut', _0: a};
+};
+var _user$project$Page_Profile$Logout = {ctor: 'Logout'};
+var _user$project$Page_Profile$view = F2(
+	function (session, model) {
+		return A2(
+			_rundis$elm_bootstrap$Bootstrap_Grid$row,
+			{ctor: '[]'},
+			{
+				ctor: '::',
+				_0: A2(
+					_rundis$elm_bootstrap$Bootstrap_Grid$col,
+					{
+						ctor: '::',
+						_0: _rundis$elm_bootstrap$Bootstrap_Grid_Col$md12,
+						_1: {ctor: '[]'}
+					},
+					{
+						ctor: '::',
+						_0: A2(
+							_elm_lang$html$Html$div,
+							{
+								ctor: '::',
+								_0: _elm_lang$html$Html_Attributes$class('text-center mt-4'),
+								_1: {ctor: '[]'}
+							},
+							{
+								ctor: '::',
+								_0: A2(
+									_rundis$elm_bootstrap$Bootstrap_Button$button,
+									{
+										ctor: '::',
+										_0: _rundis$elm_bootstrap$Bootstrap_Button$warning,
+										_1: {
+											ctor: '::',
+											_0: _rundis$elm_bootstrap$Bootstrap_Button$onClick(_user$project$Page_Profile$Logout),
+											_1: {ctor: '[]'}
+										}
+									},
+									{
+										ctor: '::',
+										_0: _elm_lang$html$Html$text('Sign out'),
+										_1: {ctor: '[]'}
+									}),
+								_1: {ctor: '[]'}
+							}),
+						_1: {ctor: '[]'}
+					}),
+				_1: {ctor: '[]'}
+			});
+	});
+var _user$project$Page_Profile$SetSession = function (a) {
+	return {ctor: 'SetSession', _0: a};
+};
+var _user$project$Page_Profile$update = F3(
+	function (session, msg, model) {
+		var _p0 = msg;
+		if (_p0.ctor === 'Logout') {
+			return {
+				ctor: '_Tuple3',
+				_0: model,
+				_1: A2(
+					_elm_lang$http$Http$send,
+					_user$project$Page_Profile$LoggedOut,
+					_user$project$Request_User$logout(session)),
+				_2: _elm_lang$core$Maybe$Nothing
+			};
+		} else {
+			if (_p0._0.ctor === 'Ok') {
+				return {
+					ctor: '_Tuple3',
+					_0: model,
+					_1: _elm_lang$core$Platform_Cmd$none,
+					_2: _elm_lang$core$Maybe$Just(
+						_user$project$Page_Profile$SetSession(_p0._0._0))
+				};
+			} else {
+				return {ctor: '_Tuple3', _0: model, _1: _elm_lang$core$Platform_Cmd$none, _2: _elm_lang$core$Maybe$Nothing};
+			}
+		}
+	});
+
+var _user$project$Page_Home$view = F2(
+	function (session, model) {
+		return A2(
+			_elm_lang$html$Html$div,
+			{
+				ctor: '::',
+				_0: _elm_lang$html$Html_Attributes$class('jumbotron m-4'),
+				_1: {ctor: '[]'}
+			},
+			{
+				ctor: '::',
+				_0: A2(
+					_elm_lang$html$Html$h1,
+					{
+						ctor: '::',
+						_0: _elm_lang$html$Html_Attributes$class('display-3'),
+						_1: {ctor: '[]'}
+					},
+					{
+						ctor: '::',
+						_0: _elm_lang$html$Html$text('Welcome!'),
+						_1: {ctor: '[]'}
+					}),
+				_1: {
+					ctor: '::',
+					_0: A2(
+						_elm_lang$html$Html$p,
+						{
+							ctor: '::',
+							_0: _elm_lang$html$Html_Attributes$class('lead'),
+							_1: {ctor: '[]'}
+						},
+						{
+							ctor: '::',
+							_0: _elm_lang$html$Html$text('This site helps to support Bloomcraft\'s governance process.  Today, you can use it to help make decisions about '),
+							_1: {
+								ctor: '::',
+								_0: A2(
+									_elm_lang$html$Html$a,
+									{
+										ctor: '::',
+										_0: _user$project$Route$href(_user$project$Route$Budget),
+										_1: {ctor: '[]'}
+									},
+									{
+										ctor: '::',
+										_0: _elm_lang$html$Html$text('rents'),
+										_1: {ctor: '[]'}
+									}),
+								_1: {
+									ctor: '::',
+									_0: _elm_lang$html$Html$text(' and '),
+									_1: {
+										ctor: '::',
+										_0: A2(
+											_elm_lang$html$Html$a,
+											{
+												ctor: '::',
+												_0: _user$project$Route$href(_user$project$Route$Expense),
+												_1: {ctor: '[]'}
+											},
+											{
+												ctor: '::',
+												_0: _elm_lang$html$Html$text('budgeting'),
+												_1: {ctor: '[]'}
+											}),
+										_1: {
+											ctor: '::',
+											_0: _elm_lang$html$Html$text('.'),
+											_1: {ctor: '[]'}
+										}
+									}
+								}
+							}
+						}),
+					_1: {
+						ctor: '::',
+						_0: A2(
+							_elm_lang$html$Html$hr,
+							{
+								ctor: '::',
+								_0: _elm_lang$html$Html_Attributes$class('my-4'),
+								_1: {ctor: '[]'}
+							},
+							{ctor: '[]'}),
+						_1: {
+							ctor: '::',
+							_0: A2(
+								_elm_lang$html$Html$p,
+								{ctor: '[]'},
+								{
+									ctor: '::',
+									_0: _elm_lang$html$Html$text('If you run into trouble, contact admin@bloomcraft.space'),
+									_1: {ctor: '[]'}
+								}),
+							_1: {ctor: '[]'}
+						}
+					}
+				}
+			});
+	});
+var _user$project$Page_Home$initialModel = {ctor: '_Tuple0'};
+
+var _user$project$Page_Login$initialModel = {username: '', password: ''};
+var _user$project$Page_Login$Model = F2(
+	function (a, b) {
+		return {username: a, password: b};
+	});
+var _user$project$Page_Login$LoginResponse = function (a) {
+	return {ctor: 'LoginResponse', _0: a};
+};
+var _user$project$Page_Login$SubmitLogin = {ctor: 'SubmitLogin'};
+var _user$project$Page_Login$SetPassword = function (a) {
+	return {ctor: 'SetPassword', _0: a};
+};
+var _user$project$Page_Login$SetUsername = function (a) {
+	return {ctor: 'SetUsername', _0: a};
+};
+var _user$project$Page_Login$view = function (model) {
+	return _rundis$elm_bootstrap$Bootstrap_Card$view(
+		A3(
+			_rundis$elm_bootstrap$Bootstrap_Card$block,
+			{ctor: '[]'},
+			{
+				ctor: '::',
+				_0: _rundis$elm_bootstrap$Bootstrap_Card$custom(
+					A2(
+						_rundis$elm_bootstrap$Bootstrap_Form$form,
+						{ctor: '[]'},
+						{
+							ctor: '::',
+							_0: A2(
+								_rundis$elm_bootstrap$Bootstrap_Form$group,
+								{ctor: '[]'},
+								{
+									ctor: '::',
+									_0: A2(
+										_rundis$elm_bootstrap$Bootstrap_Form$label,
+										{
+											ctor: '::',
+											_0: _elm_lang$html$Html_Attributes$for('username'),
+											_1: {ctor: '[]'}
+										},
+										{
+											ctor: '::',
+											_0: _elm_lang$html$Html$text('Username'),
+											_1: {ctor: '[]'}
+										}),
+									_1: {
+										ctor: '::',
+										_0: _rundis$elm_bootstrap$Bootstrap_Form_Input$text(
+											{
+												ctor: '::',
+												_0: _rundis$elm_bootstrap$Bootstrap_Form_Input$id('username'),
+												_1: {
+													ctor: '::',
+													_0: _rundis$elm_bootstrap$Bootstrap_Form_Input$onInput(_user$project$Page_Login$SetUsername),
+													_1: {ctor: '[]'}
+												}
+											}),
+										_1: {
+											ctor: '::',
+											_0: A2(
+												_rundis$elm_bootstrap$Bootstrap_Form$help,
+												{ctor: '[]'},
+												{
+													ctor: '::',
+													_0: _elm_lang$html$Html$text('Check your email for a message with your username'),
+													_1: {ctor: '[]'}
+												}),
+											_1: {ctor: '[]'}
+										}
+									}
+								}),
+							_1: {
+								ctor: '::',
+								_0: A2(
+									_rundis$elm_bootstrap$Bootstrap_Form$group,
+									{ctor: '[]'},
+									{
+										ctor: '::',
+										_0: A2(
+											_rundis$elm_bootstrap$Bootstrap_Form$label,
+											{
+												ctor: '::',
+												_0: _elm_lang$html$Html_Attributes$for('password'),
+												_1: {ctor: '[]'}
+											},
+											{
+												ctor: '::',
+												_0: _elm_lang$html$Html$text('Password'),
+												_1: {ctor: '[]'}
+											}),
+										_1: {
+											ctor: '::',
+											_0: _rundis$elm_bootstrap$Bootstrap_Form_Input$password(
+												{
+													ctor: '::',
+													_0: _rundis$elm_bootstrap$Bootstrap_Form_Input$id('password'),
+													_1: {
+														ctor: '::',
+														_0: _rundis$elm_bootstrap$Bootstrap_Form_Input$onInput(_user$project$Page_Login$SetPassword),
+														_1: {ctor: '[]'}
+													}
+												}),
+											_1: {ctor: '[]'}
+										}
+									}),
+								_1: {
+									ctor: '::',
+									_0: A2(
+										_rundis$elm_bootstrap$Bootstrap_Button$button,
+										{
+											ctor: '::',
+											_0: _rundis$elm_bootstrap$Bootstrap_Button$primary,
+											_1: {
+												ctor: '::',
+												_0: _rundis$elm_bootstrap$Bootstrap_Button$onClick(_user$project$Page_Login$SubmitLogin),
+												_1: {ctor: '[]'}
+											}
+										},
+										{
+											ctor: '::',
+											_0: _elm_lang$html$Html$text('Login'),
+											_1: {ctor: '[]'}
+										}),
+									_1: {ctor: '[]'}
+								}
+							}
+						})),
+				_1: {ctor: '[]'}
+			},
+			A3(
+				_rundis$elm_bootstrap$Bootstrap_Card$headerH3,
+				{ctor: '[]'},
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html$text('Sign in to Bloomcraft Here!'),
+					_1: {ctor: '[]'}
+				},
+				_rundis$elm_bootstrap$Bootstrap_Card$config(
+					{
+						ctor: '::',
+						_0: _rundis$elm_bootstrap$Bootstrap_Card$attrs(
+							{
+								ctor: '::',
+								_0: _elm_lang$html$Html_Attributes$class('m-4'),
+								_1: {ctor: '[]'}
+							}),
+						_1: {ctor: '[]'}
+					}))));
+};
+var _user$project$Page_Login$SetSession = function (a) {
+	return {ctor: 'SetSession', _0: a};
+};
+var _user$project$Page_Login$update = F2(
+	function (msg, model) {
+		var _p0 = msg;
+		switch (_p0.ctor) {
+			case 'SetPassword':
+				return {
+					ctor: '_Tuple3',
+					_0: _elm_lang$core$Native_Utils.update(
+						model,
+						{password: _p0._0}),
+					_1: _elm_lang$core$Platform_Cmd$none,
+					_2: _elm_lang$core$Maybe$Nothing
+				};
+			case 'SetUsername':
+				return {
+					ctor: '_Tuple3',
+					_0: _elm_lang$core$Native_Utils.update(
+						model,
+						{username: _p0._0}),
+					_1: _elm_lang$core$Platform_Cmd$none,
+					_2: _elm_lang$core$Maybe$Nothing
+				};
+			case 'SubmitLogin':
+				return {
+					ctor: '_Tuple3',
+					_0: model,
+					_1: A2(
+						_elm_lang$http$Http$send,
+						_user$project$Page_Login$LoginResponse,
+						A2(_user$project$Request_User$login, model.username, 'development')),
+					_2: _elm_lang$core$Maybe$Nothing
+				};
+			default:
+				if (_p0._0.ctor === 'Ok') {
+					return {
+						ctor: '_Tuple3',
+						_0: model,
+						_1: _elm_lang$core$Platform_Cmd$none,
+						_2: _elm_lang$core$Maybe$Just(
+							_user$project$Page_Login$SetSession(_p0._0._0))
+					};
+				} else {
+					return {ctor: '_Tuple3', _0: model, _1: _elm_lang$core$Platform_Cmd$none, _2: _elm_lang$core$Maybe$Nothing};
+				}
+		}
+	});
+
+var _user$project$View_PieChart$pieChart = function (data) {
+	var pieStart = {
+		startAngle: 0,
+		colorWheel: _user$project$View_Colors$defaultColorWheel,
+		elements: {
+			ctor: '_Tuple2',
+			_0: {ctor: '[]'},
+			_1: {ctor: '[]'}
+		}
+	};
+	var totalAmount = _elm_lang$core$Basics$toFloat(
+		_elm_lang$core$List$sum(
+			A2(_elm_lang$core$List$map, _elm_lang$core$Tuple$first, data)));
+	var radius = 50;
+	var wedgePath = F2(
+		function (startAngle, endAngle) {
+			var arcType = (_elm_lang$core$Native_Utils.cmp(endAngle - startAngle, _elm_lang$core$Basics$pi) > 0) ? _folkertdev$svg_path_dsl$Svg_Path$largestArc : _folkertdev$svg_path_dsl$Svg_Path$smallestArc;
+			return A3(
+				_folkertdev$svg_path_dsl$Svg_Path$subpath,
+				_folkertdev$svg_path_dsl$Svg_Path$startAt(
+					{ctor: '_Tuple2', _0: 0, _1: 0}),
+				_folkertdev$svg_path_dsl$Svg_Path$closed,
+				{
+					ctor: '::',
+					_0: _folkertdev$svg_path_dsl$Svg_Path$lineTo(
+						{
+							ctor: '_Tuple2',
+							_0: radius * _elm_lang$core$Basics$cos(startAngle),
+							_1: radius * (0 - _elm_lang$core$Basics$sin(startAngle))
+						}),
+					_1: {
+						ctor: '::',
+						_0: A4(
+							_folkertdev$svg_path_dsl$Svg_Path$arcTo,
+							{ctor: '_Tuple2', _0: radius, _1: radius},
+							0,
+							{ctor: '_Tuple2', _0: arcType, _1: _folkertdev$svg_path_dsl$Svg_Path$antiClockwise},
+							{
+								ctor: '_Tuple2',
+								_0: radius * _elm_lang$core$Basics$cos(endAngle),
+								_1: radius * (0 - _elm_lang$core$Basics$sin(endAngle))
+							}),
+						_1: {ctor: '[]'}
+					}
+				});
+		});
+	var wedge = F2(
+		function (_p1, _p0) {
+			var _p2 = _p1;
+			var _p7 = _p2._0;
+			var _p3 = _p0;
+			var _p6 = _p3.startAngle;
+			var _p5 = _p3.colorWheel;
+			var _p4 = _p3.elements;
+			var texts = _p4._0;
+			var paths = _p4._1;
+			var textTranslate = A2(
+				_elm_lang$core$Basics_ops['++'],
+				' translate (',
+				A2(
+					_elm_lang$core$Basics_ops['++'],
+					_elm_lang$core$Basics$toString(20),
+					',0) '));
+			var endAngle = _p6 + (((2 * _elm_lang$core$Basics$pi) * _elm_lang$core$Basics$toFloat(_p7)) / totalAmount);
+			var midAngle = (_p6 + endAngle) / 2;
+			var textRotation = A2(
+				_elm_lang$core$Basics_ops['++'],
+				'rotate(',
+				A2(
+					_elm_lang$core$Basics_ops['++'],
+					_elm_lang$core$Basics$toString((-360 / (2 * _elm_lang$core$Basics$pi)) * midAngle),
+					')'));
+			var flipText = (_elm_lang$core$Native_Utils.cmp(midAngle, _elm_lang$core$Basics$pi / 2) > 0) && (_elm_lang$core$Native_Utils.cmp(midAngle, (3 * _elm_lang$core$Basics$pi) / 2) < 0);
+			var anchor = flipText ? 'end' : 'start';
+			var textFlip = flipText ? 'scale(-1,-1)' : '';
+			return (!_elm_lang$core$Native_Utils.eq(_p7, 0)) ? {
+				startAngle: endAngle,
+				colorWheel: _user$project$Util$rotateList(_p5),
+				elements: {
+					ctor: '_Tuple2',
+					_0: {
+						ctor: '::',
+						_0: A2(
+							_elm_lang$svg$Svg$g,
+							{
+								ctor: '::',
+								_0: _elm_lang$svg$Svg_Attributes$transform(
+									A2(
+										_elm_lang$core$Basics_ops['++'],
+										textRotation,
+										A2(_elm_lang$core$Basics_ops['++'], textTranslate, textFlip))),
+								_1: {ctor: '[]'}
+							},
+							{
+								ctor: '::',
+								_0: A2(
+									_elm_lang$svg$Svg$text_,
+									{
+										ctor: '::',
+										_0: _elm_lang$svg$Svg_Attributes$x('0'),
+										_1: {
+											ctor: '::',
+											_0: _elm_lang$svg$Svg_Attributes$y('0'),
+											_1: {
+												ctor: '::',
+												_0: _elm_lang$svg$Svg_Attributes$fontSize('5px'),
+												_1: {
+													ctor: '::',
+													_0: _elm_lang$svg$Svg_Attributes$alignmentBaseline('middle'),
+													_1: {
+														ctor: '::',
+														_0: _elm_lang$svg$Svg_Attributes$textAnchor(anchor),
+														_1: {ctor: '[]'}
+													}
+												}
+											}
+										}
+									},
+									{
+										ctor: '::',
+										_0: _elm_lang$svg$Svg$text(_p2._1),
+										_1: {ctor: '[]'}
+									}),
+								_1: {ctor: '[]'}
+							}),
+						_1: texts
+					},
+					_1: {
+						ctor: '::',
+						_0: A2(
+							_elm_lang$svg$Svg$path,
+							{
+								ctor: '::',
+								_0: _elm_lang$svg$Svg_Attributes$d(
+									_folkertdev$svg_path_dsl$Svg_Path$pathToString(
+										{
+											ctor: '::',
+											_0: A2(wedgePath, _p6, endAngle),
+											_1: {ctor: '[]'}
+										})),
+								_1: {
+									ctor: '::',
+									_0: _elm_lang$svg$Svg_Attributes$fill(
+										_user$project$View_Colors$nextColor(_p5)),
+									_1: {
+										ctor: '::',
+										_0: _elm_lang$svg$Svg_Attributes$stroke('#FFFFFF'),
+										_1: {
+											ctor: '::',
+											_0: _elm_lang$svg$Svg_Attributes$strokeLinejoin('round'),
+											_1: {ctor: '[]'}
+										}
+									}
+								}
+							},
+							{ctor: '[]'}),
+						_1: paths
+					}
+				}
+			} : _p3;
+		});
+	var _p8 = function (_) {
+		return _.elements;
+	}(
+		A3(_elm_lang$core$List$foldr, wedge, pieStart, data));
+	var texts = _p8._0;
+	var paths = _p8._1;
+	return A2(
+		_elm_lang$svg$Svg$g,
+		{
+			ctor: '::',
+			_0: _elm_lang$svg$Svg_Attributes$transform('translate(50,50)'),
+			_1: {ctor: '[]'}
+		},
+		A2(_elm_lang$core$Basics_ops['++'], paths, texts));
+};
+
+var _user$project$Request_Allocation$postVote = F3(
+	function (session, vote, slug) {
+		var voteJson = _user$project$Data_Allocation$encodeVote(vote);
+		var body = _elm_lang$core$Json_Encode$object(
+			{
+				ctor: '::',
+				_0: A2(_user$project$Util_ops['=>'], 'vote', voteJson),
+				_1: {ctor: '[]'}
+			});
+		return _lukewestby$elm_http_builder$HttpBuilder$toRequest(
+			A2(
+				_user$project$Data_Session$withAuthorization,
+				session,
+				A2(
+					_lukewestby$elm_http_builder$HttpBuilder$withJsonBody,
+					body,
+					A2(
+						_lukewestby$elm_http_builder$HttpBuilder$withExpect,
+						_elm_lang$http$Http$expectJson(
+							A2(_elm_lang$core$Json_Decode$field, 'result', _elm_lang$core$Json_Decode$string)),
+						_lukewestby$elm_http_builder$HttpBuilder$post(
+							_user$project$Request_Helpers$apiUrl(
+								A2(
+									_elm_lang$core$Basics_ops['++'],
+									'/expenses/',
+									A2(
+										_elm_lang$core$Basics_ops['++'],
+										_user$project$Data_Allocation$slugToString(slug),
+										'/vote.json'))))))));
+	});
+var _user$project$Request_Allocation$vote = function (slug) {
+	return _lukewestby$elm_http_builder$HttpBuilder$toRequest(
+		A2(
+			_lukewestby$elm_http_builder$HttpBuilder$withExpect,
+			_elm_lang$http$Http$expectJson(
+				A2(
+					_elm_lang$core$Json_Decode$field,
+					'vote',
+					_elm_lang$core$Json_Decode$nullable(_user$project$Data_Allocation$voteDecoder))),
+			_lukewestby$elm_http_builder$HttpBuilder$get(
+				_user$project$Request_Helpers$apiUrl(
+					A2(
+						_elm_lang$core$Basics_ops['++'],
+						'/expenses/',
+						A2(
+							_elm_lang$core$Basics_ops['++'],
+							_user$project$Data_Allocation$slugToString(slug),
+							'/vote.json'))))));
+};
+var _user$project$Request_Allocation$expense = function (slug) {
+	return _lukewestby$elm_http_builder$HttpBuilder$toRequest(
+		A2(
+			_lukewestby$elm_http_builder$HttpBuilder$withExpect,
+			_elm_lang$http$Http$expectJson(
+				A2(_elm_lang$core$Json_Decode$field, 'expense', _user$project$Data_Allocation$expenseDecoder)),
+			_lukewestby$elm_http_builder$HttpBuilder$get(
+				_user$project$Request_Helpers$apiUrl(
+					A2(
+						_elm_lang$core$Basics_ops['++'],
+						'/expenses/',
+						A2(
+							_elm_lang$core$Basics_ops['++'],
+							_user$project$Data_Allocation$slugToString(slug),
+							'/expense.json'))))));
+};
+var _user$project$Request_Allocation$allocation = _lukewestby$elm_http_builder$HttpBuilder$toRequest(
+	A2(
+		_lukewestby$elm_http_builder$HttpBuilder$withExpect,
+		_elm_lang$http$Http$expectJson(
+			A2(_elm_lang$core$Json_Decode$field, 'allocation', _user$project$Data_Allocation$decoder)),
+		_lukewestby$elm_http_builder$HttpBuilder$get(
+			_user$project$Request_Helpers$apiUrl('/allocation.json'))));
+
+var _user$project$Page_Expense$init = function () {
+	var initModel = function (allocation) {
+		return {allocation: allocation};
+	};
+	var handleLoadError = function (err) {
+		var l = A2(_elm_lang$core$Debug$log, 'Expense Load Err', err);
+		return A2(_user$project$Page_Errored$pageLoadError, _user$project$View_Page$Expense, 'Failed to load expenses');
+	};
+	var loadAllocation = _elm_lang$http$Http$toTask(_user$project$Request_Allocation$allocation);
+	return A2(
+		_elm_lang$core$Task$mapError,
+		handleLoadError,
+		A2(_elm_lang$core$Task$map, initModel, loadAllocation));
+}();
+var _user$project$Page_Expense$update = F2(
+	function (msg, model) {
+		return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
+	});
+var _user$project$Page_Expense$expenseView = function (expense) {
+	var totalFunds = expense.currentAllocatedFunds + expense.newAllocatedFunds;
+	var width = A2(_elm_lang$core$Basics$max, expense.requestedFunds, totalFunds);
+	var pp = _elm_lang$core$Native_Utils.update(
+		_user$project$View_BarPlot$defaultPlotParams,
+		{
+			maxValue: _elm_lang$core$Basics$toFloat(width),
+			height: 50
+		});
+	var isFunded = _elm_lang$core$Native_Utils.cmp(totalFunds, expense.requestedFunds) > -1;
+	var fundColor = function () {
+		var _p0 = isFunded;
+		if (_p0 === true) {
+			return _user$project$View_Colors$greenColor;
+		} else {
+			return _user$project$View_Colors$blueColor;
+		}
+	}();
+	var greyFundColor = function () {
+		var _p1 = isFunded;
+		if (_p1 === true) {
+			return _user$project$View_Colors$darkGreenColor;
+		} else {
+			return _user$project$View_Colors$greyColor;
+		}
+	}();
+	var svg = A2(
+		_elm_lang$svg$Svg$g,
+		{ctor: '[]'},
+		{
+			ctor: '::',
+			_0: A2(
+				_user$project$View_BarPlot$drawBox,
+				pp,
+				{
+					ctor: '_Tuple3',
+					_0: 0,
+					_1: _elm_lang$core$Basics$toFloat(totalFunds),
+					_2: _user$project$View_Colors$greyColor
+				}),
+			_1: {
+				ctor: '::',
+				_0: A2(
+					_user$project$View_BarPlot$drawBox,
+					pp,
+					{
+						ctor: '_Tuple3',
+						_0: _elm_lang$core$Basics$toFloat(expense.currentAllocatedFunds),
+						_1: _elm_lang$core$Basics$toFloat(expense.currentAllocatedFunds + expense.newAllocatedFunds),
+						_2: fundColor
+					}),
+				_1: {
+					ctor: '::',
+					_0: A2(
+						_user$project$View_BarPlot$drawBox,
+						_elm_lang$core$Native_Utils.update(
+							pp,
+							{filled: false}),
+						{
+							ctor: '_Tuple3',
+							_0: 0,
+							_1: _elm_lang$core$Basics$toFloat(width),
+							_2: '#202020'
+						}),
+					_1: {ctor: '[]'}
+				}
+			}
+		});
+	return svg;
+};
+var _user$project$Page_Expense$expenseDetailsView = function (expenses) {
+	var voteResultText = function (expense) {
+		return (_elm_lang$core$Native_Utils.cmp(expense.userNewAllocatedFunds, 0) > 0) ? A2(
+			_elm_lang$core$Basics_ops['++'],
+			' You\'ve allocated $',
+			A2(
+				_elm_lang$core$Basics_ops['++'],
+				_elm_lang$core$Basics$toString(expense.userNewAllocatedFunds),
+				' to this item.')) : '';
+	};
+	var expenseBoxer = function (expense) {
+		return A2(
+			_rundis$elm_bootstrap$Bootstrap_Grid$col,
+			{
+				ctor: '::',
+				_0: _rundis$elm_bootstrap$Bootstrap_Grid_Col$md6,
+				_1: {
+					ctor: '::',
+					_0: _rundis$elm_bootstrap$Bootstrap_Grid_Col$xs6,
+					_1: {ctor: '[]'}
+				}
+			},
+			{
+				ctor: '::',
+				_0: A2(
+					_elm_lang$html$Html$div,
+					{ctor: '[]'},
+					{
+						ctor: '::',
+						_0: A2(
+							_elm_lang$html$Html$div,
+							{
+								ctor: '::',
+								_0: _elm_lang$html$Html_Attributes$style(
+									{
+										ctor: '::',
+										_0: {ctor: '_Tuple2', _0: 'border-width', _1: '1px'},
+										_1: {
+											ctor: '::',
+											_0: {ctor: '_Tuple2', _0: 'border-style', _1: 'solid'},
+											_1: {
+												ctor: '::',
+												_0: {ctor: '_Tuple2', _0: 'box-shadow', _1: '2px 3px 6px 3px rgba(0,0,0,0.1)'},
+												_1: {ctor: '[]'}
+											}
+										}
+									}),
+								_1: {
+									ctor: '::',
+									_0: _elm_lang$html$Html_Attributes$class('rounded p-1 mb-2'),
+									_1: {ctor: '[]'}
+								}
+							},
+							{
+								ctor: '::',
+								_0: A2(
+									_elm_lang$html$Html$p,
+									{
+										ctor: '::',
+										_0: _elm_lang$html$Html_Attributes$class('h5'),
+										_1: {ctor: '[]'}
+									},
+									{
+										ctor: '::',
+										_0: _elm_lang$html$Html$text(expense.name),
+										_1: {ctor: '[]'}
+									}),
+								_1: {
+									ctor: '::',
+									_0: A2(
+										_elm_lang$svg$Svg$svg,
+										{
+											ctor: '::',
+											_0: _elm_lang$svg$Svg_Attributes$viewBox('0 0 100 50'),
+											_1: {
+												ctor: '::',
+												_0: _elm_lang$svg$Svg_Attributes$width('100%'),
+												_1: {ctor: '[]'}
+											}
+										},
+										{
+											ctor: '::',
+											_0: _user$project$Page_Expense$expenseView(expense),
+											_1: {ctor: '[]'}
+										}),
+									_1: {
+										ctor: '::',
+										_0: A2(
+											_elm_lang$html$Html$p,
+											{
+												ctor: '::',
+												_0: _elm_lang$html$Html_Attributes$class('small mb-0'),
+												_1: {ctor: '[]'}
+											},
+											{
+												ctor: '::',
+												_0: _elm_lang$html$Html$text(
+													voteResultText(expense)),
+												_1: {ctor: '[]'}
+											}),
+										_1: {
+											ctor: '::',
+											_0: A2(
+												_elm_lang$html$Html$hr,
+												{
+													ctor: '::',
+													_0: _elm_lang$html$Html_Attributes$class('m-1'),
+													_1: {ctor: '[]'}
+												},
+												{ctor: '[]'}),
+											_1: {
+												ctor: '::',
+												_0: A2(
+													_elm_lang$html$Html$p,
+													{
+														ctor: '::',
+														_0: _elm_lang$html$Html_Attributes$class('small mb-0 text-muted'),
+														_1: {ctor: '[]'}
+													},
+													{
+														ctor: '::',
+														_0: _elm_lang$html$Html$text(
+															A2(
+																_elm_lang$core$Basics_ops['++'],
+																expense.owner,
+																A2(
+																	_elm_lang$core$Basics_ops['++'],
+																	' requested $',
+																	A2(
+																		_elm_lang$core$Basics_ops['++'],
+																		_elm_lang$core$Basics$toString(expense.requestedFunds),
+																		A2(
+																			_elm_lang$core$Basics_ops['++'],
+																			' and is currently allocated $',
+																			A2(
+																				_elm_lang$core$Basics_ops['++'],
+																				_elm_lang$core$Basics$toString(expense.newAllocatedFunds),
+																				'.')))))),
+														_1: {ctor: '[]'}
+													}),
+												_1: {
+													ctor: '::',
+													_0: A2(
+														_rundis$elm_bootstrap$Bootstrap_Button$linkButton,
+														{
+															ctor: '::',
+															_0: _rundis$elm_bootstrap$Bootstrap_Button$primary,
+															_1: {
+																ctor: '::',
+																_0: _rundis$elm_bootstrap$Bootstrap_Button$block,
+																_1: {
+																	ctor: '::',
+																	_0: _rundis$elm_bootstrap$Bootstrap_Button$attrs(
+																		{
+																			ctor: '::',
+																			_0: _user$project$Route$href(
+																				_user$project$Route$ExpenseDetail(expense.slug)),
+																			_1: {ctor: '[]'}
+																		}),
+																	_1: {ctor: '[]'}
+																}
+															}
+														},
+														{
+															ctor: '::',
+															_0: _elm_lang$html$Html$text('Vote'),
+															_1: {ctor: '[]'}
+														}),
+													_1: {ctor: '[]'}
+												}
+											}
+										}
+									}
+								}
+							}),
+						_1: {ctor: '[]'}
+					}),
+				_1: {ctor: '[]'}
+			});
+	};
+	var maxFunds = function (e) {
+		return A2(_elm_lang$core$Basics$max, e.requestedFunds, e.currentAllocatedFunds + e.newAllocatedFunds);
+	};
+	return _rundis$elm_bootstrap$Bootstrap_Card$view(
+		A3(
+			_rundis$elm_bootstrap$Bootstrap_Card$block,
+			{ctor: '[]'},
+			{
+				ctor: '::',
+				_0: _rundis$elm_bootstrap$Bootstrap_Card$custom(
+					A2(
+						_rundis$elm_bootstrap$Bootstrap_Grid$row,
+						{ctor: '[]'},
+						A2(_elm_lang$core$List$map, expenseBoxer, expenses))),
+				_1: {ctor: '[]'}
+			},
+			A3(
+				_rundis$elm_bootstrap$Bootstrap_Card$headerH3,
+				{ctor: '[]'},
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html$text('Expense Funding'),
+					_1: {ctor: '[]'}
+				},
+				_rundis$elm_bootstrap$Bootstrap_Card$config(
+					{
+						ctor: '::',
+						_0: _rundis$elm_bootstrap$Bootstrap_Card$attrs(
+							{
+								ctor: '::',
+								_0: _elm_lang$html$Html_Attributes$class('mt-2'),
+								_1: {ctor: '[]'}
+							}),
+						_1: {ctor: '[]'}
+					}))));
+};
+var _user$project$Page_Expense$allocationPieSummary = function (allocation) {
+	var toPieData = function (expense) {
+		return {ctor: '_Tuple2', _0: expense.newAllocatedFunds, _1: expense.name};
+	};
+	return A2(_elm_lang$core$List$map, toPieData, allocation.expenses);
+};
+var _user$project$Page_Expense$allocationSummary = function (model) {
+	var allocation = model.allocation;
+	var amtPerPerson = (_elm_lang$core$Native_Utils.cmp(allocation.numVoters, 0) > 0) ? _elm_lang$core$Basics$ceiling(
+		_elm_lang$core$Basics$toFloat(allocation.amount) / _elm_lang$core$Basics$toFloat(allocation.numVoters)) : allocation.amount;
+	var summaryText = A2(
+		_elm_lang$core$Basics_ops['++'],
+		'This page shows how the $',
+		A2(
+			_elm_lang$core$Basics_ops['++'],
+			_elm_lang$core$Basics$toString(allocation.amount),
+			A2(
+				_elm_lang$core$Basics_ops['++'],
+				' in surplus funds will be allocated.',
+				A2(
+					_elm_lang$core$Basics_ops['++'],
+					' Because ',
+					A2(
+						_elm_lang$core$Basics_ops['++'],
+						_elm_lang$core$Basics$toString(allocation.numVoters),
+						A2(
+							_elm_lang$core$Basics_ops['++'],
+							' Bloomcraft keyholders have participated so far, you have ',
+							A2(
+								_elm_lang$core$Basics_ops['++'],
+								'$',
+								A2(
+									_elm_lang$core$Basics_ops['++'],
+									_elm_lang$core$Basics$toString(amtPerPerson),
+									' to allocate. Use the vote buttons to share your preferences, and the allocation will change to reflect them.'))))))));
+	return _rundis$elm_bootstrap$Bootstrap_Card$view(
+		A3(
+			_rundis$elm_bootstrap$Bootstrap_Card$block,
+			{ctor: '[]'},
+			{
+				ctor: '::',
+				_0: _rundis$elm_bootstrap$Bootstrap_Card$custom(
+					A2(
+						_elm_lang$html$Html$div,
+						{ctor: '[]'},
+						{
+							ctor: '::',
+							_0: A2(
+								_elm_lang$html$Html$div,
+								{
+									ctor: '::',
+									_0: _elm_lang$html$Html_Attributes$style(
+										{
+											ctor: '::',
+											_0: {ctor: '_Tuple2', _0: 'width', _1: '100%'},
+											_1: {
+												ctor: '::',
+												_0: {ctor: '_Tuple2', _0: 'margin', _1: '0 auto'},
+												_1: {ctor: '[]'}
+											}
+										}),
+									_1: {ctor: '[]'}
+								},
+								{
+									ctor: '::',
+									_0: A2(
+										_elm_lang$svg$Svg$svg,
+										{
+											ctor: '::',
+											_0: _elm_lang$svg$Svg_Attributes$viewBox('-25 -15 150 130'),
+											_1: {ctor: '[]'}
+										},
+										{
+											ctor: '::',
+											_0: _user$project$View_PieChart$pieChart(
+												_user$project$Page_Expense$allocationPieSummary(model.allocation)),
+											_1: {ctor: '[]'}
+										}),
+									_1: {ctor: '[]'}
+								}),
+							_1: {
+								ctor: '::',
+								_0: A2(
+									_elm_lang$html$Html$p,
+									{
+										ctor: '::',
+										_0: _elm_lang$html$Html_Attributes$class('lead'),
+										_1: {ctor: '[]'}
+									},
+									{
+										ctor: '::',
+										_0: _elm_lang$html$Html$text(summaryText),
+										_1: {ctor: '[]'}
+									}),
+								_1: {ctor: '[]'}
+							}
+						})),
+				_1: {ctor: '[]'}
+			},
+			A3(
+				_rundis$elm_bootstrap$Bootstrap_Card$headerH3,
+				{ctor: '[]'},
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html$text('Summary of Allocation'),
+					_1: {ctor: '[]'}
+				},
+				_rundis$elm_bootstrap$Bootstrap_Card$config(
+					{
+						ctor: '::',
+						_0: _rundis$elm_bootstrap$Bootstrap_Card$attrs(
+							{
+								ctor: '::',
+								_0: _elm_lang$html$Html_Attributes$class('mt-2'),
+								_1: {ctor: '[]'}
+							}),
+						_1: {ctor: '[]'}
+					}))));
+};
+var _user$project$Page_Expense$view = function (model) {
+	return A2(
+		_rundis$elm_bootstrap$Bootstrap_Grid$container,
+		{ctor: '[]'},
+		{
+			ctor: '::',
+			_0: A2(
+				_rundis$elm_bootstrap$Bootstrap_Grid$row,
+				{
+					ctor: '::',
+					_0: _rundis$elm_bootstrap$Bootstrap_Grid_Row$centerMd,
+					_1: {ctor: '[]'}
+				},
+				{
+					ctor: '::',
+					_0: A2(
+						_rundis$elm_bootstrap$Bootstrap_Grid$col,
+						{
+							ctor: '::',
+							_0: _rundis$elm_bootstrap$Bootstrap_Grid_Col$lg6,
+							_1: {ctor: '[]'}
+						},
+						{
+							ctor: '::',
+							_0: _user$project$Page_Expense$allocationSummary(model),
+							_1: {ctor: '[]'}
+						}),
+					_1: {
+						ctor: '::',
+						_0: A2(
+							_rundis$elm_bootstrap$Bootstrap_Grid$col,
+							{
+								ctor: '::',
+								_0: _rundis$elm_bootstrap$Bootstrap_Grid_Col$lg6,
+								_1: {ctor: '[]'}
+							},
+							{
+								ctor: '::',
+								_0: _user$project$Page_Expense$expenseDetailsView(model.allocation.expenses),
+								_1: {ctor: '[]'}
+							}),
+						_1: {ctor: '[]'}
+					}
+				}),
+			_1: {ctor: '[]'}
+		});
+};
+var _user$project$Page_Expense$Model = function (a) {
+	return {allocation: a};
+};
+var _user$project$Page_Expense$AllocationLoaded = function (a) {
+	return {ctor: 'AllocationLoaded', _0: a};
+};
+
+var _user$project$Page_ExpenseDetail$expenseSummaryTable = function (expense) {
+	var maybeNot = function (x) {
+		return x ? '' : 'not';
+	};
+	return _rundis$elm_bootstrap$Bootstrap_Table$table(
+		{
+			options: {
+				ctor: '::',
+				_0: _rundis$elm_bootstrap$Bootstrap_Table$striped,
+				_1: {
+					ctor: '::',
+					_0: _rundis$elm_bootstrap$Bootstrap_Table$small,
+					_1: {ctor: '[]'}
+				}
+			},
+			thead: _rundis$elm_bootstrap$Bootstrap_Table$simpleThead(
+				{ctor: '[]'}),
+			tbody: A2(
+				_rundis$elm_bootstrap$Bootstrap_Table$tbody,
+				{ctor: '[]'},
+				{
+					ctor: '::',
+					_0: A2(
+						_rundis$elm_bootstrap$Bootstrap_Table$tr,
+						{ctor: '[]'},
+						{
+							ctor: '::',
+							_0: A2(
+								_rundis$elm_bootstrap$Bootstrap_Table$td,
+								{ctor: '[]'},
+								{
+									ctor: '::',
+									_0: _elm_lang$html$Html$text('Requested this cycle'),
+									_1: {ctor: '[]'}
+								}),
+							_1: {
+								ctor: '::',
+								_0: A2(
+									_rundis$elm_bootstrap$Bootstrap_Table$td,
+									{ctor: '[]'},
+									{
+										ctor: '::',
+										_0: _elm_lang$html$Html$text(
+											A2(
+												_elm_lang$core$Basics_ops['++'],
+												'$',
+												_elm_lang$core$Basics$toString(expense.requestedFunds))),
+										_1: {ctor: '[]'}
+									}),
+								_1: {ctor: '[]'}
+							}
+						}),
+					_1: {
+						ctor: '::',
+						_0: A2(
+							_rundis$elm_bootstrap$Bootstrap_Table$tr,
+							{ctor: '[]'},
+							{
+								ctor: '::',
+								_0: A2(
+									_rundis$elm_bootstrap$Bootstrap_Table$td,
+									{ctor: '[]'},
+									{
+										ctor: '::',
+										_0: _elm_lang$html$Html$text('Currently allocated this cycle'),
+										_1: {ctor: '[]'}
+									}),
+								_1: {
+									ctor: '::',
+									_0: A2(
+										_rundis$elm_bootstrap$Bootstrap_Table$td,
+										{ctor: '[]'},
+										{
+											ctor: '::',
+											_0: _elm_lang$html$Html$text(
+												A2(
+													_elm_lang$core$Basics_ops['++'],
+													'$',
+													_elm_lang$core$Basics$toString(expense.newAllocatedFunds))),
+											_1: {ctor: '[]'}
+										}),
+									_1: {ctor: '[]'}
+								}
+							}),
+						_1: {
+							ctor: '::',
+							_0: A2(
+								_rundis$elm_bootstrap$Bootstrap_Table$tr,
+								{ctor: '[]'},
+								{
+									ctor: '::',
+									_0: A2(
+										_rundis$elm_bootstrap$Bootstrap_Table$td,
+										{ctor: '[]'},
+										{
+											ctor: '::',
+											_0: _elm_lang$html$Html$text('Carried over from previous cycle'),
+											_1: {ctor: '[]'}
+										}),
+									_1: {
+										ctor: '::',
+										_0: A2(
+											_rundis$elm_bootstrap$Bootstrap_Table$td,
+											{ctor: '[]'},
+											{
+												ctor: '::',
+												_0: _elm_lang$html$Html$text(
+													A2(
+														_elm_lang$core$Basics_ops['++'],
+														'$',
+														_elm_lang$core$Basics$toString(expense.currentAllocatedFunds))),
+												_1: {ctor: '[]'}
+											}),
+										_1: {ctor: '[]'}
+									}
+								}),
+							_1: {
+								ctor: '::',
+								_0: A2(
+									_rundis$elm_bootstrap$Bootstrap_Table$tr,
+									{ctor: '[]'},
+									{
+										ctor: '::',
+										_0: A2(
+											_rundis$elm_bootstrap$Bootstrap_Table$td,
+											{ctor: '[]'},
+											{
+												ctor: '::',
+												_0: _elm_lang$html$Html$text('Person responsible'),
+												_1: {ctor: '[]'}
+											}),
+										_1: {
+											ctor: '::',
+											_0: A2(
+												_rundis$elm_bootstrap$Bootstrap_Table$td,
+												{ctor: '[]'},
+												{
+													ctor: '::',
+													_0: _elm_lang$html$Html$text(expense.owner),
+													_1: {ctor: '[]'}
+												}),
+											_1: {ctor: '[]'}
+										}
+									}),
+								_1: {
+									ctor: '::',
+									_0: A2(
+										_rundis$elm_bootstrap$Bootstrap_Table$tr,
+										{ctor: '[]'},
+										{
+											ctor: '::',
+											_0: A2(
+												_rundis$elm_bootstrap$Bootstrap_Table$td,
+												{
+													ctor: '::',
+													_0: _rundis$elm_bootstrap$Bootstrap_Table$cellAttr(
+														_elm_lang$html$Html_Attributes$colspan(2)),
+													_1: {ctor: '[]'}
+												},
+												{
+													ctor: '::',
+													_0: _elm_lang$html$Html$text(
+														A2(
+															_elm_lang$core$Basics_ops['++'],
+															'Will ',
+															A2(
+																_elm_lang$core$Basics_ops['++'],
+																maybeNot(expense.excessAllowed),
+																' accept more than requested'))),
+													_1: {ctor: '[]'}
+												}),
+											_1: {ctor: '[]'}
+										}),
+									_1: {
+										ctor: '::',
+										_0: A2(
+											_rundis$elm_bootstrap$Bootstrap_Table$tr,
+											{ctor: '[]'},
+											{
+												ctor: '::',
+												_0: A2(
+													_rundis$elm_bootstrap$Bootstrap_Table$td,
+													{
+														ctor: '::',
+														_0: _rundis$elm_bootstrap$Bootstrap_Table$cellAttr(
+															_elm_lang$html$Html_Attributes$colspan(2)),
+														_1: {ctor: '[]'}
+													},
+													{
+														ctor: '::',
+														_0: _elm_lang$html$Html$text(
+															A2(
+																_elm_lang$core$Basics_ops['++'],
+																'Will ',
+																A2(
+																	_elm_lang$core$Basics_ops['++'],
+																	maybeNot(expense.partialAllowed),
+																	'accept less than requested'))),
+														_1: {ctor: '[]'}
+													}),
+												_1: {ctor: '[]'}
+											}),
+										_1: {ctor: '[]'}
+									}
+								}
+							}
+						}
+					}
+				})
+		});
+};
+var _user$project$Page_ExpenseDetail$expenseView = function (expense) {
+	return _rundis$elm_bootstrap$Bootstrap_Card$view(
+		A3(
+			_rundis$elm_bootstrap$Bootstrap_Card$block,
+			{ctor: '[]'},
+			{
+				ctor: '::',
+				_0: _rundis$elm_bootstrap$Bootstrap_Card$custom(
+					A2(
+						_elm_lang$html$Html$div,
+						{ctor: '[]'},
+						{
+							ctor: '::',
+							_0: _rundis$elm_bootstrap$Bootstrap_Alert$info(
+								{
+									ctor: '::',
+									_0: _elm_lang$html$Html$text(expense.detailText),
+									_1: {ctor: '[]'}
+								}),
+							_1: {
+								ctor: '::',
+								_0: _user$project$Page_ExpenseDetail$expenseSummaryTable(expense),
+								_1: {ctor: '[]'}
+							}
+						})),
+				_1: {ctor: '[]'}
+			},
+			A3(
+				_rundis$elm_bootstrap$Bootstrap_Card$headerH4,
+				{ctor: '[]'},
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html$text(
+						A2(_elm_lang$core$Basics_ops['++'], 'Expense: ', expense.name)),
+					_1: {ctor: '[]'}
+				},
+				_rundis$elm_bootstrap$Bootstrap_Card$config(
+					{
+						ctor: '::',
+						_0: _rundis$elm_bootstrap$Bootstrap_Card$attrs(
+							{
+								ctor: '::',
+								_0: _elm_lang$html$Html_Attributes$class('mt-2'),
+								_1: {ctor: '[]'}
+							}),
+						_1: {ctor: '[]'}
+					}))));
+};
+var _user$project$Page_ExpenseDetail$init = function (slug) {
+	var initModel = F2(
+		function (expense, maybeVote) {
+			return {
+				expense: expense,
+				weight: A2(
+					_elm_lang$core$Maybe$map,
+					_elm_lang$core$Result$Ok,
+					A2(
+						_elm_lang$core$Maybe$andThen,
+						function (_) {
+							return _.weight;
+						},
+						maybeVote)),
+				personalMax: A2(
+					_elm_lang$core$Maybe$map,
+					_elm_lang$core$Result$Ok,
+					A2(
+						_elm_lang$core$Maybe$andThen,
+						function (_) {
+							return _.personalMax;
+						},
+						maybeVote)),
+				globalMax: A2(
+					_elm_lang$core$Maybe$map,
+					_elm_lang$core$Result$Ok,
+					A2(
+						_elm_lang$core$Maybe$andThen,
+						function (_) {
+							return _.globalMax;
+						},
+						maybeVote))
+			};
+		});
+	var handleLoadError = function (err) {
+		var l = A2(_elm_lang$core$Debug$log, 'Expense Load Err', err);
+		return A2(_user$project$Page_Errored$pageLoadError, _user$project$View_Page$Other, 'Failed to load expense');
+	};
+	var loadVote = _elm_lang$http$Http$toTask(
+		_user$project$Request_Allocation$vote(slug));
+	var loadExpense = _elm_lang$http$Http$toTask(
+		_user$project$Request_Allocation$expense(slug));
+	return A2(
+		_elm_lang$core$Task$mapError,
+		handleLoadError,
+		A3(_elm_lang$core$Task$map2, initModel, loadExpense, loadVote));
+};
+var _user$project$Page_ExpenseDetail$Model = F4(
+	function (a, b, c, d) {
+		return {expense: a, personalMax: b, globalMax: c, weight: d};
+	});
+var _user$project$Page_ExpenseDetail$LoadedExpense = function (a) {
+	return {ctor: 'LoadedExpense', _0: a};
+};
+var _user$project$Page_ExpenseDetail$VoteResponse = function (a) {
+	return {ctor: 'VoteResponse', _0: a};
+};
+var _user$project$Page_ExpenseDetail$update = F3(
+	function (session, msg, model) {
+		var makeVote = function (model) {
+			return {
+				weight: A2(_elm_lang$core$Maybe$andThen, _elm_lang$core$Result$toMaybe, model.weight),
+				personalMax: A2(_elm_lang$core$Maybe$andThen, _elm_lang$core$Result$toMaybe, model.personalMax),
+				globalMax: A2(_elm_lang$core$Maybe$andThen, _elm_lang$core$Result$toMaybe, model.globalMax)
+			};
+		};
+		var maybeToInt = function (str) {
+			var _p0 = str;
+			if (_p0 === '') {
+				return _elm_lang$core$Maybe$Nothing;
+			} else {
+				return _elm_lang$core$Maybe$Just(
+					_elm_lang$core$String$toInt(str));
+			}
+		};
+		var _p1 = msg;
+		switch (_p1.ctor) {
+			case 'SubmitVote':
+				return {
+					ctor: '_Tuple2',
+					_0: model,
+					_1: A2(
+						_elm_lang$http$Http$send,
+						_user$project$Page_ExpenseDetail$VoteResponse,
+						A3(
+							_user$project$Request_Allocation$postVote,
+							session,
+							makeVote(model),
+							model.expense.slug))
+				};
+			case 'SetWeight':
+				return {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Native_Utils.update(
+						model,
+						{
+							weight: maybeToInt(_p1._0)
+						}),
+					_1: _elm_lang$core$Platform_Cmd$none
+				};
+			case 'SetGlobalMax':
+				return {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Native_Utils.update(
+						model,
+						{
+							globalMax: maybeToInt(_p1._0)
+						}),
+					_1: _elm_lang$core$Platform_Cmd$none
+				};
+			case 'SetPersonalMax':
+				return {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Native_Utils.update(
+						model,
+						{
+							personalMax: maybeToInt(_p1._0)
+						}),
+					_1: _elm_lang$core$Platform_Cmd$none
+				};
+			case 'VoteResponse':
+				if (_p1._0.ctor === 'Ok') {
+					return {
+						ctor: '_Tuple2',
+						_0: model,
+						_1: _elm_lang$core$Platform_Cmd$batch(
+							{
+								ctor: '::',
+								_0: A2(
+									_elm_lang$http$Http$send,
+									_user$project$Page_ExpenseDetail$LoadedExpense,
+									_user$project$Request_Allocation$expense(model.expense.slug)),
+								_1: {
+									ctor: '::',
+									_0: _user$project$Route$modifyUrl(_user$project$Route$Expense),
+									_1: {ctor: '[]'}
+								}
+							})
+					};
+				} else {
+					return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
+				}
+			default:
+				if (_p1._0.ctor === 'Ok') {
+					return {
+						ctor: '_Tuple2',
+						_0: _elm_lang$core$Native_Utils.update(
+							model,
+							{expense: _p1._0._0}),
+						_1: _elm_lang$core$Platform_Cmd$none
+					};
+				} else {
+					return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
+				}
+		}
+	});
+var _user$project$Page_ExpenseDetail$SubmitVote = {ctor: 'SubmitVote'};
+var _user$project$Page_ExpenseDetail$SetPersonalMax = function (a) {
+	return {ctor: 'SetPersonalMax', _0: a};
+};
+var _user$project$Page_ExpenseDetail$SetGlobalMax = function (a) {
+	return {ctor: 'SetGlobalMax', _0: a};
+};
+var _user$project$Page_ExpenseDetail$SetWeight = function (a) {
+	return {ctor: 'SetWeight', _0: a};
+};
+var _user$project$Page_ExpenseDetail$voteForm = function (model) {
+	var disableSubmit = A2(
+		_elm_lang$core$Debug$log,
+		'DIS',
+		function () {
+			var _p2 = {ctor: '_Tuple3', _0: model.weight, _1: model.globalMax, _2: model.personalMax};
+			_v2_3:
+			do {
+				if (_p2.ctor === '_Tuple3') {
+					if ((_p2._0.ctor === 'Just') && (_p2._0._0.ctor === 'Err')) {
+						return true;
+					} else {
+						if ((_p2._1.ctor === 'Just') && (_p2._1._0.ctor === 'Err')) {
+							return true;
+						} else {
+							if ((_p2._2.ctor === 'Just') && (_p2._2._0.ctor === 'Err')) {
+								return true;
+							} else {
+								break _v2_3;
+							}
+						}
+					}
+				} else {
+					break _v2_3;
+				}
+			} while(false);
+			return false;
+		}());
+	var errState = function (result) {
+		var _p3 = result;
+		if (_p3.ctor === 'Nothing') {
+			return {
+				ctor: '_Tuple4',
+				_0: {ctor: '[]'},
+				_1: '.',
+				_2: '',
+				_3: {
+					ctor: '::',
+					_0: _elm_lang$html$Html_Attributes$style(
+						{
+							ctor: '::',
+							_0: {ctor: '_Tuple2', _0: 'visibility', _1: 'hidden'},
+							_1: {ctor: '[]'}
+						}),
+					_1: {ctor: '[]'}
+				}
+			};
+		} else {
+			if (_p3._0.ctor === 'Ok') {
+				return {
+					ctor: '_Tuple4',
+					_0: {ctor: '[]'},
+					_1: '.',
+					_2: _elm_lang$core$Basics$toString(_p3._0._0),
+					_3: {
+						ctor: '::',
+						_0: _elm_lang$html$Html_Attributes$style(
+							{
+								ctor: '::',
+								_0: {ctor: '_Tuple2', _0: 'visibility', _1: 'hidden'},
+								_1: {ctor: '[]'}
+							}),
+						_1: {ctor: '[]'}
+					}
+				};
+			} else {
+				return {
+					ctor: '_Tuple4',
+					_0: {
+						ctor: '::',
+						_0: _rundis$elm_bootstrap$Bootstrap_Form$groupDanger,
+						_1: {ctor: '[]'}
+					},
+					_1: 'Must be a whole number',
+					_2: '',
+					_3: {ctor: '[]'}
+				};
+			}
+		}
+	};
+	var _p4 = errState(model.weight);
+	var wError = _p4._0;
+	var wValTxt = _p4._1;
+	var wDef = _p4._2;
+	var wHidden = _p4._3;
+	var _p5 = errState(model.globalMax);
+	var gError = _p5._0;
+	var gValTxt = _p5._1;
+	var gDef = _p5._2;
+	var gHidden = _p5._3;
+	var _p6 = errState(model.personalMax);
+	var pError = _p6._0;
+	var pValTxt = _p6._1;
+	var pDef = _p6._2;
+	var pHidden = _p6._3;
+	var viewString = function (maybeVal) {
+		return A2(
+			_elm_lang$core$Maybe$withDefault,
+			'',
+			A2(_elm_lang$core$Maybe$map, _elm_lang$core$Basics$toString, maybeVal));
+	};
+	return A2(
+		_rundis$elm_bootstrap$Bootstrap_Form$form,
+		{ctor: '[]'},
+		{
+			ctor: '::',
+			_0: A2(
+				_rundis$elm_bootstrap$Bootstrap_Form$group,
+				wError,
+				{
+					ctor: '::',
+					_0: A2(
+						_rundis$elm_bootstrap$Bootstrap_Form$label,
+						{
+							ctor: '::',
+							_0: _elm_lang$html$Html_Attributes$for('weight'),
+							_1: {ctor: '[]'}
+						},
+						{
+							ctor: '::',
+							_0: _elm_lang$html$Html$text('Importance (0-100)'),
+							_1: {ctor: '[]'}
+						}),
+					_1: {
+						ctor: '::',
+						_0: _rundis$elm_bootstrap$Bootstrap_Form_Input$text(
+							{
+								ctor: '::',
+								_0: _rundis$elm_bootstrap$Bootstrap_Form_Input$id('weight'),
+								_1: {
+									ctor: '::',
+									_0: _rundis$elm_bootstrap$Bootstrap_Form_Input$onInput(_user$project$Page_ExpenseDetail$SetWeight),
+									_1: {
+										ctor: '::',
+										_0: _rundis$elm_bootstrap$Bootstrap_Form_Input$defaultValue(wDef),
+										_1: {ctor: '[]'}
+									}
+								}
+							}),
+						_1: {
+							ctor: '::',
+							_0: A2(
+								_rundis$elm_bootstrap$Bootstrap_Form$help,
+								{ctor: '[]'},
+								{
+									ctor: '::',
+									_0: _elm_lang$html$Html$text('How important is this expense?  Higher numbers get funded first. Equal numbers are funded equally.'),
+									_1: {ctor: '[]'}
+								}),
+							_1: {
+								ctor: '::',
+								_0: A2(
+									_rundis$elm_bootstrap$Bootstrap_Form$validationText,
+									wHidden,
+									{
+										ctor: '::',
+										_0: _elm_lang$html$Html$text(wValTxt),
+										_1: {ctor: '[]'}
+									}),
+								_1: {ctor: '[]'}
+							}
+						}
+					}
+				}),
+			_1: {
+				ctor: '::',
+				_0: A2(
+					_rundis$elm_bootstrap$Bootstrap_Form$group,
+					gError,
+					{
+						ctor: '::',
+						_0: A2(
+							_rundis$elm_bootstrap$Bootstrap_Form$label,
+							{
+								ctor: '::',
+								_0: _elm_lang$html$Html_Attributes$for('global_max'),
+								_1: {ctor: '[]'}
+							},
+							{
+								ctor: '::',
+								_0: _elm_lang$html$Html$text('Funding Limit'),
+								_1: {ctor: '[]'}
+							}),
+						_1: {
+							ctor: '::',
+							_0: _rundis$elm_bootstrap$Bootstrap_Form_InputGroup$view(
+								A2(
+									_rundis$elm_bootstrap$Bootstrap_Form_InputGroup$predecessors,
+									{
+										ctor: '::',
+										_0: A2(
+											_rundis$elm_bootstrap$Bootstrap_Form_InputGroup$span,
+											{ctor: '[]'},
+											{
+												ctor: '::',
+												_0: _elm_lang$html$Html$text('$'),
+												_1: {ctor: '[]'}
+											}),
+										_1: {ctor: '[]'}
+									},
+									_rundis$elm_bootstrap$Bootstrap_Form_InputGroup$config(
+										_rundis$elm_bootstrap$Bootstrap_Form_InputGroup$text(
+											{
+												ctor: '::',
+												_0: _rundis$elm_bootstrap$Bootstrap_Form_Input$placeholder(gDef),
+												_1: {
+													ctor: '::',
+													_0: _rundis$elm_bootstrap$Bootstrap_Form_Input$onInput(_user$project$Page_ExpenseDetail$SetGlobalMax),
+													_1: {ctor: '[]'}
+												}
+											})))),
+							_1: {
+								ctor: '::',
+								_0: A2(
+									_rundis$elm_bootstrap$Bootstrap_Form$help,
+									{ctor: '[]'},
+									{
+										ctor: '::',
+										_0: _elm_lang$html$Html$text('Optional: You will stop funding this expense once its allocation reaches this limit'),
+										_1: {ctor: '[]'}
+									}),
+								_1: {
+									ctor: '::',
+									_0: A2(
+										_rundis$elm_bootstrap$Bootstrap_Form$validationText,
+										gHidden,
+										{
+											ctor: '::',
+											_0: _elm_lang$html$Html$text(gValTxt),
+											_1: {ctor: '[]'}
+										}),
+									_1: {ctor: '[]'}
+								}
+							}
+						}
+					}),
+				_1: {
+					ctor: '::',
+					_0: A2(
+						_rundis$elm_bootstrap$Bootstrap_Form$group,
+						pError,
+						{
+							ctor: '::',
+							_0: A2(
+								_rundis$elm_bootstrap$Bootstrap_Form$label,
+								{ctor: '[]'},
+								{
+									ctor: '::',
+									_0: _elm_lang$html$Html$text('Personal Limit'),
+									_1: {ctor: '[]'}
+								}),
+							_1: {
+								ctor: '::',
+								_0: _rundis$elm_bootstrap$Bootstrap_Form_InputGroup$view(
+									A2(
+										_rundis$elm_bootstrap$Bootstrap_Form_InputGroup$predecessors,
+										{
+											ctor: '::',
+											_0: A2(
+												_rundis$elm_bootstrap$Bootstrap_Form_InputGroup$span,
+												{ctor: '[]'},
+												{
+													ctor: '::',
+													_0: _elm_lang$html$Html$text('$'),
+													_1: {ctor: '[]'}
+												}),
+											_1: {ctor: '[]'}
+										},
+										_rundis$elm_bootstrap$Bootstrap_Form_InputGroup$config(
+											_rundis$elm_bootstrap$Bootstrap_Form_InputGroup$text(
+												{
+													ctor: '::',
+													_0: _rundis$elm_bootstrap$Bootstrap_Form_Input$placeholder(pDef),
+													_1: {
+														ctor: '::',
+														_0: _rundis$elm_bootstrap$Bootstrap_Form_Input$onInput(_user$project$Page_ExpenseDetail$SetPersonalMax),
+														_1: {ctor: '[]'}
+													}
+												})))),
+								_1: {
+									ctor: '::',
+									_0: A2(
+										_rundis$elm_bootstrap$Bootstrap_Form$help,
+										{ctor: '[]'},
+										{
+											ctor: '::',
+											_0: _elm_lang$html$Html$text('Optional: You will stop funding this expense once your contribution reaches this limit'),
+											_1: {ctor: '[]'}
+										}),
+									_1: {
+										ctor: '::',
+										_0: A2(
+											_rundis$elm_bootstrap$Bootstrap_Form$validationText,
+											pHidden,
+											{
+												ctor: '::',
+												_0: _elm_lang$html$Html$text(pValTxt),
+												_1: {ctor: '[]'}
+											}),
+										_1: {ctor: '[]'}
+									}
+								}
+							}
+						}),
+					_1: {
+						ctor: '::',
+						_0: A2(
+							_rundis$elm_bootstrap$Bootstrap_Button$button,
+							{
+								ctor: '::',
+								_0: _rundis$elm_bootstrap$Bootstrap_Button$primary,
+								_1: {
+									ctor: '::',
+									_0: _rundis$elm_bootstrap$Bootstrap_Button$onClick(_user$project$Page_ExpenseDetail$SubmitVote),
+									_1: {
+										ctor: '::',
+										_0: _rundis$elm_bootstrap$Bootstrap_Button$disabled(disableSubmit),
+										_1: {ctor: '[]'}
+									}
+								}
+							},
+							{
+								ctor: '::',
+								_0: _elm_lang$html$Html$text('Vote'),
+								_1: {ctor: '[]'}
+							}),
+						_1: {
+							ctor: '::',
+							_0: A2(
+								_rundis$elm_bootstrap$Bootstrap_Button$linkButton,
+								{
+									ctor: '::',
+									_0: _rundis$elm_bootstrap$Bootstrap_Button$secondary,
+									_1: {
+										ctor: '::',
+										_0: _rundis$elm_bootstrap$Bootstrap_Button$attrs(
+											{
+												ctor: '::',
+												_0: _elm_lang$html$Html_Attributes$class('ml-3'),
+												_1: {
+													ctor: '::',
+													_0: _user$project$Route$href(_user$project$Route$Expense),
+													_1: {ctor: '[]'}
+												}
+											}),
+										_1: {ctor: '[]'}
+									}
+								},
+								{
+									ctor: '::',
+									_0: _elm_lang$html$Html$text('Back to Expense Summary'),
+									_1: {ctor: '[]'}
+								}),
+							_1: {ctor: '[]'}
+						}
+					}
+				}
+			}
+		});
+};
+var _user$project$Page_ExpenseDetail$voteView = function (model) {
+	return _rundis$elm_bootstrap$Bootstrap_Card$view(
+		A3(
+			_rundis$elm_bootstrap$Bootstrap_Card$block,
+			{ctor: '[]'},
+			{
+				ctor: '::',
+				_0: _rundis$elm_bootstrap$Bootstrap_Card$custom(
+					_user$project$Page_ExpenseDetail$voteForm(model)),
+				_1: {ctor: '[]'}
+			},
+			A3(
+				_rundis$elm_bootstrap$Bootstrap_Card$headerH4,
+				{ctor: '[]'},
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html$text('Your Vote'),
+					_1: {ctor: '[]'}
+				},
+				_rundis$elm_bootstrap$Bootstrap_Card$config(
+					{
+						ctor: '::',
+						_0: _rundis$elm_bootstrap$Bootstrap_Card$attrs(
+							{
+								ctor: '::',
+								_0: _elm_lang$html$Html_Attributes$class('mt-2'),
+								_1: {ctor: '[]'}
+							}),
+						_1: {ctor: '[]'}
+					}))));
+};
+var _user$project$Page_ExpenseDetail$view = function (model) {
+	var expense = model.expense;
+	return A2(
+		_rundis$elm_bootstrap$Bootstrap_Grid$container,
+		{ctor: '[]'},
+		{
+			ctor: '::',
+			_0: A2(
+				_rundis$elm_bootstrap$Bootstrap_Grid$row,
+				{ctor: '[]'},
+				{
+					ctor: '::',
+					_0: A2(
+						_rundis$elm_bootstrap$Bootstrap_Grid$col,
+						{
+							ctor: '::',
+							_0: _rundis$elm_bootstrap$Bootstrap_Grid_Col$lg6,
+							_1: {ctor: '[]'}
+						},
+						{
+							ctor: '::',
+							_0: _user$project$Page_ExpenseDetail$expenseView(expense),
+							_1: {ctor: '[]'}
+						}),
+					_1: {
+						ctor: '::',
+						_0: A2(
+							_rundis$elm_bootstrap$Bootstrap_Grid$col,
+							{
+								ctor: '::',
+								_0: _rundis$elm_bootstrap$Bootstrap_Grid_Col$lg6,
+								_1: {ctor: '[]'}
+							},
+							{
+								ctor: '::',
+								_0: _user$project$Page_ExpenseDetail$voteView(model),
+								_1: {ctor: '[]'}
+							}),
+						_1: {ctor: '[]'}
+					}
+				}),
+			_1: {ctor: '[]'}
+		});
+};
+
+var _user$project$Request_Session$getSession = A2(
+	_elm_lang$http$Http$get,
+	_user$project$Request_Helpers$apiUrl('/session.json'),
+	_user$project$Data_Session$decoder);
+
+var _user$project$Main$getPage = function (pageState) {
+	var _p0 = pageState;
+	if (_p0.ctor === 'Loaded') {
+		return _p0._0;
+	} else {
+		return _p0._0;
+	}
+};
+var _user$project$Main$Model = F3(
+	function (a, b, c) {
+		return {session: a, pageState: b, navState: c};
+	});
+var _user$project$Main$ExpenseDetail = function (a) {
+	return {ctor: 'ExpenseDetail', _0: a};
+};
+var _user$project$Main$Expense = function (a) {
+	return {ctor: 'Expense', _0: a};
+};
+var _user$project$Main$Profile = function (a) {
+	return {ctor: 'Profile', _0: a};
+};
+var _user$project$Main$Budget = function (a) {
+	return {ctor: 'Budget', _0: a};
+};
+var _user$project$Main$Login = function (a) {
+	return {ctor: 'Login', _0: a};
+};
+var _user$project$Main$Home = function (a) {
+	return {ctor: 'Home', _0: a};
+};
+var _user$project$Main$Errored = function (a) {
+	return {ctor: 'Errored', _0: a};
+};
+var _user$project$Main$NotFound = {ctor: 'NotFound'};
+var _user$project$Main$Blank = {ctor: 'Blank'};
+var _user$project$Main$TransitioningFrom = function (a) {
+	return {ctor: 'TransitioningFrom', _0: a};
+};
+var _user$project$Main$Loaded = function (a) {
+	return {ctor: 'Loaded', _0: a};
+};
+var _user$project$Main$pageErrored = F3(
+	function (model, activePage, errorMessage) {
+		var error = A2(_user$project$Page_Errored$pageLoadError, activePage, errorMessage);
+		return A2(
+			_user$project$Util_ops['=>'],
+			_elm_lang$core$Native_Utils.update(
+				model,
+				{
+					pageState: _user$project$Main$Loaded(
+						_user$project$Main$Errored(error))
+				}),
+			_elm_lang$core$Platform_Cmd$none);
+	});
+var _user$project$Main$WaitingForSession = function (a) {
+	return {ctor: 'WaitingForSession', _0: a};
+};
+var _user$project$Main$HaveSession = function (a) {
+	return {ctor: 'HaveSession', _0: a};
+};
+var _user$project$Main$ExpenseDetailMsg = function (a) {
+	return {ctor: 'ExpenseDetailMsg', _0: a};
+};
+var _user$project$Main$ExpenseMsg = function (a) {
+	return {ctor: 'ExpenseMsg', _0: a};
+};
+var _user$project$Main$ProfileMsg = function (a) {
+	return {ctor: 'ProfileMsg', _0: a};
+};
+var _user$project$Main$LoginMsg = function (a) {
+	return {ctor: 'LoginMsg', _0: a};
+};
+var _user$project$Main$BudgetMsg = function (a) {
+	return {ctor: 'BudgetMsg', _0: a};
+};
+var _user$project$Main$NavMsg = function (a) {
+	return {ctor: 'NavMsg', _0: a};
+};
+var _user$project$Main$viewPage = F3(
+	function (model, isLoading, page) {
+		var session = model.session;
+		var frame = A4(_user$project$View_Page$frame, _user$project$Main$NavMsg, model.navState, isLoading, session);
+		var _p1 = page;
+		switch (_p1.ctor) {
+			case 'Errored':
+				return A2(
+					frame,
+					_user$project$View_Page$Other,
+					A2(_user$project$Page_Errored$view, session, _p1._0));
+			case 'Home':
+				return A2(
+					frame,
+					_user$project$View_Page$Home,
+					A2(_user$project$Page_Home$view, session, _p1._0));
+			case 'Budget':
+				return A2(
+					frame,
+					_user$project$View_Page$Budget,
+					A2(
+						_elm_lang$html$Html$map,
+						_user$project$Main$BudgetMsg,
+						A2(_user$project$Page_Budget$view, session, _p1._0)));
+			case 'Login':
+				return A2(
+					frame,
+					_user$project$View_Page$Budget,
+					A2(
+						_elm_lang$html$Html$map,
+						_user$project$Main$LoginMsg,
+						_user$project$Page_Login$view(_p1._0)));
+			case 'Profile':
+				return A2(
+					frame,
+					_user$project$View_Page$Profile,
+					A2(
+						_elm_lang$html$Html$map,
+						_user$project$Main$ProfileMsg,
+						A2(_user$project$Page_Profile$view, session, _p1._0)));
+			case 'Expense':
+				return A2(
+					frame,
+					_user$project$View_Page$Expense,
+					A2(
+						_elm_lang$html$Html$map,
+						_user$project$Main$ExpenseMsg,
+						_user$project$Page_Expense$view(_p1._0)));
+			case 'ExpenseDetail':
+				return A2(
+					frame,
+					_user$project$View_Page$Other,
+					A2(
+						_elm_lang$html$Html$map,
+						_user$project$Main$ExpenseDetailMsg,
+						_user$project$Page_ExpenseDetail$view(_p1._0)));
+			case 'NotFound':
+				return A2(
+					frame,
+					_user$project$View_Page$Other,
+					_elm_lang$html$Html$text('Page Not Found'));
+			default:
+				return A2(
+					frame,
+					_user$project$View_Page$Other,
+					_elm_lang$html$Html$text(''));
+		}
+	});
+var _user$project$Main$view = function (model) {
+	var _p2 = model.pageState;
+	if (_p2.ctor === 'Loaded') {
+		return A3(_user$project$Main$viewPage, model, false, _p2._0);
+	} else {
+		return A3(_user$project$Main$viewPage, model, true, _p2._0);
+	}
+};
+var _user$project$Main$startupView = function (model) {
+	var _p3 = model;
+	if (_p3.ctor === 'WaitingForSession') {
+		return A2(
+			_elm_lang$html$Html$div,
+			{ctor: '[]'},
+			{ctor: '[]'});
+	} else {
+		return _user$project$Main$view(_p3._0);
+	}
+};
+var _user$project$Main$subscriptions = function (startModel) {
+	var _p4 = startModel;
+	if (_p4.ctor === 'WaitingForSession') {
+		return _elm_lang$core$Platform_Sub$none;
+	} else {
+		var _p6 = _p4._0;
+		return _elm_lang$core$Platform_Sub$batch(
+			{
+				ctor: '::',
+				_0: function () {
+					var _p5 = _p6.pageState;
+					if ((_p5.ctor === 'Loaded') && (_p5._0.ctor === 'Budget')) {
+						return A2(
+							_elm_lang$core$Platform_Sub$map,
+							_user$project$Main$BudgetMsg,
+							_user$project$Page_Budget$subscriptions(_p5._0._0));
+					} else {
+						return _elm_lang$core$Platform_Sub$none;
+					}
+				}(),
+				_1: {
+					ctor: '::',
+					_0: A2(_rundis$elm_bootstrap$Bootstrap_Navbar$subscriptions, _p6.navState, _user$project$Main$NavMsg),
+					_1: {ctor: '[]'}
+				}
+			});
+	}
+};
+var _user$project$Main$ExpenseDetailLoaded = function (a) {
+	return {ctor: 'ExpenseDetailLoaded', _0: a};
+};
+var _user$project$Main$ExpenseLoaded = function (a) {
+	return {ctor: 'ExpenseLoaded', _0: a};
+};
+var _user$project$Main$BudgetLoaded = function (a) {
+	return {ctor: 'BudgetLoaded', _0: a};
+};
+var _user$project$Main$setRoute = F2(
+	function (maybeRoute, model) {
+		var loggedIn = !_elm_lang$core$Native_Utils.eq(model.session.user, _elm_lang$core$Maybe$Nothing);
+		var errored = _user$project$Main$pageErrored(model);
+		var transition = F2(
+			function (toMsg, task) {
+				return A2(
+					_user$project$Util_ops['=>'],
+					_elm_lang$core$Native_Utils.update(
+						model,
+						{
+							pageState: _user$project$Main$TransitioningFrom(
+								_user$project$Main$getPage(model.pageState))
+						}),
+					A2(_elm_lang$core$Task$attempt, toMsg, task));
+			});
+		var _p7 = maybeRoute;
+		if (_p7.ctor === 'Nothing') {
+			return A2(
+				_user$project$Util_ops['=>'],
+				_elm_lang$core$Native_Utils.update(
+					model,
+					{
+						pageState: _user$project$Main$Loaded(_user$project$Main$NotFound)
+					}),
+				_elm_lang$core$Platform_Cmd$none);
+		} else {
+			switch (_p7._0.ctor) {
+				case 'Home':
+					return A2(
+						_user$project$Util_ops['=>'],
+						_elm_lang$core$Native_Utils.update(
+							model,
+							{
+								pageState: _user$project$Main$Loaded(
+									_user$project$Main$Home(_user$project$Page_Home$initialModel))
+							}),
+						_elm_lang$core$Platform_Cmd$none);
+				case 'Budget':
+					return loggedIn ? A2(transition, _user$project$Main$BudgetLoaded, _user$project$Page_Budget$init) : {
+						ctor: '_Tuple2',
+						_0: model,
+						_1: _user$project$Route$modifyUrl(_user$project$Route$Login)
+					};
+				case 'Expense':
+					return loggedIn ? A2(transition, _user$project$Main$ExpenseLoaded, _user$project$Page_Expense$init) : {
+						ctor: '_Tuple2',
+						_0: model,
+						_1: _user$project$Route$modifyUrl(_user$project$Route$Login)
+					};
+				case 'Login':
+					return loggedIn ? {
+						ctor: '_Tuple2',
+						_0: model,
+						_1: _user$project$Route$modifyUrl(_user$project$Route$Home)
+					} : A2(
+						_user$project$Util_ops['=>'],
+						_elm_lang$core$Native_Utils.update(
+							model,
+							{
+								pageState: _user$project$Main$Loaded(
+									_user$project$Main$Login(_user$project$Page_Login$initialModel))
+							}),
+						_elm_lang$core$Platform_Cmd$none);
+				case 'Profile':
+					return loggedIn ? A2(
+						_user$project$Util_ops['=>'],
+						_elm_lang$core$Native_Utils.update(
+							model,
+							{
+								pageState: _user$project$Main$Loaded(
+									_user$project$Main$Profile(_user$project$Page_Profile$init))
+							}),
+						_elm_lang$core$Platform_Cmd$none) : {
+						ctor: '_Tuple2',
+						_0: model,
+						_1: _user$project$Route$modifyUrl(_user$project$Route$Login)
+					};
+				default:
+					return loggedIn ? A2(
+						transition,
+						_user$project$Main$ExpenseDetailLoaded,
+						_user$project$Page_ExpenseDetail$init(_p7._0._0)) : {
+						ctor: '_Tuple2',
+						_0: model,
+						_1: _user$project$Route$modifyUrl(_user$project$Route$Login)
+					};
+			}
+		}
+	});
+var _user$project$Main$init = F2(
+	function (location, session) {
+		var _p8 = _rundis$elm_bootstrap$Bootstrap_Navbar$initialState(_user$project$Main$NavMsg);
+		var navState = _p8._0;
+		var navCmd = _p8._1;
+		var _p9 = A2(
+			_user$project$Main$setRoute,
+			_user$project$Route$fromLocation(
+				A2(_elm_lang$core$Debug$log, 'Starting Loc', location)),
+			{
+				pageState: _user$project$Main$Loaded(_user$project$Main$Blank),
+				session: session,
+				navState: navState
+			});
+		var model = _p9._0;
+		var cmd = _p9._1;
+		return A2(
+			_elm_lang$core$Platform_Cmd_ops['!'],
+			model,
+			{
+				ctor: '::',
+				_0: cmd,
+				_1: {
+					ctor: '::',
+					_0: navCmd,
+					_1: {ctor: '[]'}
+				}
+			});
+	});
+var _user$project$Main$updatePage = F3(
+	function (page, msg, model) {
+		var toPageWithOut = F5(
+			function (toModel, toMsg, subUpdate, subMsg, subModel) {
+				var _p10 = A2(subUpdate, subMsg, subModel);
+				var newModel = _p10._0;
+				var newCmd = _p10._1;
+				var outMsg = _p10._2;
+				return {
+					ctor: '_Tuple3',
+					_0: _elm_lang$core$Native_Utils.update(
+						model,
+						{
+							pageState: _user$project$Main$Loaded(
+								toModel(newModel))
+						}),
+					_1: A2(_elm_lang$core$Platform_Cmd$map, toMsg, newCmd),
+					_2: outMsg
+				};
+			});
+		var toPage = F5(
+			function (toModel, toMsg, subUpdate, subMsg, subModel) {
+				var _p11 = A2(subUpdate, subMsg, subModel);
+				var newModel = _p11._0;
+				var newCmd = _p11._1;
+				return {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Native_Utils.update(
+						model,
+						{
+							pageState: _user$project$Main$Loaded(
+								toModel(newModel))
+						}),
+					_1: A2(_elm_lang$core$Platform_Cmd$map, toMsg, newCmd)
+				};
+			});
+		var setSession = F3(
+			function (newModel, cmd, newSession) {
+				var sessionCmd = (!_elm_lang$core$Native_Utils.eq(model.session.authToken, _elm_lang$core$Maybe$Nothing)) ? _user$project$Route$modifyUrl(_user$project$Route$Home) : _elm_lang$core$Platform_Cmd$none;
+				return A2(
+					_elm_lang$core$Platform_Cmd_ops['!'],
+					_elm_lang$core$Native_Utils.update(
+						newModel,
+						{session: newSession}),
+					{
+						ctor: '::',
+						_0: cmd,
+						_1: {
+							ctor: '::',
+							_0: sessionCmd,
+							_1: {ctor: '[]'}
+						}
+					});
+			});
+		var session = model.session;
+		var _p12 = {ctor: '_Tuple2', _0: msg, _1: page};
+		_v7_14:
+		do {
+			switch (_p12._0.ctor) {
+				case 'SetRoute':
+					return A2(_user$project$Main$setRoute, _p12._0._0, model);
+				case 'SetSession':
+					if (_p12._0._0.ctor === 'Ok') {
+						return A3(setSession, model, _elm_lang$core$Platform_Cmd$none, _p12._0._0._0);
+					} else {
+						return _elm_lang$core$Tuple$first(
+							{
+								ctor: '_Tuple2',
+								_0: A3(_user$project$Main$pageErrored, model, _user$project$View_Page$Home, 'Failed to get session state from server'),
+								_1: A2(_elm_lang$core$Debug$log, 'Load Error: ', _p12._0._0._0)
+							});
+					}
+				case 'BudgetLoaded':
+					if (_p12._0._0.ctor === 'Ok') {
+						return A2(
+							_user$project$Util_ops['=>'],
+							_elm_lang$core$Native_Utils.update(
+								model,
+								{
+									pageState: _user$project$Main$Loaded(
+										_user$project$Main$Budget(_p12._0._0._0))
+								}),
+							_elm_lang$core$Platform_Cmd$none);
+					} else {
+						return A2(
+							_user$project$Util_ops['=>'],
+							_elm_lang$core$Native_Utils.update(
+								model,
+								{
+									pageState: _user$project$Main$Loaded(
+										_user$project$Main$Errored(_p12._0._0._0))
+								}),
+							_elm_lang$core$Platform_Cmd$none);
+					}
+				case 'ExpenseLoaded':
+					if (_p12._0._0.ctor === 'Ok') {
+						return A2(
+							_user$project$Util_ops['=>'],
+							_elm_lang$core$Native_Utils.update(
+								model,
+								{
+									pageState: _user$project$Main$Loaded(
+										_user$project$Main$Expense(_p12._0._0._0))
+								}),
+							_elm_lang$core$Platform_Cmd$none);
+					} else {
+						return A2(
+							_user$project$Util_ops['=>'],
+							_elm_lang$core$Native_Utils.update(
+								model,
+								{
+									pageState: _user$project$Main$Loaded(
+										_user$project$Main$Errored(_p12._0._0._0))
+								}),
+							_elm_lang$core$Platform_Cmd$none);
+					}
+				case 'ExpenseDetailLoaded':
+					if (_p12._0._0.ctor === 'Ok') {
+						return A2(
+							_user$project$Util_ops['=>'],
+							_elm_lang$core$Native_Utils.update(
+								model,
+								{
+									pageState: _user$project$Main$Loaded(
+										_user$project$Main$ExpenseDetail(_p12._0._0._0))
+								}),
+							_elm_lang$core$Platform_Cmd$none);
+					} else {
+						return A2(
+							_user$project$Util_ops['=>'],
+							_elm_lang$core$Native_Utils.update(
+								model,
+								{
+									pageState: _user$project$Main$Loaded(
+										_user$project$Main$Errored(_p12._0._0._0))
+								}),
+							_elm_lang$core$Platform_Cmd$none);
+					}
+				case 'NavMsg':
+					return A2(
+						_user$project$Util_ops['=>'],
+						_elm_lang$core$Native_Utils.update(
+							model,
+							{navState: _p12._0._0}),
+						_elm_lang$core$Platform_Cmd$none);
+				case 'BudgetMsg':
+					if (_p12._1.ctor === 'Budget') {
+						return A5(
+							toPage,
+							_user$project$Main$Budget,
+							_user$project$Main$BudgetMsg,
+							_user$project$Page_Budget$update(session),
+							_p12._0._0,
+							_p12._1._0);
+					} else {
+						break _v7_14;
+					}
+				case 'LoginMsg':
+					if (_p12._1.ctor === 'Login') {
+						var _p13 = A5(toPageWithOut, _user$project$Main$Login, _user$project$Main$LoginMsg, _user$project$Page_Login$update, _p12._0._0, _p12._1._0);
+						var newModel = _p13._0;
+						var cmd = _p13._1;
+						var outMsg = _p13._2;
+						var _p14 = outMsg;
+						if (_p14.ctor === 'Just') {
+							return A3(setSession, newModel, cmd, _p14._0._0);
+						} else {
+							return {ctor: '_Tuple2', _0: newModel, _1: cmd};
+						}
+					} else {
+						break _v7_14;
+					}
+				case 'ProfileMsg':
+					if (_p12._1.ctor === 'Profile') {
+						var _p15 = A5(
+							toPageWithOut,
+							_user$project$Main$Profile,
+							_user$project$Main$ProfileMsg,
+							_user$project$Page_Profile$update(session),
+							_p12._0._0,
+							_p12._1._0);
+						var newModel = _p15._0;
+						var cmd = _p15._1;
+						var outMsg = _p15._2;
+						var _p16 = outMsg;
+						if (_p16.ctor === 'Just') {
+							return A3(setSession, newModel, cmd, _p16._0._0);
+						} else {
+							return {ctor: '_Tuple2', _0: newModel, _1: cmd};
+						}
+					} else {
+						break _v7_14;
+					}
+				case 'ExpenseDetailMsg':
+					if (_p12._1.ctor === 'ExpenseDetail') {
+						return A5(
+							toPage,
+							_user$project$Main$ExpenseDetail,
+							_user$project$Main$ExpenseDetailMsg,
+							_user$project$Page_ExpenseDetail$update(session),
+							_p12._0._0,
+							_p12._1._0);
+					} else {
+						break _v7_14;
+					}
+				default:
+					break _v7_14;
+			}
+		} while(false);
+		return A2(_user$project$Util_ops['=>'], model, _elm_lang$core$Platform_Cmd$none);
+	});
+var _user$project$Main$update = F2(
+	function (msg, model) {
+		return A3(
+			_user$project$Main$updatePage,
+			_user$project$Main$getPage(model.pageState),
+			msg,
+			model);
+	});
+var _user$project$Main$startupUpdate = F2(
+	function (msg, startModel) {
+		var _p17 = startModel;
+		if (_p17.ctor === 'WaitingForSession') {
+			var _p18 = msg;
+			if ((_p18.ctor === 'SetSession') && (_p18._0.ctor === 'Ok')) {
+				var _p19 = A2(_user$project$Main$init, _p17._0, _p18._0._0);
+				var model = _p19._0;
+				var cmd = _p19._1;
+				return {
+					ctor: '_Tuple2',
+					_0: _user$project$Main$HaveSession(model),
+					_1: cmd
+				};
+			} else {
+				return A2(
+					_elm_lang$core$Native_Utils.crash(
+						'Main',
+						{
+							start: {line: 230, column: 24},
+							end: {line: 230, column: 35}
+						}),
+					'Got a non-session message during startup',
+					_p18);
+			}
+		} else {
+			var _p20 = A2(_user$project$Main$update, msg, _p17._0);
+			var newModel = _p20._0;
+			var cmd = _p20._1;
+			return {
+				ctor: '_Tuple2',
+				_0: _user$project$Main$HaveSession(newModel),
+				_1: cmd
+			};
+		}
+	});
+var _user$project$Main$SetRoute = function (a) {
+	return {ctor: 'SetRoute', _0: a};
+};
+var _user$project$Main$SetSession = function (a) {
+	return {ctor: 'SetSession', _0: a};
+};
+var _user$project$Main$startupInit = function (location) {
+	return {
+		ctor: '_Tuple2',
+		_0: _user$project$Main$WaitingForSession(location),
+		_1: A2(_elm_lang$http$Http$send, _user$project$Main$SetSession, _user$project$Request_Session$getSession)
+	};
+};
+var _user$project$Main$main = A2(
+	_elm_lang$navigation$Navigation$program,
+	function (_p21) {
+		return _user$project$Main$SetRoute(
+			_user$project$Route$fromLocation(_p21));
+	},
+	{init: _user$project$Main$startupInit, view: _user$project$Main$startupView, update: _user$project$Main$startupUpdate, subscriptions: _user$project$Main$subscriptions})();
+
 var Elm = {};
-Elm['Page'] = Elm['Page'] || {};
-Elm['Page']['Budget'] = Elm['Page']['Budget'] || {};
-if (typeof _user$project$Page_Budget$main !== 'undefined') {
-    _user$project$Page_Budget$main(Elm['Page']['Budget'], 'Page.Budget', undefined);
+Elm['Main'] = Elm['Main'] || {};
+if (typeof _user$project$Main$main !== 'undefined') {
+    _user$project$Main$main(Elm['Main'], 'Main', undefined);
 }
 
 if (typeof define === "function" && define['amd'])

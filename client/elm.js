@@ -5966,145 +5966,6 @@ var _debois$elm_dom$DOM$Rectangle = F4(
 		return {top: a, left: b, width: c, height: d};
 	});
 
-var _elm_community$easing_functions$Ease$reverse = F2(
-	function (easing, time) {
-		return easing(1 - time);
-	});
-var _elm_community$easing_functions$Ease$flip = F2(
-	function (easing, time) {
-		return 1 - easing(1 - time);
-	});
-var _elm_community$easing_functions$Ease$retour = F2(
-	function (easing, time) {
-		return (_elm_lang$core$Native_Utils.cmp(time, 0.5) < 0) ? easing(time * 2) : A2(_elm_community$easing_functions$Ease$flip, easing, (time - 0.5) * 2);
-	});
-var _elm_community$easing_functions$Ease$inOut = F3(
-	function (e1, e2, time) {
-		return (_elm_lang$core$Native_Utils.cmp(time, 0.5) < 0) ? (e1(time * 2) / 2) : (0.5 + (e2((time - 0.5) * 2) / 2));
-	});
-var _elm_community$easing_functions$Ease$inElastic = function (time) {
-	if (_elm_lang$core$Native_Utils.eq(time, 0.0)) {
-		return 0.0;
-	} else {
-		var t = time - 1;
-		var p = 0.3;
-		var s = 7.5e-2;
-		return 0 - (Math.pow(2, 10 * t) * _elm_lang$core$Basics$sin(((t - s) * (2 * _elm_lang$core$Basics$pi)) / p));
-	}
-};
-var _elm_community$easing_functions$Ease$outElastic = _elm_community$easing_functions$Ease$flip(_elm_community$easing_functions$Ease$inElastic);
-var _elm_community$easing_functions$Ease$inOutElastic = A2(_elm_community$easing_functions$Ease$inOut, _elm_community$easing_functions$Ease$inElastic, _elm_community$easing_functions$Ease$outElastic);
-var _elm_community$easing_functions$Ease$outBounce = function (time) {
-	var t4 = time - (2.625 / 2.75);
-	var t3 = time - (2.25 / 2.75);
-	var t2 = time - (1.5 / 2.75);
-	var a = 7.5625;
-	return (_elm_lang$core$Native_Utils.cmp(time, 1 / 2.75) < 0) ? ((a * time) * time) : ((_elm_lang$core$Native_Utils.cmp(time, 2 / 2.75) < 0) ? (((a * t2) * t2) + 0.75) : ((_elm_lang$core$Native_Utils.cmp(time, 2.5 / 2.75) < 0) ? (((a * t3) * t3) + 0.9375) : (((a * t4) * t4) + 0.984375)));
-};
-var _elm_community$easing_functions$Ease$inBounce = _elm_community$easing_functions$Ease$flip(_elm_community$easing_functions$Ease$outBounce);
-var _elm_community$easing_functions$Ease$inOutBounce = A2(_elm_community$easing_functions$Ease$inOut, _elm_community$easing_functions$Ease$inBounce, _elm_community$easing_functions$Ease$outBounce);
-var _elm_community$easing_functions$Ease$inBack = function (time) {
-	return (time * time) * ((2.70158 * time) - 1.70158);
-};
-var _elm_community$easing_functions$Ease$outBack = _elm_community$easing_functions$Ease$flip(_elm_community$easing_functions$Ease$inBack);
-var _elm_community$easing_functions$Ease$inOutBack = A2(_elm_community$easing_functions$Ease$inOut, _elm_community$easing_functions$Ease$inBack, _elm_community$easing_functions$Ease$outBack);
-var _elm_community$easing_functions$Ease$outCirc = function (time) {
-	return _elm_lang$core$Basics$sqrt(
-		1 - Math.pow(time - 1, 2));
-};
-var _elm_community$easing_functions$Ease$inCirc = _elm_community$easing_functions$Ease$flip(_elm_community$easing_functions$Ease$outCirc);
-var _elm_community$easing_functions$Ease$inOutCirc = A2(_elm_community$easing_functions$Ease$inOut, _elm_community$easing_functions$Ease$inCirc, _elm_community$easing_functions$Ease$outCirc);
-var _elm_community$easing_functions$Ease$inExpo = function (time) {
-	return _elm_lang$core$Native_Utils.eq(time, 0.0) ? 0.0 : Math.pow(2, 10 * (time - 1));
-};
-var _elm_community$easing_functions$Ease$outExpo = _elm_community$easing_functions$Ease$flip(_elm_community$easing_functions$Ease$inExpo);
-var _elm_community$easing_functions$Ease$inOutExpo = A2(_elm_community$easing_functions$Ease$inOut, _elm_community$easing_functions$Ease$inExpo, _elm_community$easing_functions$Ease$outExpo);
-var _elm_community$easing_functions$Ease$outSine = function (time) {
-	return _elm_lang$core$Basics$sin(time * (_elm_lang$core$Basics$pi / 2));
-};
-var _elm_community$easing_functions$Ease$inSine = _elm_community$easing_functions$Ease$flip(_elm_community$easing_functions$Ease$outSine);
-var _elm_community$easing_functions$Ease$inOutSine = A2(_elm_community$easing_functions$Ease$inOut, _elm_community$easing_functions$Ease$inSine, _elm_community$easing_functions$Ease$outSine);
-var _elm_community$easing_functions$Ease$inQuint = function (time) {
-	return Math.pow(time, 5);
-};
-var _elm_community$easing_functions$Ease$outQuint = _elm_community$easing_functions$Ease$flip(_elm_community$easing_functions$Ease$inQuint);
-var _elm_community$easing_functions$Ease$inOutQuint = A2(_elm_community$easing_functions$Ease$inOut, _elm_community$easing_functions$Ease$inQuint, _elm_community$easing_functions$Ease$outQuint);
-var _elm_community$easing_functions$Ease$inQuart = function (time) {
-	return Math.pow(time, 4);
-};
-var _elm_community$easing_functions$Ease$outQuart = _elm_community$easing_functions$Ease$flip(_elm_community$easing_functions$Ease$inQuart);
-var _elm_community$easing_functions$Ease$inOutQuart = A2(_elm_community$easing_functions$Ease$inOut, _elm_community$easing_functions$Ease$inQuart, _elm_community$easing_functions$Ease$outQuart);
-var _elm_community$easing_functions$Ease$inCubic = function (time) {
-	return Math.pow(time, 3);
-};
-var _elm_community$easing_functions$Ease$outCubic = _elm_community$easing_functions$Ease$flip(_elm_community$easing_functions$Ease$inCubic);
-var _elm_community$easing_functions$Ease$inOutCubic = A2(_elm_community$easing_functions$Ease$inOut, _elm_community$easing_functions$Ease$inCubic, _elm_community$easing_functions$Ease$outCubic);
-var _elm_community$easing_functions$Ease$inQuad = function (time) {
-	return Math.pow(time, 2);
-};
-var _elm_community$easing_functions$Ease$outQuad = _elm_community$easing_functions$Ease$flip(_elm_community$easing_functions$Ease$inQuad);
-var _elm_community$easing_functions$Ease$inOutQuad = A2(_elm_community$easing_functions$Ease$inOut, _elm_community$easing_functions$Ease$inQuad, _elm_community$easing_functions$Ease$outQuad);
-var _elm_community$easing_functions$Ease$bezier = F5(
-	function (x1, y1, x2, y2, time) {
-		var pair = F4(
-			function (interpolate, _p1, _p0, v) {
-				var _p2 = _p1;
-				var _p3 = _p0;
-				return {
-					ctor: '_Tuple2',
-					_0: A3(interpolate, _p2._0, _p3._0, v),
-					_1: A3(interpolate, _p2._1, _p3._1, v)
-				};
-			});
-		var lerp = F3(
-			function (from, to, v) {
-				return from + ((to - from) * v);
-			});
-		var casteljau = function (ps) {
-			casteljau:
-			while (true) {
-				var _p4 = ps;
-				if (((_p4.ctor === '::') && (_p4._0.ctor === '_Tuple2')) && (_p4._1.ctor === '[]')) {
-					return _p4._0._1;
-				} else {
-					var _p5 = _p4;
-					var _v3 = A3(
-						_elm_lang$core$List$map2,
-						F2(
-							function (x, y) {
-								return A4(pair, lerp, x, y, time);
-							}),
-						_p5,
-						A2(
-							_elm_lang$core$Maybe$withDefault,
-							{ctor: '[]'},
-							_elm_lang$core$List$tail(_p5)));
-					ps = _v3;
-					continue casteljau;
-				}
-			}
-		};
-		return casteljau(
-			{
-				ctor: '::',
-				_0: {ctor: '_Tuple2', _0: 0, _1: 0},
-				_1: {
-					ctor: '::',
-					_0: {ctor: '_Tuple2', _0: x1, _1: y1},
-					_1: {
-						ctor: '::',
-						_0: {ctor: '_Tuple2', _0: x2, _1: y2},
-						_1: {
-							ctor: '::',
-							_0: {ctor: '_Tuple2', _0: 1, _1: 1},
-							_1: {ctor: '[]'}
-						}
-					}
-				}
-			});
-	});
-var _elm_community$easing_functions$Ease$linear = _elm_lang$core$Basics$identity;
-
 var _elm_lang$animation_frame$Native_AnimationFrame = function()
 {
 
@@ -10490,347 +10351,6 @@ var _elm_lang$navigation$Navigation$onEffects = F4(
 			stepState);
 	});
 _elm_lang$core$Native_Platform.effectManagers['Navigation'] = {pkg: 'elm-lang/navigation', init: _elm_lang$navigation$Navigation$init, onEffects: _elm_lang$navigation$Navigation$onEffects, onSelfMsg: _elm_lang$navigation$Navigation$onSelfMsg, tag: 'fx', cmdMap: _elm_lang$navigation$Navigation$cmdMap, subMap: _elm_lang$navigation$Navigation$subMap};
-
-var _elm_lang$svg$Svg$map = _elm_lang$virtual_dom$VirtualDom$map;
-var _elm_lang$svg$Svg$text = _elm_lang$virtual_dom$VirtualDom$text;
-var _elm_lang$svg$Svg$svgNamespace = A2(
-	_elm_lang$virtual_dom$VirtualDom$property,
-	'namespace',
-	_elm_lang$core$Json_Encode$string('http://www.w3.org/2000/svg'));
-var _elm_lang$svg$Svg$node = F3(
-	function (name, attributes, children) {
-		return A3(
-			_elm_lang$virtual_dom$VirtualDom$node,
-			name,
-			{ctor: '::', _0: _elm_lang$svg$Svg$svgNamespace, _1: attributes},
-			children);
-	});
-var _elm_lang$svg$Svg$svg = _elm_lang$svg$Svg$node('svg');
-var _elm_lang$svg$Svg$foreignObject = _elm_lang$svg$Svg$node('foreignObject');
-var _elm_lang$svg$Svg$animate = _elm_lang$svg$Svg$node('animate');
-var _elm_lang$svg$Svg$animateColor = _elm_lang$svg$Svg$node('animateColor');
-var _elm_lang$svg$Svg$animateMotion = _elm_lang$svg$Svg$node('animateMotion');
-var _elm_lang$svg$Svg$animateTransform = _elm_lang$svg$Svg$node('animateTransform');
-var _elm_lang$svg$Svg$mpath = _elm_lang$svg$Svg$node('mpath');
-var _elm_lang$svg$Svg$set = _elm_lang$svg$Svg$node('set');
-var _elm_lang$svg$Svg$a = _elm_lang$svg$Svg$node('a');
-var _elm_lang$svg$Svg$defs = _elm_lang$svg$Svg$node('defs');
-var _elm_lang$svg$Svg$g = _elm_lang$svg$Svg$node('g');
-var _elm_lang$svg$Svg$marker = _elm_lang$svg$Svg$node('marker');
-var _elm_lang$svg$Svg$mask = _elm_lang$svg$Svg$node('mask');
-var _elm_lang$svg$Svg$pattern = _elm_lang$svg$Svg$node('pattern');
-var _elm_lang$svg$Svg$switch = _elm_lang$svg$Svg$node('switch');
-var _elm_lang$svg$Svg$symbol = _elm_lang$svg$Svg$node('symbol');
-var _elm_lang$svg$Svg$desc = _elm_lang$svg$Svg$node('desc');
-var _elm_lang$svg$Svg$metadata = _elm_lang$svg$Svg$node('metadata');
-var _elm_lang$svg$Svg$title = _elm_lang$svg$Svg$node('title');
-var _elm_lang$svg$Svg$feBlend = _elm_lang$svg$Svg$node('feBlend');
-var _elm_lang$svg$Svg$feColorMatrix = _elm_lang$svg$Svg$node('feColorMatrix');
-var _elm_lang$svg$Svg$feComponentTransfer = _elm_lang$svg$Svg$node('feComponentTransfer');
-var _elm_lang$svg$Svg$feComposite = _elm_lang$svg$Svg$node('feComposite');
-var _elm_lang$svg$Svg$feConvolveMatrix = _elm_lang$svg$Svg$node('feConvolveMatrix');
-var _elm_lang$svg$Svg$feDiffuseLighting = _elm_lang$svg$Svg$node('feDiffuseLighting');
-var _elm_lang$svg$Svg$feDisplacementMap = _elm_lang$svg$Svg$node('feDisplacementMap');
-var _elm_lang$svg$Svg$feFlood = _elm_lang$svg$Svg$node('feFlood');
-var _elm_lang$svg$Svg$feFuncA = _elm_lang$svg$Svg$node('feFuncA');
-var _elm_lang$svg$Svg$feFuncB = _elm_lang$svg$Svg$node('feFuncB');
-var _elm_lang$svg$Svg$feFuncG = _elm_lang$svg$Svg$node('feFuncG');
-var _elm_lang$svg$Svg$feFuncR = _elm_lang$svg$Svg$node('feFuncR');
-var _elm_lang$svg$Svg$feGaussianBlur = _elm_lang$svg$Svg$node('feGaussianBlur');
-var _elm_lang$svg$Svg$feImage = _elm_lang$svg$Svg$node('feImage');
-var _elm_lang$svg$Svg$feMerge = _elm_lang$svg$Svg$node('feMerge');
-var _elm_lang$svg$Svg$feMergeNode = _elm_lang$svg$Svg$node('feMergeNode');
-var _elm_lang$svg$Svg$feMorphology = _elm_lang$svg$Svg$node('feMorphology');
-var _elm_lang$svg$Svg$feOffset = _elm_lang$svg$Svg$node('feOffset');
-var _elm_lang$svg$Svg$feSpecularLighting = _elm_lang$svg$Svg$node('feSpecularLighting');
-var _elm_lang$svg$Svg$feTile = _elm_lang$svg$Svg$node('feTile');
-var _elm_lang$svg$Svg$feTurbulence = _elm_lang$svg$Svg$node('feTurbulence');
-var _elm_lang$svg$Svg$font = _elm_lang$svg$Svg$node('font');
-var _elm_lang$svg$Svg$linearGradient = _elm_lang$svg$Svg$node('linearGradient');
-var _elm_lang$svg$Svg$radialGradient = _elm_lang$svg$Svg$node('radialGradient');
-var _elm_lang$svg$Svg$stop = _elm_lang$svg$Svg$node('stop');
-var _elm_lang$svg$Svg$circle = _elm_lang$svg$Svg$node('circle');
-var _elm_lang$svg$Svg$ellipse = _elm_lang$svg$Svg$node('ellipse');
-var _elm_lang$svg$Svg$image = _elm_lang$svg$Svg$node('image');
-var _elm_lang$svg$Svg$line = _elm_lang$svg$Svg$node('line');
-var _elm_lang$svg$Svg$path = _elm_lang$svg$Svg$node('path');
-var _elm_lang$svg$Svg$polygon = _elm_lang$svg$Svg$node('polygon');
-var _elm_lang$svg$Svg$polyline = _elm_lang$svg$Svg$node('polyline');
-var _elm_lang$svg$Svg$rect = _elm_lang$svg$Svg$node('rect');
-var _elm_lang$svg$Svg$use = _elm_lang$svg$Svg$node('use');
-var _elm_lang$svg$Svg$feDistantLight = _elm_lang$svg$Svg$node('feDistantLight');
-var _elm_lang$svg$Svg$fePointLight = _elm_lang$svg$Svg$node('fePointLight');
-var _elm_lang$svg$Svg$feSpotLight = _elm_lang$svg$Svg$node('feSpotLight');
-var _elm_lang$svg$Svg$altGlyph = _elm_lang$svg$Svg$node('altGlyph');
-var _elm_lang$svg$Svg$altGlyphDef = _elm_lang$svg$Svg$node('altGlyphDef');
-var _elm_lang$svg$Svg$altGlyphItem = _elm_lang$svg$Svg$node('altGlyphItem');
-var _elm_lang$svg$Svg$glyph = _elm_lang$svg$Svg$node('glyph');
-var _elm_lang$svg$Svg$glyphRef = _elm_lang$svg$Svg$node('glyphRef');
-var _elm_lang$svg$Svg$textPath = _elm_lang$svg$Svg$node('textPath');
-var _elm_lang$svg$Svg$text_ = _elm_lang$svg$Svg$node('text');
-var _elm_lang$svg$Svg$tref = _elm_lang$svg$Svg$node('tref');
-var _elm_lang$svg$Svg$tspan = _elm_lang$svg$Svg$node('tspan');
-var _elm_lang$svg$Svg$clipPath = _elm_lang$svg$Svg$node('clipPath');
-var _elm_lang$svg$Svg$colorProfile = _elm_lang$svg$Svg$node('colorProfile');
-var _elm_lang$svg$Svg$cursor = _elm_lang$svg$Svg$node('cursor');
-var _elm_lang$svg$Svg$filter = _elm_lang$svg$Svg$node('filter');
-var _elm_lang$svg$Svg$script = _elm_lang$svg$Svg$node('script');
-var _elm_lang$svg$Svg$style = _elm_lang$svg$Svg$node('style');
-var _elm_lang$svg$Svg$view = _elm_lang$svg$Svg$node('view');
-
-var _elm_lang$svg$Svg_Attributes$writingMode = _elm_lang$virtual_dom$VirtualDom$attribute('writing-mode');
-var _elm_lang$svg$Svg_Attributes$wordSpacing = _elm_lang$virtual_dom$VirtualDom$attribute('word-spacing');
-var _elm_lang$svg$Svg_Attributes$visibility = _elm_lang$virtual_dom$VirtualDom$attribute('visibility');
-var _elm_lang$svg$Svg_Attributes$unicodeBidi = _elm_lang$virtual_dom$VirtualDom$attribute('unicode-bidi');
-var _elm_lang$svg$Svg_Attributes$textRendering = _elm_lang$virtual_dom$VirtualDom$attribute('text-rendering');
-var _elm_lang$svg$Svg_Attributes$textDecoration = _elm_lang$virtual_dom$VirtualDom$attribute('text-decoration');
-var _elm_lang$svg$Svg_Attributes$textAnchor = _elm_lang$virtual_dom$VirtualDom$attribute('text-anchor');
-var _elm_lang$svg$Svg_Attributes$stroke = _elm_lang$virtual_dom$VirtualDom$attribute('stroke');
-var _elm_lang$svg$Svg_Attributes$strokeWidth = _elm_lang$virtual_dom$VirtualDom$attribute('stroke-width');
-var _elm_lang$svg$Svg_Attributes$strokeOpacity = _elm_lang$virtual_dom$VirtualDom$attribute('stroke-opacity');
-var _elm_lang$svg$Svg_Attributes$strokeMiterlimit = _elm_lang$virtual_dom$VirtualDom$attribute('stroke-miterlimit');
-var _elm_lang$svg$Svg_Attributes$strokeLinejoin = _elm_lang$virtual_dom$VirtualDom$attribute('stroke-linejoin');
-var _elm_lang$svg$Svg_Attributes$strokeLinecap = _elm_lang$virtual_dom$VirtualDom$attribute('stroke-linecap');
-var _elm_lang$svg$Svg_Attributes$strokeDashoffset = _elm_lang$virtual_dom$VirtualDom$attribute('stroke-dashoffset');
-var _elm_lang$svg$Svg_Attributes$strokeDasharray = _elm_lang$virtual_dom$VirtualDom$attribute('stroke-dasharray');
-var _elm_lang$svg$Svg_Attributes$stopOpacity = _elm_lang$virtual_dom$VirtualDom$attribute('stop-opacity');
-var _elm_lang$svg$Svg_Attributes$stopColor = _elm_lang$virtual_dom$VirtualDom$attribute('stop-color');
-var _elm_lang$svg$Svg_Attributes$shapeRendering = _elm_lang$virtual_dom$VirtualDom$attribute('shape-rendering');
-var _elm_lang$svg$Svg_Attributes$pointerEvents = _elm_lang$virtual_dom$VirtualDom$attribute('pointer-events');
-var _elm_lang$svg$Svg_Attributes$overflow = _elm_lang$virtual_dom$VirtualDom$attribute('overflow');
-var _elm_lang$svg$Svg_Attributes$opacity = _elm_lang$virtual_dom$VirtualDom$attribute('opacity');
-var _elm_lang$svg$Svg_Attributes$mask = _elm_lang$virtual_dom$VirtualDom$attribute('mask');
-var _elm_lang$svg$Svg_Attributes$markerStart = _elm_lang$virtual_dom$VirtualDom$attribute('marker-start');
-var _elm_lang$svg$Svg_Attributes$markerMid = _elm_lang$virtual_dom$VirtualDom$attribute('marker-mid');
-var _elm_lang$svg$Svg_Attributes$markerEnd = _elm_lang$virtual_dom$VirtualDom$attribute('marker-end');
-var _elm_lang$svg$Svg_Attributes$lightingColor = _elm_lang$virtual_dom$VirtualDom$attribute('lighting-color');
-var _elm_lang$svg$Svg_Attributes$letterSpacing = _elm_lang$virtual_dom$VirtualDom$attribute('letter-spacing');
-var _elm_lang$svg$Svg_Attributes$kerning = _elm_lang$virtual_dom$VirtualDom$attribute('kerning');
-var _elm_lang$svg$Svg_Attributes$imageRendering = _elm_lang$virtual_dom$VirtualDom$attribute('image-rendering');
-var _elm_lang$svg$Svg_Attributes$glyphOrientationVertical = _elm_lang$virtual_dom$VirtualDom$attribute('glyph-orientation-vertical');
-var _elm_lang$svg$Svg_Attributes$glyphOrientationHorizontal = _elm_lang$virtual_dom$VirtualDom$attribute('glyph-orientation-horizontal');
-var _elm_lang$svg$Svg_Attributes$fontWeight = _elm_lang$virtual_dom$VirtualDom$attribute('font-weight');
-var _elm_lang$svg$Svg_Attributes$fontVariant = _elm_lang$virtual_dom$VirtualDom$attribute('font-variant');
-var _elm_lang$svg$Svg_Attributes$fontStyle = _elm_lang$virtual_dom$VirtualDom$attribute('font-style');
-var _elm_lang$svg$Svg_Attributes$fontStretch = _elm_lang$virtual_dom$VirtualDom$attribute('font-stretch');
-var _elm_lang$svg$Svg_Attributes$fontSize = _elm_lang$virtual_dom$VirtualDom$attribute('font-size');
-var _elm_lang$svg$Svg_Attributes$fontSizeAdjust = _elm_lang$virtual_dom$VirtualDom$attribute('font-size-adjust');
-var _elm_lang$svg$Svg_Attributes$fontFamily = _elm_lang$virtual_dom$VirtualDom$attribute('font-family');
-var _elm_lang$svg$Svg_Attributes$floodOpacity = _elm_lang$virtual_dom$VirtualDom$attribute('flood-opacity');
-var _elm_lang$svg$Svg_Attributes$floodColor = _elm_lang$virtual_dom$VirtualDom$attribute('flood-color');
-var _elm_lang$svg$Svg_Attributes$filter = _elm_lang$virtual_dom$VirtualDom$attribute('filter');
-var _elm_lang$svg$Svg_Attributes$fill = _elm_lang$virtual_dom$VirtualDom$attribute('fill');
-var _elm_lang$svg$Svg_Attributes$fillRule = _elm_lang$virtual_dom$VirtualDom$attribute('fill-rule');
-var _elm_lang$svg$Svg_Attributes$fillOpacity = _elm_lang$virtual_dom$VirtualDom$attribute('fill-opacity');
-var _elm_lang$svg$Svg_Attributes$enableBackground = _elm_lang$virtual_dom$VirtualDom$attribute('enable-background');
-var _elm_lang$svg$Svg_Attributes$dominantBaseline = _elm_lang$virtual_dom$VirtualDom$attribute('dominant-baseline');
-var _elm_lang$svg$Svg_Attributes$display = _elm_lang$virtual_dom$VirtualDom$attribute('display');
-var _elm_lang$svg$Svg_Attributes$direction = _elm_lang$virtual_dom$VirtualDom$attribute('direction');
-var _elm_lang$svg$Svg_Attributes$cursor = _elm_lang$virtual_dom$VirtualDom$attribute('cursor');
-var _elm_lang$svg$Svg_Attributes$color = _elm_lang$virtual_dom$VirtualDom$attribute('color');
-var _elm_lang$svg$Svg_Attributes$colorRendering = _elm_lang$virtual_dom$VirtualDom$attribute('color-rendering');
-var _elm_lang$svg$Svg_Attributes$colorProfile = _elm_lang$virtual_dom$VirtualDom$attribute('color-profile');
-var _elm_lang$svg$Svg_Attributes$colorInterpolation = _elm_lang$virtual_dom$VirtualDom$attribute('color-interpolation');
-var _elm_lang$svg$Svg_Attributes$colorInterpolationFilters = _elm_lang$virtual_dom$VirtualDom$attribute('color-interpolation-filters');
-var _elm_lang$svg$Svg_Attributes$clip = _elm_lang$virtual_dom$VirtualDom$attribute('clip');
-var _elm_lang$svg$Svg_Attributes$clipRule = _elm_lang$virtual_dom$VirtualDom$attribute('clip-rule');
-var _elm_lang$svg$Svg_Attributes$clipPath = _elm_lang$virtual_dom$VirtualDom$attribute('clip-path');
-var _elm_lang$svg$Svg_Attributes$baselineShift = _elm_lang$virtual_dom$VirtualDom$attribute('baseline-shift');
-var _elm_lang$svg$Svg_Attributes$alignmentBaseline = _elm_lang$virtual_dom$VirtualDom$attribute('alignment-baseline');
-var _elm_lang$svg$Svg_Attributes$zoomAndPan = _elm_lang$virtual_dom$VirtualDom$attribute('zoomAndPan');
-var _elm_lang$svg$Svg_Attributes$z = _elm_lang$virtual_dom$VirtualDom$attribute('z');
-var _elm_lang$svg$Svg_Attributes$yChannelSelector = _elm_lang$virtual_dom$VirtualDom$attribute('yChannelSelector');
-var _elm_lang$svg$Svg_Attributes$y2 = _elm_lang$virtual_dom$VirtualDom$attribute('y2');
-var _elm_lang$svg$Svg_Attributes$y1 = _elm_lang$virtual_dom$VirtualDom$attribute('y1');
-var _elm_lang$svg$Svg_Attributes$y = _elm_lang$virtual_dom$VirtualDom$attribute('y');
-var _elm_lang$svg$Svg_Attributes$xmlSpace = A2(_elm_lang$virtual_dom$VirtualDom$attributeNS, 'http://www.w3.org/XML/1998/namespace', 'xml:space');
-var _elm_lang$svg$Svg_Attributes$xmlLang = A2(_elm_lang$virtual_dom$VirtualDom$attributeNS, 'http://www.w3.org/XML/1998/namespace', 'xml:lang');
-var _elm_lang$svg$Svg_Attributes$xmlBase = A2(_elm_lang$virtual_dom$VirtualDom$attributeNS, 'http://www.w3.org/XML/1998/namespace', 'xml:base');
-var _elm_lang$svg$Svg_Attributes$xlinkType = A2(_elm_lang$virtual_dom$VirtualDom$attributeNS, 'http://www.w3.org/1999/xlink', 'xlink:type');
-var _elm_lang$svg$Svg_Attributes$xlinkTitle = A2(_elm_lang$virtual_dom$VirtualDom$attributeNS, 'http://www.w3.org/1999/xlink', 'xlink:title');
-var _elm_lang$svg$Svg_Attributes$xlinkShow = A2(_elm_lang$virtual_dom$VirtualDom$attributeNS, 'http://www.w3.org/1999/xlink', 'xlink:show');
-var _elm_lang$svg$Svg_Attributes$xlinkRole = A2(_elm_lang$virtual_dom$VirtualDom$attributeNS, 'http://www.w3.org/1999/xlink', 'xlink:role');
-var _elm_lang$svg$Svg_Attributes$xlinkHref = A2(_elm_lang$virtual_dom$VirtualDom$attributeNS, 'http://www.w3.org/1999/xlink', 'xlink:href');
-var _elm_lang$svg$Svg_Attributes$xlinkArcrole = A2(_elm_lang$virtual_dom$VirtualDom$attributeNS, 'http://www.w3.org/1999/xlink', 'xlink:arcrole');
-var _elm_lang$svg$Svg_Attributes$xlinkActuate = A2(_elm_lang$virtual_dom$VirtualDom$attributeNS, 'http://www.w3.org/1999/xlink', 'xlink:actuate');
-var _elm_lang$svg$Svg_Attributes$xChannelSelector = _elm_lang$virtual_dom$VirtualDom$attribute('xChannelSelector');
-var _elm_lang$svg$Svg_Attributes$x2 = _elm_lang$virtual_dom$VirtualDom$attribute('x2');
-var _elm_lang$svg$Svg_Attributes$x1 = _elm_lang$virtual_dom$VirtualDom$attribute('x1');
-var _elm_lang$svg$Svg_Attributes$xHeight = _elm_lang$virtual_dom$VirtualDom$attribute('x-height');
-var _elm_lang$svg$Svg_Attributes$x = _elm_lang$virtual_dom$VirtualDom$attribute('x');
-var _elm_lang$svg$Svg_Attributes$widths = _elm_lang$virtual_dom$VirtualDom$attribute('widths');
-var _elm_lang$svg$Svg_Attributes$width = _elm_lang$virtual_dom$VirtualDom$attribute('width');
-var _elm_lang$svg$Svg_Attributes$viewTarget = _elm_lang$virtual_dom$VirtualDom$attribute('viewTarget');
-var _elm_lang$svg$Svg_Attributes$viewBox = _elm_lang$virtual_dom$VirtualDom$attribute('viewBox');
-var _elm_lang$svg$Svg_Attributes$vertOriginY = _elm_lang$virtual_dom$VirtualDom$attribute('vert-origin-y');
-var _elm_lang$svg$Svg_Attributes$vertOriginX = _elm_lang$virtual_dom$VirtualDom$attribute('vert-origin-x');
-var _elm_lang$svg$Svg_Attributes$vertAdvY = _elm_lang$virtual_dom$VirtualDom$attribute('vert-adv-y');
-var _elm_lang$svg$Svg_Attributes$version = _elm_lang$virtual_dom$VirtualDom$attribute('version');
-var _elm_lang$svg$Svg_Attributes$values = _elm_lang$virtual_dom$VirtualDom$attribute('values');
-var _elm_lang$svg$Svg_Attributes$vMathematical = _elm_lang$virtual_dom$VirtualDom$attribute('v-mathematical');
-var _elm_lang$svg$Svg_Attributes$vIdeographic = _elm_lang$virtual_dom$VirtualDom$attribute('v-ideographic');
-var _elm_lang$svg$Svg_Attributes$vHanging = _elm_lang$virtual_dom$VirtualDom$attribute('v-hanging');
-var _elm_lang$svg$Svg_Attributes$vAlphabetic = _elm_lang$virtual_dom$VirtualDom$attribute('v-alphabetic');
-var _elm_lang$svg$Svg_Attributes$unitsPerEm = _elm_lang$virtual_dom$VirtualDom$attribute('units-per-em');
-var _elm_lang$svg$Svg_Attributes$unicodeRange = _elm_lang$virtual_dom$VirtualDom$attribute('unicode-range');
-var _elm_lang$svg$Svg_Attributes$unicode = _elm_lang$virtual_dom$VirtualDom$attribute('unicode');
-var _elm_lang$svg$Svg_Attributes$underlineThickness = _elm_lang$virtual_dom$VirtualDom$attribute('underline-thickness');
-var _elm_lang$svg$Svg_Attributes$underlinePosition = _elm_lang$virtual_dom$VirtualDom$attribute('underline-position');
-var _elm_lang$svg$Svg_Attributes$u2 = _elm_lang$virtual_dom$VirtualDom$attribute('u2');
-var _elm_lang$svg$Svg_Attributes$u1 = _elm_lang$virtual_dom$VirtualDom$attribute('u1');
-var _elm_lang$svg$Svg_Attributes$type_ = _elm_lang$virtual_dom$VirtualDom$attribute('type');
-var _elm_lang$svg$Svg_Attributes$transform = _elm_lang$virtual_dom$VirtualDom$attribute('transform');
-var _elm_lang$svg$Svg_Attributes$to = _elm_lang$virtual_dom$VirtualDom$attribute('to');
-var _elm_lang$svg$Svg_Attributes$title = _elm_lang$virtual_dom$VirtualDom$attribute('title');
-var _elm_lang$svg$Svg_Attributes$textLength = _elm_lang$virtual_dom$VirtualDom$attribute('textLength');
-var _elm_lang$svg$Svg_Attributes$targetY = _elm_lang$virtual_dom$VirtualDom$attribute('targetY');
-var _elm_lang$svg$Svg_Attributes$targetX = _elm_lang$virtual_dom$VirtualDom$attribute('targetX');
-var _elm_lang$svg$Svg_Attributes$target = _elm_lang$virtual_dom$VirtualDom$attribute('target');
-var _elm_lang$svg$Svg_Attributes$tableValues = _elm_lang$virtual_dom$VirtualDom$attribute('tableValues');
-var _elm_lang$svg$Svg_Attributes$systemLanguage = _elm_lang$virtual_dom$VirtualDom$attribute('systemLanguage');
-var _elm_lang$svg$Svg_Attributes$surfaceScale = _elm_lang$virtual_dom$VirtualDom$attribute('surfaceScale');
-var _elm_lang$svg$Svg_Attributes$style = _elm_lang$virtual_dom$VirtualDom$attribute('style');
-var _elm_lang$svg$Svg_Attributes$string = _elm_lang$virtual_dom$VirtualDom$attribute('string');
-var _elm_lang$svg$Svg_Attributes$strikethroughThickness = _elm_lang$virtual_dom$VirtualDom$attribute('strikethrough-thickness');
-var _elm_lang$svg$Svg_Attributes$strikethroughPosition = _elm_lang$virtual_dom$VirtualDom$attribute('strikethrough-position');
-var _elm_lang$svg$Svg_Attributes$stitchTiles = _elm_lang$virtual_dom$VirtualDom$attribute('stitchTiles');
-var _elm_lang$svg$Svg_Attributes$stemv = _elm_lang$virtual_dom$VirtualDom$attribute('stemv');
-var _elm_lang$svg$Svg_Attributes$stemh = _elm_lang$virtual_dom$VirtualDom$attribute('stemh');
-var _elm_lang$svg$Svg_Attributes$stdDeviation = _elm_lang$virtual_dom$VirtualDom$attribute('stdDeviation');
-var _elm_lang$svg$Svg_Attributes$startOffset = _elm_lang$virtual_dom$VirtualDom$attribute('startOffset');
-var _elm_lang$svg$Svg_Attributes$spreadMethod = _elm_lang$virtual_dom$VirtualDom$attribute('spreadMethod');
-var _elm_lang$svg$Svg_Attributes$speed = _elm_lang$virtual_dom$VirtualDom$attribute('speed');
-var _elm_lang$svg$Svg_Attributes$specularExponent = _elm_lang$virtual_dom$VirtualDom$attribute('specularExponent');
-var _elm_lang$svg$Svg_Attributes$specularConstant = _elm_lang$virtual_dom$VirtualDom$attribute('specularConstant');
-var _elm_lang$svg$Svg_Attributes$spacing = _elm_lang$virtual_dom$VirtualDom$attribute('spacing');
-var _elm_lang$svg$Svg_Attributes$slope = _elm_lang$virtual_dom$VirtualDom$attribute('slope');
-var _elm_lang$svg$Svg_Attributes$seed = _elm_lang$virtual_dom$VirtualDom$attribute('seed');
-var _elm_lang$svg$Svg_Attributes$scale = _elm_lang$virtual_dom$VirtualDom$attribute('scale');
-var _elm_lang$svg$Svg_Attributes$ry = _elm_lang$virtual_dom$VirtualDom$attribute('ry');
-var _elm_lang$svg$Svg_Attributes$rx = _elm_lang$virtual_dom$VirtualDom$attribute('rx');
-var _elm_lang$svg$Svg_Attributes$rotate = _elm_lang$virtual_dom$VirtualDom$attribute('rotate');
-var _elm_lang$svg$Svg_Attributes$result = _elm_lang$virtual_dom$VirtualDom$attribute('result');
-var _elm_lang$svg$Svg_Attributes$restart = _elm_lang$virtual_dom$VirtualDom$attribute('restart');
-var _elm_lang$svg$Svg_Attributes$requiredFeatures = _elm_lang$virtual_dom$VirtualDom$attribute('requiredFeatures');
-var _elm_lang$svg$Svg_Attributes$requiredExtensions = _elm_lang$virtual_dom$VirtualDom$attribute('requiredExtensions');
-var _elm_lang$svg$Svg_Attributes$repeatDur = _elm_lang$virtual_dom$VirtualDom$attribute('repeatDur');
-var _elm_lang$svg$Svg_Attributes$repeatCount = _elm_lang$virtual_dom$VirtualDom$attribute('repeatCount');
-var _elm_lang$svg$Svg_Attributes$renderingIntent = _elm_lang$virtual_dom$VirtualDom$attribute('rendering-intent');
-var _elm_lang$svg$Svg_Attributes$refY = _elm_lang$virtual_dom$VirtualDom$attribute('refY');
-var _elm_lang$svg$Svg_Attributes$refX = _elm_lang$virtual_dom$VirtualDom$attribute('refX');
-var _elm_lang$svg$Svg_Attributes$radius = _elm_lang$virtual_dom$VirtualDom$attribute('radius');
-var _elm_lang$svg$Svg_Attributes$r = _elm_lang$virtual_dom$VirtualDom$attribute('r');
-var _elm_lang$svg$Svg_Attributes$primitiveUnits = _elm_lang$virtual_dom$VirtualDom$attribute('primitiveUnits');
-var _elm_lang$svg$Svg_Attributes$preserveAspectRatio = _elm_lang$virtual_dom$VirtualDom$attribute('preserveAspectRatio');
-var _elm_lang$svg$Svg_Attributes$preserveAlpha = _elm_lang$virtual_dom$VirtualDom$attribute('preserveAlpha');
-var _elm_lang$svg$Svg_Attributes$pointsAtZ = _elm_lang$virtual_dom$VirtualDom$attribute('pointsAtZ');
-var _elm_lang$svg$Svg_Attributes$pointsAtY = _elm_lang$virtual_dom$VirtualDom$attribute('pointsAtY');
-var _elm_lang$svg$Svg_Attributes$pointsAtX = _elm_lang$virtual_dom$VirtualDom$attribute('pointsAtX');
-var _elm_lang$svg$Svg_Attributes$points = _elm_lang$virtual_dom$VirtualDom$attribute('points');
-var _elm_lang$svg$Svg_Attributes$pointOrder = _elm_lang$virtual_dom$VirtualDom$attribute('point-order');
-var _elm_lang$svg$Svg_Attributes$patternUnits = _elm_lang$virtual_dom$VirtualDom$attribute('patternUnits');
-var _elm_lang$svg$Svg_Attributes$patternTransform = _elm_lang$virtual_dom$VirtualDom$attribute('patternTransform');
-var _elm_lang$svg$Svg_Attributes$patternContentUnits = _elm_lang$virtual_dom$VirtualDom$attribute('patternContentUnits');
-var _elm_lang$svg$Svg_Attributes$pathLength = _elm_lang$virtual_dom$VirtualDom$attribute('pathLength');
-var _elm_lang$svg$Svg_Attributes$path = _elm_lang$virtual_dom$VirtualDom$attribute('path');
-var _elm_lang$svg$Svg_Attributes$panose1 = _elm_lang$virtual_dom$VirtualDom$attribute('panose-1');
-var _elm_lang$svg$Svg_Attributes$overlineThickness = _elm_lang$virtual_dom$VirtualDom$attribute('overline-thickness');
-var _elm_lang$svg$Svg_Attributes$overlinePosition = _elm_lang$virtual_dom$VirtualDom$attribute('overline-position');
-var _elm_lang$svg$Svg_Attributes$origin = _elm_lang$virtual_dom$VirtualDom$attribute('origin');
-var _elm_lang$svg$Svg_Attributes$orientation = _elm_lang$virtual_dom$VirtualDom$attribute('orientation');
-var _elm_lang$svg$Svg_Attributes$orient = _elm_lang$virtual_dom$VirtualDom$attribute('orient');
-var _elm_lang$svg$Svg_Attributes$order = _elm_lang$virtual_dom$VirtualDom$attribute('order');
-var _elm_lang$svg$Svg_Attributes$operator = _elm_lang$virtual_dom$VirtualDom$attribute('operator');
-var _elm_lang$svg$Svg_Attributes$offset = _elm_lang$virtual_dom$VirtualDom$attribute('offset');
-var _elm_lang$svg$Svg_Attributes$numOctaves = _elm_lang$virtual_dom$VirtualDom$attribute('numOctaves');
-var _elm_lang$svg$Svg_Attributes$name = _elm_lang$virtual_dom$VirtualDom$attribute('name');
-var _elm_lang$svg$Svg_Attributes$mode = _elm_lang$virtual_dom$VirtualDom$attribute('mode');
-var _elm_lang$svg$Svg_Attributes$min = _elm_lang$virtual_dom$VirtualDom$attribute('min');
-var _elm_lang$svg$Svg_Attributes$method = _elm_lang$virtual_dom$VirtualDom$attribute('method');
-var _elm_lang$svg$Svg_Attributes$media = _elm_lang$virtual_dom$VirtualDom$attribute('media');
-var _elm_lang$svg$Svg_Attributes$max = _elm_lang$virtual_dom$VirtualDom$attribute('max');
-var _elm_lang$svg$Svg_Attributes$mathematical = _elm_lang$virtual_dom$VirtualDom$attribute('mathematical');
-var _elm_lang$svg$Svg_Attributes$maskUnits = _elm_lang$virtual_dom$VirtualDom$attribute('maskUnits');
-var _elm_lang$svg$Svg_Attributes$maskContentUnits = _elm_lang$virtual_dom$VirtualDom$attribute('maskContentUnits');
-var _elm_lang$svg$Svg_Attributes$markerWidth = _elm_lang$virtual_dom$VirtualDom$attribute('markerWidth');
-var _elm_lang$svg$Svg_Attributes$markerUnits = _elm_lang$virtual_dom$VirtualDom$attribute('markerUnits');
-var _elm_lang$svg$Svg_Attributes$markerHeight = _elm_lang$virtual_dom$VirtualDom$attribute('markerHeight');
-var _elm_lang$svg$Svg_Attributes$local = _elm_lang$virtual_dom$VirtualDom$attribute('local');
-var _elm_lang$svg$Svg_Attributes$limitingConeAngle = _elm_lang$virtual_dom$VirtualDom$attribute('limitingConeAngle');
-var _elm_lang$svg$Svg_Attributes$lengthAdjust = _elm_lang$virtual_dom$VirtualDom$attribute('lengthAdjust');
-var _elm_lang$svg$Svg_Attributes$lang = _elm_lang$virtual_dom$VirtualDom$attribute('lang');
-var _elm_lang$svg$Svg_Attributes$keyTimes = _elm_lang$virtual_dom$VirtualDom$attribute('keyTimes');
-var _elm_lang$svg$Svg_Attributes$keySplines = _elm_lang$virtual_dom$VirtualDom$attribute('keySplines');
-var _elm_lang$svg$Svg_Attributes$keyPoints = _elm_lang$virtual_dom$VirtualDom$attribute('keyPoints');
-var _elm_lang$svg$Svg_Attributes$kernelUnitLength = _elm_lang$virtual_dom$VirtualDom$attribute('kernelUnitLength');
-var _elm_lang$svg$Svg_Attributes$kernelMatrix = _elm_lang$virtual_dom$VirtualDom$attribute('kernelMatrix');
-var _elm_lang$svg$Svg_Attributes$k4 = _elm_lang$virtual_dom$VirtualDom$attribute('k4');
-var _elm_lang$svg$Svg_Attributes$k3 = _elm_lang$virtual_dom$VirtualDom$attribute('k3');
-var _elm_lang$svg$Svg_Attributes$k2 = _elm_lang$virtual_dom$VirtualDom$attribute('k2');
-var _elm_lang$svg$Svg_Attributes$k1 = _elm_lang$virtual_dom$VirtualDom$attribute('k1');
-var _elm_lang$svg$Svg_Attributes$k = _elm_lang$virtual_dom$VirtualDom$attribute('k');
-var _elm_lang$svg$Svg_Attributes$intercept = _elm_lang$virtual_dom$VirtualDom$attribute('intercept');
-var _elm_lang$svg$Svg_Attributes$in2 = _elm_lang$virtual_dom$VirtualDom$attribute('in2');
-var _elm_lang$svg$Svg_Attributes$in_ = _elm_lang$virtual_dom$VirtualDom$attribute('in');
-var _elm_lang$svg$Svg_Attributes$ideographic = _elm_lang$virtual_dom$VirtualDom$attribute('ideographic');
-var _elm_lang$svg$Svg_Attributes$id = _elm_lang$virtual_dom$VirtualDom$attribute('id');
-var _elm_lang$svg$Svg_Attributes$horizOriginY = _elm_lang$virtual_dom$VirtualDom$attribute('horiz-origin-y');
-var _elm_lang$svg$Svg_Attributes$horizOriginX = _elm_lang$virtual_dom$VirtualDom$attribute('horiz-origin-x');
-var _elm_lang$svg$Svg_Attributes$horizAdvX = _elm_lang$virtual_dom$VirtualDom$attribute('horiz-adv-x');
-var _elm_lang$svg$Svg_Attributes$height = _elm_lang$virtual_dom$VirtualDom$attribute('height');
-var _elm_lang$svg$Svg_Attributes$hanging = _elm_lang$virtual_dom$VirtualDom$attribute('hanging');
-var _elm_lang$svg$Svg_Attributes$gradientUnits = _elm_lang$virtual_dom$VirtualDom$attribute('gradientUnits');
-var _elm_lang$svg$Svg_Attributes$gradientTransform = _elm_lang$virtual_dom$VirtualDom$attribute('gradientTransform');
-var _elm_lang$svg$Svg_Attributes$glyphRef = _elm_lang$virtual_dom$VirtualDom$attribute('glyphRef');
-var _elm_lang$svg$Svg_Attributes$glyphName = _elm_lang$virtual_dom$VirtualDom$attribute('glyph-name');
-var _elm_lang$svg$Svg_Attributes$g2 = _elm_lang$virtual_dom$VirtualDom$attribute('g2');
-var _elm_lang$svg$Svg_Attributes$g1 = _elm_lang$virtual_dom$VirtualDom$attribute('g1');
-var _elm_lang$svg$Svg_Attributes$fy = _elm_lang$virtual_dom$VirtualDom$attribute('fy');
-var _elm_lang$svg$Svg_Attributes$fx = _elm_lang$virtual_dom$VirtualDom$attribute('fx');
-var _elm_lang$svg$Svg_Attributes$from = _elm_lang$virtual_dom$VirtualDom$attribute('from');
-var _elm_lang$svg$Svg_Attributes$format = _elm_lang$virtual_dom$VirtualDom$attribute('format');
-var _elm_lang$svg$Svg_Attributes$filterUnits = _elm_lang$virtual_dom$VirtualDom$attribute('filterUnits');
-var _elm_lang$svg$Svg_Attributes$filterRes = _elm_lang$virtual_dom$VirtualDom$attribute('filterRes');
-var _elm_lang$svg$Svg_Attributes$externalResourcesRequired = _elm_lang$virtual_dom$VirtualDom$attribute('externalResourcesRequired');
-var _elm_lang$svg$Svg_Attributes$exponent = _elm_lang$virtual_dom$VirtualDom$attribute('exponent');
-var _elm_lang$svg$Svg_Attributes$end = _elm_lang$virtual_dom$VirtualDom$attribute('end');
-var _elm_lang$svg$Svg_Attributes$elevation = _elm_lang$virtual_dom$VirtualDom$attribute('elevation');
-var _elm_lang$svg$Svg_Attributes$edgeMode = _elm_lang$virtual_dom$VirtualDom$attribute('edgeMode');
-var _elm_lang$svg$Svg_Attributes$dy = _elm_lang$virtual_dom$VirtualDom$attribute('dy');
-var _elm_lang$svg$Svg_Attributes$dx = _elm_lang$virtual_dom$VirtualDom$attribute('dx');
-var _elm_lang$svg$Svg_Attributes$dur = _elm_lang$virtual_dom$VirtualDom$attribute('dur');
-var _elm_lang$svg$Svg_Attributes$divisor = _elm_lang$virtual_dom$VirtualDom$attribute('divisor');
-var _elm_lang$svg$Svg_Attributes$diffuseConstant = _elm_lang$virtual_dom$VirtualDom$attribute('diffuseConstant');
-var _elm_lang$svg$Svg_Attributes$descent = _elm_lang$virtual_dom$VirtualDom$attribute('descent');
-var _elm_lang$svg$Svg_Attributes$decelerate = _elm_lang$virtual_dom$VirtualDom$attribute('decelerate');
-var _elm_lang$svg$Svg_Attributes$d = _elm_lang$virtual_dom$VirtualDom$attribute('d');
-var _elm_lang$svg$Svg_Attributes$cy = _elm_lang$virtual_dom$VirtualDom$attribute('cy');
-var _elm_lang$svg$Svg_Attributes$cx = _elm_lang$virtual_dom$VirtualDom$attribute('cx');
-var _elm_lang$svg$Svg_Attributes$contentStyleType = _elm_lang$virtual_dom$VirtualDom$attribute('contentStyleType');
-var _elm_lang$svg$Svg_Attributes$contentScriptType = _elm_lang$virtual_dom$VirtualDom$attribute('contentScriptType');
-var _elm_lang$svg$Svg_Attributes$clipPathUnits = _elm_lang$virtual_dom$VirtualDom$attribute('clipPathUnits');
-var _elm_lang$svg$Svg_Attributes$class = _elm_lang$virtual_dom$VirtualDom$attribute('class');
-var _elm_lang$svg$Svg_Attributes$capHeight = _elm_lang$virtual_dom$VirtualDom$attribute('cap-height');
-var _elm_lang$svg$Svg_Attributes$calcMode = _elm_lang$virtual_dom$VirtualDom$attribute('calcMode');
-var _elm_lang$svg$Svg_Attributes$by = _elm_lang$virtual_dom$VirtualDom$attribute('by');
-var _elm_lang$svg$Svg_Attributes$bias = _elm_lang$virtual_dom$VirtualDom$attribute('bias');
-var _elm_lang$svg$Svg_Attributes$begin = _elm_lang$virtual_dom$VirtualDom$attribute('begin');
-var _elm_lang$svg$Svg_Attributes$bbox = _elm_lang$virtual_dom$VirtualDom$attribute('bbox');
-var _elm_lang$svg$Svg_Attributes$baseProfile = _elm_lang$virtual_dom$VirtualDom$attribute('baseProfile');
-var _elm_lang$svg$Svg_Attributes$baseFrequency = _elm_lang$virtual_dom$VirtualDom$attribute('baseFrequency');
-var _elm_lang$svg$Svg_Attributes$azimuth = _elm_lang$virtual_dom$VirtualDom$attribute('azimuth');
-var _elm_lang$svg$Svg_Attributes$autoReverse = _elm_lang$virtual_dom$VirtualDom$attribute('autoReverse');
-var _elm_lang$svg$Svg_Attributes$attributeType = _elm_lang$virtual_dom$VirtualDom$attribute('attributeType');
-var _elm_lang$svg$Svg_Attributes$attributeName = _elm_lang$virtual_dom$VirtualDom$attribute('attributeName');
-var _elm_lang$svg$Svg_Attributes$ascent = _elm_lang$virtual_dom$VirtualDom$attribute('ascent');
-var _elm_lang$svg$Svg_Attributes$arabicForm = _elm_lang$virtual_dom$VirtualDom$attribute('arabic-form');
-var _elm_lang$svg$Svg_Attributes$amplitude = _elm_lang$virtual_dom$VirtualDom$attribute('amplitude');
-var _elm_lang$svg$Svg_Attributes$allowReorder = _elm_lang$virtual_dom$VirtualDom$attribute('allowReorder');
-var _elm_lang$svg$Svg_Attributes$alphabetic = _elm_lang$virtual_dom$VirtualDom$attribute('alphabetic');
-var _elm_lang$svg$Svg_Attributes$additive = _elm_lang$virtual_dom$VirtualDom$attribute('additive');
-var _elm_lang$svg$Svg_Attributes$accumulate = _elm_lang$virtual_dom$VirtualDom$attribute('accumulate');
-var _elm_lang$svg$Svg_Attributes$accelerate = _elm_lang$virtual_dom$VirtualDom$attribute('accelerate');
-var _elm_lang$svg$Svg_Attributes$accentHeight = _elm_lang$virtual_dom$VirtualDom$attribute('accent-height');
 
 var _elm_lang$window$Native_Window = function()
 {
@@ -16364,57 +15884,776 @@ var _rundis$elm_bootstrap$Bootstrap_Navbar$dropdownHeader = function (children) 
 			children));
 };
 
-var _user$project$Animation$lerp = F3(
-	function (x0, x1, u) {
-		return (u * x1) + ((1 - u) * x0);
-	});
-var _user$project$Animation$easeMove = F5(
-	function (startPos, stopPos, duration, startTime, curTime) {
-		var v = A3(_elm_lang$core$Basics$clamp, 0, 1, (curTime - startTime) / duration);
+var _rundis$elm_bootstrap$Bootstrap_Table$roleOption = function (role) {
+	var _p0 = role;
+	switch (_p0.ctor) {
+		case 'Active':
+			return 'active';
+		case 'Success':
+			return 'success';
+		case 'Warning':
+			return 'warning';
+		case 'Danger':
+			return 'danger';
+		default:
+			return 'info';
+	}
+};
+var _rundis$elm_bootstrap$Bootstrap_Table$cellAttribute = function (option) {
+	var _p1 = option;
+	switch (_p1.ctor) {
+		case 'RoledCell':
+			return _elm_lang$html$Html_Attributes$class(
+				A2(
+					_elm_lang$core$Basics_ops['++'],
+					'table-',
+					_rundis$elm_bootstrap$Bootstrap_Table$roleOption(_p1._0)));
+		case 'InversedCell':
+			return _elm_lang$html$Html_Attributes$class(
+				A2(
+					_elm_lang$core$Basics_ops['++'],
+					'bg-',
+					_rundis$elm_bootstrap$Bootstrap_Table$roleOption(_p1._0)));
+		default:
+			return _p1._0;
+	}
+};
+var _rundis$elm_bootstrap$Bootstrap_Table$cellAttributes = function (options) {
+	return A2(_elm_lang$core$List$map, _rundis$elm_bootstrap$Bootstrap_Table$cellAttribute, options);
+};
+var _rundis$elm_bootstrap$Bootstrap_Table$rowClass = function (option) {
+	var _p2 = option;
+	switch (_p2.ctor) {
+		case 'RoledRow':
+			return _elm_lang$html$Html_Attributes$class(
+				A2(
+					_elm_lang$core$Basics_ops['++'],
+					'table-',
+					_rundis$elm_bootstrap$Bootstrap_Table$roleOption(_p2._0)));
+		case 'InversedRow':
+			return _elm_lang$html$Html_Attributes$class(
+				A2(
+					_elm_lang$core$Basics_ops['++'],
+					'bg-',
+					_rundis$elm_bootstrap$Bootstrap_Table$roleOption(_p2._0)));
+		default:
+			return _p2._0;
+	}
+};
+var _rundis$elm_bootstrap$Bootstrap_Table$rowAttributes = function (options) {
+	return A2(_elm_lang$core$List$map, _rundis$elm_bootstrap$Bootstrap_Table$rowClass, options);
+};
+var _rundis$elm_bootstrap$Bootstrap_Table$theadAttribute = function (option) {
+	var _p3 = option;
+	switch (_p3.ctor) {
+		case 'InversedHead':
+			return _elm_lang$html$Html_Attributes$class('thead-inverse');
+		case 'DefaultHead':
+			return _elm_lang$html$Html_Attributes$class('thead-default');
+		default:
+			return _p3._0;
+	}
+};
+var _rundis$elm_bootstrap$Bootstrap_Table$theadAttributes = function (options) {
+	return A2(_elm_lang$core$List$map, _rundis$elm_bootstrap$Bootstrap_Table$theadAttribute, options);
+};
+var _rundis$elm_bootstrap$Bootstrap_Table$tableClass = function (option) {
+	var _p4 = option;
+	switch (_p4.ctor) {
+		case 'Inversed':
+			return _elm_lang$core$Maybe$Just(
+				_elm_lang$html$Html_Attributes$class('table-inverse'));
+		case 'Striped':
+			return _elm_lang$core$Maybe$Just(
+				_elm_lang$html$Html_Attributes$class('table-striped'));
+		case 'Bordered':
+			return _elm_lang$core$Maybe$Just(
+				_elm_lang$html$Html_Attributes$class('table-bordered'));
+		case 'Hover':
+			return _elm_lang$core$Maybe$Just(
+				_elm_lang$html$Html_Attributes$class('table-hover'));
+		case 'Small':
+			return _elm_lang$core$Maybe$Just(
+				_elm_lang$html$Html_Attributes$class('table-sm'));
+		case 'Responsive':
+			return _elm_lang$core$Maybe$Nothing;
+		case 'Reflow':
+			return _elm_lang$core$Maybe$Just(
+				_elm_lang$html$Html_Attributes$class('table-reflow'));
+		default:
+			return _elm_lang$core$Maybe$Just(_p4._0);
+	}
+};
+var _rundis$elm_bootstrap$Bootstrap_Table$tableAttributes = function (options) {
+	return {
+		ctor: '::',
+		_0: _elm_lang$html$Html_Attributes$class('table'),
+		_1: A2(
+			_elm_lang$core$List$filterMap,
+			_elm_lang$core$Basics$identity,
+			A2(_elm_lang$core$List$map, _rundis$elm_bootstrap$Bootstrap_Table$tableClass, options))
+	};
+};
+var _rundis$elm_bootstrap$Bootstrap_Table$renderCell = function (cell) {
+	var _p5 = cell;
+	if (_p5.ctor === 'Td') {
+		return A2(
+			_elm_lang$html$Html$td,
+			_rundis$elm_bootstrap$Bootstrap_Table$cellAttributes(_p5._0.options),
+			_p5._0.children);
+	} else {
+		return A2(
+			_elm_lang$html$Html$th,
+			_rundis$elm_bootstrap$Bootstrap_Table$cellAttributes(_p5._0.options),
+			_p5._0.children);
+	}
+};
+var _rundis$elm_bootstrap$Bootstrap_Table$renderRow = function (row) {
+	var _p6 = row;
+	if (_p6.ctor === 'Row') {
+		return A2(
+			_elm_lang$html$Html$tr,
+			_rundis$elm_bootstrap$Bootstrap_Table$rowAttributes(_p6._0.options),
+			A2(_elm_lang$core$List$map, _rundis$elm_bootstrap$Bootstrap_Table$renderCell, _p6._0.cells));
+	} else {
 		return A3(
-			_user$project$Animation$lerp,
-			startPos,
-			stopPos,
-			_elm_community$easing_functions$Ease$outQuint(v));
+			_elm_lang$html$Html_Keyed$node,
+			'tr',
+			_rundis$elm_bootstrap$Bootstrap_Table$rowAttributes(_p6._0.options),
+			A2(
+				_elm_lang$core$List$map,
+				function (_p7) {
+					var _p8 = _p7;
+					return {
+						ctor: '_Tuple2',
+						_0: _p8._0,
+						_1: _rundis$elm_bootstrap$Bootstrap_Table$renderCell(_p8._1)
+					};
+				},
+				_p6._0.cells));
+	}
+};
+var _rundis$elm_bootstrap$Bootstrap_Table$renderTHead = function (_p9) {
+	var _p10 = _p9;
+	return A2(
+		_elm_lang$html$Html$thead,
+		_rundis$elm_bootstrap$Bootstrap_Table$theadAttributes(_p10._0.options),
+		A2(_elm_lang$core$List$map, _rundis$elm_bootstrap$Bootstrap_Table$renderRow, _p10._0.rows));
+};
+var _rundis$elm_bootstrap$Bootstrap_Table$wrapResponsiveWhen = F2(
+	function (isResponsive, table) {
+		return isResponsive ? A2(
+			_elm_lang$html$Html$div,
+			{
+				ctor: '::',
+				_0: _elm_lang$html$Html_Attributes$class('table-responsive'),
+				_1: {ctor: '[]'}
+			},
+			{
+				ctor: '::',
+				_0: table,
+				_1: {ctor: '[]'}
+			}) : table;
 	});
-var _user$project$Animation$slide = F3(
-	function (updater, startTime, nowTime) {
-		var currentValue = A4(_user$project$Animation$easeMove, 0, 1, _elm_lang$core$Time$second, startTime);
-		return updater(
-			currentValue(nowTime));
+var _rundis$elm_bootstrap$Bootstrap_Table$RowConfig = F2(
+	function (a, b) {
+		return {options: a, cells: b};
+	});
+var _rundis$elm_bootstrap$Bootstrap_Table$CellConfig = F2(
+	function (a, b) {
+		return {options: a, children: b};
+	});
+var _rundis$elm_bootstrap$Bootstrap_Table$TableAttr = function (a) {
+	return {ctor: 'TableAttr', _0: a};
+};
+var _rundis$elm_bootstrap$Bootstrap_Table$attr = function (attr) {
+	return _rundis$elm_bootstrap$Bootstrap_Table$TableAttr(attr);
+};
+var _rundis$elm_bootstrap$Bootstrap_Table$Reflow = {ctor: 'Reflow'};
+var _rundis$elm_bootstrap$Bootstrap_Table$reflow = _rundis$elm_bootstrap$Bootstrap_Table$Reflow;
+var _rundis$elm_bootstrap$Bootstrap_Table$Responsive = {ctor: 'Responsive'};
+var _rundis$elm_bootstrap$Bootstrap_Table$responsive = _rundis$elm_bootstrap$Bootstrap_Table$Responsive;
+var _rundis$elm_bootstrap$Bootstrap_Table$Small = {ctor: 'Small'};
+var _rundis$elm_bootstrap$Bootstrap_Table$small = _rundis$elm_bootstrap$Bootstrap_Table$Small;
+var _rundis$elm_bootstrap$Bootstrap_Table$Hover = {ctor: 'Hover'};
+var _rundis$elm_bootstrap$Bootstrap_Table$hover = _rundis$elm_bootstrap$Bootstrap_Table$Hover;
+var _rundis$elm_bootstrap$Bootstrap_Table$Bordered = {ctor: 'Bordered'};
+var _rundis$elm_bootstrap$Bootstrap_Table$bordered = _rundis$elm_bootstrap$Bootstrap_Table$Bordered;
+var _rundis$elm_bootstrap$Bootstrap_Table$Striped = {ctor: 'Striped'};
+var _rundis$elm_bootstrap$Bootstrap_Table$striped = _rundis$elm_bootstrap$Bootstrap_Table$Striped;
+var _rundis$elm_bootstrap$Bootstrap_Table$Inversed = {ctor: 'Inversed'};
+var _rundis$elm_bootstrap$Bootstrap_Table$inversed = _rundis$elm_bootstrap$Bootstrap_Table$Inversed;
+var _rundis$elm_bootstrap$Bootstrap_Table$HeadAttr = function (a) {
+	return {ctor: 'HeadAttr', _0: a};
+};
+var _rundis$elm_bootstrap$Bootstrap_Table$headAttr = function (attr) {
+	return _rundis$elm_bootstrap$Bootstrap_Table$HeadAttr(attr);
+};
+var _rundis$elm_bootstrap$Bootstrap_Table$DefaultHead = {ctor: 'DefaultHead'};
+var _rundis$elm_bootstrap$Bootstrap_Table$defaultHead = _rundis$elm_bootstrap$Bootstrap_Table$DefaultHead;
+var _rundis$elm_bootstrap$Bootstrap_Table$InversedHead = {ctor: 'InversedHead'};
+var _rundis$elm_bootstrap$Bootstrap_Table$inversedHead = _rundis$elm_bootstrap$Bootstrap_Table$InversedHead;
+var _rundis$elm_bootstrap$Bootstrap_Table$RowAttr = function (a) {
+	return {ctor: 'RowAttr', _0: a};
+};
+var _rundis$elm_bootstrap$Bootstrap_Table$rowAttr = function (attr) {
+	return _rundis$elm_bootstrap$Bootstrap_Table$RowAttr(attr);
+};
+var _rundis$elm_bootstrap$Bootstrap_Table$InversedRow = function (a) {
+	return {ctor: 'InversedRow', _0: a};
+};
+var _rundis$elm_bootstrap$Bootstrap_Table$RoledRow = function (a) {
+	return {ctor: 'RoledRow', _0: a};
+};
+var _rundis$elm_bootstrap$Bootstrap_Table$CellAttr = function (a) {
+	return {ctor: 'CellAttr', _0: a};
+};
+var _rundis$elm_bootstrap$Bootstrap_Table$cellAttr = function (attr) {
+	return _rundis$elm_bootstrap$Bootstrap_Table$CellAttr(attr);
+};
+var _rundis$elm_bootstrap$Bootstrap_Table$InversedCell = function (a) {
+	return {ctor: 'InversedCell', _0: a};
+};
+var _rundis$elm_bootstrap$Bootstrap_Table$RoledCell = function (a) {
+	return {ctor: 'RoledCell', _0: a};
+};
+var _rundis$elm_bootstrap$Bootstrap_Table$Info = {ctor: 'Info'};
+var _rundis$elm_bootstrap$Bootstrap_Table$rowInfo = _rundis$elm_bootstrap$Bootstrap_Table$RoledRow(_rundis$elm_bootstrap$Bootstrap_Table$Info);
+var _rundis$elm_bootstrap$Bootstrap_Table$cellInfo = _rundis$elm_bootstrap$Bootstrap_Table$RoledCell(_rundis$elm_bootstrap$Bootstrap_Table$Info);
+var _rundis$elm_bootstrap$Bootstrap_Table$Danger = {ctor: 'Danger'};
+var _rundis$elm_bootstrap$Bootstrap_Table$rowDanger = _rundis$elm_bootstrap$Bootstrap_Table$RoledRow(_rundis$elm_bootstrap$Bootstrap_Table$Danger);
+var _rundis$elm_bootstrap$Bootstrap_Table$cellDanger = _rundis$elm_bootstrap$Bootstrap_Table$RoledCell(_rundis$elm_bootstrap$Bootstrap_Table$Danger);
+var _rundis$elm_bootstrap$Bootstrap_Table$Warning = {ctor: 'Warning'};
+var _rundis$elm_bootstrap$Bootstrap_Table$rowWarning = _rundis$elm_bootstrap$Bootstrap_Table$RoledRow(_rundis$elm_bootstrap$Bootstrap_Table$Warning);
+var _rundis$elm_bootstrap$Bootstrap_Table$cellWarning = _rundis$elm_bootstrap$Bootstrap_Table$RoledCell(_rundis$elm_bootstrap$Bootstrap_Table$Warning);
+var _rundis$elm_bootstrap$Bootstrap_Table$Success = {ctor: 'Success'};
+var _rundis$elm_bootstrap$Bootstrap_Table$rowSuccess = _rundis$elm_bootstrap$Bootstrap_Table$RoledRow(_rundis$elm_bootstrap$Bootstrap_Table$Success);
+var _rundis$elm_bootstrap$Bootstrap_Table$cellSuccess = _rundis$elm_bootstrap$Bootstrap_Table$RoledCell(_rundis$elm_bootstrap$Bootstrap_Table$Success);
+var _rundis$elm_bootstrap$Bootstrap_Table$Active = {ctor: 'Active'};
+var _rundis$elm_bootstrap$Bootstrap_Table$rowActive = _rundis$elm_bootstrap$Bootstrap_Table$RoledRow(_rundis$elm_bootstrap$Bootstrap_Table$Active);
+var _rundis$elm_bootstrap$Bootstrap_Table$cellActive = _rundis$elm_bootstrap$Bootstrap_Table$RoledCell(_rundis$elm_bootstrap$Bootstrap_Table$Active);
+var _rundis$elm_bootstrap$Bootstrap_Table$KeyedRow = function (a) {
+	return {ctor: 'KeyedRow', _0: a};
+};
+var _rundis$elm_bootstrap$Bootstrap_Table$keyedTr = F2(
+	function (options, keyedCells) {
+		return _rundis$elm_bootstrap$Bootstrap_Table$KeyedRow(
+			{options: options, cells: keyedCells});
+	});
+var _rundis$elm_bootstrap$Bootstrap_Table$Row = function (a) {
+	return {ctor: 'Row', _0: a};
+};
+var _rundis$elm_bootstrap$Bootstrap_Table$tr = F2(
+	function (options, cells) {
+		return _rundis$elm_bootstrap$Bootstrap_Table$Row(
+			{options: options, cells: cells});
+	});
+var _rundis$elm_bootstrap$Bootstrap_Table$Th = function (a) {
+	return {ctor: 'Th', _0: a};
+};
+var _rundis$elm_bootstrap$Bootstrap_Table$addScopeIfTh = function (cell) {
+	var _p11 = cell;
+	if (_p11.ctor === 'Th') {
+		var _p12 = _p11._0;
+		return _rundis$elm_bootstrap$Bootstrap_Table$Th(
+			_elm_lang$core$Native_Utils.update(
+				_p12,
+				{
+					options: {
+						ctor: '::',
+						_0: _rundis$elm_bootstrap$Bootstrap_Table$cellAttr(
+							_elm_lang$html$Html_Attributes$scope('row')),
+						_1: _p12.options
+					}
+				}));
+	} else {
+		return cell;
+	}
+};
+var _rundis$elm_bootstrap$Bootstrap_Table$maybeAddScopeToFirstCell = function (row) {
+	var _p13 = row;
+	if (_p13.ctor === 'Row') {
+		var _p14 = _p13._0.cells;
+		if (_p14.ctor === '[]') {
+			return row;
+		} else {
+			return _rundis$elm_bootstrap$Bootstrap_Table$Row(
+				{
+					options: _p13._0.options,
+					cells: {
+						ctor: '::',
+						_0: _rundis$elm_bootstrap$Bootstrap_Table$addScopeIfTh(_p14._0),
+						_1: _p14._1
+					}
+				});
+		}
+	} else {
+		var _p15 = _p13._0.cells;
+		if (_p15.ctor === '[]') {
+			return row;
+		} else {
+			return _rundis$elm_bootstrap$Bootstrap_Table$KeyedRow(
+				{
+					options: _p13._0.options,
+					cells: {
+						ctor: '::',
+						_0: {
+							ctor: '_Tuple2',
+							_0: _p15._0._0,
+							_1: _rundis$elm_bootstrap$Bootstrap_Table$addScopeIfTh(_p15._0._1)
+						},
+						_1: _p15._1
+					}
+				});
+		}
+	}
+};
+var _rundis$elm_bootstrap$Bootstrap_Table$renderTBody = function (body) {
+	var _p16 = body;
+	if (_p16.ctor === 'TBody') {
+		return A2(
+			_elm_lang$html$Html$tbody,
+			_p16._0.attributes,
+			A2(
+				_elm_lang$core$List$map,
+				function (row) {
+					return _rundis$elm_bootstrap$Bootstrap_Table$renderRow(
+						_rundis$elm_bootstrap$Bootstrap_Table$maybeAddScopeToFirstCell(row));
+				},
+				_p16._0.rows));
+	} else {
+		return A3(
+			_elm_lang$html$Html_Keyed$node,
+			'tbody',
+			_p16._0.attributes,
+			A2(
+				_elm_lang$core$List$map,
+				function (_p17) {
+					var _p18 = _p17;
+					return {
+						ctor: '_Tuple2',
+						_0: _p18._0,
+						_1: _rundis$elm_bootstrap$Bootstrap_Table$renderRow(
+							_rundis$elm_bootstrap$Bootstrap_Table$maybeAddScopeToFirstCell(_p18._1))
+					};
+				},
+				_p16._0.rows));
+	}
+};
+var _rundis$elm_bootstrap$Bootstrap_Table$th = F2(
+	function (options, children) {
+		return _rundis$elm_bootstrap$Bootstrap_Table$Th(
+			{options: options, children: children});
+	});
+var _rundis$elm_bootstrap$Bootstrap_Table$Td = function (a) {
+	return {ctor: 'Td', _0: a};
+};
+var _rundis$elm_bootstrap$Bootstrap_Table$mapInversedCell = function (cell) {
+	var inverseOptions = function (options) {
+		return A2(
+			_elm_lang$core$List$map,
+			function (opt) {
+				var _p19 = opt;
+				if (_p19.ctor === 'RoledCell') {
+					return _rundis$elm_bootstrap$Bootstrap_Table$InversedCell(_p19._0);
+				} else {
+					return opt;
+				}
+			},
+			options);
+	};
+	var _p20 = cell;
+	if (_p20.ctor === 'Th') {
+		var _p21 = _p20._0;
+		return _rundis$elm_bootstrap$Bootstrap_Table$Th(
+			_elm_lang$core$Native_Utils.update(
+				_p21,
+				{
+					options: inverseOptions(_p21.options)
+				}));
+	} else {
+		var _p22 = _p20._0;
+		return _rundis$elm_bootstrap$Bootstrap_Table$Td(
+			_elm_lang$core$Native_Utils.update(
+				_p22,
+				{
+					options: inverseOptions(_p22.options)
+				}));
+	}
+};
+var _rundis$elm_bootstrap$Bootstrap_Table$mapInversedRow = function (row) {
+	var inversedOptions = function (options) {
+		return A2(
+			_elm_lang$core$List$map,
+			function (opt) {
+				var _p23 = opt;
+				if (_p23.ctor === 'RoledRow') {
+					return _rundis$elm_bootstrap$Bootstrap_Table$InversedRow(_p23._0);
+				} else {
+					return opt;
+				}
+			},
+			options);
+	};
+	var _p24 = row;
+	if (_p24.ctor === 'Row') {
+		return _rundis$elm_bootstrap$Bootstrap_Table$Row(
+			{
+				options: inversedOptions(_p24._0.options),
+				cells: A2(_elm_lang$core$List$map, _rundis$elm_bootstrap$Bootstrap_Table$mapInversedCell, _p24._0.cells)
+			});
+	} else {
+		return _rundis$elm_bootstrap$Bootstrap_Table$KeyedRow(
+			{
+				options: inversedOptions(_p24._0.options),
+				cells: A2(
+					_elm_lang$core$List$map,
+					function (_p25) {
+						var _p26 = _p25;
+						return {
+							ctor: '_Tuple2',
+							_0: _p26._0,
+							_1: _rundis$elm_bootstrap$Bootstrap_Table$mapInversedCell(_p26._1)
+						};
+					},
+					_p24._0.cells)
+			});
+	}
+};
+var _rundis$elm_bootstrap$Bootstrap_Table$td = F2(
+	function (options, children) {
+		return _rundis$elm_bootstrap$Bootstrap_Table$Td(
+			{options: options, children: children});
+	});
+var _rundis$elm_bootstrap$Bootstrap_Table$THead = function (a) {
+	return {ctor: 'THead', _0: a};
+};
+var _rundis$elm_bootstrap$Bootstrap_Table$maybeMapInversedTHead = F2(
+	function (isTableInversed, _p27) {
+		var _p28 = _p27;
+		var _p29 = _p28._0;
+		var isHeadInversed = A2(
+			_elm_lang$core$List$any,
+			function (opt) {
+				return _elm_lang$core$Native_Utils.eq(opt, _rundis$elm_bootstrap$Bootstrap_Table$InversedHead);
+			},
+			_p29.options);
+		return _rundis$elm_bootstrap$Bootstrap_Table$THead(
+			(isTableInversed || isHeadInversed) ? _elm_lang$core$Native_Utils.update(
+				_p29,
+				{
+					rows: A2(_elm_lang$core$List$map, _rundis$elm_bootstrap$Bootstrap_Table$mapInversedRow, _p29.rows)
+				}) : _p29);
+	});
+var _rundis$elm_bootstrap$Bootstrap_Table$thead = F2(
+	function (options, rows) {
+		return _rundis$elm_bootstrap$Bootstrap_Table$THead(
+			{options: options, rows: rows});
+	});
+var _rundis$elm_bootstrap$Bootstrap_Table$simpleThead = function (cells) {
+	return A2(
+		_rundis$elm_bootstrap$Bootstrap_Table$thead,
+		{ctor: '[]'},
+		{
+			ctor: '::',
+			_0: A2(
+				_rundis$elm_bootstrap$Bootstrap_Table$tr,
+				{ctor: '[]'},
+				cells),
+			_1: {ctor: '[]'}
+		});
+};
+var _rundis$elm_bootstrap$Bootstrap_Table$KeyedTBody = function (a) {
+	return {ctor: 'KeyedTBody', _0: a};
+};
+var _rundis$elm_bootstrap$Bootstrap_Table$keyedTBody = F2(
+	function (attributes, rows) {
+		return _rundis$elm_bootstrap$Bootstrap_Table$KeyedTBody(
+			{attributes: attributes, rows: rows});
+	});
+var _rundis$elm_bootstrap$Bootstrap_Table$TBody = function (a) {
+	return {ctor: 'TBody', _0: a};
+};
+var _rundis$elm_bootstrap$Bootstrap_Table$maybeMapInversedTBody = F2(
+	function (isTableInversed, tbody) {
+		var _p30 = {ctor: '_Tuple2', _0: isTableInversed, _1: tbody};
+		if (_p30._0 === false) {
+			return tbody;
+		} else {
+			if (_p30._1.ctor === 'TBody') {
+				var _p31 = _p30._1._0;
+				return _rundis$elm_bootstrap$Bootstrap_Table$TBody(
+					_elm_lang$core$Native_Utils.update(
+						_p31,
+						{
+							rows: A2(_elm_lang$core$List$map, _rundis$elm_bootstrap$Bootstrap_Table$mapInversedRow, _p31.rows)
+						}));
+			} else {
+				var _p34 = _p30._1._0;
+				return _rundis$elm_bootstrap$Bootstrap_Table$KeyedTBody(
+					_elm_lang$core$Native_Utils.update(
+						_p34,
+						{
+							rows: A2(
+								_elm_lang$core$List$map,
+								function (_p32) {
+									var _p33 = _p32;
+									return {
+										ctor: '_Tuple2',
+										_0: _p33._0,
+										_1: _rundis$elm_bootstrap$Bootstrap_Table$mapInversedRow(_p33._1)
+									};
+								},
+								_p34.rows)
+						}));
+			}
+		}
+	});
+var _rundis$elm_bootstrap$Bootstrap_Table$table = function (_p35) {
+	var _p36 = _p35;
+	var _p37 = _p36.options;
+	var isInversed = A2(
+		_elm_lang$core$List$any,
+		function (opt) {
+			return _elm_lang$core$Native_Utils.eq(opt, _rundis$elm_bootstrap$Bootstrap_Table$Inversed);
+		},
+		_p37);
+	var isResponsive = A2(
+		_elm_lang$core$List$any,
+		function (opt) {
+			return _elm_lang$core$Native_Utils.eq(opt, _rundis$elm_bootstrap$Bootstrap_Table$Responsive);
+		},
+		_p37);
+	var classOptions = A2(
+		_elm_lang$core$List$filter,
+		function (opt) {
+			return !_elm_lang$core$Native_Utils.eq(opt, _rundis$elm_bootstrap$Bootstrap_Table$Responsive);
+		},
+		_p37);
+	return A2(
+		_rundis$elm_bootstrap$Bootstrap_Table$wrapResponsiveWhen,
+		isResponsive,
+		A2(
+			_elm_lang$html$Html$table,
+			_rundis$elm_bootstrap$Bootstrap_Table$tableAttributes(classOptions),
+			{
+				ctor: '::',
+				_0: _rundis$elm_bootstrap$Bootstrap_Table$renderTHead(
+					A2(_rundis$elm_bootstrap$Bootstrap_Table$maybeMapInversedTHead, isInversed, _p36.thead)),
+				_1: {
+					ctor: '::',
+					_0: _rundis$elm_bootstrap$Bootstrap_Table$renderTBody(
+						A2(_rundis$elm_bootstrap$Bootstrap_Table$maybeMapInversedTBody, isInversed, _p36.tbody)),
+					_1: {ctor: '[]'}
+				}
+			}));
+};
+var _rundis$elm_bootstrap$Bootstrap_Table$simpleTable = function (_p38) {
+	var _p39 = _p38;
+	return _rundis$elm_bootstrap$Bootstrap_Table$table(
+		{
+			options: {ctor: '[]'},
+			thead: _p39._0,
+			tbody: _p39._1
+		});
+};
+var _rundis$elm_bootstrap$Bootstrap_Table$tbody = F2(
+	function (attributes, rows) {
+		return _rundis$elm_bootstrap$Bootstrap_Table$TBody(
+			{attributes: attributes, rows: rows});
 	});
 
-var _user$project$Data_Budget$Budget = F4(
-	function (a, b, c, d) {
-		return {coreExpenses: a, leases: b, leaseAdmin: c, leaseMember: d};
+var _user$project$Util$encodeMaybe = F2(
+	function (encoder, maybeVal) {
+		var _p0 = maybeVal;
+		if (_p0.ctor === 'Just') {
+			return encoder(_p0._0);
+		} else {
+			return _elm_lang$core$Json_Encode$null;
+		}
 	});
-var _user$project$Data_Budget$Lease = F4(
-	function (a, b, c, d) {
-		return {currentRent: a, proposedRent: b, name: c, adminName: d};
+var _user$project$Util$rotateList = function (list) {
+	var _p1 = list;
+	if (_p1.ctor === '[]') {
+		return {ctor: '[]'};
+	} else {
+		return A2(
+			_elm_lang$core$List$append,
+			_p1._1,
+			{
+				ctor: '::',
+				_0: _p1._0,
+				_1: {ctor: '[]'}
+			});
+	}
+};
+var _user$project$Util$appendErrors = F2(
+	function (model, errors) {
+		return _elm_lang$core$Native_Utils.update(
+			model,
+			{
+				errors: A2(_elm_lang$core$Basics_ops['++'], model.errors, errors)
+			});
 	});
-var _user$project$Data_Budget$decoder = function () {
-	var rent = A5(
-		_elm_lang$core$Json_Decode$map4,
-		_user$project$Data_Budget$Lease,
-		A2(_elm_lang$core$Json_Decode$field, 'current_rent', _elm_lang$core$Json_Decode$float),
-		A2(_elm_lang$core$Json_Decode$field, 'proposed_rent', _elm_lang$core$Json_Decode$float),
-		A2(_elm_lang$core$Json_Decode$field, 'name', _elm_lang$core$Json_Decode$string),
-		A2(_elm_lang$core$Json_Decode$field, 'admin_name', _elm_lang$core$Json_Decode$string));
-	return A5(
-		_elm_lang$core$Json_Decode$map4,
-		_user$project$Data_Budget$Budget,
-		A2(_elm_lang$core$Json_Decode$field, 'core_expenses', _elm_lang$core$Json_Decode$float),
-		A2(
-			_elm_lang$core$Json_Decode$field,
-			'leases',
-			_elm_lang$core$Json_Decode$list(rent)),
-		_elm_lang$core$Json_Decode$maybe(
-			A2(_elm_lang$core$Json_Decode$field, 'lease_admin', _elm_lang$core$Json_Decode$string)),
-		A2(
-			_elm_lang$core$Json_Decode$field,
-			'lease_member',
-			_elm_lang$core$Json_Decode$list(_elm_lang$core$Json_Decode$string)));
-}();
+var _user$project$Util$onClickStopPropagation = function (msg) {
+	return A3(
+		_elm_lang$html$Html_Events$onWithOptions,
+		'click',
+		_elm_lang$core$Native_Utils.update(
+			_elm_lang$html$Html_Events$defaultOptions,
+			{stopPropagation: true}),
+		_elm_lang$core$Json_Decode$succeed(msg));
+};
+var _user$project$Util$viewIf = F2(
+	function (condition, content) {
+		return condition ? content : _elm_lang$html$Html$text('');
+	});
+var _user$project$Util_ops = _user$project$Util_ops || {};
+_user$project$Util_ops['=>'] = F2(
+	function (v0, v1) {
+		return {ctor: '_Tuple2', _0: v0, _1: v1};
+	});
+var _user$project$Util$pair = F2(
+	function (first, second) {
+		return A2(_user$project$Util_ops['=>'], first, second);
+	});
+
+var _user$project$Data_Allocation$encodeVote = function (vote) {
+	var intMaybe = _user$project$Util$encodeMaybe(_elm_lang$core$Json_Encode$int);
+	return _elm_lang$core$Json_Encode$object(
+		{
+			ctor: '::',
+			_0: A2(
+				_user$project$Util_ops['=>'],
+				'weight',
+				intMaybe(vote.weight)),
+			_1: {
+				ctor: '::',
+				_0: A2(
+					_user$project$Util_ops['=>'],
+					'personal_abs_max',
+					intMaybe(vote.personalMax)),
+				_1: {
+					ctor: '::',
+					_0: A2(
+						_user$project$Util_ops['=>'],
+						'global_abs_max',
+						intMaybe(vote.globalMax)),
+					_1: {ctor: '[]'}
+				}
+			}
+		});
+};
+var _user$project$Data_Allocation$slugToString = function (_p0) {
+	var _p1 = _p0;
+	return _p1._0;
+};
+var _user$project$Data_Allocation$Allocation = F3(
+	function (a, b, c) {
+		return {expenses: a, amount: b, numVoters: c};
+	});
+var _user$project$Data_Allocation$Expense = function (a) {
+	return function (b) {
+		return function (c) {
+			return function (d) {
+				return function (e) {
+					return function (f) {
+						return function (g) {
+							return function (h) {
+								return function (i) {
+									return function (j) {
+										return {name: a, owner: b, detailText: c, partialAllowed: d, excessAllowed: e, requestedFunds: f, currentAllocatedFunds: g, newAllocatedFunds: h, userNewAllocatedFunds: i, slug: j};
+									};
+								};
+							};
+						};
+					};
+				};
+			};
+		};
+	};
+};
+var _user$project$Data_Allocation$Vote = F3(
+	function (a, b, c) {
+		return {weight: a, personalMax: b, globalMax: c};
+	});
+var _user$project$Data_Allocation$voteDecoder = A3(
+	_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
+	'global_abs_max',
+	_elm_lang$core$Json_Decode$nullable(_elm_lang$core$Json_Decode$int),
+	A3(
+		_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
+		'personal_abs_max',
+		_elm_lang$core$Json_Decode$nullable(_elm_lang$core$Json_Decode$int),
+		A3(
+			_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
+			'weight',
+			_elm_lang$core$Json_Decode$nullable(_elm_lang$core$Json_Decode$int),
+			_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$decode(_user$project$Data_Allocation$Vote))));
+var _user$project$Data_Allocation$Slug = function (a) {
+	return {ctor: 'Slug', _0: a};
+};
+var _user$project$Data_Allocation$slugParser = A2(
+	_evancz$url_parser$UrlParser$custom,
+	'SLUG',
+	function (_p2) {
+		return _elm_lang$core$Result$Ok(
+			_user$project$Data_Allocation$Slug(_p2));
+	});
+var _user$project$Data_Allocation$expenseDecoder = A3(
+	_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
+	'slug',
+	A2(_elm_lang$core$Json_Decode$map, _user$project$Data_Allocation$Slug, _elm_lang$core$Json_Decode$string),
+	A3(
+		_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
+		'user_new_allocated_funds',
+		_elm_lang$core$Json_Decode$int,
+		A3(
+			_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
+			'new_allocated_funds',
+			_elm_lang$core$Json_Decode$int,
+			A3(
+				_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
+				'current_allocated_funds',
+				_elm_lang$core$Json_Decode$int,
+				A3(
+					_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
+					'requested_funds',
+					_elm_lang$core$Json_Decode$int,
+					A3(
+						_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
+						'excess_allowed',
+						_elm_lang$core$Json_Decode$bool,
+						A3(
+							_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
+							'partial_allowed',
+							_elm_lang$core$Json_Decode$bool,
+							A3(
+								_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
+								'detail_text',
+								_elm_lang$core$Json_Decode$string,
+								A3(
+									_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
+									'owner',
+									_elm_lang$core$Json_Decode$string,
+									A3(
+										_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
+										'name',
+										_elm_lang$core$Json_Decode$string,
+										_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$decode(_user$project$Data_Allocation$Expense)))))))))));
+var _user$project$Data_Allocation$decoder = A3(
+	_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
+	'num_voters',
+	_elm_lang$core$Json_Decode$int,
+	A3(
+		_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
+		'amount',
+		_elm_lang$core$Json_Decode$int,
+		A3(
+			_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
+			'expenses',
+			_elm_lang$core$Json_Decode$list(_user$project$Data_Allocation$expenseDecoder),
+			_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$decode(_user$project$Data_Allocation$Allocation))));
 
 var _user$project$Data_User$User = F2(
 	function (a, b) {
@@ -16471,8 +16710,13 @@ var _user$project$Route$routeToString = function (page) {
 			return 'app#budget';
 		case 'Expense':
 			return 'app#expense';
-		default:
+		case 'Profile':
 			return 'app#profile';
+		default:
+			return A2(
+				_elm_lang$core$Basics_ops['++'],
+				'app#expense/',
+				_user$project$Data_Allocation$slugToString(_p0._0));
 	}
 };
 var _user$project$Route$href = function (route) {
@@ -16482,6 +16726,9 @@ var _user$project$Route$href = function (route) {
 var _user$project$Route$modifyUrl = function (_p1) {
 	return _elm_lang$navigation$Navigation$modifyUrl(
 		_user$project$Route$routeToString(_p1));
+};
+var _user$project$Route$ExpenseDetail = function (a) {
+	return {ctor: 'ExpenseDetail', _0: a};
 };
 var _user$project$Route$Profile = {ctor: 'Profile'};
 var _user$project$Route$Expense = {ctor: 'Expense'};
@@ -16519,7 +16766,17 @@ var _user$project$Route$route = _evancz$url_parser$UrlParser$oneOf(
 							_evancz$url_parser$UrlParser$map,
 							_user$project$Route$Profile,
 							_evancz$url_parser$UrlParser$s('profile')),
-						_1: {ctor: '[]'}
+						_1: {
+							ctor: '::',
+							_0: A2(
+								_evancz$url_parser$UrlParser$map,
+								_user$project$Route$ExpenseDetail,
+								A2(
+									_evancz$url_parser$UrlParser_ops['</>'],
+									_evancz$url_parser$UrlParser$s('expense'),
+									_user$project$Data_Allocation$slugParser)),
+							_1: {ctor: '[]'}
+						}
 					}
 				}
 			}
@@ -16536,20 +16793,31 @@ var _user$project$Route$fromLocation = function (location) {
 };
 
 var _user$project$View_Page$viewFooter = A2(
-	_rundis$elm_bootstrap$Bootstrap_Grid$container,
+	_rundis$elm_bootstrap$Bootstrap_Grid$containerFluid,
 	{ctor: '[]'},
 	{
 		ctor: '::',
 		_0: A2(
-			_elm_lang$html$Html$span,
+			_elm_lang$html$Html$div,
 			{
 				ctor: '::',
-				_0: _elm_lang$html$Html_Attributes$class('attribution'),
+				_0: _elm_lang$html$Html_Attributes$class('mt-4'),
 				_1: {ctor: '[]'}
 			},
 			{
 				ctor: '::',
-				_0: _elm_lang$html$Html$text('Stoneship, LLC. 2017. MIT license.'),
+				_0: A2(
+					_elm_lang$html$Html$span,
+					{
+						ctor: '::',
+						_0: _elm_lang$html$Html_Attributes$class('attribution small text-muted'),
+						_1: {ctor: '[]'}
+					},
+					{
+						ctor: '::',
+						_0: _elm_lang$html$Html$text('Stoneship, LLC. 2017. MIT license.'),
+						_1: {ctor: '[]'}
+					}),
 				_1: {ctor: '[]'}
 			}),
 		_1: {ctor: '[]'}
@@ -16752,46 +17020,13 @@ var _user$project$Request_Helpers$apiUrl = function (url) {
 	return A2(_elm_lang$core$Basics_ops['++'], 'http://localhost:8000/process/api', url);
 };
 
-var _user$project$Util$appendErrors = F2(
-	function (model, errors) {
-		return _elm_lang$core$Native_Utils.update(
-			model,
-			{
-				errors: A2(_elm_lang$core$Basics_ops['++'], model.errors, errors)
-			});
-	});
-var _user$project$Util$onClickStopPropagation = function (msg) {
-	return A3(
-		_elm_lang$html$Html_Events$onWithOptions,
-		'click',
-		_elm_lang$core$Native_Utils.update(
-			_elm_lang$html$Html_Events$defaultOptions,
-			{stopPropagation: true}),
-		_elm_lang$core$Json_Decode$succeed(msg));
-};
-var _user$project$Util$viewIf = F2(
-	function (condition, content) {
-		return condition ? content : _elm_lang$html$Html$text('');
-	});
-var _user$project$Util_ops = _user$project$Util_ops || {};
-_user$project$Util_ops['=>'] = F2(
-	function (v0, v1) {
-		return {ctor: '_Tuple2', _0: v0, _1: v1};
-	});
-var _user$project$Util$pair = F2(
-	function (first, second) {
-		return A2(_user$project$Util_ops['=>'], first, second);
-	});
-
-var _user$project$Request_Budget$changeRent = F2(
-	function (newRent, session) {
+var _user$project$Request_Allocation$postVote = F3(
+	function (session, vote, slug) {
+		var voteJson = _user$project$Data_Allocation$encodeVote(vote);
 		var body = _elm_lang$core$Json_Encode$object(
 			{
 				ctor: '::',
-				_0: A2(
-					_user$project$Util_ops['=>'],
-					'new_rent',
-					_elm_lang$core$Json_Encode$int(newRent)),
+				_0: A2(_user$project$Util_ops['=>'], 'vote', voteJson),
 				_1: {ctor: '[]'}
 			});
 		return _lukewestby$elm_http_builder$HttpBuilder$toRequest(
@@ -16799,1215 +17034,277 @@ var _user$project$Request_Budget$changeRent = F2(
 				_user$project$Data_Session$withAuthorization,
 				session,
 				A2(
-					_lukewestby$elm_http_builder$HttpBuilder$withExpect,
-					_elm_lang$http$Http$expectJson(
-						_elm_lang$core$Json_Decode$succeed(
-							{ctor: '_Tuple0'})),
+					_lukewestby$elm_http_builder$HttpBuilder$withJsonBody,
+					body,
 					A2(
-						_lukewestby$elm_http_builder$HttpBuilder$withJsonBody,
-						body,
+						_lukewestby$elm_http_builder$HttpBuilder$withExpect,
+						_elm_lang$http$Http$expectJson(
+							A2(_elm_lang$core$Json_Decode$field, 'result', _elm_lang$core$Json_Decode$string)),
 						_lukewestby$elm_http_builder$HttpBuilder$post(
-							_user$project$Request_Helpers$apiUrl('/rent.json'))))));
+							_user$project$Request_Helpers$apiUrl(
+								A2(
+									_elm_lang$core$Basics_ops['++'],
+									'/expenses/',
+									A2(
+										_elm_lang$core$Basics_ops['++'],
+										_user$project$Data_Allocation$slugToString(slug),
+										'/vote.json'))))))));
 	});
-var _user$project$Request_Budget$budget = _lukewestby$elm_http_builder$HttpBuilder$toRequest(
+var _user$project$Request_Allocation$vote = function (slug) {
+	return _lukewestby$elm_http_builder$HttpBuilder$toRequest(
+		A2(
+			_lukewestby$elm_http_builder$HttpBuilder$withExpect,
+			_elm_lang$http$Http$expectJson(
+				A2(
+					_elm_lang$core$Json_Decode$field,
+					'vote',
+					_elm_lang$core$Json_Decode$nullable(_user$project$Data_Allocation$voteDecoder))),
+			_lukewestby$elm_http_builder$HttpBuilder$get(
+				_user$project$Request_Helpers$apiUrl(
+					A2(
+						_elm_lang$core$Basics_ops['++'],
+						'/expenses/',
+						A2(
+							_elm_lang$core$Basics_ops['++'],
+							_user$project$Data_Allocation$slugToString(slug),
+							'/vote.json'))))));
+};
+var _user$project$Request_Allocation$expense = function (slug) {
+	return _lukewestby$elm_http_builder$HttpBuilder$toRequest(
+		A2(
+			_lukewestby$elm_http_builder$HttpBuilder$withExpect,
+			_elm_lang$http$Http$expectJson(
+				A2(_elm_lang$core$Json_Decode$field, 'expense', _user$project$Data_Allocation$expenseDecoder)),
+			_lukewestby$elm_http_builder$HttpBuilder$get(
+				_user$project$Request_Helpers$apiUrl(
+					A2(
+						_elm_lang$core$Basics_ops['++'],
+						'/expenses/',
+						A2(
+							_elm_lang$core$Basics_ops['++'],
+							_user$project$Data_Allocation$slugToString(slug),
+							'/expense.json'))))));
+};
+var _user$project$Request_Allocation$allocation = _lukewestby$elm_http_builder$HttpBuilder$toRequest(
 	A2(
 		_lukewestby$elm_http_builder$HttpBuilder$withExpect,
 		_elm_lang$http$Http$expectJson(
-			A2(_elm_lang$core$Json_Decode$field, 'budget', _user$project$Data_Budget$decoder)),
+			A2(_elm_lang$core$Json_Decode$field, 'allocation', _user$project$Data_Allocation$decoder)),
 		_lukewestby$elm_http_builder$HttpBuilder$get(
-			_user$project$Request_Helpers$apiUrl('/budget.json'))));
+			_user$project$Request_Helpers$apiUrl('/allocation.json'))));
 
-var _user$project$View_BarPlot$lerp = F5(
-	function (u, d0, d1, r0, r1) {
-		var ud = (u - d0) / (d1 - d0);
-		return (r1 * ud) + (r0 * (1 - ud));
-	});
-var _user$project$View_BarPlot$polyPoints = function (points) {
-	return A2(
-		_elm_lang$core$String$join,
-		' ',
-		A2(
-			_elm_lang$core$List$map,
-			function (_p0) {
-				var _p1 = _p0;
-				return A2(
-					_elm_lang$core$Basics_ops['++'],
-					_elm_lang$core$Basics$toString(_p1._0),
-					A2(
-						_elm_lang$core$Basics_ops['++'],
-						', ',
-						_elm_lang$core$Basics$toString(_p1._1)));
-			},
-			points));
-};
-var _user$project$View_BarPlot$annotationOptionBuilder = F2(
-	function (option, optionSet) {
-		var _p2 = option;
-		switch (_p2.ctor) {
-			case 'Text':
-				return _elm_lang$core$Native_Utils.update(
-					optionSet,
-					{text: _p2._0});
-			case 'Location':
-				return _elm_lang$core$Native_Utils.update(
-					optionSet,
-					{location: _p2._0});
-			case 'Type':
-				return _elm_lang$core$Native_Utils.update(
-					optionSet,
-					{atype: _p2._0});
-			default:
-				return _elm_lang$core$Native_Utils.update(
-					optionSet,
-					{fontSize: _p2._0});
-		}
-	});
-var _user$project$View_BarPlot$plotToVis = F2(
-	function (params, value) {
-		return A5(_user$project$View_BarPlot$lerp, value, params.minValue, params.maxValue, 0, 100);
-	});
-var _user$project$View_BarPlot$bracket = F4(
-	function (params, location, pleft, pright) {
-		var position = function () {
-			var _p3 = location;
-			switch (_p3.ctor) {
-				case 'Above':
-					return 'translate (0,-0.5) scale(1, -1)';
-				case 'Below':
-					return 'translate (0, 10.5)';
-				default:
-					return A2(
-						_elm_lang$core$Basics_ops['++'],
-						'translate (0, ',
-						A2(
-							_elm_lang$core$Basics_ops['++'],
-							_elm_lang$core$Basics$toString(params.height / 2),
-							')'));
-			}
-		}();
-		var right = A2(_user$project$View_BarPlot$plotToVis, params, pright);
-		var left = A2(_user$project$View_BarPlot$plotToVis, params, pleft);
-		var midpoint = (left + right) / 2;
-		return A2(
-			_elm_lang$svg$Svg$g,
-			{
+var _user$project$Page_ExpenseDetail$expenseSummaryTable = function (expense) {
+	var maybeNot = function (x) {
+		return x ? '' : 'not';
+	};
+	return _rundis$elm_bootstrap$Bootstrap_Table$table(
+		{
+			options: {
 				ctor: '::',
-				_0: _elm_lang$svg$Svg_Attributes$transform(position),
-				_1: {ctor: '[]'}
-			},
-			{
-				ctor: '::',
-				_0: A2(
-					_elm_lang$svg$Svg$polyline,
-					{
-						ctor: '::',
-						_0: _elm_lang$svg$Svg_Attributes$stroke('#000000'),
-						_1: {
-							ctor: '::',
-							_0: _elm_lang$svg$Svg_Attributes$strokeWidth('.5'),
-							_1: {
-								ctor: '::',
-								_0: _elm_lang$svg$Svg_Attributes$fill('none'),
-								_1: {
-									ctor: '::',
-									_0: _elm_lang$svg$Svg_Attributes$points(
-										_user$project$View_BarPlot$polyPoints(
-											{
-												ctor: '::',
-												_0: {ctor: '_Tuple2', _0: left, _1: 0},
-												_1: {
-													ctor: '::',
-													_0: {
-														ctor: '_Tuple2',
-														_0: A2(_elm_lang$core$Basics$min, left + 1.5, midpoint),
-														_1: 1.5
-													},
-													_1: {
-														ctor: '::',
-														_0: {
-															ctor: '_Tuple2',
-															_0: A2(_elm_lang$core$Basics$max, right - 1.5, midpoint),
-															_1: 1.5
-														},
-														_1: {
-															ctor: '::',
-															_0: {ctor: '_Tuple2', _0: right, _1: 0},
-															_1: {ctor: '[]'}
-														}
-													}
-												}
-											})),
-									_1: {ctor: '[]'}
-								}
-							}
-						}
-					},
-					{ctor: '[]'}),
+				_0: _rundis$elm_bootstrap$Bootstrap_Table$striped,
 				_1: {
 					ctor: '::',
-					_0: A2(
-						_elm_lang$svg$Svg$line,
-						{
-							ctor: '::',
-							_0: _elm_lang$svg$Svg_Attributes$x1(
-								_elm_lang$core$Basics$toString(midpoint)),
-							_1: {
-								ctor: '::',
-								_0: _elm_lang$svg$Svg_Attributes$y1('1.5'),
-								_1: {
-									ctor: '::',
-									_0: _elm_lang$svg$Svg_Attributes$x2(
-										_elm_lang$core$Basics$toString(midpoint)),
-									_1: {
-										ctor: '::',
-										_0: _elm_lang$svg$Svg_Attributes$y2('2.5'),
-										_1: {
-											ctor: '::',
-											_0: _elm_lang$svg$Svg_Attributes$stroke('#000000'),
-											_1: {
-												ctor: '::',
-												_0: _elm_lang$svg$Svg_Attributes$strokeWidth('0.5'),
-												_1: {
-													ctor: '::',
-													_0: _elm_lang$svg$Svg_Attributes$fill('none'),
-													_1: {ctor: '[]'}
-												}
-											}
-										}
-									}
-								}
-							}
-						},
-						{ctor: '[]'}),
+					_0: _rundis$elm_bootstrap$Bootstrap_Table$small,
 					_1: {ctor: '[]'}
 				}
-			});
-	});
-var _user$project$View_BarPlot$tupleMap2 = F2(
-	function (f, _p4) {
-		var _p5 = _p4;
-		return {
-			ctor: '_Tuple2',
-			_0: f(_p5._0),
-			_1: f(_p5._1)
-		};
-	});
-var _user$project$View_BarPlot$drawSeparator = F3(
-	function (params, textLoc, location) {
-		var _p6 = A2(
-			_user$project$View_BarPlot$tupleMap2,
-			_elm_lang$core$Basics$toString,
-			function () {
-				var _p7 = textLoc;
-				switch (_p7.ctor) {
-					case 'Above':
-						return {ctor: '_Tuple2', _0: -3, _1: params.height};
-					case 'Below':
-						return {ctor: '_Tuple2', _0: 0, _1: params.height + 3};
-					default:
-						return {ctor: '_Tuple2', _0: 0, _1: params.height};
-				}
-			}());
-		var y1s = _p6._0;
-		var y2s = _p6._1;
-		var pos = _elm_lang$core$Basics$toString(
-			A2(_user$project$View_BarPlot$plotToVis, params, location));
-		return A2(
-			_elm_lang$svg$Svg$line,
-			{
-				ctor: '::',
-				_0: _elm_lang$svg$Svg_Attributes$x1(pos),
-				_1: {
-					ctor: '::',
-					_0: _elm_lang$svg$Svg_Attributes$y1(y1s),
-					_1: {
-						ctor: '::',
-						_0: _elm_lang$svg$Svg_Attributes$x2(pos),
-						_1: {
-							ctor: '::',
-							_0: _elm_lang$svg$Svg_Attributes$y2(y2s),
-							_1: {
-								ctor: '::',
-								_0: _elm_lang$svg$Svg_Attributes$strokeWidth('.5'),
-								_1: {
-									ctor: '::',
-									_0: _elm_lang$svg$Svg_Attributes$fill('none'),
-									_1: {
-										ctor: '::',
-										_0: _elm_lang$svg$Svg_Attributes$stroke('#000000'),
-										_1: {ctor: '[]'}
-									}
-								}
-							}
-						}
-					}
-				}
 			},
-			{ctor: '[]'});
-	});
-var _user$project$View_BarPlot$drawBox = F2(
-	function (params, _p8) {
-		var _p9 = _p8;
-		var _p11 = _p9._1;
-		var _p10 = _p9._0;
-		var h = _elm_lang$core$Basics$toString(params.height);
-		var v1 = A2(
-			_user$project$View_BarPlot$plotToVis,
-			params,
-			A2(_elm_lang$core$Basics$max, _p10, _p11));
-		var v0 = A2(
-			_user$project$View_BarPlot$plotToVis,
-			params,
-			A2(_elm_lang$core$Basics$min, _p11, _p10));
-		return A2(
-			_elm_lang$svg$Svg$rect,
-			{
-				ctor: '::',
-				_0: _elm_lang$svg$Svg_Attributes$x(
-					_elm_lang$core$Basics$toString(v0)),
-				_1: {
-					ctor: '::',
-					_0: _elm_lang$svg$Svg_Attributes$y('0'),
-					_1: {
-						ctor: '::',
-						_0: _elm_lang$svg$Svg_Attributes$width(
-							_elm_lang$core$Basics$toString(v1 - v0)),
-						_1: {
-							ctor: '::',
-							_0: _elm_lang$svg$Svg_Attributes$height(
-								_elm_lang$core$Basics$toString(params.height)),
-							_1: {
-								ctor: '::',
-								_0: _elm_lang$svg$Svg_Attributes$fill(_p9._2),
-								_1: {ctor: '[]'}
-							}
-						}
-					}
-				}
-			},
-			{ctor: '[]'});
-	});
-var _user$project$View_BarPlot$BarPlot = F3(
-	function (a, b, c) {
-		return {minValue: a, maxValue: b, height: c};
-	});
-var _user$project$View_BarPlot$AnnotationOptions = F4(
-	function (a, b, c, d) {
-		return {location: a, atype: b, text: c, fontSize: d};
-	});
-var _user$project$View_BarPlot$Right = {ctor: 'Right'};
-var _user$project$View_BarPlot$Left = {ctor: 'Left'};
-var _user$project$View_BarPlot$Inside = function (a) {
-	return {ctor: 'Inside', _0: a};
-};
-var _user$project$View_BarPlot$Below = {ctor: 'Below'};
-var _user$project$View_BarPlot$Above = {ctor: 'Above'};
-var _user$project$View_BarPlot$TextOnly = function (a) {
-	return {ctor: 'TextOnly', _0: a};
-};
-var _user$project$View_BarPlot$defaultOptions = {
-	location: _user$project$View_BarPlot$Below,
-	atype: _user$project$View_BarPlot$TextOnly(0),
-	text: '',
-	fontSize: '5px'
-};
-var _user$project$View_BarPlot$annotate = F2(
-	function (params, optList) {
-		var options = A3(_elm_lang$core$List$foldr, _user$project$View_BarPlot$annotationOptionBuilder, _user$project$View_BarPlot$defaultOptions, optList);
-		var initTextCenter = A2(
-			_user$project$View_BarPlot$plotToVis,
-			params,
-			function () {
-				var _p12 = options.atype;
-				switch (_p12.ctor) {
-					case 'Bracket':
-						return (_p12._0 + _p12._1) / 2;
-					case 'Separator':
-						return _p12._0;
-					default:
-						return _p12._0;
-				}
-			}());
-		var textCenter = _elm_lang$core$Basics$toString(
-			function () {
-				var _p13 = options.location;
-				if (_p13.ctor === 'Inside') {
-					if (_p13._0.ctor === 'Left') {
-						return initTextCenter - 1;
-					} else {
-						return initTextCenter + 1;
-					}
-				} else {
-					return initTextCenter;
-				}
-			}());
-		var _p14 = function () {
-			var _p15 = options.location;
-			switch (_p15.ctor) {
-				case 'Above':
-					return {ctor: '_Tuple2', _0: -4, _1: 'bottom'};
-				case 'Below':
-					return {ctor: '_Tuple2', _0: params.height + 3.5, _1: 'hanging'};
-				default:
-					return {ctor: '_Tuple2', _0: params.height / 2, _1: 'central'};
-			}
-		}();
-		var yPos = _p14._0;
-		var textBaseline = _p14._1;
-		var anchor = function () {
-			var _p16 = options.location;
-			if (_p16.ctor === 'Inside') {
-				if (_p16._0.ctor === 'Left') {
-					return 'end';
-				} else {
-					return 'start';
-				}
-			} else {
-				return 'middle';
-			}
-		}();
-		return A2(
-			_elm_lang$svg$Svg$g,
-			{ctor: '[]'},
-			_elm_lang$core$List$concat(
+			thead: _rundis$elm_bootstrap$Bootstrap_Table$simpleThead(
+				{ctor: '[]'}),
+			tbody: A2(
+				_rundis$elm_bootstrap$Bootstrap_Table$tbody,
+				{ctor: '[]'},
 				{
 					ctor: '::',
-					_0: function () {
-						var _p17 = options.atype;
-						switch (_p17.ctor) {
-							case 'Bracket':
-								return {
-									ctor: '::',
-									_0: A4(_user$project$View_BarPlot$bracket, params, options.location, _p17._0, _p17._1),
-									_1: {ctor: '[]'}
-								};
-							case 'Separator':
-								return {
-									ctor: '::',
-									_0: A3(_user$project$View_BarPlot$drawSeparator, params, options.location, _p17._0),
-									_1: {ctor: '[]'}
-								};
-							default:
-								return {ctor: '[]'};
-						}
-					}(),
-					_1: {
-						ctor: '::',
-						_0: {
-							ctor: '::',
-							_0: A2(
-								_elm_lang$svg$Svg$text_,
-								{
-									ctor: '::',
-									_0: _elm_lang$svg$Svg_Attributes$x(textCenter),
-									_1: {
-										ctor: '::',
-										_0: _elm_lang$svg$Svg_Attributes$y(
-											_elm_lang$core$Basics$toString(yPos)),
-										_1: {
-											ctor: '::',
-											_0: _elm_lang$svg$Svg_Attributes$textAnchor(anchor),
-											_1: {
-												ctor: '::',
-												_0: _elm_lang$svg$Svg_Attributes$alignmentBaseline(textBaseline),
-												_1: {
-													ctor: '::',
-													_0: _elm_lang$svg$Svg_Attributes$style(
-														A2(_elm_lang$core$Basics_ops['++'], 'font-size: ', options.fontSize)),
-													_1: {
-														ctor: '::',
-														_0: _elm_lang$svg$Svg_Attributes$pointerEvents('none'),
-														_1: {ctor: '[]'}
-													}
-												}
-											}
-										}
-									}
-								},
-								{
-									ctor: '::',
-									_0: _elm_lang$svg$Svg$text(options.text),
-									_1: {ctor: '[]'}
-								}),
-							_1: {ctor: '[]'}
-						},
-						_1: {ctor: '[]'}
-					}
-				}));
-	});
-var _user$project$View_BarPlot$Separator = function (a) {
-	return {ctor: 'Separator', _0: a};
-};
-var _user$project$View_BarPlot$Bracket = F2(
-	function (a, b) {
-		return {ctor: 'Bracket', _0: a, _1: b};
-	});
-var _user$project$View_BarPlot$Size = function (a) {
-	return {ctor: 'Size', _0: a};
-};
-var _user$project$View_BarPlot$Type = function (a) {
-	return {ctor: 'Type', _0: a};
-};
-var _user$project$View_BarPlot$Location = function (a) {
-	return {ctor: 'Location', _0: a};
-};
-var _user$project$View_BarPlot$Text = function (a) {
-	return {ctor: 'Text', _0: a};
-};
-
-var _user$project$View_Colors$lightRedColor = '#EE494B';
-var _user$project$View_Colors$redColor = '#CE292B';
-var _user$project$View_Colors$lightBlueColor = '#3B70FE';
-var _user$project$View_Colors$blueColor = '#0B40CE';
-
-var _user$project$Page_Budget$interpolateBudget = F3(
-	function (startBudget, u, targetBudget) {
-		var findLease = F2(
-			function (leaseList, targetLease) {
-				var _p0 = A2(
-					_elm_lang$core$List$partition,
-					function (lease) {
-						return _elm_lang$core$Native_Utils.eq(lease.name, targetLease.name);
-					},
-					leaseList);
-				var matched = _p0._0;
-				var _p1 = matched;
-				if ((_p1.ctor === '::') && (_p1._1.ctor === '[]')) {
-					return _elm_lang$core$Maybe$Just(_p1._0);
-				} else {
-					return _elm_lang$core$Maybe$Nothing;
-				}
-			});
-		var interpolateLease = F3(
-			function (u, maybeSL, tL) {
-				var _p2 = maybeSL;
-				if (_p2.ctor === 'Just') {
-					var _p3 = _p2._0;
-					return _elm_lang$core$Native_Utils.update(
-						tL,
-						{
-							currentRent: A3(_user$project$Animation$lerp, _p3.currentRent, tL.currentRent, u),
-							proposedRent: A3(_user$project$Animation$lerp, _p3.proposedRent, tL.proposedRent, u)
-						});
-				} else {
-					return tL;
-				}
-			});
-		var interpIfFound = F3(
-			function (u, sLlist, tL) {
-				return A3(
-					interpolateLease,
-					u,
-					A2(findLease, sLlist, tL),
-					tL);
-			});
-		var interpolateLeases = F3(
-			function (u, sLList, tLList) {
-				return A2(
-					_elm_lang$core$List$map,
-					A2(interpIfFound, u, sLList),
-					tLList);
-			});
-		var tB = targetBudget;
-		var sB = startBudget;
-		return _elm_lang$core$Native_Utils.update(
-			tB,
-			{
-				coreExpenses: A3(_user$project$Animation$lerp, sB.coreExpenses, tB.coreExpenses, u),
-				leases: A3(interpolateLeases, u, sB.leases, tB.leases)
-			});
-	});
-var _user$project$Page_Budget$validateRent = function (input) {
-	if (_elm_lang$core$Native_Utils.eq(
-		_elm_lang$core$String$length(input),
-		0)) {
-		return _elm_lang$core$Result$Err('');
-	} else {
-		var _p4 = _elm_lang$core$String$toInt(input);
-		if (_p4.ctor === 'Ok') {
-			var _p5 = _p4._0;
-			return (_elm_lang$core$Native_Utils.cmp(_p5, 0) > -1) ? _elm_lang$core$Result$Ok(_p5) : _elm_lang$core$Result$Err('Nice try.  Rent can\'t be negative');
-		} else {
-			return _elm_lang$core$Result$Err('Rent must be a whole number');
-		}
-	}
-};
-var _user$project$Page_Budget$summaryRow = F2(
-	function (lStr, rStr) {
-		return A2(
-			_rundis$elm_bootstrap$Bootstrap_Grid$row,
-			{ctor: '[]'},
-			{
-				ctor: '::',
-				_0: A2(
-					_rundis$elm_bootstrap$Bootstrap_Grid$col,
-					{
-						ctor: '::',
-						_0: _rundis$elm_bootstrap$Bootstrap_Grid_Col$attrs(
-							{
-								ctor: '::',
-								_0: _elm_lang$html$Html_Attributes$class('pr-0'),
-								_1: {ctor: '[]'}
-							}),
-						_1: {ctor: '[]'}
-					},
-					{
-						ctor: '::',
-						_0: A2(
-							_elm_lang$html$Html$div,
-							{
-								ctor: '::',
-								_0: _elm_lang$html$Html_Attributes$class('text-right'),
-								_1: {ctor: '[]'}
-							},
-							{
-								ctor: '::',
-								_0: _elm_lang$html$Html$text(lStr),
-								_1: {ctor: '[]'}
-							}),
-						_1: {ctor: '[]'}
-					}),
-				_1: {
-					ctor: '::',
 					_0: A2(
-						_rundis$elm_bootstrap$Bootstrap_Grid$col,
+						_rundis$elm_bootstrap$Bootstrap_Table$tr,
 						{ctor: '[]'},
 						{
 							ctor: '::',
-							_0: _elm_lang$html$Html$text(rStr),
-							_1: {ctor: '[]'}
-						}),
-					_1: {ctor: '[]'}
-				}
-			});
-	});
-var _user$project$Page_Budget$totalIncome = function (budget) {
-	return _elm_lang$core$List$sum(
-		A2(
-			_elm_lang$core$List$map,
-			function (t) {
-				return t.proposedRent;
-			},
-			budget.leases));
-};
-var _user$project$Page_Budget$startingIncome = function (budget) {
-	return _elm_lang$core$List$sum(
-		A2(
-			_elm_lang$core$List$map,
-			function (_) {
-				return _.currentRent;
-			},
-			budget.leases));
-};
-var _user$project$Page_Budget$requiredPctIncrease = function (budget) {
-	var expenses = budget.coreExpenses;
-	var income = _user$project$Page_Budget$startingIncome(budget);
-	return A2(_elm_lang$core$Basics$max, 0, (expenses - income) / income);
-};
-var _user$project$Page_Budget$pctStr = function (x) {
-	var signStr = function (x) {
-		return (_elm_lang$core$Native_Utils.cmp(x, 0) > 0) ? '+' : '';
-	};
-	return A2(
-		_elm_lang$core$Basics_ops['++'],
-		signStr(x),
-		A2(
-			_elm_lang$core$Basics_ops['++'],
-			_elm_lang$core$Basics$toString(
-				_elm_lang$core$Basics$round(x * 100)),
-			'%'));
-};
-var _user$project$Page_Budget$change = function (lease) {
-	return (lease.proposedRent - lease.currentRent) / lease.currentRent;
-};
-var _user$project$Page_Budget$viewRent = F3(
-	function (pp, lease, baseLine) {
-		var color = (_elm_lang$core$Native_Utils.cmp(
-			_elm_lang$core$Basics$round(lease.proposedRent),
-			_elm_lang$core$Basics$floor((1 + baseLine) * lease.currentRent)) > -1) ? _user$project$View_Colors$blueColor : _user$project$View_Colors$redColor;
-		var val = _user$project$Page_Budget$change(lease);
-		return A2(
-			_elm_lang$svg$Svg$g,
-			{ctor: '[]'},
-			A2(
-				_elm_lang$core$List$append,
-				(_elm_lang$core$Native_Utils.cmp(val, baseLine) > 0) ? {
-					ctor: '::',
-					_0: A2(
-						_user$project$View_BarPlot$drawBox,
-						pp,
-						{ctor: '_Tuple3', _0: 0, _1: baseLine, _2: _user$project$View_Colors$blueColor}),
-					_1: {
-						ctor: '::',
-						_0: A2(
-							_user$project$View_BarPlot$drawBox,
-							pp,
-							{ctor: '_Tuple3', _0: baseLine, _1: val, _2: _user$project$View_Colors$lightBlueColor}),
-						_1: {ctor: '[]'}
-					}
-				} : {
-					ctor: '::',
-					_0: A2(
-						_user$project$View_BarPlot$drawBox,
-						pp,
-						{ctor: '_Tuple3', _0: 0, _1: val, _2: _user$project$View_Colors$blueColor}),
-					_1: {
-						ctor: '::',
-						_0: A2(
-							_user$project$View_BarPlot$drawBox,
-							pp,
-							{ctor: '_Tuple3', _0: val, _1: baseLine, _2: _user$project$View_Colors$lightRedColor}),
-						_1: {ctor: '[]'}
-					}
-				},
-				{
-					ctor: '::',
-					_0: A2(
-						_user$project$View_BarPlot$annotate,
-						pp,
-						{
-							ctor: '::',
-							_0: _user$project$View_BarPlot$Text(lease.name),
+							_0: A2(
+								_rundis$elm_bootstrap$Bootstrap_Table$td,
+								{ctor: '[]'},
+								{
+									ctor: '::',
+									_0: _elm_lang$html$Html$text('Requested this cycle'),
+									_1: {ctor: '[]'}
+								}),
 							_1: {
 								ctor: '::',
-								_0: _user$project$View_BarPlot$Location(
-									_user$project$View_BarPlot$Inside(_user$project$View_BarPlot$Right)),
-								_1: {
-									ctor: '::',
-									_0: _user$project$View_BarPlot$Type(
-										_user$project$View_BarPlot$TextOnly(0)),
-									_1: {
-										ctor: '::',
-										_0: _user$project$View_BarPlot$Size('3px'),
-										_1: {ctor: '[]'}
-									}
-								}
-							}
-						}),
-					_1: {ctor: '[]'}
-				}));
-	});
-var _user$project$Page_Budget$compareRentsByPctChangePlot = function (budget) {
-	var leaseName = function (lease) {
-		return lease.name;
-	};
-	var increasePct = _user$project$Page_Budget$requiredPctIncrease(budget);
-	var unsortedLeases = budget.leases;
-	var sortedLeases = _elm_lang$core$List$reverse(
-		A2(_elm_lang$core$List$sortBy, _user$project$Page_Budget$change, unsortedLeases));
-	var leasePair = A2(
-		_elm_lang$core$List$partition,
-		function (_p6) {
-			return function (n) {
-				return A2(_elm_lang$core$List$member, n, budget.leaseMember);
-			}(
-				function (_) {
-					return _.name;
-				}(_p6));
-		},
-		sortedLeases);
-	var _p7 = leasePair;
-	var usersLeases = _p7._0;
-	var otherLeases = _p7._1;
-	var leases = A2(_elm_lang$core$List$append, usersLeases, otherLeases);
-	var changes = A2(_elm_lang$core$List$map, _user$project$Page_Budget$change, leases);
-	var maxChange = A2(
-		_elm_lang$core$Basics$max,
-		increasePct * 1.2,
-		A2(
-			_elm_lang$core$Maybe$withDefault,
-			0,
-			_elm_lang$core$List$maximum(changes)));
-	var minChange = A2(
-		_elm_lang$core$Basics$min,
-		0,
-		A2(
-			_elm_lang$core$Maybe$withDefault,
-			0,
-			_elm_lang$core$List$minimum(changes)));
-	var barWidth = A2(_user$project$View_BarPlot$BarPlot, minChange, maxChange);
-	var pp = barWidth(5);
-	var drawLease = F2(
-		function (pos, lease) {
-			return A2(
-				_elm_lang$svg$Svg$g,
-				{
-					ctor: '::',
-					_0: _elm_lang$svg$Svg_Attributes$transform(
-						A2(
-							_elm_lang$core$Basics_ops['++'],
-							'translate (0, ',
-							A2(
-								_elm_lang$core$Basics_ops['++'],
-								_elm_lang$core$Basics$toString(
-									_elm_lang$core$Basics$toFloat(pos) * (pp.height + 1)),
-								')'))),
-					_1: {ctor: '[]'}
-				},
-				{
-					ctor: '::',
-					_0: A3(_user$project$Page_Budget$viewRent, pp, lease, increasePct),
-					_1: {ctor: '[]'}
-				});
-		});
-	var nLease = _elm_lang$core$List$length(leases);
-	return A2(
-		_elm_lang$svg$Svg$svg,
-		{
-			ctor: '::',
-			_0: _elm_lang$svg$Svg_Attributes$viewBox(
-				A2(
-					_elm_lang$core$Basics_ops['++'],
-					'0 0 120 ',
-					_elm_lang$core$Basics$toString(
-						(_elm_lang$core$Basics$toFloat(nLease) * (pp.height + 1)) + 10))),
-			_1: {
-				ctor: '::',
-				_0: _elm_lang$svg$Svg_Attributes$width('100%'),
-				_1: {ctor: '[]'}
-			}
-		},
-		{
-			ctor: '::',
-			_0: A2(
-				_elm_lang$svg$Svg$g,
-				{
-					ctor: '::',
-					_0: _elm_lang$svg$Svg_Attributes$transform('translate(20,10)'),
-					_1: {ctor: '[]'}
-				},
-				_elm_lang$core$List$concat(
-					{
-						ctor: '::',
-						_0: A2(_elm_lang$core$List$indexedMap, drawLease, leases),
-						_1: {
-							ctor: '::',
-							_0: {
-								ctor: '::',
 								_0: A2(
-									_user$project$View_BarPlot$annotate,
-									barWidth(
-										_elm_lang$core$Basics$toFloat(nLease) * (pp.height + 1)),
+									_rundis$elm_bootstrap$Bootstrap_Table$td,
+									{ctor: '[]'},
 									{
 										ctor: '::',
-										_0: _user$project$View_BarPlot$Text('Default New Rent'),
+										_0: _elm_lang$html$Html$text(
+											A2(
+												_elm_lang$core$Basics_ops['++'],
+												'$',
+												_elm_lang$core$Basics$toString(expense.requestedFunds))),
+										_1: {ctor: '[]'}
+									}),
+								_1: {ctor: '[]'}
+							}
+						}),
+					_1: {
+						ctor: '::',
+						_0: A2(
+							_rundis$elm_bootstrap$Bootstrap_Table$tr,
+							{ctor: '[]'},
+							{
+								ctor: '::',
+								_0: A2(
+									_rundis$elm_bootstrap$Bootstrap_Table$td,
+									{ctor: '[]'},
+									{
+										ctor: '::',
+										_0: _elm_lang$html$Html$text('Currently allocated this cycle'),
+										_1: {ctor: '[]'}
+									}),
+								_1: {
+									ctor: '::',
+									_0: A2(
+										_rundis$elm_bootstrap$Bootstrap_Table$td,
+										{ctor: '[]'},
+										{
+											ctor: '::',
+											_0: _elm_lang$html$Html$text(
+												A2(
+													_elm_lang$core$Basics_ops['++'],
+													'$',
+													_elm_lang$core$Basics$toString(expense.newAllocatedFunds))),
+											_1: {ctor: '[]'}
+										}),
+									_1: {ctor: '[]'}
+								}
+							}),
+						_1: {
+							ctor: '::',
+							_0: A2(
+								_rundis$elm_bootstrap$Bootstrap_Table$tr,
+								{ctor: '[]'},
+								{
+									ctor: '::',
+									_0: A2(
+										_rundis$elm_bootstrap$Bootstrap_Table$td,
+										{ctor: '[]'},
+										{
+											ctor: '::',
+											_0: _elm_lang$html$Html$text('Carried over from previous cycle'),
+											_1: {ctor: '[]'}
+										}),
+									_1: {
+										ctor: '::',
+										_0: A2(
+											_rundis$elm_bootstrap$Bootstrap_Table$td,
+											{ctor: '[]'},
+											{
+												ctor: '::',
+												_0: _elm_lang$html$Html$text(
+													A2(
+														_elm_lang$core$Basics_ops['++'],
+														'$',
+														_elm_lang$core$Basics$toString(expense.currentAllocatedFunds))),
+												_1: {ctor: '[]'}
+											}),
+										_1: {ctor: '[]'}
+									}
+								}),
+							_1: {
+								ctor: '::',
+								_0: A2(
+									_rundis$elm_bootstrap$Bootstrap_Table$tr,
+									{ctor: '[]'},
+									{
+										ctor: '::',
+										_0: A2(
+											_rundis$elm_bootstrap$Bootstrap_Table$td,
+											{ctor: '[]'},
+											{
+												ctor: '::',
+												_0: _elm_lang$html$Html$text('Person responsible'),
+												_1: {ctor: '[]'}
+											}),
 										_1: {
 											ctor: '::',
-											_0: _user$project$View_BarPlot$Location(_user$project$View_BarPlot$Above),
-											_1: {
-												ctor: '::',
-												_0: _user$project$View_BarPlot$Type(
-													_user$project$View_BarPlot$Separator(increasePct)),
-												_1: {
+											_0: A2(
+												_rundis$elm_bootstrap$Bootstrap_Table$td,
+												{ctor: '[]'},
+												{
 													ctor: '::',
-													_0: _user$project$View_BarPlot$Size('3px'),
+													_0: _elm_lang$html$Html$text(expense.owner),
 													_1: {ctor: '[]'}
-												}
-											}
+												}),
+											_1: {ctor: '[]'}
 										}
 									}),
 								_1: {
 									ctor: '::',
 									_0: A2(
-										_user$project$View_BarPlot$annotate,
-										barWidth(
-											_elm_lang$core$Basics$toFloat(nLease) * (pp.height + 1)),
+										_rundis$elm_bootstrap$Bootstrap_Table$tr,
+										{ctor: '[]'},
 										{
 											ctor: '::',
-											_0: _user$project$View_BarPlot$Text('Current Rent'),
-											_1: {
-												ctor: '::',
-												_0: _user$project$View_BarPlot$Location(_user$project$View_BarPlot$Above),
-												_1: {
+											_0: A2(
+												_rundis$elm_bootstrap$Bootstrap_Table$td,
+												{
 													ctor: '::',
-													_0: _user$project$View_BarPlot$Type(
-														_user$project$View_BarPlot$Separator(0)),
-													_1: {
-														ctor: '::',
-														_0: _user$project$View_BarPlot$Size('3px'),
-														_1: {ctor: '[]'}
-													}
-												}
-											}
-										}),
-									_1: {ctor: '[]'}
-								}
-							},
-							_1: {ctor: '[]'}
-						}
-					})),
-			_1: {ctor: '[]'}
-		});
-};
-var _user$project$Page_Budget$compareRentsView = function (budget) {
-	return _rundis$elm_bootstrap$Bootstrap_Card$view(
-		A3(
-			_rundis$elm_bootstrap$Bootstrap_Card$block,
-			{ctor: '[]'},
-			{
-				ctor: '::',
-				_0: _rundis$elm_bootstrap$Bootstrap_Card$custom(
-					_user$project$Page_Budget$compareRentsByPctChangePlot(budget)),
-				_1: {ctor: '[]'}
-			},
-			A3(
-				_rundis$elm_bootstrap$Bootstrap_Card$headerH3,
-				{ctor: '[]'},
-				{
-					ctor: '::',
-					_0: _elm_lang$html$Html$text('Proposed New Rents'),
-					_1: {ctor: '[]'}
-				},
-				_rundis$elm_bootstrap$Bootstrap_Card$config(
-					{
-						ctor: '::',
-						_0: _rundis$elm_bootstrap$Bootstrap_Card$attrs(
-							{
-								ctor: '::',
-								_0: _elm_lang$html$Html_Attributes$class('mt-2'),
-								_1: {ctor: '[]'}
-							}),
-						_1: {ctor: '[]'}
-					}))));
-};
-var _user$project$Page_Budget$topLineSvg = function (budget) {
-	var currentIncome = _user$project$Page_Budget$startingIncome(budget);
-	var coreExpenses = budget.coreExpenses;
-	var income = _user$project$Page_Budget$totalIncome(budget);
-	var scaleMax = 1.25 * A2(_elm_lang$core$Basics$max, income, coreExpenses);
-	var plotParam = A3(_user$project$View_BarPlot$BarPlot, 0, scaleMax, 10);
-	return A2(
-		_rundis$elm_bootstrap$Bootstrap_Grid$row,
-		{ctor: '[]'},
-		{
-			ctor: '::',
-			_0: A2(
-				_rundis$elm_bootstrap$Bootstrap_Grid$col,
-				{ctor: '[]'},
-				{
-					ctor: '::',
-					_0: A2(
-						_elm_lang$svg$Svg$svg,
-						{
-							ctor: '::',
-							_0: _elm_lang$svg$Svg_Attributes$viewBox('0 0 110 30'),
-							_1: {
-								ctor: '::',
-								_0: _elm_lang$svg$Svg_Attributes$width('100%'),
-								_1: {ctor: '[]'}
-							}
-						},
-						{
-							ctor: '::',
-							_0: A2(
-								_elm_lang$svg$Svg$g,
-								{
-									ctor: '::',
-									_0: _elm_lang$svg$Svg_Attributes$transform('translate(5,10)'),
-									_1: {ctor: '[]'}
-								},
-								A2(
-									_elm_lang$core$List$append,
-									(_elm_lang$core$Native_Utils.cmp(income, currentIncome) > 0) ? {
-										ctor: '::',
-										_0: A2(
-											_user$project$View_BarPlot$annotate,
-											plotParam,
-											{
-												ctor: '::',
-												_0: _user$project$View_BarPlot$Text('New Income'),
-												_1: {
-													ctor: '::',
-													_0: _user$project$View_BarPlot$Type(
-														A2(_user$project$View_BarPlot$Bracket, currentIncome, income)),
+													_0: _rundis$elm_bootstrap$Bootstrap_Table$cellAttr(
+														_elm_lang$html$Html_Attributes$colspan(2)),
 													_1: {ctor: '[]'}
-												}
-											}),
-										_1: {ctor: '[]'}
-									} : {
+												},
+												{
+													ctor: '::',
+													_0: _elm_lang$html$Html$text(
+														A2(
+															_elm_lang$core$Basics_ops['++'],
+															'Will ',
+															A2(
+																_elm_lang$core$Basics_ops['++'],
+																maybeNot(expense.excessAllowed),
+																' accept more than requested'))),
+													_1: {ctor: '[]'}
+												}),
+											_1: {ctor: '[]'}
+										}),
+									_1: {
 										ctor: '::',
 										_0: A2(
-											_user$project$View_BarPlot$annotate,
-											plotParam,
+											_rundis$elm_bootstrap$Bootstrap_Table$tr,
+											{ctor: '[]'},
 											{
 												ctor: '::',
-												_0: _user$project$View_BarPlot$Type(
-													_user$project$View_BarPlot$TextOnly(0)),
+												_0: A2(
+													_rundis$elm_bootstrap$Bootstrap_Table$td,
+													{
+														ctor: '::',
+														_0: _rundis$elm_bootstrap$Bootstrap_Table$cellAttr(
+															_elm_lang$html$Html_Attributes$colspan(2)),
+														_1: {ctor: '[]'}
+													},
+													{
+														ctor: '::',
+														_0: _elm_lang$html$Html$text(
+															A2(
+																_elm_lang$core$Basics_ops['++'],
+																'Will ',
+																A2(
+																	_elm_lang$core$Basics_ops['++'],
+																	maybeNot(expense.partialAllowed),
+																	'accept less than requested'))),
+														_1: {ctor: '[]'}
+													}),
 												_1: {ctor: '[]'}
 											}),
 										_1: {ctor: '[]'}
-									},
-									(_elm_lang$core$Native_Utils.cmp(income, coreExpenses) > -1) ? {
-										ctor: '::',
-										_0: A2(
-											_user$project$View_BarPlot$drawBox,
-											plotParam,
-											{ctor: '_Tuple3', _0: 0, _1: income, _2: _user$project$View_Colors$lightBlueColor}),
-										_1: {
-											ctor: '::',
-											_0: A2(
-												_user$project$View_BarPlot$drawBox,
-												plotParam,
-												{ctor: '_Tuple3', _0: 0, _1: coreExpenses, _2: _user$project$View_Colors$blueColor}),
-											_1: {
-												ctor: '::',
-												_0: A2(
-													_user$project$View_BarPlot$annotate,
-													plotParam,
-													{
-														ctor: '::',
-														_0: _user$project$View_BarPlot$Text('Current Income'),
-														_1: {
-															ctor: '::',
-															_0: _user$project$View_BarPlot$Type(
-																A2(_user$project$View_BarPlot$Bracket, 0, currentIncome)),
-															_1: {ctor: '[]'}
-														}
-													}),
-												_1: {
-													ctor: '::',
-													_0: A2(
-														_user$project$View_BarPlot$annotate,
-														plotParam,
-														{
-															ctor: '::',
-															_0: _user$project$View_BarPlot$Text('Core Expenses'),
-															_1: {
-																ctor: '::',
-																_0: _user$project$View_BarPlot$Type(
-																	A2(_user$project$View_BarPlot$Bracket, 0, coreExpenses)),
-																_1: {
-																	ctor: '::',
-																	_0: _user$project$View_BarPlot$Location(_user$project$View_BarPlot$Above),
-																	_1: {ctor: '[]'}
-																}
-															}
-														}),
-													_1: {
-														ctor: '::',
-														_0: A2(
-															_user$project$View_BarPlot$annotate,
-															plotParam,
-															{
-																ctor: '::',
-																_0: _user$project$View_BarPlot$Text('Surplus'),
-																_1: {
-																	ctor: '::',
-																	_0: _user$project$View_BarPlot$Type(
-																		A2(_user$project$View_BarPlot$Bracket, coreExpenses, income)),
-																	_1: {
-																		ctor: '::',
-																		_0: _user$project$View_BarPlot$Location(_user$project$View_BarPlot$Above),
-																		_1: {ctor: '[]'}
-																	}
-																}
-															}),
-														_1: {ctor: '[]'}
-													}
-												}
-											}
-										}
-									} : {
-										ctor: '::',
-										_0: A2(
-											_user$project$View_BarPlot$drawBox,
-											plotParam,
-											{ctor: '_Tuple3', _0: 0, _1: coreExpenses, _2: _user$project$View_Colors$redColor}),
-										_1: {
-											ctor: '::',
-											_0: A2(
-												_user$project$View_BarPlot$drawBox,
-												plotParam,
-												{ctor: '_Tuple3', _0: 0, _1: income, _2: _user$project$View_Colors$blueColor}),
-											_1: {
-												ctor: '::',
-												_0: A2(
-													_user$project$View_BarPlot$annotate,
-													plotParam,
-													{
-														ctor: '::',
-														_0: _user$project$View_BarPlot$Text('Current Rent'),
-														_1: {
-															ctor: '::',
-															_0: _user$project$View_BarPlot$Type(
-																A2(_user$project$View_BarPlot$Bracket, 0, currentIncome)),
-															_1: {ctor: '[]'}
-														}
-													}),
-												_1: {
-													ctor: '::',
-													_0: A2(
-														_user$project$View_BarPlot$annotate,
-														plotParam,
-														{
-															ctor: '::',
-															_0: _user$project$View_BarPlot$Text('Core Expenses'),
-															_1: {
-																ctor: '::',
-																_0: _user$project$View_BarPlot$Type(
-																	A2(_user$project$View_BarPlot$Bracket, 0, coreExpenses)),
-																_1: {
-																	ctor: '::',
-																	_0: _user$project$View_BarPlot$Location(_user$project$View_BarPlot$Above),
-																	_1: {ctor: '[]'}
-																}
-															}
-														}),
-													_1: {ctor: '[]'}
-												}
-											}
-										}
-									})),
-							_1: {ctor: '[]'}
-						}),
-					_1: {ctor: '[]'}
-				}),
-			_1: {ctor: '[]'}
+									}
+								}
+							}
+						}
+					}
+				})
 		});
 };
-var _user$project$Page_Budget$detailSummaryText = F2(
-	function (lease, defaultRent) {
-		var moreOrLess = function (val) {
-			return (_elm_lang$core$Native_Utils.cmp(val, 0) > -1) ? 'more' : 'less';
-		};
-		var rentDiff = function (lease) {
-			return lease.proposedRent - lease.currentRent;
-		};
-		var raiseOrLower = function (lease) {
-			return (_elm_lang$core$Native_Utils.cmp(
-				rentDiff(lease),
-				0) > -1) ? 'raise' : 'lower';
-		};
-		return _elm_lang$html$Html$text(
-			A2(
-				_elm_lang$core$Basics_ops['++'],
-				'The current proposal is to ',
-				A2(
-					_elm_lang$core$Basics_ops['++'],
-					raiseOrLower(lease),
-					A2(
-						_elm_lang$core$Basics_ops['++'],
-						' ',
-						A2(
-							_elm_lang$core$Basics_ops['++'],
-							lease.name,
-							A2(
-								_elm_lang$core$Basics_ops['++'],
-								'\'s monthly rent by $',
-								A2(
-									_elm_lang$core$Basics_ops['++'],
-									_elm_lang$core$Basics$toString(
-										_elm_lang$core$Basics$round(
-											_elm_lang$core$Basics$abs(
-												rentDiff(lease)))),
-									A2(
-										_elm_lang$core$Basics_ops['++'],
-										' to $',
-										A2(
-											_elm_lang$core$Basics_ops['++'],
-											_elm_lang$core$Basics$toString(
-												_elm_lang$core$Basics$round(lease.proposedRent)),
-											A2(
-												_elm_lang$core$Basics_ops['++'],
-												'.  This is $',
-												A2(
-													_elm_lang$core$Basics_ops['++'],
-													_elm_lang$core$Basics$toString(
-														_elm_lang$core$Basics$round(
-															_elm_lang$core$Basics$abs(lease.proposedRent - defaultRent))),
-													A2(
-														_elm_lang$core$Basics_ops['++'],
-														' ',
-														A2(
-															_elm_lang$core$Basics_ops['++'],
-															moreOrLess(
-																_elm_lang$core$Basics$abs(lease.proposedRent - defaultRent)),
-															A2(
-																_elm_lang$core$Basics_ops['++'],
-																' than the minimum recommended new rent of $',
-																A2(
-																	_elm_lang$core$Basics_ops['++'],
-																	_elm_lang$core$Basics$toString(
-																		_elm_lang$core$Basics$round(defaultRent)),
-																	'.')))))))))))))));
-	});
-var _user$project$Page_Budget$explainerText = function (budget) {
-	var changeWord = function (val) {
-		return (_elm_lang$core$Native_Utils.cmp(val, 0) > -1) ? 'an increase' : 'a decrease';
-	};
-	var increaseOrDecrease = function (val) {
-		return (_elm_lang$core$Native_Utils.cmp(val, 0) > -1) ? 'increase' : 'decrease';
-	};
-	var surplusOrDeficit = function (val) {
-		return (_elm_lang$core$Native_Utils.cmp(val, 0) > -1) ? 'surplus' : 'deficit';
-	};
-	var format = function (num) {
-		var intStr = _elm_lang$core$Basics$toString(
-			_elm_lang$core$Basics$round(num * 1000));
-		return A2(
-			_elm_lang$core$Basics_ops['++'],
-			A2(_elm_lang$core$String$left, 2, intStr),
-			A2(
-				_elm_lang$core$Basics_ops['++'],
-				'.',
-				A2(_elm_lang$core$String$right, 1, intStr)));
-	};
-	var showPct = function (num) {
-		return A2(
-			_elm_lang$core$Basics_ops['++'],
-			format(num),
-			'%');
-	};
-	var defaultIncreasePct = showPct(
-		_user$project$Page_Budget$requiredPctIncrease(budget));
-	var currentIncome = _user$project$Page_Budget$startingIncome(budget);
-	var coreExpense = budget.coreExpenses;
-	var income = _user$project$Page_Budget$totalIncome(budget);
-	var summaryExplainerText = function (budget) {
-		return _elm_lang$html$Html$text(
-			A2(
-				_elm_lang$core$Basics_ops['++'],
-				'This page show proposed changes to rents, and how those changes affect Bloomcraft\'s budget.',
-				A2(
-					_elm_lang$core$Basics_ops['++'],
-					' To cover our core expenses, total rental income needs to ',
-					A2(
-						_elm_lang$core$Basics_ops['++'],
-						increaseOrDecrease(coreExpense - currentIncome),
-						A2(
-							_elm_lang$core$Basics_ops['++'],
-							' by $',
-							A2(
-								_elm_lang$core$Basics_ops['++'],
-								_elm_lang$core$Basics$toString(coreExpense - currentIncome),
-								A2(
-									_elm_lang$core$Basics_ops['++'],
-									', ',
-									A2(
-										_elm_lang$core$Basics_ops['++'],
-										changeWord(
-											_user$project$Page_Budget$requiredPctIncrease(budget)),
-										A2(
-											_elm_lang$core$Basics_ops['++'],
-											' of ',
-											A2(
-												_elm_lang$core$Basics_ops['++'],
-												defaultIncreasePct,
-												A2(
-													_elm_lang$core$Basics_ops['++'],
-													'.  Currently there is a projected $',
-													A2(
-														_elm_lang$core$Basics_ops['++'],
-														_elm_lang$core$Basics$toString(
-															_elm_lang$core$Basics$round(income - coreExpense)),
-														A2(
-															_elm_lang$core$Basics_ops['++'],
-															' ',
-															A2(
-																_elm_lang$core$Basics_ops['++'],
-																surplusOrDeficit(income - coreExpense),
-																A2(_elm_lang$core$Basics_ops['++'], '.', ' If we have a surplus, those funds will be available for discretionary spending at the end of the upcoming quarter.')))))))))))))));
-	};
+var _user$project$Page_ExpenseDetail$expenseView = function (expense) {
 	return _rundis$elm_bootstrap$Bootstrap_Card$view(
 		A3(
 			_rundis$elm_bootstrap$Bootstrap_Card$block,
@@ -18020,46 +17317,27 @@ var _user$project$Page_Budget$explainerText = function (budget) {
 						{ctor: '[]'},
 						{
 							ctor: '::',
-							_0: A2(
-								_rundis$elm_bootstrap$Bootstrap_Grid$row,
-								{ctor: '[]'},
+							_0: _rundis$elm_bootstrap$Bootstrap_Alert$info(
 								{
 									ctor: '::',
-									_0: A2(
-										_rundis$elm_bootstrap$Bootstrap_Grid$col,
-										{ctor: '[]'},
-										{
-											ctor: '::',
-											_0: _user$project$Page_Budget$topLineSvg(budget),
-											_1: {ctor: '[]'}
-										}),
+									_0: _elm_lang$html$Html$text(expense.detailText),
 									_1: {ctor: '[]'}
 								}),
 							_1: {
 								ctor: '::',
-								_0: A2(
-									_elm_lang$html$Html$p,
-									{
-										ctor: '::',
-										_0: _elm_lang$html$Html_Attributes$class('lead'),
-										_1: {ctor: '[]'}
-									},
-									{
-										ctor: '::',
-										_0: summaryExplainerText(budget),
-										_1: {ctor: '[]'}
-									}),
+								_0: _user$project$Page_ExpenseDetail$expenseSummaryTable(expense),
 								_1: {ctor: '[]'}
 							}
 						})),
 				_1: {ctor: '[]'}
 			},
 			A3(
-				_rundis$elm_bootstrap$Bootstrap_Card$headerH3,
+				_rundis$elm_bootstrap$Bootstrap_Card$headerH4,
 				{ctor: '[]'},
 				{
 					ctor: '::',
-					_0: _elm_lang$html$Html$text('Summary of Proposed Budget'),
+					_0: _elm_lang$html$Html$text(
+						A2(_elm_lang$core$Basics_ops['++'], 'Expense: ', expense.name)),
 					_1: {ctor: '[]'}
 				},
 				_rundis$elm_bootstrap$Bootstrap_Card$config(
@@ -18074,495 +17352,613 @@ var _user$project$Page_Budget$explainerText = function (budget) {
 						_1: {ctor: '[]'}
 					}))));
 };
-var _user$project$Page_Budget$animate = function (_p8) {
-	var _p9 = _p8;
-	var _p13 = _p9.budget;
-	var _p10 = _p9.animation;
-	if (_p10.ctor === 'Just') {
-		var _p12 = _p10._0;
-		var _p11 = _p12.startTime;
-		if (_p11.ctor === 'Just') {
-			return A3(_p12.budget, _p11._0, _p9.time, _p13);
-		} else {
-			return A3(_p12.budget, 0, 0, _p13);
-		}
-	} else {
-		return _p13;
-	}
-};
-var _user$project$Page_Budget$init = function () {
+var _user$project$Page_ExpenseDetail$init = function (slug) {
 	var initModel = F2(
-		function (budget, time) {
+		function (expense, maybeVote) {
 			return {
-				budget: budget,
-				requestedRent: _elm_lang$core$Result$Err(''),
-				time: time,
-				animation: _elm_lang$core$Maybe$Nothing
+				expense: expense,
+				weight: A2(
+					_elm_lang$core$Maybe$map,
+					_elm_lang$core$Result$Ok,
+					A2(
+						_elm_lang$core$Maybe$andThen,
+						function (_) {
+							return _.weight;
+						},
+						maybeVote)),
+				personalMax: A2(
+					_elm_lang$core$Maybe$map,
+					_elm_lang$core$Result$Ok,
+					A2(
+						_elm_lang$core$Maybe$andThen,
+						function (_) {
+							return _.personalMax;
+						},
+						maybeVote)),
+				globalMax: A2(
+					_elm_lang$core$Maybe$map,
+					_elm_lang$core$Result$Ok,
+					A2(
+						_elm_lang$core$Maybe$andThen,
+						function (_) {
+							return _.globalMax;
+						},
+						maybeVote))
 			};
 		});
 	var handleLoadError = function (err) {
-		var l = A2(_elm_lang$core$Debug$log, 'Budget Load Err', err);
-		return A2(_user$project$Page_Errored$pageLoadError, _user$project$View_Page$Budget, 'Failed to load budget');
+		var l = A2(_elm_lang$core$Debug$log, 'Expense Load Err', err);
+		return A2(_user$project$Page_Errored$pageLoadError, _user$project$View_Page$Other, 'Failed to load expense');
 	};
-	var loadBudget = _elm_lang$http$Http$toTask(_user$project$Request_Budget$budget);
+	var loadVote = _elm_lang$http$Http$toTask(
+		_user$project$Request_Allocation$vote(slug));
+	var loadExpense = _elm_lang$http$Http$toTask(
+		_user$project$Request_Allocation$expense(slug));
 	return A2(
 		_elm_lang$core$Task$mapError,
 		handleLoadError,
-		A3(_elm_lang$core$Task$map2, initModel, loadBudget, _elm_lang$core$Time$now));
-}();
-var _user$project$Page_Budget$Model = F4(
+		A3(_elm_lang$core$Task$map2, initModel, loadExpense, loadVote));
+};
+var _user$project$Page_ExpenseDetail$Model = F4(
 	function (a, b, c, d) {
-		return {budget: a, requestedRent: b, time: c, animation: d};
+		return {expense: a, personalMax: b, globalMax: c, weight: d};
 	});
-var _user$project$Page_Budget$Animation = F2(
-	function (a, b) {
-		return {startTime: a, budget: b};
-	});
-var _user$project$Page_Budget$Animate = function (a) {
-	return {ctor: 'Animate', _0: a};
+var _user$project$Page_ExpenseDetail$LoadedExpense = function (a) {
+	return {ctor: 'LoadedExpense', _0: a};
 };
-var _user$project$Page_Budget$subscriptions = function (model) {
-	var _p14 = model.animation;
-	if (_p14.ctor === 'Just') {
-		return _elm_lang$animation_frame$AnimationFrame$times(_user$project$Page_Budget$Animate);
-	} else {
-		return _elm_lang$core$Platform_Sub$none;
-	}
+var _user$project$Page_ExpenseDetail$VoteResponse = function (a) {
+	return {ctor: 'VoteResponse', _0: a};
 };
-var _user$project$Page_Budget$ChangeRent = {ctor: 'ChangeRent'};
-var _user$project$Page_Budget$UpdateRentInput = function (a) {
-	return {ctor: 'UpdateRentInput', _0: a};
-};
-var _user$project$Page_Budget$rentInputView = function (model) {
-	return A2(
-		_elm_lang$html$Html$div,
-		{ctor: '[]'},
-		{
-			ctor: '::',
-			_0: _rundis$elm_bootstrap$Bootstrap_Form_InputGroup$view(
-				A2(
-					_rundis$elm_bootstrap$Bootstrap_Form_InputGroup$successors,
-					{
-						ctor: '::',
-						_0: A2(
-							_rundis$elm_bootstrap$Bootstrap_Form_InputGroup$button,
-							A2(
-								_elm_lang$core$List$append,
-								function () {
-									var _p15 = model.requestedRent;
-									if (_p15.ctor === 'Ok') {
-										return {ctor: '[]'};
-									} else {
-										return {
-											ctor: '::',
-											_0: _rundis$elm_bootstrap$Bootstrap_Button$disabled(true),
-											_1: {ctor: '[]'}
-										};
-									}
-								}(),
-								{
-									ctor: '::',
-									_0: _rundis$elm_bootstrap$Bootstrap_Button$primary,
-									_1: {
-										ctor: '::',
-										_0: _rundis$elm_bootstrap$Bootstrap_Button$onClick(_user$project$Page_Budget$ChangeRent),
-										_1: {ctor: '[]'}
-									}
-								}),
-							{
-								ctor: '::',
-								_0: _elm_lang$html$Html$text('Change'),
-								_1: {ctor: '[]'}
-							}),
-						_1: {ctor: '[]'}
-					},
-					A2(
-						_rundis$elm_bootstrap$Bootstrap_Form_InputGroup$predecessors,
-						{
-							ctor: '::',
-							_0: A2(
-								_rundis$elm_bootstrap$Bootstrap_Form_InputGroup$span,
-								{ctor: '[]'},
-								{
-									ctor: '::',
-									_0: _elm_lang$html$Html$text('$'),
-									_1: {ctor: '[]'}
-								}),
-							_1: {ctor: '[]'}
-						},
-						_rundis$elm_bootstrap$Bootstrap_Form_InputGroup$config(
-							_rundis$elm_bootstrap$Bootstrap_Form_InputGroup$number(
-								{
-									ctor: '::',
-									_0: _rundis$elm_bootstrap$Bootstrap_Form_Input$placeholder(
-										_elm_lang$core$Basics$toString(0)),
-									_1: {
-										ctor: '::',
-										_0: _rundis$elm_bootstrap$Bootstrap_Form_Input$onInput(_user$project$Page_Budget$UpdateRentInput),
-										_1: {ctor: '[]'}
-									}
-								}))))),
-			_1: {
-				ctor: '::',
-				_0: A2(
-					_rundis$elm_bootstrap$Bootstrap_Form$validationText,
-					{ctor: '[]'},
-					function () {
-						var _p16 = model.requestedRent;
-						if (_p16.ctor === 'Ok') {
-							return {ctor: '[]'};
-						} else {
-							return {
-								ctor: '::',
-								_0: _elm_lang$html$Html$text(_p16._0),
-								_1: {ctor: '[]'}
-							};
-						}
-					}()),
-				_1: {ctor: '[]'}
-			}
-		});
-};
-var _user$project$Page_Budget$changeRentView = F3(
-	function (model, budget, viewLease) {
-		var changeRentButton = F2(
-			function (budget, adminLease) {
-				return _rundis$elm_bootstrap$Bootstrap_Alert$info(
-					{
-						ctor: '::',
-						_0: _elm_lang$html$Html$text('Change proposed rent'),
-						_1: {
-							ctor: '::',
-							_0: _user$project$Page_Budget$rentInputView(model),
-							_1: {ctor: '[]'}
-						}
-					});
-			});
-		var nonAdminView = A2(
-			_elm_lang$html$Html$div,
-			{
-				ctor: '::',
-				_0: _elm_lang$html$Html_Attributes$class('mt-4'),
-				_1: {ctor: '[]'}
-			},
-			{
-				ctor: '::',
-				_0: _rundis$elm_bootstrap$Bootstrap_Alert$info(
-					{
-						ctor: '::',
-						_0: _elm_lang$html$Html$text(
-							A2(
-								_elm_lang$core$Basics_ops['++'],
-								viewLease.adminName,
-								A2(
-									_elm_lang$core$Basics_ops['++'],
-									' is able to change the proposed ',
-									A2(_elm_lang$core$Basics_ops['++'], viewLease.name, ' rent')))),
-						_1: {ctor: '[]'}
-					}),
-				_1: {ctor: '[]'}
-			});
-		var _p17 = budget.leaseAdmin;
-		if (_p17.ctor === 'Just') {
-			var _p18 = _p17._0;
-			return _elm_lang$core$Native_Utils.eq(_p18, viewLease.name) ? A2(changeRentButton, budget, _p18) : nonAdminView;
-		} else {
-			return nonAdminView;
-		}
-	});
-var _user$project$Page_Budget$leaseDetailView = F3(
-	function (model, budget, lease) {
-		var defaultRent = _elm_lang$core$Basics$ceiling(
-			lease.currentRent * (1 + _user$project$Page_Budget$requiredPctIncrease(budget)));
-		return _rundis$elm_bootstrap$Bootstrap_Card$view(
-			A2(
-				_rundis$elm_bootstrap$Bootstrap_Card$listGroup,
-				{
-					ctor: '::',
-					_0: A2(
-						_rundis$elm_bootstrap$Bootstrap_ListGroup$li,
-						{ctor: '[]'},
-						{
-							ctor: '::',
-							_0: A3(_user$project$Page_Budget$changeRentView, model, budget, lease),
-							_1: {ctor: '[]'}
-						}),
-					_1: {ctor: '[]'}
-				},
-				A3(
-					_rundis$elm_bootstrap$Bootstrap_Card$block,
-					{ctor: '[]'},
-					{
-						ctor: '::',
-						_0: _rundis$elm_bootstrap$Bootstrap_Card$custom(
-							A2(
-								_elm_lang$html$Html$div,
-								{ctor: '[]'},
-								{
-									ctor: '::',
-									_0: A2(
-										_elm_lang$html$Html$p,
-										{
-											ctor: '::',
-											_0: _elm_lang$html$Html_Attributes$class('lead'),
-											_1: {ctor: '[]'}
-										},
-										{
-											ctor: '::',
-											_0: A2(
-												_user$project$Page_Budget$detailSummaryText,
-												lease,
-												_elm_lang$core$Basics$toFloat(defaultRent)),
-											_1: {ctor: '[]'}
-										}),
-									_1: {ctor: '[]'}
-								})),
-						_1: {ctor: '[]'}
-					},
-					A3(
-						_rundis$elm_bootstrap$Bootstrap_Card$headerH3,
-						{ctor: '[]'},
-						{
-							ctor: '::',
-							_0: _elm_lang$html$Html$text(
-								A2(_elm_lang$core$Basics_ops['++'], 'Detail: ', lease.name)),
-							_1: {ctor: '[]'}
-						},
-						_rundis$elm_bootstrap$Bootstrap_Card$config(
-							{
-								ctor: '::',
-								_0: _rundis$elm_bootstrap$Bootstrap_Card$attrs(
-									{
-										ctor: '::',
-										_0: _elm_lang$html$Html_Attributes$class('mt-2'),
-										_1: {ctor: '[]'}
-									}),
-								_1: {ctor: '[]'}
-							})))));
-	});
-var _user$project$Page_Budget$leaseDetailViews = F2(
-	function (model, budget) {
-		var leases = A2(
-			_elm_lang$core$List$filter,
-			function (_p19) {
-				return function (n) {
-					return A2(_elm_lang$core$List$member, n, budget.leaseMember);
-				}(
-					function (_) {
-						return _.name;
-					}(_p19));
-			},
-			budget.leases);
-		var detailCards = A2(
-			_elm_lang$core$List$map,
-			A2(_user$project$Page_Budget$leaseDetailView, model, budget),
-			leases);
-		return A2(
-			_elm_lang$core$List$map,
-			function (x) {
-				return A2(
-					_rundis$elm_bootstrap$Bootstrap_Grid$col,
-					{
-						ctor: '::',
-						_0: _rundis$elm_bootstrap$Bootstrap_Grid_Col$md4,
-						_1: {ctor: '[]'}
-					},
-					{
-						ctor: '::',
-						_0: x,
-						_1: {ctor: '[]'}
-					});
-			},
-			detailCards);
-	});
-var _user$project$Page_Budget$view = F2(
-	function (session, model) {
-		var animatedBudget = _user$project$Page_Budget$animate(model);
-		return A2(
-			_rundis$elm_bootstrap$Bootstrap_Grid$container,
-			{ctor: '[]'},
-			{
-				ctor: '::',
-				_0: A2(
-					_rundis$elm_bootstrap$Bootstrap_Grid$row,
-					{ctor: '[]'},
-					_elm_lang$core$List$concat(
-						{
-							ctor: '::',
-							_0: {
-								ctor: '::',
-								_0: A2(
-									_rundis$elm_bootstrap$Bootstrap_Grid$col,
-									{
-										ctor: '::',
-										_0: _rundis$elm_bootstrap$Bootstrap_Grid_Col$md8,
-										_1: {ctor: '[]'}
-									},
-									{
-										ctor: '::',
-										_0: _user$project$Page_Budget$explainerText(animatedBudget),
-										_1: {ctor: '[]'}
-									}),
-								_1: {ctor: '[]'}
-							},
-							_1: {
-								ctor: '::',
-								_0: {
-									ctor: '::',
-									_0: A2(
-										_rundis$elm_bootstrap$Bootstrap_Grid$col,
-										{
-											ctor: '::',
-											_0: _rundis$elm_bootstrap$Bootstrap_Grid_Col$md8,
-											_1: {ctor: '[]'}
-										},
-										{
-											ctor: '::',
-											_0: _user$project$Page_Budget$compareRentsView(animatedBudget),
-											_1: {ctor: '[]'}
-										}),
-									_1: {ctor: '[]'}
-								},
-								_1: {
-									ctor: '::',
-									_0: A2(_user$project$Page_Budget$leaseDetailViews, model, animatedBudget),
-									_1: {ctor: '[]'}
-								}
-							}
-						})),
-				_1: {ctor: '[]'}
-			});
-	});
-var _user$project$Page_Budget$RentChanged = function (a) {
-	return {ctor: 'RentChanged', _0: a};
-};
-var _user$project$Page_Budget$NewBudget = function (a) {
-	return {ctor: 'NewBudget', _0: a};
-};
-var _user$project$Page_Budget$update = F3(
+var _user$project$Page_ExpenseDetail$update = F3(
 	function (session, msg, model) {
-		var _p20 = msg;
-		switch (_p20.ctor) {
-			case 'NewBudget':
-				if (_p20._0.ctor === 'Err') {
-					return {
-						ctor: '_Tuple2',
-						_0: A2(
-							_elm_lang$core$Debug$log,
-							_elm_lang$core$Basics$toString(_p20._0._0),
-							model),
-						_1: _elm_lang$core$Platform_Cmd$none
-					};
-				} else {
-					return {
-						ctor: '_Tuple2',
-						_0: _elm_lang$core$Native_Utils.update(
-							model,
-							{
-								budget: _p20._0._0,
-								animation: function () {
-									var currentAnimatedBudget = _user$project$Page_Budget$animate(model);
-									return _elm_lang$core$Maybe$Just(
-										{
-											startTime: _elm_lang$core$Maybe$Nothing,
-											budget: _user$project$Animation$slide(
-												_user$project$Page_Budget$interpolateBudget(currentAnimatedBudget))
-										});
-								}()
-							}),
-						_1: _elm_lang$core$Platform_Cmd$none
-					};
-				}
-			case 'ChangeRent':
+		var makeVote = function (model) {
+			return {
+				weight: A2(_elm_lang$core$Maybe$andThen, _elm_lang$core$Result$toMaybe, model.weight),
+				personalMax: A2(_elm_lang$core$Maybe$andThen, _elm_lang$core$Result$toMaybe, model.personalMax),
+				globalMax: A2(_elm_lang$core$Maybe$andThen, _elm_lang$core$Result$toMaybe, model.globalMax)
+			};
+		};
+		var maybeToInt = function (str) {
+			var _p0 = str;
+			if (_p0 === '') {
+				return _elm_lang$core$Maybe$Nothing;
+			} else {
+				return _elm_lang$core$Maybe$Just(
+					_elm_lang$core$String$toInt(str));
+			}
+		};
+		var _p1 = msg;
+		switch (_p1.ctor) {
+			case 'SubmitVote':
 				return {
 					ctor: '_Tuple2',
 					_0: model,
-					_1: function () {
-						var _p21 = model.requestedRent;
-						if (_p21.ctor === 'Ok') {
-							return A2(
-								_elm_lang$http$Http$send,
-								_user$project$Page_Budget$RentChanged,
-								A2(_user$project$Request_Budget$changeRent, _p21._0, session));
-						} else {
-							return _elm_lang$core$Platform_Cmd$none;
-						}
-					}()
+					_1: A2(
+						_elm_lang$http$Http$send,
+						_user$project$Page_ExpenseDetail$VoteResponse,
+						A3(
+							_user$project$Request_Allocation$postVote,
+							session,
+							makeVote(model),
+							model.expense.slug))
 				};
-			case 'RentChanged':
-				if (_p20._0.ctor === 'Ok') {
-					return {
-						ctor: '_Tuple2',
-						_0: model,
-						_1: A2(_elm_lang$http$Http$send, _user$project$Page_Budget$NewBudget, _user$project$Request_Budget$budget)
-					};
-				} else {
-					return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
-				}
-			case 'UpdateRentInput':
+			case 'SetWeight':
 				return {
 					ctor: '_Tuple2',
 					_0: _elm_lang$core$Native_Utils.update(
 						model,
 						{
-							requestedRent: _user$project$Page_Budget$validateRent(_p20._0)
+							weight: maybeToInt(_p1._0)
 						}),
 					_1: _elm_lang$core$Platform_Cmd$none
 				};
-			default:
-				var _p25 = _p20._0;
-				var _p22 = model.animation;
-				if (_p22.ctor === 'Just') {
-					var _p24 = _p22._0;
-					var _p23 = _p24.startTime;
-					if (_p23.ctor === 'Just') {
-						return (_elm_lang$core$Native_Utils.cmp(_p23._0 + _elm_lang$core$Time$second, _p25) > 0) ? {
-							ctor: '_Tuple2',
-							_0: _elm_lang$core$Native_Utils.update(
-								model,
-								{time: _p25}),
-							_1: _elm_lang$core$Platform_Cmd$none
-						} : {
-							ctor: '_Tuple2',
-							_0: _elm_lang$core$Native_Utils.update(
-								model,
-								{time: _p25, animation: _elm_lang$core$Maybe$Nothing}),
-							_1: _elm_lang$core$Platform_Cmd$none
-						};
-					} else {
-						return {
-							ctor: '_Tuple2',
-							_0: _elm_lang$core$Native_Utils.update(
-								model,
-								{
-									time: _p25,
-									animation: _elm_lang$core$Maybe$Just(
-										_elm_lang$core$Native_Utils.update(
-											_p24,
-											{
-												startTime: _elm_lang$core$Maybe$Just(_p25)
-											}))
-								}),
-							_1: _elm_lang$core$Platform_Cmd$none
-						};
-					}
+			case 'SetGlobalMax':
+				return {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Native_Utils.update(
+						model,
+						{
+							globalMax: maybeToInt(_p1._0)
+						}),
+					_1: _elm_lang$core$Platform_Cmd$none
+				};
+			case 'SetPersonalMax':
+				return {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Native_Utils.update(
+						model,
+						{
+							personalMax: maybeToInt(_p1._0)
+						}),
+					_1: _elm_lang$core$Platform_Cmd$none
+				};
+			case 'VoteResponse':
+				if (_p1._0.ctor === 'Ok') {
+					return {
+						ctor: '_Tuple2',
+						_0: model,
+						_1: _elm_lang$core$Platform_Cmd$batch(
+							{
+								ctor: '::',
+								_0: A2(
+									_elm_lang$http$Http$send,
+									_user$project$Page_ExpenseDetail$LoadedExpense,
+									_user$project$Request_Allocation$expense(model.expense.slug)),
+								_1: {
+									ctor: '::',
+									_0: _user$project$Route$modifyUrl(_user$project$Route$Expense),
+									_1: {ctor: '[]'}
+								}
+							})
+					};
 				} else {
+					return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
+				}
+			default:
+				if (_p1._0.ctor === 'Ok') {
 					return {
 						ctor: '_Tuple2',
 						_0: _elm_lang$core$Native_Utils.update(
 							model,
-							{time: _p25}),
+							{expense: _p1._0._0}),
 						_1: _elm_lang$core$Platform_Cmd$none
 					};
+				} else {
+					return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
 				}
 		}
 	});
+var _user$project$Page_ExpenseDetail$SubmitVote = {ctor: 'SubmitVote'};
+var _user$project$Page_ExpenseDetail$SetPersonalMax = function (a) {
+	return {ctor: 'SetPersonalMax', _0: a};
+};
+var _user$project$Page_ExpenseDetail$SetGlobalMax = function (a) {
+	return {ctor: 'SetGlobalMax', _0: a};
+};
+var _user$project$Page_ExpenseDetail$SetWeight = function (a) {
+	return {ctor: 'SetWeight', _0: a};
+};
+var _user$project$Page_ExpenseDetail$voteForm = function (model) {
+	var disableSubmit = A2(
+		_elm_lang$core$Debug$log,
+		'DIS',
+		function () {
+			var _p2 = {ctor: '_Tuple3', _0: model.weight, _1: model.globalMax, _2: model.personalMax};
+			_v2_3:
+			do {
+				if (_p2.ctor === '_Tuple3') {
+					if ((_p2._0.ctor === 'Just') && (_p2._0._0.ctor === 'Err')) {
+						return true;
+					} else {
+						if ((_p2._1.ctor === 'Just') && (_p2._1._0.ctor === 'Err')) {
+							return true;
+						} else {
+							if ((_p2._2.ctor === 'Just') && (_p2._2._0.ctor === 'Err')) {
+								return true;
+							} else {
+								break _v2_3;
+							}
+						}
+					}
+				} else {
+					break _v2_3;
+				}
+			} while(false);
+			return false;
+		}());
+	var errState = function (result) {
+		var _p3 = result;
+		if (_p3.ctor === 'Nothing') {
+			return {
+				ctor: '_Tuple4',
+				_0: {ctor: '[]'},
+				_1: '.',
+				_2: '',
+				_3: {
+					ctor: '::',
+					_0: _elm_lang$html$Html_Attributes$style(
+						{
+							ctor: '::',
+							_0: {ctor: '_Tuple2', _0: 'visibility', _1: 'hidden'},
+							_1: {ctor: '[]'}
+						}),
+					_1: {ctor: '[]'}
+				}
+			};
+		} else {
+			if (_p3._0.ctor === 'Ok') {
+				return {
+					ctor: '_Tuple4',
+					_0: {ctor: '[]'},
+					_1: '.',
+					_2: _elm_lang$core$Basics$toString(_p3._0._0),
+					_3: {
+						ctor: '::',
+						_0: _elm_lang$html$Html_Attributes$style(
+							{
+								ctor: '::',
+								_0: {ctor: '_Tuple2', _0: 'visibility', _1: 'hidden'},
+								_1: {ctor: '[]'}
+							}),
+						_1: {ctor: '[]'}
+					}
+				};
+			} else {
+				return {
+					ctor: '_Tuple4',
+					_0: {
+						ctor: '::',
+						_0: _rundis$elm_bootstrap$Bootstrap_Form$groupDanger,
+						_1: {ctor: '[]'}
+					},
+					_1: 'Must be a whole number',
+					_2: '',
+					_3: {ctor: '[]'}
+				};
+			}
+		}
+	};
+	var _p4 = errState(model.weight);
+	var wError = _p4._0;
+	var wValTxt = _p4._1;
+	var wDef = _p4._2;
+	var wHidden = _p4._3;
+	var _p5 = errState(model.globalMax);
+	var gError = _p5._0;
+	var gValTxt = _p5._1;
+	var gDef = _p5._2;
+	var gHidden = _p5._3;
+	var _p6 = errState(model.personalMax);
+	var pError = _p6._0;
+	var pValTxt = _p6._1;
+	var pDef = _p6._2;
+	var pHidden = _p6._3;
+	var viewString = function (maybeVal) {
+		return A2(
+			_elm_lang$core$Maybe$withDefault,
+			'',
+			A2(_elm_lang$core$Maybe$map, _elm_lang$core$Basics$toString, maybeVal));
+	};
+	return A2(
+		_rundis$elm_bootstrap$Bootstrap_Form$form,
+		{ctor: '[]'},
+		{
+			ctor: '::',
+			_0: A2(
+				_rundis$elm_bootstrap$Bootstrap_Form$group,
+				wError,
+				{
+					ctor: '::',
+					_0: A2(
+						_rundis$elm_bootstrap$Bootstrap_Form$label,
+						{
+							ctor: '::',
+							_0: _elm_lang$html$Html_Attributes$for('weight'),
+							_1: {ctor: '[]'}
+						},
+						{
+							ctor: '::',
+							_0: _elm_lang$html$Html$text('Importance (0-100)'),
+							_1: {ctor: '[]'}
+						}),
+					_1: {
+						ctor: '::',
+						_0: _rundis$elm_bootstrap$Bootstrap_Form_Input$text(
+							{
+								ctor: '::',
+								_0: _rundis$elm_bootstrap$Bootstrap_Form_Input$id('weight'),
+								_1: {
+									ctor: '::',
+									_0: _rundis$elm_bootstrap$Bootstrap_Form_Input$onInput(_user$project$Page_ExpenseDetail$SetWeight),
+									_1: {
+										ctor: '::',
+										_0: _rundis$elm_bootstrap$Bootstrap_Form_Input$defaultValue(wDef),
+										_1: {ctor: '[]'}
+									}
+								}
+							}),
+						_1: {
+							ctor: '::',
+							_0: A2(
+								_rundis$elm_bootstrap$Bootstrap_Form$help,
+								{ctor: '[]'},
+								{
+									ctor: '::',
+									_0: _elm_lang$html$Html$text('How important is this expense?  Higher numbers get funded first. Equal numbers are funded equally.'),
+									_1: {ctor: '[]'}
+								}),
+							_1: {
+								ctor: '::',
+								_0: A2(
+									_rundis$elm_bootstrap$Bootstrap_Form$validationText,
+									wHidden,
+									{
+										ctor: '::',
+										_0: _elm_lang$html$Html$text(wValTxt),
+										_1: {ctor: '[]'}
+									}),
+								_1: {ctor: '[]'}
+							}
+						}
+					}
+				}),
+			_1: {
+				ctor: '::',
+				_0: A2(
+					_rundis$elm_bootstrap$Bootstrap_Form$group,
+					gError,
+					{
+						ctor: '::',
+						_0: A2(
+							_rundis$elm_bootstrap$Bootstrap_Form$label,
+							{
+								ctor: '::',
+								_0: _elm_lang$html$Html_Attributes$for('global_max'),
+								_1: {ctor: '[]'}
+							},
+							{
+								ctor: '::',
+								_0: _elm_lang$html$Html$text('Funding Limit'),
+								_1: {ctor: '[]'}
+							}),
+						_1: {
+							ctor: '::',
+							_0: _rundis$elm_bootstrap$Bootstrap_Form_InputGroup$view(
+								A2(
+									_rundis$elm_bootstrap$Bootstrap_Form_InputGroup$predecessors,
+									{
+										ctor: '::',
+										_0: A2(
+											_rundis$elm_bootstrap$Bootstrap_Form_InputGroup$span,
+											{ctor: '[]'},
+											{
+												ctor: '::',
+												_0: _elm_lang$html$Html$text('$'),
+												_1: {ctor: '[]'}
+											}),
+										_1: {ctor: '[]'}
+									},
+									_rundis$elm_bootstrap$Bootstrap_Form_InputGroup$config(
+										_rundis$elm_bootstrap$Bootstrap_Form_InputGroup$text(
+											{
+												ctor: '::',
+												_0: _rundis$elm_bootstrap$Bootstrap_Form_Input$placeholder(gDef),
+												_1: {
+													ctor: '::',
+													_0: _rundis$elm_bootstrap$Bootstrap_Form_Input$onInput(_user$project$Page_ExpenseDetail$SetGlobalMax),
+													_1: {ctor: '[]'}
+												}
+											})))),
+							_1: {
+								ctor: '::',
+								_0: A2(
+									_rundis$elm_bootstrap$Bootstrap_Form$help,
+									{ctor: '[]'},
+									{
+										ctor: '::',
+										_0: _elm_lang$html$Html$text('Optional: You will stop funding this expense once its allocation reaches this limit'),
+										_1: {ctor: '[]'}
+									}),
+								_1: {
+									ctor: '::',
+									_0: A2(
+										_rundis$elm_bootstrap$Bootstrap_Form$validationText,
+										gHidden,
+										{
+											ctor: '::',
+											_0: _elm_lang$html$Html$text(gValTxt),
+											_1: {ctor: '[]'}
+										}),
+									_1: {ctor: '[]'}
+								}
+							}
+						}
+					}),
+				_1: {
+					ctor: '::',
+					_0: A2(
+						_rundis$elm_bootstrap$Bootstrap_Form$group,
+						pError,
+						{
+							ctor: '::',
+							_0: A2(
+								_rundis$elm_bootstrap$Bootstrap_Form$label,
+								{ctor: '[]'},
+								{
+									ctor: '::',
+									_0: _elm_lang$html$Html$text('Personal Limit'),
+									_1: {ctor: '[]'}
+								}),
+							_1: {
+								ctor: '::',
+								_0: _rundis$elm_bootstrap$Bootstrap_Form_InputGroup$view(
+									A2(
+										_rundis$elm_bootstrap$Bootstrap_Form_InputGroup$predecessors,
+										{
+											ctor: '::',
+											_0: A2(
+												_rundis$elm_bootstrap$Bootstrap_Form_InputGroup$span,
+												{ctor: '[]'},
+												{
+													ctor: '::',
+													_0: _elm_lang$html$Html$text('$'),
+													_1: {ctor: '[]'}
+												}),
+											_1: {ctor: '[]'}
+										},
+										_rundis$elm_bootstrap$Bootstrap_Form_InputGroup$config(
+											_rundis$elm_bootstrap$Bootstrap_Form_InputGroup$text(
+												{
+													ctor: '::',
+													_0: _rundis$elm_bootstrap$Bootstrap_Form_Input$placeholder(pDef),
+													_1: {
+														ctor: '::',
+														_0: _rundis$elm_bootstrap$Bootstrap_Form_Input$onInput(_user$project$Page_ExpenseDetail$SetPersonalMax),
+														_1: {ctor: '[]'}
+													}
+												})))),
+								_1: {
+									ctor: '::',
+									_0: A2(
+										_rundis$elm_bootstrap$Bootstrap_Form$help,
+										{ctor: '[]'},
+										{
+											ctor: '::',
+											_0: _elm_lang$html$Html$text('Optional: You will stop funding this expense once your contribution reaches this limit'),
+											_1: {ctor: '[]'}
+										}),
+									_1: {
+										ctor: '::',
+										_0: A2(
+											_rundis$elm_bootstrap$Bootstrap_Form$validationText,
+											pHidden,
+											{
+												ctor: '::',
+												_0: _elm_lang$html$Html$text(pValTxt),
+												_1: {ctor: '[]'}
+											}),
+										_1: {ctor: '[]'}
+									}
+								}
+							}
+						}),
+					_1: {
+						ctor: '::',
+						_0: A2(
+							_rundis$elm_bootstrap$Bootstrap_Button$button,
+							{
+								ctor: '::',
+								_0: _rundis$elm_bootstrap$Bootstrap_Button$primary,
+								_1: {
+									ctor: '::',
+									_0: _rundis$elm_bootstrap$Bootstrap_Button$onClick(_user$project$Page_ExpenseDetail$SubmitVote),
+									_1: {
+										ctor: '::',
+										_0: _rundis$elm_bootstrap$Bootstrap_Button$disabled(disableSubmit),
+										_1: {ctor: '[]'}
+									}
+								}
+							},
+							{
+								ctor: '::',
+								_0: _elm_lang$html$Html$text('Vote'),
+								_1: {ctor: '[]'}
+							}),
+						_1: {
+							ctor: '::',
+							_0: A2(
+								_rundis$elm_bootstrap$Bootstrap_Button$linkButton,
+								{
+									ctor: '::',
+									_0: _rundis$elm_bootstrap$Bootstrap_Button$secondary,
+									_1: {
+										ctor: '::',
+										_0: _rundis$elm_bootstrap$Bootstrap_Button$attrs(
+											{
+												ctor: '::',
+												_0: _elm_lang$html$Html_Attributes$class('ml-3'),
+												_1: {
+													ctor: '::',
+													_0: _user$project$Route$href(_user$project$Route$Expense),
+													_1: {ctor: '[]'}
+												}
+											}),
+										_1: {ctor: '[]'}
+									}
+								},
+								{
+									ctor: '::',
+									_0: _elm_lang$html$Html$text('Back to Expense Summary'),
+									_1: {ctor: '[]'}
+								}),
+							_1: {ctor: '[]'}
+						}
+					}
+				}
+			}
+		});
+};
+var _user$project$Page_ExpenseDetail$voteView = function (model) {
+	return _rundis$elm_bootstrap$Bootstrap_Card$view(
+		A3(
+			_rundis$elm_bootstrap$Bootstrap_Card$block,
+			{ctor: '[]'},
+			{
+				ctor: '::',
+				_0: _rundis$elm_bootstrap$Bootstrap_Card$custom(
+					_user$project$Page_ExpenseDetail$voteForm(model)),
+				_1: {ctor: '[]'}
+			},
+			A3(
+				_rundis$elm_bootstrap$Bootstrap_Card$headerH4,
+				{ctor: '[]'},
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html$text('Your Vote'),
+					_1: {ctor: '[]'}
+				},
+				_rundis$elm_bootstrap$Bootstrap_Card$config(
+					{
+						ctor: '::',
+						_0: _rundis$elm_bootstrap$Bootstrap_Card$attrs(
+							{
+								ctor: '::',
+								_0: _elm_lang$html$Html_Attributes$class('mt-2'),
+								_1: {ctor: '[]'}
+							}),
+						_1: {ctor: '[]'}
+					}))));
+};
+var _user$project$Page_ExpenseDetail$view = function (model) {
+	var expense = model.expense;
+	return A2(
+		_rundis$elm_bootstrap$Bootstrap_Grid$container,
+		{ctor: '[]'},
+		{
+			ctor: '::',
+			_0: A2(
+				_rundis$elm_bootstrap$Bootstrap_Grid$row,
+				{ctor: '[]'},
+				{
+					ctor: '::',
+					_0: A2(
+						_rundis$elm_bootstrap$Bootstrap_Grid$col,
+						{
+							ctor: '::',
+							_0: _rundis$elm_bootstrap$Bootstrap_Grid_Col$lg6,
+							_1: {ctor: '[]'}
+						},
+						{
+							ctor: '::',
+							_0: _user$project$Page_ExpenseDetail$expenseView(expense),
+							_1: {ctor: '[]'}
+						}),
+					_1: {
+						ctor: '::',
+						_0: A2(
+							_rundis$elm_bootstrap$Bootstrap_Grid$col,
+							{
+								ctor: '::',
+								_0: _rundis$elm_bootstrap$Bootstrap_Grid_Col$lg6,
+								_1: {ctor: '[]'}
+							},
+							{
+								ctor: '::',
+								_0: _user$project$Page_ExpenseDetail$voteView(model),
+								_1: {ctor: '[]'}
+							}),
+						_1: {ctor: '[]'}
+					}
+				}),
+			_1: {ctor: '[]'}
+		});
+};
 
 var Elm = {};
 Elm['Page'] = Elm['Page'] || {};
-Elm['Page']['Budget'] = Elm['Page']['Budget'] || {};
-if (typeof _user$project$Page_Budget$main !== 'undefined') {
-    _user$project$Page_Budget$main(Elm['Page']['Budget'], 'Page.Budget', undefined);
+Elm['Page']['ExpenseDetail'] = Elm['Page']['ExpenseDetail'] || {};
+if (typeof _user$project$Page_ExpenseDetail$main !== 'undefined') {
+    _user$project$Page_ExpenseDetail$main(Elm['Page']['ExpenseDetail'], 'Page.ExpenseDetail', undefined);
 }
 
 if (typeof define === "function" && define['amd'])

@@ -148,9 +148,10 @@ explainerText budget =
 
         format num =
             let
-                intStr = toString (round(num*1000))
+                intStr = toString (floor(num*100))
+                decStr = toString (round(num*1000))
             in
-                (String.left 2 intStr) ++ "." ++ (String.right 1 intStr)
+                intStr ++ "." ++ (String.right 1 decStr)
             
                       
         showPct num = (format num) ++ "%"

@@ -19888,15 +19888,17 @@ var _user$project$Page_Budget$explainerText = function (budget) {
 		return (_elm_lang$core$Native_Utils.cmp(val, 0) > -1) ? 'surplus' : 'deficit';
 	};
 	var format = function (num) {
-		var intStr = _elm_lang$core$Basics$toString(
+		var decStr = _elm_lang$core$Basics$toString(
 			_elm_lang$core$Basics$round(num * 1000));
+		var intStr = _elm_lang$core$Basics$toString(
+			_elm_lang$core$Basics$floor(num * 100));
 		return A2(
 			_elm_lang$core$Basics_ops['++'],
-			A2(_elm_lang$core$String$left, 2, intStr),
+			intStr,
 			A2(
 				_elm_lang$core$Basics_ops['++'],
 				'.',
-				A2(_elm_lang$core$String$right, 1, intStr)));
+				A2(_elm_lang$core$String$right, 1, decStr)));
 	};
 	var showPct = function (num) {
 		return A2(

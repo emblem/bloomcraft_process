@@ -12,6 +12,7 @@ __pycache__/
 *.so
 
 bloomcraft_process/db.sqlite3
+client/elm.js
 
 # Distribution / packaging
 .Python

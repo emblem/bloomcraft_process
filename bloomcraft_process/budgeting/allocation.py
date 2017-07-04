@@ -26,10 +26,12 @@ class RankedAllocator:
             allowed_global_allocation = min(allowed_global_allocation, vote.global_abs_max - working_allocation[expense])
 
         if vote.personal_pct_max:
-            allowed_personal_allocation = min(allowed_personal_allocation, self.total_amount * vote.personal_pct_max - working_user_allocation[user][expense])
+            allowed_personal_allocation = min(allowed_personal_allocation, self.total_per_user * vote.personal_pct_max - working_user_allocation[user][expense])
 
         if vote.global_pct_max:
             allowed_global_allocation = min(allowed_global_allocation, self.total_amount * vote.global_pct_max - working_allocation[expense])
+
+        print ( "V: " + str(vote) + " G:" + str(allowed_global_allocation) + " P: " + str(allowed_personal_allocation) )
             
         return (allowed_global_allocation, allowed_personal_allocation)
 
@@ -57,7 +59,7 @@ class RankedAllocator:
         return None
 
     #Allocate remaining funds without any constraints
-    def unconstrained_allocation(self, user_votes, expenses, working_allocation, working_user_allocation, amount_per_user):
+    def unconstrained_allocation(self, user_votes, expenses, working_allocation, working_user_allocation):
         round_allocation = defaultdict(lambda: defaultdict(float))
 
         for user in user_votes.keys():
@@ -70,7 +72,7 @@ class RankedAllocator:
 
             #            print("Top expense for " + user.username + " is " + top_expense.name)
             for top_expense in top_expenses:
-                round_allocation[user][top_expense] += amount_per_user/len(top_expenses)
+                round_allocation[user][top_expense] += self.amount_remaining_per_user/len(top_expenses)
 
         return round_allocation
 
@@ -87,7 +89,7 @@ class RankedAllocator:
 #        pprint.pprint(round_sums)
  #       pprint.pprint(round_allocation)
 
-        activeConstraint = ("noconstraint", "none")
+        activeConstraint = ("noconstraint", "none", 0)
         
         for expense in expenses:
             for user in round_allocation.keys():
@@ -103,15 +105,15 @@ class RankedAllocator:
                 if round_allocation[user][expense] > epsilon:
                     global_pct = allowed_global_amount / round_sums[expense]
                     personal_pct = allowed_personal_amount / round_allocation[user][expense]
-
+                    #import pdb; pdb.set_trace()
                     if(global_pct < violated_at_percent):
                         violated_at_percent = global_pct
-                        activeConstraint = (vote,"global")
+                        activeConstraint = (vote,"global", global_pct)
                     if(personal_pct < violated_at_percent):
                         violated_at_percent = personal_pct
-                        activeConstraint = (vote,"personal")
+                        activeConstraint = (vote,"personal", personal_pct)
 
-#        print( "Active Constraint: " + str(activeConstraint[0]) + " is " + activeConstraint[1] )
+        print( "Active Constraint: " + str(activeConstraint[0]) + " is " + activeConstraint[1] + " / " + str(activeConstraint[2]))
         return violated_at_percent
 
     def allocate_funds(self, allocation, requesting_user):
@@ -148,10 +150,12 @@ class RankedAllocator:
                 break
             print ("\nNew Round: $" + str(amount_remaining))
         
-            amount_per_user = amount_remaining/voter_count
+            self.amount_remaining_per_user = amount_remaining/voter_count
 
-            round_allocation = self.unconstrained_allocation(user_votes, expenses, working_allocation, working_user_allocation, amount_per_user)
-            if not round_allocation: continue        
+            round_allocation = self.unconstrained_allocation(user_votes, expenses, working_allocation, working_user_allocation)
+            if not round_allocation:
+                self.total_per_user = self.total_per_user + amount_remaining/len(user_votes)
+                continue        
 
             #Find at what percent of full funding we violate a constraint
             violated_at_percent = self.constrain_allocation(user_votes, expenses, working_allocation, working_user_allocation, round_allocation)
@@ -159,6 +163,7 @@ class RankedAllocator:
             print ("Round funded at: " + str(violated_at_percent))
             
             #Add this round's funds to the working allocation
+            made_alloc = False
             for user in user_votes.keys():
                 for expense in expenses:
                     round_funds = round_allocation[user][expense] * violated_at_percent
@@ -167,14 +172,17 @@ class RankedAllocator:
 
                     if round_funds > 0:
                         print( user.username + " allocated " + str(round_funds) + " to " + expense.name)
+                        made_alloc = True
                     amount_remaining -= round_funds
 #            pprint.pprint(working_allocation)
-                    
+            if not made_alloc: break        
         #update the expense objects
         for expense in expenses:
             expense.new_allocated_funds = ceil(working_allocation[expense])
             expense.user_new_allocated_funds = ceil(working_user_allocation[requesting_user][expense])
-                                                    
+
+
+            
         return expenses
 
 def expense_to_json(expense):

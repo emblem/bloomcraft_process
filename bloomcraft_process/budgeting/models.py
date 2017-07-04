@@ -108,7 +108,7 @@ class AllocationVote(models.Model):
         unique_together = ('user', 'expense')
 
     def __str__(self):
-        return "Vote by " + self.user.username + " on " + self.expense.name
+        return "Vote by " + self.user.username + " on " + str(self.expense.name) + " <" + str(self.personal_abs_max) + ", "  + str(self.personal_pct_max) + ", "  + str(self.global_abs_max) + ", "  + str(self.global_pct_max) + ">"
 
     def toJson(self):
         return { "weight" : self.weight,

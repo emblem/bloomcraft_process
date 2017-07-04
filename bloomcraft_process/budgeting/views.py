@@ -152,6 +152,7 @@ def vote_view(request, slug):
         vote = AllocationVote(weight = newVote['weight'],
                               personal_abs_max = newVote['personal_abs_max'],
                               global_abs_max = newVote['global_abs_max'],
+                              personal_pct_max = newVote['personal_pct_max'],
                               user = request.user,
                               expense = expense)
 

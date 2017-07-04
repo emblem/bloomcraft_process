@@ -30,6 +30,7 @@ type alias Expense =
 type alias Vote =
     { weight : Maybe Int
     , personalMax : Maybe Int
+    , personalPctMax : Maybe Float
     , globalMax : Maybe Int
     }
 
@@ -49,18 +50,20 @@ voteDecoder =
     decode Vote
         |> required "weight" (nullable int)
         |> required "personal_abs_max" (nullable int)
+        |> required "personal_pct_max" (nullable float)
         |> required "global_abs_max" (nullable int)
 
 encodeVote : Vote -> Encode.Value
 encodeVote vote =
     let
-        intMaybe : Maybe Int -> Encode.Value
         intMaybe = encodeMaybe Encode.int
+        floatMaybe = encodeMaybe Encode.float
     in
         Encode.object
             [ "weight" => intMaybe vote.weight
             , "personal_abs_max" => intMaybe vote.personalMax
             , "global_abs_max" => intMaybe vote.globalMax
+            , "personal_pct_max" => floatMaybe vote.personalPctMax
             ]
             
         

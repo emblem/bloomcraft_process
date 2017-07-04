@@ -54,7 +54,7 @@ init slug =
         initModel expense maybeVote =
             { expense = expense              
             , weight = maybeVote |> Maybe.andThen .weight |> Maybe.map Ok
-            , personalMax = maybeVote |> Maybe.andThen .personalMax |> Maybe.map Ok
+            , personalMax = maybeVote |> Maybe.andThen .personalPctMax |> Maybe.map (\x -> Ok (round(100*x)))
             , globalMax = maybeVote |> Maybe.andThen .globalMax |> Maybe.map Ok
             }            
     in
@@ -145,9 +145,9 @@ voteForm model =
                                          , Input.onInput SetPersonalMax
                                          ]
                                     )
-                |> InputGroup.predecessors [ InputGroup.span [] [ text "$" ] ]
+                |> InputGroup.predecessors [ InputGroup.span [] [ text "%" ] ]
                 |> InputGroup.view
-                , Form.help [] [ text "Optional: You will stop funding this expense once your contribution reaches this limit" ]
+                , Form.help [] [ text "Optional: You will stop funding this expense once your contribution reaches this percent of your personal share of the surplus" ]
                 , Form.validationText pHidden [ text pValTxt ]
                 ]
             , Button.button [Button.primary, Button.onClick SubmitVote, Button.disabled disableSubmit] [ text "Vote" ]
@@ -200,10 +200,13 @@ update session msg model =
         maybeToInt str = case str of
                              "" -> Nothing
                              _ -> Just (String.toInt str)
+
+        intToPct val = ((toFloat val)/100)
                                   
         makeVote model =
             { weight = model.weight |> Maybe.andThen Result.toMaybe
-            , personalMax = model.personalMax |> Maybe.andThen Result.toMaybe
+            , personalPctMax = model.personalMax |> Maybe.andThen Result.toMaybe |> Maybe.map intToPct
+            , personalMax = Nothing
             , globalMax = model.globalMax |> Maybe.andThen Result.toMaybe
             }
     in
@@ -212,7 +215,9 @@ update session msg model =
                 (model, Http.send VoteResponse (Request.Allocation.postVote session (makeVote model) model.expense.slug) )
                     
             SetWeight str ->
-                ({model | weight = maybeToInt str}, Cmd.none)
+                case str of
+                    "" -> ({model | weight = Just (Err "Must have weight")}, Cmd.none)
+                    _ -> ({model | weight = maybeToInt str}, Cmd.none)
                             
                     
             SetGlobalMax str ->

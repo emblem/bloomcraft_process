@@ -18637,6 +18637,7 @@ var _user$project$Util$pair = F2(
 	});
 
 var _user$project$Data_Allocation$encodeVote = function (vote) {
+	var floatMaybe = _user$project$Util$encodeMaybe(_elm_lang$core$Json_Encode$float);
 	var intMaybe = _user$project$Util$encodeMaybe(_elm_lang$core$Json_Encode$int);
 	return _elm_lang$core$Json_Encode$object(
 		{
@@ -18657,7 +18658,14 @@ var _user$project$Data_Allocation$encodeVote = function (vote) {
 						_user$project$Util_ops['=>'],
 						'global_abs_max',
 						intMaybe(vote.globalMax)),
-					_1: {ctor: '[]'}
+					_1: {
+						ctor: '::',
+						_0: A2(
+							_user$project$Util_ops['=>'],
+							'personal_pct_max',
+							floatMaybe(vote.personalPctMax)),
+						_1: {ctor: '[]'}
+					}
 				}
 			}
 		});
@@ -18691,9 +18699,9 @@ var _user$project$Data_Allocation$Expense = function (a) {
 		};
 	};
 };
-var _user$project$Data_Allocation$Vote = F3(
-	function (a, b, c) {
-		return {weight: a, personalMax: b, globalMax: c};
+var _user$project$Data_Allocation$Vote = F4(
+	function (a, b, c, d) {
+		return {weight: a, personalMax: b, personalPctMax: c, globalMax: d};
 	});
 var _user$project$Data_Allocation$voteDecoder = A3(
 	_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
@@ -18701,13 +18709,17 @@ var _user$project$Data_Allocation$voteDecoder = A3(
 	_elm_lang$core$Json_Decode$nullable(_elm_lang$core$Json_Decode$int),
 	A3(
 		_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
-		'personal_abs_max',
-		_elm_lang$core$Json_Decode$nullable(_elm_lang$core$Json_Decode$int),
+		'personal_pct_max',
+		_elm_lang$core$Json_Decode$nullable(_elm_lang$core$Json_Decode$float),
 		A3(
 			_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
-			'weight',
+			'personal_abs_max',
 			_elm_lang$core$Json_Decode$nullable(_elm_lang$core$Json_Decode$int),
-			_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$decode(_user$project$Data_Allocation$Vote))));
+			A3(
+				_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
+				'weight',
+				_elm_lang$core$Json_Decode$nullable(_elm_lang$core$Json_Decode$int),
+				_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$decode(_user$project$Data_Allocation$Vote)))));
 var _user$project$Data_Allocation$Slug = function (a) {
 	return {ctor: 'Slug', _0: a};
 };
@@ -22492,11 +22504,14 @@ var _user$project$Page_ExpenseDetail$init = function (slug) {
 						maybeVote)),
 				personalMax: A2(
 					_elm_lang$core$Maybe$map,
-					_elm_lang$core$Result$Ok,
+					function (x) {
+						return _elm_lang$core$Result$Ok(
+							_elm_lang$core$Basics$round(100 * x));
+					},
 					A2(
 						_elm_lang$core$Maybe$andThen,
 						function (_) {
-							return _.personalMax;
+							return _.personalPctMax;
 						},
 						maybeVote)),
 				globalMax: A2(
@@ -22535,10 +22550,17 @@ var _user$project$Page_ExpenseDetail$VoteResponse = function (a) {
 };
 var _user$project$Page_ExpenseDetail$update = F3(
 	function (session, msg, model) {
+		var intToPct = function (val) {
+			return _elm_lang$core$Basics$toFloat(val) / 100;
+		};
 		var makeVote = function (model) {
 			return {
 				weight: A2(_elm_lang$core$Maybe$andThen, _elm_lang$core$Result$toMaybe, model.weight),
-				personalMax: A2(_elm_lang$core$Maybe$andThen, _elm_lang$core$Result$toMaybe, model.personalMax),
+				personalPctMax: A2(
+					_elm_lang$core$Maybe$map,
+					intToPct,
+					A2(_elm_lang$core$Maybe$andThen, _elm_lang$core$Result$toMaybe, model.personalMax)),
+				personalMax: _elm_lang$core$Maybe$Nothing,
 				globalMax: A2(_elm_lang$core$Maybe$andThen, _elm_lang$core$Result$toMaybe, model.globalMax)
 			};
 		};
@@ -22567,15 +22589,30 @@ var _user$project$Page_ExpenseDetail$update = F3(
 							model.expense.slug))
 				};
 			case 'SetWeight':
-				return {
-					ctor: '_Tuple2',
-					_0: _elm_lang$core$Native_Utils.update(
-						model,
-						{
-							weight: maybeToInt(_p1._0)
-						}),
-					_1: _elm_lang$core$Platform_Cmd$none
-				};
+				var _p3 = _p1._0;
+				var _p2 = _p3;
+				if (_p2 === '') {
+					return {
+						ctor: '_Tuple2',
+						_0: _elm_lang$core$Native_Utils.update(
+							model,
+							{
+								weight: _elm_lang$core$Maybe$Just(
+									_elm_lang$core$Result$Err('Must have weight'))
+							}),
+						_1: _elm_lang$core$Platform_Cmd$none
+					};
+				} else {
+					return {
+						ctor: '_Tuple2',
+						_0: _elm_lang$core$Native_Utils.update(
+							model,
+							{
+								weight: maybeToInt(_p3)
+							}),
+						_1: _elm_lang$core$Platform_Cmd$none
+					};
+				}
 			case 'SetGlobalMax':
 				return {
 					ctor: '_Tuple2',
@@ -22647,32 +22684,32 @@ var _user$project$Page_ExpenseDetail$voteForm = function (model) {
 		_elm_lang$core$Debug$log,
 		'DIS',
 		function () {
-			var _p2 = {ctor: '_Tuple3', _0: model.weight, _1: model.globalMax, _2: model.personalMax};
-			_v2_3:
+			var _p4 = {ctor: '_Tuple3', _0: model.weight, _1: model.globalMax, _2: model.personalMax};
+			_v3_3:
 			do {
-				if (_p2.ctor === '_Tuple3') {
-					if ((_p2._0.ctor === 'Just') && (_p2._0._0.ctor === 'Err')) {
+				if (_p4.ctor === '_Tuple3') {
+					if ((_p4._0.ctor === 'Just') && (_p4._0._0.ctor === 'Err')) {
 						return true;
 					} else {
-						if ((_p2._1.ctor === 'Just') && (_p2._1._0.ctor === 'Err')) {
+						if ((_p4._1.ctor === 'Just') && (_p4._1._0.ctor === 'Err')) {
 							return true;
 						} else {
-							if ((_p2._2.ctor === 'Just') && (_p2._2._0.ctor === 'Err')) {
+							if ((_p4._2.ctor === 'Just') && (_p4._2._0.ctor === 'Err')) {
 								return true;
 							} else {
-								break _v2_3;
+								break _v3_3;
 							}
 						}
 					}
 				} else {
-					break _v2_3;
+					break _v3_3;
 				}
 			} while(false);
 			return false;
 		}());
 	var errState = function (result) {
-		var _p3 = result;
-		if (_p3.ctor === 'Nothing') {
+		var _p5 = result;
+		if (_p5.ctor === 'Nothing') {
 			return {
 				ctor: '_Tuple4',
 				_0: {ctor: '[]'},
@@ -22690,12 +22727,12 @@ var _user$project$Page_ExpenseDetail$voteForm = function (model) {
 				}
 			};
 		} else {
-			if (_p3._0.ctor === 'Ok') {
+			if (_p5._0.ctor === 'Ok') {
 				return {
 					ctor: '_Tuple4',
 					_0: {ctor: '[]'},
 					_1: '.',
-					_2: _elm_lang$core$Basics$toString(_p3._0._0),
+					_2: _elm_lang$core$Basics$toString(_p5._0._0),
 					_3: {
 						ctor: '::',
 						_0: _elm_lang$html$Html_Attributes$style(
@@ -22722,21 +22759,21 @@ var _user$project$Page_ExpenseDetail$voteForm = function (model) {
 			}
 		}
 	};
-	var _p4 = errState(model.weight);
-	var wError = _p4._0;
-	var wValTxt = _p4._1;
-	var wDef = _p4._2;
-	var wHidden = _p4._3;
-	var _p5 = errState(model.globalMax);
-	var gError = _p5._0;
-	var gValTxt = _p5._1;
-	var gDef = _p5._2;
-	var gHidden = _p5._3;
-	var _p6 = errState(model.personalMax);
-	var pError = _p6._0;
-	var pValTxt = _p6._1;
-	var pDef = _p6._2;
-	var pHidden = _p6._3;
+	var _p6 = errState(model.weight);
+	var wError = _p6._0;
+	var wValTxt = _p6._1;
+	var wDef = _p6._2;
+	var wHidden = _p6._3;
+	var _p7 = errState(model.globalMax);
+	var gError = _p7._0;
+	var gValTxt = _p7._1;
+	var gDef = _p7._2;
+	var gHidden = _p7._3;
+	var _p8 = errState(model.personalMax);
+	var pError = _p8._0;
+	var pValTxt = _p8._1;
+	var pDef = _p8._2;
+	var pHidden = _p8._3;
 	var viewString = function (maybeVal) {
 		return A2(
 			_elm_lang$core$Maybe$withDefault,
@@ -22905,7 +22942,7 @@ var _user$project$Page_ExpenseDetail$voteForm = function (model) {
 												{ctor: '[]'},
 												{
 													ctor: '::',
-													_0: _elm_lang$html$Html$text('$'),
+													_0: _elm_lang$html$Html$text('%'),
 													_1: {ctor: '[]'}
 												}),
 											_1: {ctor: '[]'}
@@ -22928,7 +22965,7 @@ var _user$project$Page_ExpenseDetail$voteForm = function (model) {
 										{ctor: '[]'},
 										{
 											ctor: '::',
-											_0: _elm_lang$html$Html$text('Optional: You will stop funding this expense once your contribution reaches this limit'),
+											_0: _elm_lang$html$Html$text('Optional: You will stop funding this expense once your contribution reaches this percent of your personal share of the surplus'),
 											_1: {ctor: '[]'}
 										}),
 									_1: {

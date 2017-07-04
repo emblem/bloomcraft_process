@@ -20668,7 +20668,7 @@ var _user$project$Page_Home$view = F2(
 						},
 						{
 							ctor: '::',
-							_0: _elm_lang$html$Html$text('This foo site helps to support Bloomcraft\'s governance process.  Today, you can use it to help make decisions about '),
+							_0: _elm_lang$html$Html$text('This site helps to support Bloomcraft\'s governance process.  Today, you can use it to help make decisions about '),
 							_1: {
 								ctor: '::',
 								_0: A2(

@@ -13,4 +13,5 @@ admin.site.register(Budget)
 admin.site.register(Allocation)
 admin.site.register(AllocationExpense, AllocationExpenseAdmin)
 admin.site.register(AllocationVote)
+admin.site.register(Tutorial)
 

@@ -164,4 +164,26 @@ def vote_view(request, slug):
         vote.save()
 
         return JsonResponse({"result": "Thanks for voting :)"})
-        
+
+@require_http_methods(["GET"])
+def tutorial_view(request):
+    no_tutorial_response = {"tutorial" : None}
+    if not request.user.is_authenticated():
+        return JsonResponse(no_tutorial_response)
+
+    route = request.GET['route']
+    print("Getting tutorial for " + route)
+
+    try:
+        tutorial = Tutorial.objects.filter( route = route ).exclude( seen_by = request.user ).latest('id')
+    except Tutorial.DoesNotExist:
+        return JsonResponse(no_tutorial_response)
+
+    tutorial_json = { "header" : tutorial.header,
+                      "body" : tutorial.body }
+
+    tutorial.seen_by.add(request.user)
+    tutorial.save()
+    
+    return JsonResponse({ "tutorial" : tutorial_json })
+    

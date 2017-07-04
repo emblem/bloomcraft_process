@@ -12,6 +12,7 @@ import Page.Home as Home
 import Page.Login as Login
 import Page.Expense as Expense
 import Page.ExpenseDetail as ExpenseDetail
+import Page.Tutorial as Tutorial
 import Request.Session
 import Route exposing (Route)
 import Task
@@ -42,6 +43,7 @@ type alias Model =
     { session : Session
     , pageState : PageState
     , navState : Navbar.State
+    , tutorialState : Tutorial.Model
     }
 
 startupInit : Location -> (StartupModel, Cmd Msg)
@@ -56,6 +58,7 @@ init location session =
                        { pageState = Loaded Blank
                        , session = session
                        , navState = navState
+                       , tutorialState = Tutorial.initialState
                        }
     in
         model ! [cmd, navCmd]
@@ -91,8 +94,9 @@ viewPage : Model -> Bool -> Page -> Html Msg
 viewPage model isLoading page =
     let
         session = model.session
+        modal = Html.map TutorialMsg (Tutorial.view model.tutorialState)
         frame =
-            Page.frame NavMsg model.navState isLoading session
+            Page.frame NavMsg model.navState isLoading session modal
     in
         case page of
             Errored subModel ->
@@ -157,12 +161,14 @@ type Msg
     | BudgetLoaded (Result PageLoadError Budget.Model)
     | ExpenseLoaded (Result PageLoadError Expense.Model)
     | ExpenseDetailLoaded (Result PageLoadError ExpenseDetail.Model)
+    | TutorialLoaded (Result PageLoadError Tutorial.Model)
     | NavMsg Navbar.State
     | BudgetMsg Budget.Msg
     | LoginMsg Login.Msg
     | ProfileMsg Profile.Msg
     | ExpenseMsg Expense.Msg
     | ExpenseDetailMsg ExpenseDetail.Msg
+    | TutorialMsg Tutorial.Msg
 
 
 
@@ -178,37 +184,42 @@ setRoute maybeRoute model =
 
         loggedIn = model.session.user /= Nothing
 
-    in
-        case maybeRoute of
-            Nothing -> { model | pageState = Loaded NotFound } => Cmd.none
-            Just Route.Home ->
-                { model | pageState = Loaded (Home Home.initialModel) } => Cmd.none
-            Just Route.Budget ->
-                if loggedIn then
-                    transition BudgetLoaded Budget.init
-                else
-                    (model, Route.modifyUrl Route.Login)
-            Just Route.Expense ->
-                if loggedIn then
-                    transition ExpenseLoaded Expense.init
-                else
-                    (model, Route.modifyUrl Route.Login)
-            Just Route.Login ->
-                if loggedIn then
-                    (model, Route.modifyUrl Route.Home)
-                else
-                    { model | pageState = Loaded (Login Login.initialModel) } => Cmd.none
-            Just Route.Profile ->
-                if loggedIn then
-                    { model | pageState = Loaded (Profile Profile.init) } => Cmd.none
-                else
-                    (model, Route.modifyUrl Route.Login)
+        loadTutorial = Task.attempt TutorialLoaded (Tutorial.init maybeRoute)
 
-            Just (Route.ExpenseDetail slug) ->
-                if loggedIn then
-                    transition ExpenseDetailLoaded (ExpenseDetail.init slug)
-                else
-                    (model, Route.modifyUrl Route.Login)        
+        (pageMdl, loadPage) = 
+            case maybeRoute of
+                Nothing -> { model | pageState = Loaded NotFound } => Cmd.none
+                Just Route.Home ->                
+                    { model | pageState = Loaded (Home Home.initialModel) } => Cmd.none
+                Just Route.Budget ->
+                    if loggedIn then
+                        transition BudgetLoaded Budget.init
+                    else
+                        (model, Route.modifyUrl Route.Login)
+                Just Route.Expense ->
+                    if loggedIn then
+                        transition ExpenseLoaded Expense.init
+                    else
+                        (model, Route.modifyUrl Route.Login)
+                Just Route.Login ->
+                    if loggedIn then
+                        (model, Route.modifyUrl Route.Home)
+                    else
+                        { model | pageState = Loaded (Login Login.initialModel) } => Cmd.none
+                Just Route.Profile ->
+                    if loggedIn then
+                        { model | pageState = Loaded (Profile Profile.init) } => Cmd.none
+                    else
+                        (model, Route.modifyUrl Route.Login)
+
+                Just (Route.ExpenseDetail slug) ->
+                    if loggedIn then
+                        transition ExpenseDetailLoaded (ExpenseDetail.init slug)
+                    else
+                        (model, Route.modifyUrl Route.Login)
+
+            in
+                pageMdl ! [loadPage, loadTutorial]
 
 pageErrored : Model -> ActivePage -> String -> ( Model, Cmd msg )
 pageErrored model activePage errorMessage =
@@ -284,7 +295,7 @@ updatePage page msg model =
                 { model | pageState = Loaded (Errored error) } => Cmd.none
 
             (ExpenseLoaded (Ok subModel), _) ->
-                { model | pageState = Loaded (Expense subModel) } => Cmd.none
+                { model | pageState = Loaded (Expense subModel) } => Cmd.none                    
                     
             (ExpenseLoaded (Err error), _) ->
                 { model | pageState = Loaded (Errored error) } => Cmd.none
@@ -294,6 +305,12 @@ updatePage page msg model =
 
             (ExpenseDetailLoaded (Err error), _) ->
                 { model | pageState = Loaded (Errored error) } => Cmd.none
+
+            (TutorialLoaded (Ok subModel), _) ->
+                { model | tutorialState = subModel } => Cmd.none
+
+            (TutorialLoaded (Err error), _) ->
+                model => Cmd.none
 
             (NavMsg navState, _) ->
                 { model | navState = navState } => Cmd.none
@@ -322,6 +339,10 @@ updatePage page msg model =
                         Nothing -> (newModel, cmd)
             (ExpenseDetailMsg subMsg, ExpenseDetail subModel) ->
                     toPage ExpenseDetail ExpenseDetailMsg (ExpenseDetail.update session) subMsg subModel
+
+            (TutorialMsg subMsg, _) ->
+                ( {model | tutorialState = (Tutorial.update subMsg model.tutorialState)}, Cmd.none )
+                    
                         
             --(_, NotFound) ->
             --  model => Cmd.none

@@ -9,6 +9,7 @@ urlpatterns = []
 
 
 urlpatterns += [
+    url("^tutorial.json$", views.tutorial_view),
     url("^login.json$", views.login_view),
     url("^logout.json$", views.logout_view),
     url("^budget.json$", views.budget_view),

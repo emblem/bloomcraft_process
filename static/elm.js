@@ -10954,6 +10954,146 @@ var _elm_lang$window$Window$subMap = F2(
 	});
 _elm_lang$core$Native_Platform.effectManagers['Window'] = {pkg: 'elm-lang/window', init: _elm_lang$window$Window$init, onEffects: _elm_lang$window$Window$onEffects, onSelfMsg: _elm_lang$window$Window$onSelfMsg, tag: 'sub', subMap: _elm_lang$window$Window$subMap};
 
+var _evancz$elm_markdown$Native_Markdown = function() {
+
+
+// VIRTUAL-DOM WIDGETS
+
+function toHtml(options, factList, rawMarkdown)
+{
+	var model = {
+		options: options,
+		markdown: rawMarkdown
+	};
+	return _elm_lang$virtual_dom$Native_VirtualDom.custom(factList, model, implementation);
+}
+
+
+// WIDGET IMPLEMENTATION
+
+var implementation = {
+	render: render,
+	diff: diff
+};
+
+function render(model)
+{
+	var html = marked(model.markdown, formatOptions(model.options));
+	var div = document.createElement('div');
+	div.innerHTML = html;
+	return div;
+}
+
+function diff(a, b)
+{
+	
+	if (a.model.markdown === b.model.markdown && a.model.options === b.model.options)
+	{
+		return null;
+	}
+
+	return {
+		applyPatch: applyPatch,
+		data: marked(b.model.markdown, formatOptions(b.model.options))
+	};
+}
+
+function applyPatch(domNode, data)
+{
+	domNode.innerHTML = data;
+	return domNode;
+}
+
+
+// ACTUAL MARKDOWN PARSER
+
+var marked = function() {
+	// catch the `marked` object regardless of the outer environment.
+	// (ex. a CommonJS module compatible environment.)
+	// note that this depends on marked's implementation of environment detection.
+	var module = {};
+	var exports = module.exports = {};
+
+	/**
+	 * marked - a markdown parser
+	 * Copyright (c) 2011-2014, Christopher Jeffrey. (MIT Licensed)
+	 * https://github.com/chjj/marked
+	 * commit cd2f6f5b7091154c5526e79b5f3bfb4d15995a51
+	 */
+	(function(){var block={newline:/^\n+/,code:/^( {4}[^\n]+\n*)+/,fences:noop,hr:/^( *[-*_]){3,} *(?:\n+|$)/,heading:/^ *(#{1,6}) *([^\n]+?) *#* *(?:\n+|$)/,nptable:noop,lheading:/^([^\n]+)\n *(=|-){2,} *(?:\n+|$)/,blockquote:/^( *>[^\n]+(\n(?!def)[^\n]+)*\n*)+/,list:/^( *)(bull) [\s\S]+?(?:hr|def|\n{2,}(?! )(?!\1bull )\n*|\s*$)/,html:/^ *(?:comment *(?:\n|\s*$)|closed *(?:\n{2,}|\s*$)|closing *(?:\n{2,}|\s*$))/,def:/^ *\[([^\]]+)\]: *<?([^\s>]+)>?(?: +["(]([^\n]+)[")])? *(?:\n+|$)/,table:noop,paragraph:/^((?:[^\n]+\n?(?!hr|heading|lheading|blockquote|tag|def))+)\n*/,text:/^[^\n]+/};block.bullet=/(?:[*+-]|\d+\.)/;block.item=/^( *)(bull) [^\n]*(?:\n(?!\1bull )[^\n]*)*/;block.item=replace(block.item,"gm")(/bull/g,block.bullet)();block.list=replace(block.list)(/bull/g,block.bullet)("hr","\\n+(?=\\1?(?:[-*_] *){3,}(?:\\n+|$))")("def","\\n+(?="+block.def.source+")")();block.blockquote=replace(block.blockquote)("def",block.def)();block._tag="(?!(?:"+"a|em|strong|small|s|cite|q|dfn|abbr|data|time|code"+"|var|samp|kbd|sub|sup|i|b|u|mark|ruby|rt|rp|bdi|bdo"+"|span|br|wbr|ins|del|img)\\b)\\w+(?!:/|[^\\w\\s@]*@)\\b";block.html=replace(block.html)("comment",/<!--[\s\S]*?-->/)("closed",/<(tag)[\s\S]+?<\/\1>/)("closing",/<tag(?:"[^"]*"|'[^']*'|[^'">])*?>/)(/tag/g,block._tag)();block.paragraph=replace(block.paragraph)("hr",block.hr)("heading",block.heading)("lheading",block.lheading)("blockquote",block.blockquote)("tag","<"+block._tag)("def",block.def)();block.normal=merge({},block);block.gfm=merge({},block.normal,{fences:/^ *(`{3,}|~{3,})[ \.]*(\S+)? *\n([\s\S]*?)\s*\1 *(?:\n+|$)/,paragraph:/^/,heading:/^ *(#{1,6}) +([^\n]+?) *#* *(?:\n+|$)/});block.gfm.paragraph=replace(block.paragraph)("(?!","(?!"+block.gfm.fences.source.replace("\\1","\\2")+"|"+block.list.source.replace("\\1","\\3")+"|")();block.tables=merge({},block.gfm,{nptable:/^ *(\S.*\|.*)\n *([-:]+ *\|[-| :]*)\n((?:.*\|.*(?:\n|$))*)\n*/,table:/^ *\|(.+)\n *\|( *[-:]+[-| :]*)\n((?: *\|.*(?:\n|$))*)\n*/});function Lexer(options){this.tokens=[];this.tokens.links={};this.options=options||marked.defaults;this.rules=block.normal;if(this.options.gfm){if(this.options.tables){this.rules=block.tables}else{this.rules=block.gfm}}}Lexer.rules=block;Lexer.lex=function(src,options){var lexer=new Lexer(options);return lexer.lex(src)};Lexer.prototype.lex=function(src){src=src.replace(/\r\n|\r/g,"\n").replace(/\t/g,"    ").replace(/\u00a0/g," ").replace(/\u2424/g,"\n");return this.token(src,true)};Lexer.prototype.token=function(src,top,bq){var src=src.replace(/^ +$/gm,""),next,loose,cap,bull,b,item,space,i,l;while(src){if(cap=this.rules.newline.exec(src)){src=src.substring(cap[0].length);if(cap[0].length>1){this.tokens.push({type:"space"})}}if(cap=this.rules.code.exec(src)){src=src.substring(cap[0].length);cap=cap[0].replace(/^ {4}/gm,"");this.tokens.push({type:"code",text:!this.options.pedantic?cap.replace(/\n+$/,""):cap});continue}if(cap=this.rules.fences.exec(src)){src=src.substring(cap[0].length);this.tokens.push({type:"code",lang:cap[2],text:cap[3]||""});continue}if(cap=this.rules.heading.exec(src)){src=src.substring(cap[0].length);this.tokens.push({type:"heading",depth:cap[1].length,text:cap[2]});continue}if(top&&(cap=this.rules.nptable.exec(src))){src=src.substring(cap[0].length);item={type:"table",header:cap[1].replace(/^ *| *\| *$/g,"").split(/ *\| */),align:cap[2].replace(/^ *|\| *$/g,"").split(/ *\| */),cells:cap[3].replace(/\n$/,"").split("\n")};for(i=0;i<item.align.length;i++){if(/^ *-+: *$/.test(item.align[i])){item.align[i]="right"}else if(/^ *:-+: *$/.test(item.align[i])){item.align[i]="center"}else if(/^ *:-+ *$/.test(item.align[i])){item.align[i]="left"}else{item.align[i]=null}}for(i=0;i<item.cells.length;i++){item.cells[i]=item.cells[i].split(/ *\| */)}this.tokens.push(item);continue}if(cap=this.rules.lheading.exec(src)){src=src.substring(cap[0].length);this.tokens.push({type:"heading",depth:cap[2]==="="?1:2,text:cap[1]});continue}if(cap=this.rules.hr.exec(src)){src=src.substring(cap[0].length);this.tokens.push({type:"hr"});continue}if(cap=this.rules.blockquote.exec(src)){src=src.substring(cap[0].length);this.tokens.push({type:"blockquote_start"});cap=cap[0].replace(/^ *> ?/gm,"");this.token(cap,top,true);this.tokens.push({type:"blockquote_end"});continue}if(cap=this.rules.list.exec(src)){src=src.substring(cap[0].length);bull=cap[2];this.tokens.push({type:"list_start",ordered:bull.length>1});cap=cap[0].match(this.rules.item);next=false;l=cap.length;i=0;for(;i<l;i++){item=cap[i];space=item.length;item=item.replace(/^ *([*+-]|\d+\.) +/,"");if(~item.indexOf("\n ")){space-=item.length;item=!this.options.pedantic?item.replace(new RegExp("^ {1,"+space+"}","gm"),""):item.replace(/^ {1,4}/gm,"")}if(this.options.smartLists&&i!==l-1){b=block.bullet.exec(cap[i+1])[0];if(bull!==b&&!(bull.length>1&&b.length>1)){src=cap.slice(i+1).join("\n")+src;i=l-1}}loose=next||/\n\n(?!\s*$)/.test(item);if(i!==l-1){next=item.charAt(item.length-1)==="\n";if(!loose)loose=next}this.tokens.push({type:loose?"loose_item_start":"list_item_start"});this.token(item,false,bq);this.tokens.push({type:"list_item_end"})}this.tokens.push({type:"list_end"});continue}if(cap=this.rules.html.exec(src)){src=src.substring(cap[0].length);this.tokens.push({type:this.options.sanitize?"paragraph":"html",pre:!this.options.sanitizer&&(cap[1]==="pre"||cap[1]==="script"||cap[1]==="style"),text:cap[0]});continue}if(!bq&&top&&(cap=this.rules.def.exec(src))){src=src.substring(cap[0].length);this.tokens.links[cap[1].toLowerCase()]={href:cap[2],title:cap[3]};continue}if(top&&(cap=this.rules.table.exec(src))){src=src.substring(cap[0].length);item={type:"table",header:cap[1].replace(/^ *| *\| *$/g,"").split(/ *\| */),align:cap[2].replace(/^ *|\| *$/g,"").split(/ *\| */),cells:cap[3].replace(/(?: *\| *)?\n$/,"").split("\n")};for(i=0;i<item.align.length;i++){if(/^ *-+: *$/.test(item.align[i])){item.align[i]="right"}else if(/^ *:-+: *$/.test(item.align[i])){item.align[i]="center"}else if(/^ *:-+ *$/.test(item.align[i])){item.align[i]="left"}else{item.align[i]=null}}for(i=0;i<item.cells.length;i++){item.cells[i]=item.cells[i].replace(/^ *\| *| *\| *$/g,"").split(/ *\| */)}this.tokens.push(item);continue}if(top&&(cap=this.rules.paragraph.exec(src))){src=src.substring(cap[0].length);this.tokens.push({type:"paragraph",text:cap[1].charAt(cap[1].length-1)==="\n"?cap[1].slice(0,-1):cap[1]});continue}if(cap=this.rules.text.exec(src)){src=src.substring(cap[0].length);this.tokens.push({type:"text",text:cap[0]});continue}if(src){throw new Error("Infinite loop on byte: "+src.charCodeAt(0))}}return this.tokens};var inline={escape:/^\\([\\`*{}\[\]()#+\-.!_>])/,autolink:/^<([^ >]+(@|:\/)[^ >]+)>/,url:noop,tag:/^<!--[\s\S]*?-->|^<\/?\w+(?:"[^"]*"|'[^']*'|[^'">])*?>/,link:/^!?\[(inside)\]\(href\)/,reflink:/^!?\[(inside)\]\s*\[([^\]]*)\]/,nolink:/^!?\[((?:\[[^\]]*\]|[^\[\]])*)\]/,strong:/^__([\s\S]+?)__(?!_)|^\*\*([\s\S]+?)\*\*(?!\*)/,em:/^\b_((?:[^_]|__)+?)_\b|^\*((?:\*\*|[\s\S])+?)\*(?!\*)/,code:/^(`+)\s*([\s\S]*?[^`])\s*\1(?!`)/,br:/^ {2,}\n(?!\s*$)/,del:noop,text:/^[\s\S]+?(?=[\\<!\[_*`]| {2,}\n|$)/};inline._inside=/(?:\[[^\]]*\]|[^\[\]]|\](?=[^\[]*\]))*/;inline._href=/\s*<?([\s\S]*?)>?(?:\s+['"]([\s\S]*?)['"])?\s*/;inline.link=replace(inline.link)("inside",inline._inside)("href",inline._href)();inline.reflink=replace(inline.reflink)("inside",inline._inside)();inline.normal=merge({},inline);inline.pedantic=merge({},inline.normal,{strong:/^__(?=\S)([\s\S]*?\S)__(?!_)|^\*\*(?=\S)([\s\S]*?\S)\*\*(?!\*)/,em:/^_(?=\S)([\s\S]*?\S)_(?!_)|^\*(?=\S)([\s\S]*?\S)\*(?!\*)/});inline.gfm=merge({},inline.normal,{escape:replace(inline.escape)("])","~|])")(),url:/^(https?:\/\/[^\s<]+[^<.,:;"')\]\s])/,del:/^~~(?=\S)([\s\S]*?\S)~~/,text:replace(inline.text)("]|","~]|")("|","|https?://|")()});inline.breaks=merge({},inline.gfm,{br:replace(inline.br)("{2,}","*")(),text:replace(inline.gfm.text)("{2,}","*")()});function InlineLexer(links,options){this.options=options||marked.defaults;this.links=links;this.rules=inline.normal;this.renderer=this.options.renderer||new Renderer;this.renderer.options=this.options;if(!this.links){throw new Error("Tokens array requires a `links` property.")}if(this.options.gfm){if(this.options.breaks){this.rules=inline.breaks}else{this.rules=inline.gfm}}else if(this.options.pedantic){this.rules=inline.pedantic}}InlineLexer.rules=inline;InlineLexer.output=function(src,links,options){var inline=new InlineLexer(links,options);return inline.output(src)};InlineLexer.prototype.output=function(src){var out="",link,text,href,cap;while(src){if(cap=this.rules.escape.exec(src)){src=src.substring(cap[0].length);out+=cap[1];continue}if(cap=this.rules.autolink.exec(src)){src=src.substring(cap[0].length);if(cap[2]==="@"){text=cap[1].charAt(6)===":"?this.mangle(cap[1].substring(7)):this.mangle(cap[1]);href=this.mangle("mailto:")+text}else{text=escape(cap[1]);href=text}out+=this.renderer.link(href,null,text);continue}if(!this.inLink&&(cap=this.rules.url.exec(src))){src=src.substring(cap[0].length);text=escape(cap[1]);href=text;out+=this.renderer.link(href,null,text);continue}if(cap=this.rules.tag.exec(src)){if(!this.inLink&&/^<a /i.test(cap[0])){this.inLink=true}else if(this.inLink&&/^<\/a>/i.test(cap[0])){this.inLink=false}src=src.substring(cap[0].length);out+=this.options.sanitize?this.options.sanitizer?this.options.sanitizer(cap[0]):escape(cap[0]):cap[0];continue}if(cap=this.rules.link.exec(src)){src=src.substring(cap[0].length);this.inLink=true;out+=this.outputLink(cap,{href:cap[2],title:cap[3]});this.inLink=false;continue}if((cap=this.rules.reflink.exec(src))||(cap=this.rules.nolink.exec(src))){src=src.substring(cap[0].length);link=(cap[2]||cap[1]).replace(/\s+/g," ");link=this.links[link.toLowerCase()];if(!link||!link.href){out+=cap[0].charAt(0);src=cap[0].substring(1)+src;continue}this.inLink=true;out+=this.outputLink(cap,link);this.inLink=false;continue}if(cap=this.rules.strong.exec(src)){src=src.substring(cap[0].length);out+=this.renderer.strong(this.output(cap[2]||cap[1]));continue}if(cap=this.rules.em.exec(src)){src=src.substring(cap[0].length);out+=this.renderer.em(this.output(cap[2]||cap[1]));continue}if(cap=this.rules.code.exec(src)){src=src.substring(cap[0].length);out+=this.renderer.codespan(escape(cap[2],true));continue}if(cap=this.rules.br.exec(src)){src=src.substring(cap[0].length);out+=this.renderer.br();continue}if(cap=this.rules.del.exec(src)){src=src.substring(cap[0].length);out+=this.renderer.del(this.output(cap[1]));continue}if(cap=this.rules.text.exec(src)){src=src.substring(cap[0].length);out+=this.renderer.text(escape(this.smartypants(cap[0])));continue}if(src){throw new Error("Infinite loop on byte: "+src.charCodeAt(0))}}return out};InlineLexer.prototype.outputLink=function(cap,link){var href=escape(link.href),title=link.title?escape(link.title):null;return cap[0].charAt(0)!=="!"?this.renderer.link(href,title,this.output(cap[1])):this.renderer.image(href,title,escape(cap[1]))};InlineLexer.prototype.smartypants=function(text){if(!this.options.smartypants)return text;return text.replace(/---/g,"—").replace(/--/g,"–").replace(/(^|[-\u2014\/(\[{"\s])'/g,"$1‘").replace(/'/g,"’").replace(/(^|[-\u2014\/(\[{\u2018\s])"/g,"$1“").replace(/"/g,"”").replace(/\.{3}/g,"…")};InlineLexer.prototype.mangle=function(text){if(!this.options.mangle)return text;var out="",l=text.length,i=0,ch;for(;i<l;i++){ch=text.charCodeAt(i);if(Math.random()>.5){ch="x"+ch.toString(16)}out+="&#"+ch+";"}return out};function Renderer(options){this.options=options||{}}Renderer.prototype.code=function(code,lang,escaped){if(this.options.highlight){var out=this.options.highlight(code,lang);if(out!=null&&out!==code){escaped=true;code=out}}if(!lang){return"<pre><code>"+(escaped?code:escape(code,true))+"\n</code></pre>"}return'<pre><code class="'+this.options.langPrefix+escape(lang,true)+'">'+(escaped?code:escape(code,true))+"\n</code></pre>\n"};Renderer.prototype.blockquote=function(quote){return"<blockquote>\n"+quote+"</blockquote>\n"};Renderer.prototype.html=function(html){return html};Renderer.prototype.heading=function(text,level,raw){return"<h"+level+' id="'+this.options.headerPrefix+raw.toLowerCase().replace(/[^\w]+/g,"-")+'">'+text+"</h"+level+">\n"};Renderer.prototype.hr=function(){return this.options.xhtml?"<hr/>\n":"<hr>\n"};Renderer.prototype.list=function(body,ordered){var type=ordered?"ol":"ul";return"<"+type+">\n"+body+"</"+type+">\n"};Renderer.prototype.listitem=function(text){return"<li>"+text+"</li>\n"};Renderer.prototype.paragraph=function(text){return"<p>"+text+"</p>\n"};Renderer.prototype.table=function(header,body){return"<table>\n"+"<thead>\n"+header+"</thead>\n"+"<tbody>\n"+body+"</tbody>\n"+"</table>\n"};Renderer.prototype.tablerow=function(content){return"<tr>\n"+content+"</tr>\n"};Renderer.prototype.tablecell=function(content,flags){var type=flags.header?"th":"td";var tag=flags.align?"<"+type+' style="text-align:'+flags.align+'">':"<"+type+">";return tag+content+"</"+type+">\n"};Renderer.prototype.strong=function(text){return"<strong>"+text+"</strong>"};Renderer.prototype.em=function(text){return"<em>"+text+"</em>"};Renderer.prototype.codespan=function(text){return"<code>"+text+"</code>"};Renderer.prototype.br=function(){return this.options.xhtml?"<br/>":"<br>"};Renderer.prototype.del=function(text){return"<del>"+text+"</del>"};Renderer.prototype.link=function(href,title,text){if(this.options.sanitize){try{var prot=decodeURIComponent(unescape(href)).replace(/[^\w:]/g,"").toLowerCase()}catch(e){return""}if(prot.indexOf("javascript:")===0||prot.indexOf("vbscript:")===0||prot.indexOf("data:")===0){return""}}var out='<a href="'+href+'"';if(title){out+=' title="'+title+'"'}out+=">"+text+"</a>";return out};Renderer.prototype.image=function(href,title,text){var out='<img src="'+href+'" alt="'+text+'"';if(title){out+=' title="'+title+'"'}out+=this.options.xhtml?"/>":">";return out};Renderer.prototype.text=function(text){return text};function Parser(options){this.tokens=[];this.token=null;this.options=options||marked.defaults;this.options.renderer=this.options.renderer||new Renderer;this.renderer=this.options.renderer;this.renderer.options=this.options}Parser.parse=function(src,options,renderer){var parser=new Parser(options,renderer);return parser.parse(src)};Parser.prototype.parse=function(src){this.inline=new InlineLexer(src.links,this.options,this.renderer);this.tokens=src.reverse();var out="";while(this.next()){out+=this.tok()}return out};Parser.prototype.next=function(){return this.token=this.tokens.pop()};Parser.prototype.peek=function(){return this.tokens[this.tokens.length-1]||0};Parser.prototype.parseText=function(){var body=this.token.text;while(this.peek().type==="text"){body+="\n"+this.next().text}return this.inline.output(body)};Parser.prototype.tok=function(){switch(this.token.type){case"space":{return""}case"hr":{return this.renderer.hr()}case"heading":{return this.renderer.heading(this.inline.output(this.token.text),this.token.depth,this.token.text)}case"code":{return this.renderer.code(this.token.text,this.token.lang,this.token.escaped)}case"table":{var header="",body="",i,row,cell,flags,j;cell="";for(i=0;i<this.token.header.length;i++){flags={header:true,align:this.token.align[i]};cell+=this.renderer.tablecell(this.inline.output(this.token.header[i]),{header:true,align:this.token.align[i]})}header+=this.renderer.tablerow(cell);for(i=0;i<this.token.cells.length;i++){row=this.token.cells[i];cell="";for(j=0;j<row.length;j++){cell+=this.renderer.tablecell(this.inline.output(row[j]),{header:false,align:this.token.align[j]})}body+=this.renderer.tablerow(cell)}return this.renderer.table(header,body)}case"blockquote_start":{var body="";while(this.next().type!=="blockquote_end"){body+=this.tok()}return this.renderer.blockquote(body)}case"list_start":{var body="",ordered=this.token.ordered;while(this.next().type!=="list_end"){body+=this.tok()}return this.renderer.list(body,ordered)}case"list_item_start":{var body="";while(this.next().type!=="list_item_end"){body+=this.token.type==="text"?this.parseText():this.tok()}return this.renderer.listitem(body)}case"loose_item_start":{var body="";while(this.next().type!=="list_item_end"){body+=this.tok()}return this.renderer.listitem(body)}case"html":{var html=!this.token.pre&&!this.options.pedantic?this.inline.output(this.token.text):this.token.text;return this.renderer.html(html)}case"paragraph":{return this.renderer.paragraph(this.inline.output(this.token.text))}case"text":{return this.renderer.paragraph(this.parseText())}}};function escape(html,encode){return html.replace(!encode?/&(?!#?\w+;)/g:/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#39;")}function unescape(html){return html.replace(/&(#(?:\d+)|(?:#x[0-9A-Fa-f]+)|(?:\w+));?/g,function(_,n){n=n.toLowerCase();if(n==="colon")return":";if(n.charAt(0)==="#"){return n.charAt(1)==="x"?String.fromCharCode(parseInt(n.substring(2),16)):String.fromCharCode(+n.substring(1))}return""})}function replace(regex,opt){regex=regex.source;opt=opt||"";return function self(name,val){if(!name)return new RegExp(regex,opt);val=val.source||val;val=val.replace(/(^|[^\[])\^/g,"$1");regex=regex.replace(name,val);return self}}function noop(){}noop.exec=noop;function merge(obj){var i=1,target,key;for(;i<arguments.length;i++){target=arguments[i];for(key in target){if(Object.prototype.hasOwnProperty.call(target,key)){obj[key]=target[key]}}}return obj}function marked(src,opt,callback){if(callback||typeof opt==="function"){if(!callback){callback=opt;opt=null}opt=merge({},marked.defaults,opt||{});var highlight=opt.highlight,tokens,pending,i=0;try{tokens=Lexer.lex(src,opt)}catch(e){return callback(e)}pending=tokens.length;var done=function(err){if(err){opt.highlight=highlight;return callback(err)}var out;try{out=Parser.parse(tokens,opt)}catch(e){err=e}opt.highlight=highlight;return err?callback(err):callback(null,out)};if(!highlight||highlight.length<3){return done()}delete opt.highlight;if(!pending)return done();for(;i<tokens.length;i++){(function(token){if(token.type!=="code"){return--pending||done()}return highlight(token.text,token.lang,function(err,code){if(err)return done(err);if(code==null||code===token.text){return--pending||done()}token.text=code;token.escaped=true;--pending||done()})})(tokens[i])}return}try{if(opt)opt=merge({},marked.defaults,opt);return Parser.parse(Lexer.lex(src,opt),opt)}catch(e){e.message+="\nPlease report this to https://github.com/chjj/marked.";if((opt||marked.defaults).silent){return"<p>An error occured:</p><pre>"+escape(e.message+"",true)+"</pre>"}throw e}}marked.options=marked.setOptions=function(opt){merge(marked.defaults,opt);return marked};marked.defaults={gfm:true,tables:true,breaks:false,pedantic:false,sanitize:false,sanitizer:null,mangle:true,smartLists:false,silent:false,highlight:null,langPrefix:"lang-",smartypants:false,headerPrefix:"",renderer:new Renderer,xhtml:false};marked.Parser=Parser;marked.parser=Parser.parse;marked.Renderer=Renderer;marked.Lexer=Lexer;marked.lexer=Lexer.lex;marked.InlineLexer=InlineLexer;marked.inlineLexer=InlineLexer.output;marked.parse=marked;if(typeof module!=="undefined"&&typeof exports==="object"){module.exports=marked}else if(typeof define==="function"&&define.amd){define(function(){return marked})}else{this.marked=marked}}).call(function(){return this||(typeof window!=="undefined"?window:global)}());
+
+	return module.exports;
+}();
+
+
+// FORMAT OPTIONS FOR MARKED IMPLEMENTATION
+
+function formatOptions(options)
+{
+	function toHighlight(code, lang)
+	{
+		if (!lang && options.defaultHighlighting.ctor === 'Just')
+		{
+			lang = options.defaultHighlighting._0;
+		}
+
+		if (typeof hljs !== 'undefined' && lang && hljs.listLanguages().indexOf(lang) >= 0)
+		{
+			return hljs.highlight(lang, code, true).value;
+		}
+
+		return code;
+	}
+
+	var gfm = options.githubFlavored;
+	if (gfm.ctor === 'Just')
+	{
+		return {
+			highlight: toHighlight,
+			gfm: true,
+			tables: gfm._0.tables,
+			breaks: gfm._0.breaks,
+			sanitize: options.sanitize,
+			smartypants: options.smartypants
+		};
+	}
+
+	return {
+		highlight: toHighlight,
+		gfm: false,
+		tables: false,
+		breaks: false,
+		sanitize: options.sanitize,
+		smartypants: options.smartypants
+	};
+}
+
+
+// EXPORTS
+
+return {
+	toHtml: F3(toHtml)
+};
+
+}();
+
+var _evancz$elm_markdown$Markdown$toHtmlWith = _evancz$elm_markdown$Native_Markdown.toHtml;
+var _evancz$elm_markdown$Markdown$defaultOptions = {
+	githubFlavored: _elm_lang$core$Maybe$Just(
+		{tables: false, breaks: false}),
+	defaultHighlighting: _elm_lang$core$Maybe$Nothing,
+	sanitize: false,
+	smartypants: false
+};
+var _evancz$elm_markdown$Markdown$toHtml = F2(
+	function (attrs, string) {
+		return A3(_evancz$elm_markdown$Native_Markdown.toHtml, _evancz$elm_markdown$Markdown$defaultOptions, attrs, string);
+	});
+var _evancz$elm_markdown$Markdown$Options = F4(
+	function (a, b, c, d) {
+		return {githubFlavored: a, defaultHighlighting: b, sanitize: c, smartypants: d};
+	});
+
 var _evancz$url_parser$UrlParser$toKeyValuePair = function (segment) {
 	var _p0 = A2(_elm_lang$core$String$split, '=', segment);
 	if (((_p0.ctor === '::') && (_p0._1.ctor === '::')) && (_p0._1._1.ctor === '[]')) {
@@ -16108,6 +16248,380 @@ var _rundis$elm_bootstrap$Bootstrap_Grid$col = F2(
 			{options: options, children: children});
 	});
 
+var _rundis$elm_bootstrap$Bootstrap_Modal$ifElse = F3(
+	function (pred, $true, $false) {
+		return pred ? $true : $false;
+	});
+var _rundis$elm_bootstrap$Bootstrap_Modal$renderFooter = function (maybeFooter) {
+	var _p0 = maybeFooter;
+	if (_p0.ctor === 'Just') {
+		var _p1 = _p0._0._0;
+		return _elm_lang$core$Maybe$Just(
+			A2(
+				_elm_lang$html$Html$div,
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html_Attributes$class('modal-footer'),
+					_1: _p1.attributes
+				},
+				_p1.children));
+	} else {
+		return _elm_lang$core$Maybe$Nothing;
+	}
+};
+var _rundis$elm_bootstrap$Bootstrap_Modal$renderBody = function (maybeBody) {
+	var _p2 = maybeBody;
+	if (_p2.ctor === 'Just') {
+		var _p3 = _p2._0._0;
+		return _elm_lang$core$Maybe$Just(
+			A2(
+				_elm_lang$html$Html$div,
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html_Attributes$class('modal-body'),
+					_1: _p3.attributes
+				},
+				_p3.children));
+	} else {
+		return _elm_lang$core$Maybe$Nothing;
+	}
+};
+var _rundis$elm_bootstrap$Bootstrap_Modal$modalClass = function (option) {
+	var _p4 = option;
+	var _p5 = _rundis$elm_bootstrap$Bootstrap_Grid_Internal$screenSizeOption(_p4._0);
+	if (_p5.ctor === 'Just') {
+		return _elm_lang$core$Maybe$Just(
+			_elm_lang$html$Html_Attributes$class(
+				A2(_elm_lang$core$Basics_ops['++'], 'modal-', _p5._0)));
+	} else {
+		return _elm_lang$core$Maybe$Nothing;
+	}
+};
+var _rundis$elm_bootstrap$Bootstrap_Modal$modalAttributes = function (options) {
+	return A2(
+		_elm_lang$core$Basics_ops['++'],
+		{
+			ctor: '::',
+			_0: _elm_lang$html$Html_Attributes$class('modal-dialog'),
+			_1: {
+				ctor: '::',
+				_0: _elm_lang$html$Html_Attributes$style(
+					{
+						ctor: '::',
+						_0: {ctor: '_Tuple2', _0: 'pointer-events', _1: 'auto'},
+						_1: {ctor: '[]'}
+					}),
+				_1: {ctor: '[]'}
+			}
+		},
+		A2(
+			_elm_lang$core$List$filterMap,
+			_elm_lang$core$Basics$identity,
+			A2(_elm_lang$core$List$map, _rundis$elm_bootstrap$Bootstrap_Modal$modalClass, options)));
+};
+var _rundis$elm_bootstrap$Bootstrap_Modal$display = function (_p6) {
+	var _p7 = _p6;
+	var _p8 = _p7._0;
+	return {
+		ctor: '::',
+		_0: _elm_lang$html$Html_Attributes$style(
+			A2(
+				_elm_lang$core$Basics_ops['++'],
+				{
+					ctor: '::',
+					_0: {ctor: '_Tuple2', _0: 'display', _1: 'block'},
+					_1: {ctor: '[]'}
+				},
+				A3(
+					_rundis$elm_bootstrap$Bootstrap_Modal$ifElse,
+					_p8,
+					{
+						ctor: '::',
+						_0: {ctor: '_Tuple2', _0: 'pointer-events', _1: 'none'},
+						_1: {ctor: '[]'}
+					},
+					{
+						ctor: '::',
+						_0: {ctor: '_Tuple2', _0: 'height', _1: '0px'},
+						_1: {ctor: '[]'}
+					}))),
+		_1: {
+			ctor: '::',
+			_0: _elm_lang$html$Html_Attributes$classList(
+				{
+					ctor: '::',
+					_0: {ctor: '_Tuple2', _0: 'modal', _1: true},
+					_1: {
+						ctor: '::',
+						_0: {ctor: '_Tuple2', _0: 'fade', _1: true},
+						_1: {
+							ctor: '::',
+							_0: {ctor: '_Tuple2', _0: 'show', _1: _p8},
+							_1: {ctor: '[]'}
+						}
+					}
+				}),
+			_1: {ctor: '[]'}
+		}
+	};
+};
+var _rundis$elm_bootstrap$Bootstrap_Modal$Item = F2(
+	function (a, b) {
+		return {attributes: a, children: b};
+	});
+var _rundis$elm_bootstrap$Bootstrap_Modal$Config = function (a) {
+	return {ctor: 'Config', _0: a};
+};
+var _rundis$elm_bootstrap$Bootstrap_Modal$config = function (toMsg) {
+	return _rundis$elm_bootstrap$Bootstrap_Modal$Config(
+		{
+			toMsg: toMsg,
+			options: {ctor: '[]'},
+			header: _elm_lang$core$Maybe$Nothing,
+			body: _elm_lang$core$Maybe$Nothing,
+			footer: _elm_lang$core$Maybe$Nothing
+		});
+};
+var _rundis$elm_bootstrap$Bootstrap_Modal$State = function (a) {
+	return {ctor: 'State', _0: a};
+};
+var _rundis$elm_bootstrap$Bootstrap_Modal$hiddenState = _rundis$elm_bootstrap$Bootstrap_Modal$State(false);
+var _rundis$elm_bootstrap$Bootstrap_Modal$closeButton = function (toMsg) {
+	return A2(
+		_elm_lang$html$Html$button,
+		{
+			ctor: '::',
+			_0: _elm_lang$html$Html_Attributes$class('close'),
+			_1: {
+				ctor: '::',
+				_0: _elm_lang$html$Html_Events$onClick(
+					toMsg(_rundis$elm_bootstrap$Bootstrap_Modal$hiddenState)),
+				_1: {ctor: '[]'}
+			}
+		},
+		{
+			ctor: '::',
+			_0: _elm_lang$html$Html$text('x'),
+			_1: {ctor: '[]'}
+		});
+};
+var _rundis$elm_bootstrap$Bootstrap_Modal$renderHeader = F2(
+	function (toMsg, maybeHeader) {
+		var _p9 = maybeHeader;
+		if (_p9.ctor === 'Just') {
+			var _p10 = _p9._0._0;
+			return _elm_lang$core$Maybe$Just(
+				A2(
+					_elm_lang$html$Html$div,
+					{
+						ctor: '::',
+						_0: _elm_lang$html$Html_Attributes$class('modal-header'),
+						_1: _p10.attributes
+					},
+					A2(
+						_elm_lang$core$Basics_ops['++'],
+						_p10.children,
+						{
+							ctor: '::',
+							_0: _rundis$elm_bootstrap$Bootstrap_Modal$closeButton(toMsg),
+							_1: {ctor: '[]'}
+						})));
+		} else {
+			return _elm_lang$core$Maybe$Nothing;
+		}
+	});
+var _rundis$elm_bootstrap$Bootstrap_Modal$backdrop = F2(
+	function (toMsg, _p11) {
+		var _p12 = _p11;
+		return _p12._0 ? {
+			ctor: '::',
+			_0: A2(
+				_elm_lang$html$Html$div,
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html_Attributes$class('modal-backdrop fade show'),
+					_1: {
+						ctor: '::',
+						_0: _elm_lang$html$Html_Events$onClick(
+							toMsg(_rundis$elm_bootstrap$Bootstrap_Modal$hiddenState)),
+						_1: {ctor: '[]'}
+					}
+				},
+				{ctor: '[]'}),
+			_1: {ctor: '[]'}
+		} : {ctor: '[]'};
+	});
+var _rundis$elm_bootstrap$Bootstrap_Modal$view = F2(
+	function (state, _p13) {
+		var _p14 = _p13;
+		var _p15 = _p14._0.toMsg;
+		return A2(
+			_elm_lang$html$Html$div,
+			{ctor: '[]'},
+			A2(
+				_elm_lang$core$Basics_ops['++'],
+				{
+					ctor: '::',
+					_0: A2(
+						_elm_lang$html$Html$div,
+						A2(
+							_elm_lang$core$Basics_ops['++'],
+							{
+								ctor: '::',
+								_0: _elm_lang$html$Html_Attributes$tabindex(-1),
+								_1: {ctor: '[]'}
+							},
+							_rundis$elm_bootstrap$Bootstrap_Modal$display(state)),
+						{
+							ctor: '::',
+							_0: A2(
+								_elm_lang$html$Html$div,
+								{
+									ctor: '::',
+									_0: A2(_elm_lang$html$Html_Attributes$attribute, 'role', 'document'),
+									_1: _rundis$elm_bootstrap$Bootstrap_Modal$modalAttributes(_p14._0.options)
+								},
+								{
+									ctor: '::',
+									_0: A2(
+										_elm_lang$html$Html$div,
+										{
+											ctor: '::',
+											_0: _elm_lang$html$Html_Attributes$class('modal-content'),
+											_1: {ctor: '[]'}
+										},
+										A2(
+											_elm_lang$core$List$filterMap,
+											_elm_lang$core$Basics$identity,
+											{
+												ctor: '::',
+												_0: A2(_rundis$elm_bootstrap$Bootstrap_Modal$renderHeader, _p15, _p14._0.header),
+												_1: {
+													ctor: '::',
+													_0: _rundis$elm_bootstrap$Bootstrap_Modal$renderBody(_p14._0.body),
+													_1: {
+														ctor: '::',
+														_0: _rundis$elm_bootstrap$Bootstrap_Modal$renderFooter(_p14._0.footer),
+														_1: {ctor: '[]'}
+													}
+												}
+											})),
+									_1: {ctor: '[]'}
+								}),
+							_1: {ctor: '[]'}
+						}),
+					_1: {ctor: '[]'}
+				},
+				A2(_rundis$elm_bootstrap$Bootstrap_Modal$backdrop, _p15, state)));
+	});
+var _rundis$elm_bootstrap$Bootstrap_Modal$visibleState = _rundis$elm_bootstrap$Bootstrap_Modal$State(true);
+var _rundis$elm_bootstrap$Bootstrap_Modal$ModalSize = function (a) {
+	return {ctor: 'ModalSize', _0: a};
+};
+var _rundis$elm_bootstrap$Bootstrap_Modal$small = function (_p16) {
+	var _p17 = _p16;
+	var _p18 = _p17._0;
+	return _rundis$elm_bootstrap$Bootstrap_Modal$Config(
+		_elm_lang$core$Native_Utils.update(
+			_p18,
+			{
+				options: A2(
+					_elm_lang$core$Basics_ops['++'],
+					_p18.options,
+					{
+						ctor: '::',
+						_0: _rundis$elm_bootstrap$Bootstrap_Modal$ModalSize(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$SM),
+						_1: {ctor: '[]'}
+					})
+			}));
+};
+var _rundis$elm_bootstrap$Bootstrap_Modal$large = function (_p19) {
+	var _p20 = _p19;
+	var _p21 = _p20._0;
+	return _rundis$elm_bootstrap$Bootstrap_Modal$Config(
+		_elm_lang$core$Native_Utils.update(
+			_p21,
+			{
+				options: A2(
+					_elm_lang$core$Basics_ops['++'],
+					_p21.options,
+					{
+						ctor: '::',
+						_0: _rundis$elm_bootstrap$Bootstrap_Modal$ModalSize(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$LG),
+						_1: {ctor: '[]'}
+					})
+			}));
+};
+var _rundis$elm_bootstrap$Bootstrap_Modal$Header = function (a) {
+	return {ctor: 'Header', _0: a};
+};
+var _rundis$elm_bootstrap$Bootstrap_Modal$header = F3(
+	function (attributes, children, _p22) {
+		var _p23 = _p22;
+		return _rundis$elm_bootstrap$Bootstrap_Modal$Config(
+			_elm_lang$core$Native_Utils.update(
+				_p23._0,
+				{
+					header: _elm_lang$core$Maybe$Just(
+						_rundis$elm_bootstrap$Bootstrap_Modal$Header(
+							{attributes: attributes, children: children}))
+				}));
+	});
+var _rundis$elm_bootstrap$Bootstrap_Modal$titledHeader = F3(
+	function (itemFn, attributes, children) {
+		return A2(
+			_rundis$elm_bootstrap$Bootstrap_Modal$header,
+			{ctor: '[]'},
+			{
+				ctor: '::',
+				_0: A2(
+					itemFn,
+					{
+						ctor: '::',
+						_0: _elm_lang$html$Html_Attributes$class('modal-title'),
+						_1: attributes
+					},
+					children),
+				_1: {ctor: '[]'}
+			});
+	});
+var _rundis$elm_bootstrap$Bootstrap_Modal$h1 = _rundis$elm_bootstrap$Bootstrap_Modal$titledHeader(_elm_lang$html$Html$h1);
+var _rundis$elm_bootstrap$Bootstrap_Modal$h2 = _rundis$elm_bootstrap$Bootstrap_Modal$titledHeader(_elm_lang$html$Html$h2);
+var _rundis$elm_bootstrap$Bootstrap_Modal$h3 = _rundis$elm_bootstrap$Bootstrap_Modal$titledHeader(_elm_lang$html$Html$h3);
+var _rundis$elm_bootstrap$Bootstrap_Modal$h4 = _rundis$elm_bootstrap$Bootstrap_Modal$titledHeader(_elm_lang$html$Html$h4);
+var _rundis$elm_bootstrap$Bootstrap_Modal$h5 = _rundis$elm_bootstrap$Bootstrap_Modal$titledHeader(_elm_lang$html$Html$h5);
+var _rundis$elm_bootstrap$Bootstrap_Modal$h6 = _rundis$elm_bootstrap$Bootstrap_Modal$titledHeader(_elm_lang$html$Html$h6);
+var _rundis$elm_bootstrap$Bootstrap_Modal$Body = function (a) {
+	return {ctor: 'Body', _0: a};
+};
+var _rundis$elm_bootstrap$Bootstrap_Modal$body = F3(
+	function (attributes, children, _p24) {
+		var _p25 = _p24;
+		return _rundis$elm_bootstrap$Bootstrap_Modal$Config(
+			_elm_lang$core$Native_Utils.update(
+				_p25._0,
+				{
+					body: _elm_lang$core$Maybe$Just(
+						_rundis$elm_bootstrap$Bootstrap_Modal$Body(
+							{attributes: attributes, children: children}))
+				}));
+	});
+var _rundis$elm_bootstrap$Bootstrap_Modal$Footer = function (a) {
+	return {ctor: 'Footer', _0: a};
+};
+var _rundis$elm_bootstrap$Bootstrap_Modal$footer = F3(
+	function (attributes, children, _p26) {
+		var _p27 = _p26;
+		return _rundis$elm_bootstrap$Bootstrap_Modal$Config(
+			_elm_lang$core$Native_Utils.update(
+				_p27._0,
+				{
+					footer: _elm_lang$core$Maybe$Just(
+						_rundis$elm_bootstrap$Bootstrap_Modal$Footer(
+							{attributes: attributes, children: children}))
+				}));
+	});
+
 var _rundis$elm_bootstrap$Bootstrap_Navbar$toRGBString = function (color) {
 	var _p0 = _elm_lang$core$Color$toRgb(color);
 	var red = _p0.red;
@@ -18335,6 +18849,24 @@ var _user$project$Data_Session$decoder = A3(
 		_elm_lang$core$Maybe$Just,
 		A2(_elm_lang$core$Json_Decode$field, 'auth_token', _user$project$Data_Token$decoder)));
 
+var _user$project$Data_Tutorial$Tutorial = F2(
+	function (a, b) {
+		return {header: a, body: b};
+	});
+var _user$project$Data_Tutorial$decoder = A3(
+	_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
+	'body',
+	A2(
+		_elm_lang$core$Json_Decode$map,
+		_evancz$elm_markdown$Markdown$toHtml(
+			{ctor: '[]'}),
+		_elm_lang$core$Json_Decode$string),
+	A3(
+		_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
+		'header',
+		_elm_lang$core$Json_Decode$string,
+		_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$decode(_user$project$Data_Tutorial$Tutorial)));
+
 var _user$project$Route$routeToString = function (page) {
 	var _p0 = page;
 	switch (_p0.ctor) {
@@ -18567,8 +19099,8 @@ var _user$project$View_Page$viewHeader = F5(
 					_rundis$elm_bootstrap$Bootstrap_Navbar$withAnimation(
 						_rundis$elm_bootstrap$Bootstrap_Navbar$config(toMsg)))));
 	});
-var _user$project$View_Page$frame = F6(
-	function (toMsg, navState, isLoading, session, page, content) {
+var _user$project$View_Page$frame = F7(
+	function (toMsg, navState, isLoading, session, tutorialModal, page, content) {
 		return A2(
 			_elm_lang$html$Html$div,
 			{ctor: '[]'},
@@ -18580,8 +19112,12 @@ var _user$project$View_Page$frame = F6(
 					_0: content,
 					_1: {
 						ctor: '::',
-						_0: _user$project$View_Page$viewFooter,
-						_1: {ctor: '[]'}
+						_0: tutorialModal,
+						_1: {
+							ctor: '::',
+							_0: _user$project$View_Page$viewFooter,
+							_1: {ctor: '[]'}
+						}
 					}
 				}
 			});
@@ -22542,6 +23078,142 @@ var _user$project$Page_ExpenseDetail$view = function (model) {
 		});
 };
 
+var _user$project$Request_Tutorial$tutorial = function (route) {
+	return _lukewestby$elm_http_builder$HttpBuilder$toRequest(
+		A2(
+			_lukewestby$elm_http_builder$HttpBuilder$withExpect,
+			_elm_lang$http$Http$expectJson(
+				A2(
+					_elm_lang$core$Json_Decode$field,
+					'tutorial',
+					_elm_lang$core$Json_Decode$nullable(_user$project$Data_Tutorial$decoder))),
+			A2(
+				_lukewestby$elm_http_builder$HttpBuilder$withQueryParams,
+				{
+					ctor: '::',
+					_0: {
+						ctor: '_Tuple2',
+						_0: 'route',
+						_1: _user$project$Route$routeToString(route)
+					},
+					_1: {ctor: '[]'}
+				},
+				_lukewestby$elm_http_builder$HttpBuilder$get(
+					_user$project$Request_Helpers$apiUrl('/tutorial.json')))));
+};
+
+var _user$project$Page_Tutorial$update = F2(
+	function (msg, model) {
+		var _p0 = msg;
+		return _elm_lang$core$Native_Utils.update(
+			model,
+			{modalState: _p0._0});
+	});
+var _user$project$Page_Tutorial$init = function (maybeRoute) {
+	var initModel = function (tutorial) {
+		return {
+			tutorial: tutorial,
+			modalState: function () {
+				var _p1 = tutorial;
+				if (_p1.ctor === 'Just') {
+					return _rundis$elm_bootstrap$Bootstrap_Modal$visibleState;
+				} else {
+					return _rundis$elm_bootstrap$Bootstrap_Modal$hiddenState;
+				}
+			}()
+		};
+	};
+	var handleLoadError = function (err) {
+		var l = A2(_elm_lang$core$Debug$log, 'Tutorial Load Err', err);
+		return A2(_user$project$Page_Errored$pageLoadError, _user$project$View_Page$Other, 'Failed to load expenses');
+	};
+	var loadTutorial = function () {
+		var _p2 = maybeRoute;
+		if (_p2.ctor === 'Just') {
+			return _elm_lang$http$Http$toTask(
+				_user$project$Request_Tutorial$tutorial(_p2._0));
+		} else {
+			return _elm_lang$core$Task$succeed(_elm_lang$core$Maybe$Nothing);
+		}
+	}();
+	return A2(
+		_elm_lang$core$Task$mapError,
+		handleLoadError,
+		A2(_elm_lang$core$Task$map, initModel, loadTutorial));
+};
+var _user$project$Page_Tutorial$initialState = {modalState: _rundis$elm_bootstrap$Bootstrap_Modal$hiddenState, tutorial: _elm_lang$core$Maybe$Nothing};
+var _user$project$Page_Tutorial$Model = F2(
+	function (a, b) {
+		return {modalState: a, tutorial: b};
+	});
+var _user$project$Page_Tutorial$ModalMsg = function (a) {
+	return {ctor: 'ModalMsg', _0: a};
+};
+var _user$project$Page_Tutorial$view = function (model) {
+	return A2(
+		_rundis$elm_bootstrap$Bootstrap_Modal$view,
+		model.modalState,
+		A3(
+			_rundis$elm_bootstrap$Bootstrap_Modal$footer,
+			{ctor: '[]'},
+			{
+				ctor: '::',
+				_0: A2(
+					_rundis$elm_bootstrap$Bootstrap_Button$button,
+					{
+						ctor: '::',
+						_0: _rundis$elm_bootstrap$Bootstrap_Button$outlinePrimary,
+						_1: {
+							ctor: '::',
+							_0: _rundis$elm_bootstrap$Bootstrap_Button$onClick(
+								_user$project$Page_Tutorial$ModalMsg(_rundis$elm_bootstrap$Bootstrap_Modal$hiddenState)),
+							_1: {ctor: '[]'}
+						}
+					},
+					{
+						ctor: '::',
+						_0: _elm_lang$html$Html$text('Done'),
+						_1: {ctor: '[]'}
+					}),
+				_1: {ctor: '[]'}
+			},
+			A3(
+				_rundis$elm_bootstrap$Bootstrap_Modal$body,
+				{ctor: '[]'},
+				{
+					ctor: '::',
+					_0: A2(
+						_elm_lang$core$Maybe$withDefault,
+						_elm_lang$html$Html$text('No tutorial available'),
+						A2(
+							_elm_lang$core$Maybe$map,
+							function (_) {
+								return _.body;
+							},
+							model.tutorial)),
+					_1: {ctor: '[]'}
+				},
+				A3(
+					_rundis$elm_bootstrap$Bootstrap_Modal$h3,
+					{ctor: '[]'},
+					{
+						ctor: '::',
+						_0: _elm_lang$html$Html$text(
+							A2(
+								_elm_lang$core$Maybe$withDefault,
+								'Error',
+								A2(
+									_elm_lang$core$Maybe$map,
+									function (_) {
+										return _.header;
+									},
+									model.tutorial))),
+						_1: {ctor: '[]'}
+					},
+					_rundis$elm_bootstrap$Bootstrap_Modal$large(
+						_rundis$elm_bootstrap$Bootstrap_Modal$config(_user$project$Page_Tutorial$ModalMsg))))));
+};
+
 var _user$project$Request_Session$getSession = A2(
 	_elm_lang$http$Http$get,
 	_user$project$Request_Helpers$apiUrl('/session.json'),
@@ -22555,9 +23227,9 @@ var _user$project$Main$getPage = function (pageState) {
 		return _p0._0;
 	}
 };
-var _user$project$Main$Model = F3(
-	function (a, b, c) {
-		return {session: a, pageState: b, navState: c};
+var _user$project$Main$Model = F4(
+	function (a, b, c, d) {
+		return {session: a, pageState: b, navState: c, tutorialState: d};
 	});
 var _user$project$Main$ExpenseDetail = function (a) {
 	return {ctor: 'ExpenseDetail', _0: a};
@@ -22607,6 +23279,9 @@ var _user$project$Main$WaitingForSession = function (a) {
 var _user$project$Main$HaveSession = function (a) {
 	return {ctor: 'HaveSession', _0: a};
 };
+var _user$project$Main$TutorialMsg = function (a) {
+	return {ctor: 'TutorialMsg', _0: a};
+};
 var _user$project$Main$ExpenseDetailMsg = function (a) {
 	return {ctor: 'ExpenseDetailMsg', _0: a};
 };
@@ -22627,8 +23302,12 @@ var _user$project$Main$NavMsg = function (a) {
 };
 var _user$project$Main$viewPage = F3(
 	function (model, isLoading, page) {
+		var modal = A2(
+			_elm_lang$html$Html$map,
+			_user$project$Main$TutorialMsg,
+			_user$project$Page_Tutorial$view(model.tutorialState));
 		var session = model.session;
-		var frame = A4(_user$project$View_Page$frame, _user$project$Main$NavMsg, model.navState, isLoading, session);
+		var frame = A5(_user$project$View_Page$frame, _user$project$Main$NavMsg, model.navState, isLoading, session, modal);
 		var _p1 = page;
 		switch (_p1.ctor) {
 			case 'Errored':
@@ -22740,6 +23419,9 @@ var _user$project$Main$subscriptions = function (startModel) {
 			});
 	}
 };
+var _user$project$Main$TutorialLoaded = function (a) {
+	return {ctor: 'TutorialLoaded', _0: a};
+};
 var _user$project$Main$ExpenseDetailLoaded = function (a) {
 	return {ctor: 'ExpenseDetailLoaded', _0: a};
 };
@@ -22751,6 +23433,10 @@ var _user$project$Main$BudgetLoaded = function (a) {
 };
 var _user$project$Main$setRoute = F2(
 	function (maybeRoute, model) {
+		var loadTutorial = A2(
+			_elm_lang$core$Task$attempt,
+			_user$project$Main$TutorialLoaded,
+			_user$project$Page_Tutorial$init(maybeRoute));
 		var loggedIn = !_elm_lang$core$Native_Utils.eq(model.session.user, _elm_lang$core$Maybe$Nothing);
 		var errored = _user$project$Main$pageErrored(model);
 		var transition = F2(
@@ -22765,96 +23451,113 @@ var _user$project$Main$setRoute = F2(
 						}),
 					A2(_elm_lang$core$Task$attempt, toMsg, task));
 			});
-		var _p7 = maybeRoute;
-		if (_p7.ctor === 'Nothing') {
-			return A2(
-				_user$project$Util_ops['=>'],
-				_elm_lang$core$Native_Utils.update(
-					model,
-					{
-						pageState: _user$project$Main$Loaded(_user$project$Main$NotFound)
-					}),
-				_elm_lang$core$Platform_Cmd$none);
-		} else {
-			switch (_p7._0.ctor) {
-				case 'Home':
-					return A2(
-						_user$project$Util_ops['=>'],
-						_elm_lang$core$Native_Utils.update(
-							model,
-							{
-								pageState: _user$project$Main$Loaded(
-									_user$project$Main$Home(_user$project$Page_Home$initialModel))
-							}),
-						_elm_lang$core$Platform_Cmd$none);
-				case 'Budget':
-					return loggedIn ? A2(transition, _user$project$Main$BudgetLoaded, _user$project$Page_Budget$init) : {
-						ctor: '_Tuple2',
-						_0: model,
-						_1: _user$project$Route$modifyUrl(_user$project$Route$Login)
-					};
-				case 'Expense':
-					return loggedIn ? A2(transition, _user$project$Main$ExpenseLoaded, _user$project$Page_Expense$init) : {
-						ctor: '_Tuple2',
-						_0: model,
-						_1: _user$project$Route$modifyUrl(_user$project$Route$Login)
-					};
-				case 'Login':
-					return loggedIn ? {
-						ctor: '_Tuple2',
-						_0: model,
-						_1: _user$project$Route$modifyUrl(_user$project$Route$Home)
-					} : A2(
-						_user$project$Util_ops['=>'],
-						_elm_lang$core$Native_Utils.update(
-							model,
-							{
-								pageState: _user$project$Main$Loaded(
-									_user$project$Main$Login(_user$project$Page_Login$initialModel))
-							}),
-						_elm_lang$core$Platform_Cmd$none);
-				case 'Profile':
-					return loggedIn ? A2(
-						_user$project$Util_ops['=>'],
-						_elm_lang$core$Native_Utils.update(
-							model,
-							{
-								pageState: _user$project$Main$Loaded(
-									_user$project$Main$Profile(_user$project$Page_Profile$init))
-							}),
-						_elm_lang$core$Platform_Cmd$none) : {
-						ctor: '_Tuple2',
-						_0: model,
-						_1: _user$project$Route$modifyUrl(_user$project$Route$Login)
-					};
-				default:
-					return loggedIn ? A2(
-						transition,
-						_user$project$Main$ExpenseDetailLoaded,
-						_user$project$Page_ExpenseDetail$init(_p7._0._0)) : {
-						ctor: '_Tuple2',
-						_0: model,
-						_1: _user$project$Route$modifyUrl(_user$project$Route$Login)
-					};
+		var _p7 = function () {
+			var _p8 = maybeRoute;
+			if (_p8.ctor === 'Nothing') {
+				return A2(
+					_user$project$Util_ops['=>'],
+					_elm_lang$core$Native_Utils.update(
+						model,
+						{
+							pageState: _user$project$Main$Loaded(_user$project$Main$NotFound)
+						}),
+					_elm_lang$core$Platform_Cmd$none);
+			} else {
+				switch (_p8._0.ctor) {
+					case 'Home':
+						return A2(
+							_user$project$Util_ops['=>'],
+							_elm_lang$core$Native_Utils.update(
+								model,
+								{
+									pageState: _user$project$Main$Loaded(
+										_user$project$Main$Home(_user$project$Page_Home$initialModel))
+								}),
+							_elm_lang$core$Platform_Cmd$none);
+					case 'Budget':
+						return loggedIn ? A2(transition, _user$project$Main$BudgetLoaded, _user$project$Page_Budget$init) : {
+							ctor: '_Tuple2',
+							_0: model,
+							_1: _user$project$Route$modifyUrl(_user$project$Route$Login)
+						};
+					case 'Expense':
+						return loggedIn ? A2(transition, _user$project$Main$ExpenseLoaded, _user$project$Page_Expense$init) : {
+							ctor: '_Tuple2',
+							_0: model,
+							_1: _user$project$Route$modifyUrl(_user$project$Route$Login)
+						};
+					case 'Login':
+						return loggedIn ? {
+							ctor: '_Tuple2',
+							_0: model,
+							_1: _user$project$Route$modifyUrl(_user$project$Route$Home)
+						} : A2(
+							_user$project$Util_ops['=>'],
+							_elm_lang$core$Native_Utils.update(
+								model,
+								{
+									pageState: _user$project$Main$Loaded(
+										_user$project$Main$Login(_user$project$Page_Login$initialModel))
+								}),
+							_elm_lang$core$Platform_Cmd$none);
+					case 'Profile':
+						return loggedIn ? A2(
+							_user$project$Util_ops['=>'],
+							_elm_lang$core$Native_Utils.update(
+								model,
+								{
+									pageState: _user$project$Main$Loaded(
+										_user$project$Main$Profile(_user$project$Page_Profile$init))
+								}),
+							_elm_lang$core$Platform_Cmd$none) : {
+							ctor: '_Tuple2',
+							_0: model,
+							_1: _user$project$Route$modifyUrl(_user$project$Route$Login)
+						};
+					default:
+						return loggedIn ? A2(
+							transition,
+							_user$project$Main$ExpenseDetailLoaded,
+							_user$project$Page_ExpenseDetail$init(_p8._0._0)) : {
+							ctor: '_Tuple2',
+							_0: model,
+							_1: _user$project$Route$modifyUrl(_user$project$Route$Login)
+						};
+				}
 			}
-		}
+		}();
+		var pageMdl = _p7._0;
+		var loadPage = _p7._1;
+		return A2(
+			_elm_lang$core$Platform_Cmd_ops['!'],
+			pageMdl,
+			{
+				ctor: '::',
+				_0: loadPage,
+				_1: {
+					ctor: '::',
+					_0: loadTutorial,
+					_1: {ctor: '[]'}
+				}
+			});
 	});
 var _user$project$Main$init = F2(
 	function (location, session) {
-		var _p8 = _rundis$elm_bootstrap$Bootstrap_Navbar$initialState(_user$project$Main$NavMsg);
-		var navState = _p8._0;
-		var navCmd = _p8._1;
-		var _p9 = A2(
+		var _p9 = _rundis$elm_bootstrap$Bootstrap_Navbar$initialState(_user$project$Main$NavMsg);
+		var navState = _p9._0;
+		var navCmd = _p9._1;
+		var _p10 = A2(
 			_user$project$Main$setRoute,
 			_user$project$Route$fromLocation(
 				A2(_elm_lang$core$Debug$log, 'Starting Loc', location)),
 			{
 				pageState: _user$project$Main$Loaded(_user$project$Main$Blank),
 				session: session,
-				navState: navState
+				navState: navState,
+				tutorialState: _user$project$Page_Tutorial$initialState
 			});
-		var model = _p9._0;
-		var cmd = _p9._1;
+		var model = _p10._0;
+		var cmd = _p10._1;
 		return A2(
 			_elm_lang$core$Platform_Cmd_ops['!'],
 			model,
@@ -22872,10 +23575,10 @@ var _user$project$Main$updatePage = F3(
 	function (page, msg, model) {
 		var toPageWithOut = F5(
 			function (toModel, toMsg, subUpdate, subMsg, subModel) {
-				var _p10 = A2(subUpdate, subMsg, subModel);
-				var newModel = _p10._0;
-				var newCmd = _p10._1;
-				var outMsg = _p10._2;
+				var _p11 = A2(subUpdate, subMsg, subModel);
+				var newModel = _p11._0;
+				var newCmd = _p11._1;
+				var outMsg = _p11._2;
 				return {
 					ctor: '_Tuple3',
 					_0: _elm_lang$core$Native_Utils.update(
@@ -22890,9 +23593,9 @@ var _user$project$Main$updatePage = F3(
 			});
 		var toPage = F5(
 			function (toModel, toMsg, subUpdate, subMsg, subModel) {
-				var _p11 = A2(subUpdate, subMsg, subModel);
-				var newModel = _p11._0;
-				var newCmd = _p11._1;
+				var _p12 = A2(subUpdate, subMsg, subModel);
+				var newModel = _p12._0;
+				var newCmd = _p12._1;
 				return {
 					ctor: '_Tuple2',
 					_0: _elm_lang$core$Native_Utils.update(
@@ -22923,32 +23626,32 @@ var _user$project$Main$updatePage = F3(
 					});
 			});
 		var session = model.session;
-		var _p12 = {ctor: '_Tuple2', _0: msg, _1: page};
-		_v7_14:
+		var _p13 = {ctor: '_Tuple2', _0: msg, _1: page};
+		_v7_17:
 		do {
-			switch (_p12._0.ctor) {
+			switch (_p13._0.ctor) {
 				case 'SetRoute':
-					return A2(_user$project$Main$setRoute, _p12._0._0, model);
+					return A2(_user$project$Main$setRoute, _p13._0._0, model);
 				case 'SetSession':
-					if (_p12._0._0.ctor === 'Ok') {
-						return A3(setSession, model, _elm_lang$core$Platform_Cmd$none, _p12._0._0._0);
+					if (_p13._0._0.ctor === 'Ok') {
+						return A3(setSession, model, _elm_lang$core$Platform_Cmd$none, _p13._0._0._0);
 					} else {
 						return _elm_lang$core$Tuple$first(
 							{
 								ctor: '_Tuple2',
 								_0: A3(_user$project$Main$pageErrored, model, _user$project$View_Page$Home, 'Failed to get session state from server'),
-								_1: A2(_elm_lang$core$Debug$log, 'Load Error: ', _p12._0._0._0)
+								_1: A2(_elm_lang$core$Debug$log, 'Load Error: ', _p13._0._0._0)
 							});
 					}
 				case 'BudgetLoaded':
-					if (_p12._0._0.ctor === 'Ok') {
+					if (_p13._0._0.ctor === 'Ok') {
 						return A2(
 							_user$project$Util_ops['=>'],
 							_elm_lang$core$Native_Utils.update(
 								model,
 								{
 									pageState: _user$project$Main$Loaded(
-										_user$project$Main$Budget(_p12._0._0._0))
+										_user$project$Main$Budget(_p13._0._0._0))
 								}),
 							_elm_lang$core$Platform_Cmd$none);
 					} else {
@@ -22958,19 +23661,19 @@ var _user$project$Main$updatePage = F3(
 								model,
 								{
 									pageState: _user$project$Main$Loaded(
-										_user$project$Main$Errored(_p12._0._0._0))
+										_user$project$Main$Errored(_p13._0._0._0))
 								}),
 							_elm_lang$core$Platform_Cmd$none);
 					}
 				case 'ExpenseLoaded':
-					if (_p12._0._0.ctor === 'Ok') {
+					if (_p13._0._0.ctor === 'Ok') {
 						return A2(
 							_user$project$Util_ops['=>'],
 							_elm_lang$core$Native_Utils.update(
 								model,
 								{
 									pageState: _user$project$Main$Loaded(
-										_user$project$Main$Expense(_p12._0._0._0))
+										_user$project$Main$Expense(_p13._0._0._0))
 								}),
 							_elm_lang$core$Platform_Cmd$none);
 					} else {
@@ -22980,19 +23683,19 @@ var _user$project$Main$updatePage = F3(
 								model,
 								{
 									pageState: _user$project$Main$Loaded(
-										_user$project$Main$Errored(_p12._0._0._0))
+										_user$project$Main$Errored(_p13._0._0._0))
 								}),
 							_elm_lang$core$Platform_Cmd$none);
 					}
 				case 'ExpenseDetailLoaded':
-					if (_p12._0._0.ctor === 'Ok') {
+					if (_p13._0._0.ctor === 'Ok') {
 						return A2(
 							_user$project$Util_ops['=>'],
 							_elm_lang$core$Native_Utils.update(
 								model,
 								{
 									pageState: _user$project$Main$Loaded(
-										_user$project$Main$ExpenseDetail(_p12._0._0._0))
+										_user$project$Main$ExpenseDetail(_p13._0._0._0))
 								}),
 							_elm_lang$core$Platform_Cmd$none);
 					} else {
@@ -23002,79 +23705,100 @@ var _user$project$Main$updatePage = F3(
 								model,
 								{
 									pageState: _user$project$Main$Loaded(
-										_user$project$Main$Errored(_p12._0._0._0))
+										_user$project$Main$Errored(_p13._0._0._0))
 								}),
 							_elm_lang$core$Platform_Cmd$none);
+					}
+				case 'TutorialLoaded':
+					if (_p13._0._0.ctor === 'Ok') {
+						return A2(
+							_user$project$Util_ops['=>'],
+							_elm_lang$core$Native_Utils.update(
+								model,
+								{tutorialState: _p13._0._0._0}),
+							_elm_lang$core$Platform_Cmd$none);
+					} else {
+						return A2(_user$project$Util_ops['=>'], model, _elm_lang$core$Platform_Cmd$none);
 					}
 				case 'NavMsg':
 					return A2(
 						_user$project$Util_ops['=>'],
 						_elm_lang$core$Native_Utils.update(
 							model,
-							{navState: _p12._0._0}),
+							{navState: _p13._0._0}),
 						_elm_lang$core$Platform_Cmd$none);
 				case 'BudgetMsg':
-					if (_p12._1.ctor === 'Budget') {
+					if (_p13._1.ctor === 'Budget') {
 						return A5(
 							toPage,
 							_user$project$Main$Budget,
 							_user$project$Main$BudgetMsg,
 							_user$project$Page_Budget$update(session),
-							_p12._0._0,
-							_p12._1._0);
+							_p13._0._0,
+							_p13._1._0);
 					} else {
-						break _v7_14;
+						break _v7_17;
 					}
 				case 'LoginMsg':
-					if (_p12._1.ctor === 'Login') {
-						var _p13 = A5(toPageWithOut, _user$project$Main$Login, _user$project$Main$LoginMsg, _user$project$Page_Login$update, _p12._0._0, _p12._1._0);
-						var newModel = _p13._0;
-						var cmd = _p13._1;
-						var outMsg = _p13._2;
-						var _p14 = outMsg;
-						if (_p14.ctor === 'Just') {
-							return A3(setSession, newModel, cmd, _p14._0._0);
+					if (_p13._1.ctor === 'Login') {
+						var _p14 = A5(toPageWithOut, _user$project$Main$Login, _user$project$Main$LoginMsg, _user$project$Page_Login$update, _p13._0._0, _p13._1._0);
+						var newModel = _p14._0;
+						var cmd = _p14._1;
+						var outMsg = _p14._2;
+						var _p15 = outMsg;
+						if (_p15.ctor === 'Just') {
+							return A3(setSession, newModel, cmd, _p15._0._0);
 						} else {
 							return {ctor: '_Tuple2', _0: newModel, _1: cmd};
 						}
 					} else {
-						break _v7_14;
+						break _v7_17;
 					}
 				case 'ProfileMsg':
-					if (_p12._1.ctor === 'Profile') {
-						var _p15 = A5(
+					if (_p13._1.ctor === 'Profile') {
+						var _p16 = A5(
 							toPageWithOut,
 							_user$project$Main$Profile,
 							_user$project$Main$ProfileMsg,
 							_user$project$Page_Profile$update(session),
-							_p12._0._0,
-							_p12._1._0);
-						var newModel = _p15._0;
-						var cmd = _p15._1;
-						var outMsg = _p15._2;
-						var _p16 = outMsg;
-						if (_p16.ctor === 'Just') {
-							return A3(setSession, newModel, cmd, _p16._0._0);
+							_p13._0._0,
+							_p13._1._0);
+						var newModel = _p16._0;
+						var cmd = _p16._1;
+						var outMsg = _p16._2;
+						var _p17 = outMsg;
+						if (_p17.ctor === 'Just') {
+							return A3(setSession, newModel, cmd, _p17._0._0);
 						} else {
 							return {ctor: '_Tuple2', _0: newModel, _1: cmd};
 						}
 					} else {
-						break _v7_14;
+						break _v7_17;
 					}
 				case 'ExpenseDetailMsg':
-					if (_p12._1.ctor === 'ExpenseDetail') {
+					if (_p13._1.ctor === 'ExpenseDetail') {
 						return A5(
 							toPage,
 							_user$project$Main$ExpenseDetail,
 							_user$project$Main$ExpenseDetailMsg,
 							_user$project$Page_ExpenseDetail$update(session),
-							_p12._0._0,
-							_p12._1._0);
+							_p13._0._0,
+							_p13._1._0);
 					} else {
-						break _v7_14;
+						break _v7_17;
 					}
+				case 'TutorialMsg':
+					return {
+						ctor: '_Tuple2',
+						_0: _elm_lang$core$Native_Utils.update(
+							model,
+							{
+								tutorialState: A2(_user$project$Page_Tutorial$update, _p13._0._0, model.tutorialState)
+							}),
+						_1: _elm_lang$core$Platform_Cmd$none
+					};
 				default:
-					break _v7_14;
+					break _v7_17;
 			}
 		} while(false);
 		return A2(_user$project$Util_ops['=>'], model, _elm_lang$core$Platform_Cmd$none);
@@ -23089,13 +23813,13 @@ var _user$project$Main$update = F2(
 	});
 var _user$project$Main$startupUpdate = F2(
 	function (msg, startModel) {
-		var _p17 = startModel;
-		if (_p17.ctor === 'WaitingForSession') {
-			var _p18 = msg;
-			if ((_p18.ctor === 'SetSession') && (_p18._0.ctor === 'Ok')) {
-				var _p19 = A2(_user$project$Main$init, _p17._0, _p18._0._0);
-				var model = _p19._0;
-				var cmd = _p19._1;
+		var _p18 = startModel;
+		if (_p18.ctor === 'WaitingForSession') {
+			var _p19 = msg;
+			if ((_p19.ctor === 'SetSession') && (_p19._0.ctor === 'Ok')) {
+				var _p20 = A2(_user$project$Main$init, _p18._0, _p19._0._0);
+				var model = _p20._0;
+				var cmd = _p20._1;
 				return {
 					ctor: '_Tuple2',
 					_0: _user$project$Main$HaveSession(model),
@@ -23106,16 +23830,16 @@ var _user$project$Main$startupUpdate = F2(
 					_elm_lang$core$Native_Utils.crash(
 						'Main',
 						{
-							start: {line: 230, column: 24},
-							end: {line: 230, column: 35}
+							start: {line: 241, column: 24},
+							end: {line: 241, column: 35}
 						}),
 					'Got a non-session message during startup',
-					_p18);
+					_p19);
 			}
 		} else {
-			var _p20 = A2(_user$project$Main$update, msg, _p17._0);
-			var newModel = _p20._0;
-			var cmd = _p20._1;
+			var _p21 = A2(_user$project$Main$update, msg, _p18._0);
+			var newModel = _p21._0;
+			var cmd = _p21._1;
 			return {
 				ctor: '_Tuple2',
 				_0: _user$project$Main$HaveSession(newModel),
@@ -23138,9 +23862,9 @@ var _user$project$Main$startupInit = function (location) {
 };
 var _user$project$Main$main = A2(
 	_elm_lang$navigation$Navigation$program,
-	function (_p21) {
+	function (_p22) {
 		return _user$project$Main$SetRoute(
-			_user$project$Route$fromLocation(_p21));
+			_user$project$Route$fromLocation(_p22));
 	},
 	{init: _user$project$Main$startupInit, view: _user$project$Main$startupView, update: _user$project$Main$startupUpdate, subscriptions: _user$project$Main$subscriptions})();
 

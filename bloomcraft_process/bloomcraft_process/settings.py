@@ -32,6 +32,7 @@ if DEBUG:
     SECRET_KEY = 'tk2=w*2kb0u4*9-)f&wnjv=gc(7@m78#0)a6l6o_(871!=m@b!'
     ALLOWED_HOSTS = ["*"]
 else:
+    print("Running as PROD, so pulling SECRET_KEY from ENV")
     SECRET_KEY = os.environ['SECRET_KEY']
     ALLOWED_HOSTS = ["bloomcraft.space"]
 

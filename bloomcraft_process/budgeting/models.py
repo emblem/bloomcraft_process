@@ -116,6 +116,12 @@ class AllocationVote(models.Model):
                  "global_abs_max": self.global_abs_max,
                  "personal_pct_max": self.personal_pct_max,
                  "global_pct_max": self.global_pct_max }
+
+class Tutorial(models.Model):
+    seen_by = models.ManyToManyField(User, blank=True)
+    header = models.CharField(max_length = 200)
+    body = models.TextField()
+    route = models.CharField(max_length = 200)
                  
                  
                  

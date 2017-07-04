@@ -18,11 +18,12 @@ type ActivePage
     | Profile
     | Other
 
-frame : (Navbar.State -> a) -> Navbar.State -> Bool -> Session -> ActivePage -> Html a -> Html a
-frame toMsg navState isLoading session page content =
+frame : (Navbar.State -> a) -> Navbar.State -> Bool -> Session -> Html a -> ActivePage -> Html a -> Html a
+frame toMsg navState isLoading session tutorialModal page content =
     div []
         [ viewHeader toMsg navState page session isLoading
         , content
+        , tutorialModal
         , viewFooter
         ]
 

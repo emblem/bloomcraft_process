@@ -122,8 +122,9 @@ class Tutorial(models.Model):
     header = models.CharField(max_length = 200)
     body = models.TextField()
     route = models.CharField(max_length = 200)
-                 
-                 
+
+    def __str__(self):
+        return str('"' + self.header + '" on "' + self.route + '"')
                  
                  
                  

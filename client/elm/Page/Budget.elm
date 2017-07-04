@@ -297,7 +297,8 @@ topLineSvg budget =
                                    [annotate plotParam [Type (TextOnly 0)]]
                              )
                              (if income >= coreExpenses then
-                                 [ drawBox plotParam (0, income, lightBlueColor )
+                                 [ drawBox plotParam (0, coreExpenses, redColor )
+                                 , drawBox plotParam (0, income, lightBlueColor )
                                  , drawBox plotParam (0, currentIncome, blueColor)
                                  , annotate plotParam [Text "Current Income", Type (Bracket 0 currentIncome)]
                                  , annotate plotParam [Text "Core Expenses", Type (Bracket 0 coreExpenses), Location Above]

@@ -14,7 +14,7 @@ module.exports = {
             // (required) Set to the elm file(s) containing your "main" function `elm make` 
             //            handles all elm dependencies relative to `elmFolder`
             mainModules: ["elm/Main.elm"],
-	    outputFolder: 'public',
+	    outputFolder: '../static',
 	    outputFile: 'elm.js'	    
 	}
     }

@@ -17,7 +17,7 @@ view session model =
     div [ class "jumbotron m-4" ]
         [ h1 [ class "display-3" ] [ text "Welcome!" ]
         , p [ class "lead" ]
-            [ text "This site helps to support Bloomcraft's governance process.  Today, you can use it to help make decisions about " 
+            [ text "This foo site helps to support Bloomcraft's governance process.  Today, you can use it to help make decisions about " 
             , a [ Route.href Route.Budget ] [ text "rents" ]
             , text " and "
             , a [ Route.href Route.Expense ] [ text "budgeting" ]

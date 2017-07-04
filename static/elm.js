@@ -18339,19 +18339,19 @@ var _user$project$Route$routeToString = function (page) {
 	var _p0 = page;
 	switch (_p0.ctor) {
 		case 'Home':
-			return 'app#home';
+			return '/process#home';
 		case 'Login':
-			return 'app#login';
+			return '/process#login';
 		case 'Budget':
-			return 'app#budget';
+			return '/process#budget';
 		case 'Expense':
-			return 'app#expense';
+			return '/process#expense';
 		case 'Profile':
-			return 'app#profile';
+			return '/process#profile';
 		default:
 			return A2(
 				_elm_lang$core$Basics_ops['++'],
-				'app#expense/',
+				'/process#expense/',
 				_user$project$Data_Allocation$slugToString(_p0._0));
 	}
 };
@@ -20668,7 +20668,7 @@ var _user$project$Page_Home$view = F2(
 						},
 						{
 							ctor: '::',
-							_0: _elm_lang$html$Html$text('This site helps to support Bloomcraft\'s governance process.  Today, you can use it to help make decisions about '),
+							_0: _elm_lang$html$Html$text('This foo site helps to support Bloomcraft\'s governance process.  Today, you can use it to help make decisions about '),
 							_1: {
 								ctor: '::',
 								_0: A2(

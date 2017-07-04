@@ -1,6 +1,7 @@
 module Page.Tutorial exposing (Msg, Model, init, initialState, view, update)
 
 import Html exposing (..)
+import Html.Attributes exposing (style)
 import Http
 import Task exposing (Task)
 
@@ -57,7 +58,7 @@ view model =
     Modal.config ModalMsg
         |> Modal.large
         |> Modal.h3 [] [ model.tutorial |> Maybe.map .header |> Maybe.withDefault "Error" |> text ]
-        |> Modal.body [] [ model.tutorial |> Maybe.map .body |> Maybe.withDefault (text "No tutorial available") ]
+        |> Modal.body [ style [("height", "60vh"), ("overflow-y","auto")]] [ model.tutorial |> Maybe.map .body |> Maybe.withDefault (text "No tutorial available") ]
         |> Modal.footer []
            [ Button.button
                  [ Button.outlinePrimary

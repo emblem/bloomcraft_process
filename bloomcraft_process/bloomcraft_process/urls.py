@@ -29,4 +29,4 @@ if settings.DEBUG:
         r'^process/elm.js$', static_serve, kwargs={'document_root': settings.STATIC_ROOT, 'path': 'elm.js'})]
 
     urlpatterns += [url(
-        r'^process/$', static_serve, kwargs={'document_root': settings.STATIC_ROOT, 'path': 'index.html'})]
+        r'^process$', static_serve, kwargs={'document_root': settings.STATIC_ROOT, 'path': 'index.html'})]

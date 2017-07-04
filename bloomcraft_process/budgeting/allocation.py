@@ -31,7 +31,7 @@ class RankedAllocator:
         if vote.global_pct_max:
             allowed_global_allocation = min(allowed_global_allocation, self.total_amount * vote.global_pct_max - working_allocation[expense])
 
-        print ( "V: " + str(vote) + " G:" + str(allowed_global_allocation) + " P: " + str(allowed_personal_allocation) )
+#        print ( "V: " + str(vote) + " G:" + str(allowed_global_allocation) + " P: " + str(allowed_personal_allocation) )
             
         return (allowed_global_allocation, allowed_personal_allocation)
 
@@ -66,7 +66,7 @@ class RankedAllocator:
             top_expenses = self.get_top_open_expense(user_votes[user], expenses, working_allocation, working_user_allocation)
             
             if not top_expenses: #This user is done
-                print( user.username + " is done allocating, ending round.")
+#                print( user.username + " is done allocating, ending round.")
                 del user_votes[user]
                 return None
 
@@ -113,7 +113,7 @@ class RankedAllocator:
                         violated_at_percent = personal_pct
                         activeConstraint = (vote,"personal", personal_pct)
 
-        print( "Active Constraint: " + str(activeConstraint[0]) + " is " + activeConstraint[1] + " / " + str(activeConstraint[2]))
+#        print( "Active Constraint: " + str(activeConstraint[0]) + " is " + activeConstraint[1] + " / " + str(activeConstraint[2]))
         return violated_at_percent
 
     def allocate_funds(self, allocation, requesting_user):
@@ -160,7 +160,7 @@ class RankedAllocator:
             #Find at what percent of full funding we violate a constraint
             violated_at_percent = self.constrain_allocation(user_votes, expenses, working_allocation, working_user_allocation, round_allocation)
         
-            print ("Round funded at: " + str(violated_at_percent))
+#            print ("Round funded at: " + str(violated_at_percent))
             
             #Add this round's funds to the working allocation
             made_alloc = False
@@ -171,7 +171,7 @@ class RankedAllocator:
                     working_user_allocation[user][expense] += round_funds
 
                     if round_funds > 0:
-                        print( user.username + " allocated " + str(round_funds) + " to " + expense.name)
+#                        print( user.username + " allocated " + str(round_funds) + " to " + expense.name)
                         made_alloc = True
                     amount_remaining -= round_funds
 #            pprint.pprint(working_allocation)

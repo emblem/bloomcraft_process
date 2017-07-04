@@ -149,7 +149,7 @@ SESSION_REDIS_PREFIX = 'session'
 
 AUTH_USER_MODEL = 'budgeting.User'
 
-APPEND_SLASH = True
+APPEND_SLASH = False
 
 if not DEBUG:
     SECURE_HSTS_SECONDS = 3600

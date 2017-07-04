@@ -5966,6 +5966,145 @@ var _debois$elm_dom$DOM$Rectangle = F4(
 		return {top: a, left: b, width: c, height: d};
 	});
 
+var _elm_community$easing_functions$Ease$reverse = F2(
+	function (easing, time) {
+		return easing(1 - time);
+	});
+var _elm_community$easing_functions$Ease$flip = F2(
+	function (easing, time) {
+		return 1 - easing(1 - time);
+	});
+var _elm_community$easing_functions$Ease$retour = F2(
+	function (easing, time) {
+		return (_elm_lang$core$Native_Utils.cmp(time, 0.5) < 0) ? easing(time * 2) : A2(_elm_community$easing_functions$Ease$flip, easing, (time - 0.5) * 2);
+	});
+var _elm_community$easing_functions$Ease$inOut = F3(
+	function (e1, e2, time) {
+		return (_elm_lang$core$Native_Utils.cmp(time, 0.5) < 0) ? (e1(time * 2) / 2) : (0.5 + (e2((time - 0.5) * 2) / 2));
+	});
+var _elm_community$easing_functions$Ease$inElastic = function (time) {
+	if (_elm_lang$core$Native_Utils.eq(time, 0.0)) {
+		return 0.0;
+	} else {
+		var t = time - 1;
+		var p = 0.3;
+		var s = 7.5e-2;
+		return 0 - (Math.pow(2, 10 * t) * _elm_lang$core$Basics$sin(((t - s) * (2 * _elm_lang$core$Basics$pi)) / p));
+	}
+};
+var _elm_community$easing_functions$Ease$outElastic = _elm_community$easing_functions$Ease$flip(_elm_community$easing_functions$Ease$inElastic);
+var _elm_community$easing_functions$Ease$inOutElastic = A2(_elm_community$easing_functions$Ease$inOut, _elm_community$easing_functions$Ease$inElastic, _elm_community$easing_functions$Ease$outElastic);
+var _elm_community$easing_functions$Ease$outBounce = function (time) {
+	var t4 = time - (2.625 / 2.75);
+	var t3 = time - (2.25 / 2.75);
+	var t2 = time - (1.5 / 2.75);
+	var a = 7.5625;
+	return (_elm_lang$core$Native_Utils.cmp(time, 1 / 2.75) < 0) ? ((a * time) * time) : ((_elm_lang$core$Native_Utils.cmp(time, 2 / 2.75) < 0) ? (((a * t2) * t2) + 0.75) : ((_elm_lang$core$Native_Utils.cmp(time, 2.5 / 2.75) < 0) ? (((a * t3) * t3) + 0.9375) : (((a * t4) * t4) + 0.984375)));
+};
+var _elm_community$easing_functions$Ease$inBounce = _elm_community$easing_functions$Ease$flip(_elm_community$easing_functions$Ease$outBounce);
+var _elm_community$easing_functions$Ease$inOutBounce = A2(_elm_community$easing_functions$Ease$inOut, _elm_community$easing_functions$Ease$inBounce, _elm_community$easing_functions$Ease$outBounce);
+var _elm_community$easing_functions$Ease$inBack = function (time) {
+	return (time * time) * ((2.70158 * time) - 1.70158);
+};
+var _elm_community$easing_functions$Ease$outBack = _elm_community$easing_functions$Ease$flip(_elm_community$easing_functions$Ease$inBack);
+var _elm_community$easing_functions$Ease$inOutBack = A2(_elm_community$easing_functions$Ease$inOut, _elm_community$easing_functions$Ease$inBack, _elm_community$easing_functions$Ease$outBack);
+var _elm_community$easing_functions$Ease$outCirc = function (time) {
+	return _elm_lang$core$Basics$sqrt(
+		1 - Math.pow(time - 1, 2));
+};
+var _elm_community$easing_functions$Ease$inCirc = _elm_community$easing_functions$Ease$flip(_elm_community$easing_functions$Ease$outCirc);
+var _elm_community$easing_functions$Ease$inOutCirc = A2(_elm_community$easing_functions$Ease$inOut, _elm_community$easing_functions$Ease$inCirc, _elm_community$easing_functions$Ease$outCirc);
+var _elm_community$easing_functions$Ease$inExpo = function (time) {
+	return _elm_lang$core$Native_Utils.eq(time, 0.0) ? 0.0 : Math.pow(2, 10 * (time - 1));
+};
+var _elm_community$easing_functions$Ease$outExpo = _elm_community$easing_functions$Ease$flip(_elm_community$easing_functions$Ease$inExpo);
+var _elm_community$easing_functions$Ease$inOutExpo = A2(_elm_community$easing_functions$Ease$inOut, _elm_community$easing_functions$Ease$inExpo, _elm_community$easing_functions$Ease$outExpo);
+var _elm_community$easing_functions$Ease$outSine = function (time) {
+	return _elm_lang$core$Basics$sin(time * (_elm_lang$core$Basics$pi / 2));
+};
+var _elm_community$easing_functions$Ease$inSine = _elm_community$easing_functions$Ease$flip(_elm_community$easing_functions$Ease$outSine);
+var _elm_community$easing_functions$Ease$inOutSine = A2(_elm_community$easing_functions$Ease$inOut, _elm_community$easing_functions$Ease$inSine, _elm_community$easing_functions$Ease$outSine);
+var _elm_community$easing_functions$Ease$inQuint = function (time) {
+	return Math.pow(time, 5);
+};
+var _elm_community$easing_functions$Ease$outQuint = _elm_community$easing_functions$Ease$flip(_elm_community$easing_functions$Ease$inQuint);
+var _elm_community$easing_functions$Ease$inOutQuint = A2(_elm_community$easing_functions$Ease$inOut, _elm_community$easing_functions$Ease$inQuint, _elm_community$easing_functions$Ease$outQuint);
+var _elm_community$easing_functions$Ease$inQuart = function (time) {
+	return Math.pow(time, 4);
+};
+var _elm_community$easing_functions$Ease$outQuart = _elm_community$easing_functions$Ease$flip(_elm_community$easing_functions$Ease$inQuart);
+var _elm_community$easing_functions$Ease$inOutQuart = A2(_elm_community$easing_functions$Ease$inOut, _elm_community$easing_functions$Ease$inQuart, _elm_community$easing_functions$Ease$outQuart);
+var _elm_community$easing_functions$Ease$inCubic = function (time) {
+	return Math.pow(time, 3);
+};
+var _elm_community$easing_functions$Ease$outCubic = _elm_community$easing_functions$Ease$flip(_elm_community$easing_functions$Ease$inCubic);
+var _elm_community$easing_functions$Ease$inOutCubic = A2(_elm_community$easing_functions$Ease$inOut, _elm_community$easing_functions$Ease$inCubic, _elm_community$easing_functions$Ease$outCubic);
+var _elm_community$easing_functions$Ease$inQuad = function (time) {
+	return Math.pow(time, 2);
+};
+var _elm_community$easing_functions$Ease$outQuad = _elm_community$easing_functions$Ease$flip(_elm_community$easing_functions$Ease$inQuad);
+var _elm_community$easing_functions$Ease$inOutQuad = A2(_elm_community$easing_functions$Ease$inOut, _elm_community$easing_functions$Ease$inQuad, _elm_community$easing_functions$Ease$outQuad);
+var _elm_community$easing_functions$Ease$bezier = F5(
+	function (x1, y1, x2, y2, time) {
+		var pair = F4(
+			function (interpolate, _p1, _p0, v) {
+				var _p2 = _p1;
+				var _p3 = _p0;
+				return {
+					ctor: '_Tuple2',
+					_0: A3(interpolate, _p2._0, _p3._0, v),
+					_1: A3(interpolate, _p2._1, _p3._1, v)
+				};
+			});
+		var lerp = F3(
+			function (from, to, v) {
+				return from + ((to - from) * v);
+			});
+		var casteljau = function (ps) {
+			casteljau:
+			while (true) {
+				var _p4 = ps;
+				if (((_p4.ctor === '::') && (_p4._0.ctor === '_Tuple2')) && (_p4._1.ctor === '[]')) {
+					return _p4._0._1;
+				} else {
+					var _p5 = _p4;
+					var _v3 = A3(
+						_elm_lang$core$List$map2,
+						F2(
+							function (x, y) {
+								return A4(pair, lerp, x, y, time);
+							}),
+						_p5,
+						A2(
+							_elm_lang$core$Maybe$withDefault,
+							{ctor: '[]'},
+							_elm_lang$core$List$tail(_p5)));
+					ps = _v3;
+					continue casteljau;
+				}
+			}
+		};
+		return casteljau(
+			{
+				ctor: '::',
+				_0: {ctor: '_Tuple2', _0: 0, _1: 0},
+				_1: {
+					ctor: '::',
+					_0: {ctor: '_Tuple2', _0: x1, _1: y1},
+					_1: {
+						ctor: '::',
+						_0: {ctor: '_Tuple2', _0: x2, _1: y2},
+						_1: {
+							ctor: '::',
+							_0: {ctor: '_Tuple2', _0: 1, _1: 1},
+							_1: {ctor: '[]'}
+						}
+					}
+				}
+			});
+	});
+var _elm_community$easing_functions$Ease$linear = _elm_lang$core$Basics$identity;
+
 var _elm_lang$animation_frame$Native_AnimationFrame = function()
 {
 
@@ -10352,6 +10491,347 @@ var _elm_lang$navigation$Navigation$onEffects = F4(
 	});
 _elm_lang$core$Native_Platform.effectManagers['Navigation'] = {pkg: 'elm-lang/navigation', init: _elm_lang$navigation$Navigation$init, onEffects: _elm_lang$navigation$Navigation$onEffects, onSelfMsg: _elm_lang$navigation$Navigation$onSelfMsg, tag: 'fx', cmdMap: _elm_lang$navigation$Navigation$cmdMap, subMap: _elm_lang$navigation$Navigation$subMap};
 
+var _elm_lang$svg$Svg$map = _elm_lang$virtual_dom$VirtualDom$map;
+var _elm_lang$svg$Svg$text = _elm_lang$virtual_dom$VirtualDom$text;
+var _elm_lang$svg$Svg$svgNamespace = A2(
+	_elm_lang$virtual_dom$VirtualDom$property,
+	'namespace',
+	_elm_lang$core$Json_Encode$string('http://www.w3.org/2000/svg'));
+var _elm_lang$svg$Svg$node = F3(
+	function (name, attributes, children) {
+		return A3(
+			_elm_lang$virtual_dom$VirtualDom$node,
+			name,
+			{ctor: '::', _0: _elm_lang$svg$Svg$svgNamespace, _1: attributes},
+			children);
+	});
+var _elm_lang$svg$Svg$svg = _elm_lang$svg$Svg$node('svg');
+var _elm_lang$svg$Svg$foreignObject = _elm_lang$svg$Svg$node('foreignObject');
+var _elm_lang$svg$Svg$animate = _elm_lang$svg$Svg$node('animate');
+var _elm_lang$svg$Svg$animateColor = _elm_lang$svg$Svg$node('animateColor');
+var _elm_lang$svg$Svg$animateMotion = _elm_lang$svg$Svg$node('animateMotion');
+var _elm_lang$svg$Svg$animateTransform = _elm_lang$svg$Svg$node('animateTransform');
+var _elm_lang$svg$Svg$mpath = _elm_lang$svg$Svg$node('mpath');
+var _elm_lang$svg$Svg$set = _elm_lang$svg$Svg$node('set');
+var _elm_lang$svg$Svg$a = _elm_lang$svg$Svg$node('a');
+var _elm_lang$svg$Svg$defs = _elm_lang$svg$Svg$node('defs');
+var _elm_lang$svg$Svg$g = _elm_lang$svg$Svg$node('g');
+var _elm_lang$svg$Svg$marker = _elm_lang$svg$Svg$node('marker');
+var _elm_lang$svg$Svg$mask = _elm_lang$svg$Svg$node('mask');
+var _elm_lang$svg$Svg$pattern = _elm_lang$svg$Svg$node('pattern');
+var _elm_lang$svg$Svg$switch = _elm_lang$svg$Svg$node('switch');
+var _elm_lang$svg$Svg$symbol = _elm_lang$svg$Svg$node('symbol');
+var _elm_lang$svg$Svg$desc = _elm_lang$svg$Svg$node('desc');
+var _elm_lang$svg$Svg$metadata = _elm_lang$svg$Svg$node('metadata');
+var _elm_lang$svg$Svg$title = _elm_lang$svg$Svg$node('title');
+var _elm_lang$svg$Svg$feBlend = _elm_lang$svg$Svg$node('feBlend');
+var _elm_lang$svg$Svg$feColorMatrix = _elm_lang$svg$Svg$node('feColorMatrix');
+var _elm_lang$svg$Svg$feComponentTransfer = _elm_lang$svg$Svg$node('feComponentTransfer');
+var _elm_lang$svg$Svg$feComposite = _elm_lang$svg$Svg$node('feComposite');
+var _elm_lang$svg$Svg$feConvolveMatrix = _elm_lang$svg$Svg$node('feConvolveMatrix');
+var _elm_lang$svg$Svg$feDiffuseLighting = _elm_lang$svg$Svg$node('feDiffuseLighting');
+var _elm_lang$svg$Svg$feDisplacementMap = _elm_lang$svg$Svg$node('feDisplacementMap');
+var _elm_lang$svg$Svg$feFlood = _elm_lang$svg$Svg$node('feFlood');
+var _elm_lang$svg$Svg$feFuncA = _elm_lang$svg$Svg$node('feFuncA');
+var _elm_lang$svg$Svg$feFuncB = _elm_lang$svg$Svg$node('feFuncB');
+var _elm_lang$svg$Svg$feFuncG = _elm_lang$svg$Svg$node('feFuncG');
+var _elm_lang$svg$Svg$feFuncR = _elm_lang$svg$Svg$node('feFuncR');
+var _elm_lang$svg$Svg$feGaussianBlur = _elm_lang$svg$Svg$node('feGaussianBlur');
+var _elm_lang$svg$Svg$feImage = _elm_lang$svg$Svg$node('feImage');
+var _elm_lang$svg$Svg$feMerge = _elm_lang$svg$Svg$node('feMerge');
+var _elm_lang$svg$Svg$feMergeNode = _elm_lang$svg$Svg$node('feMergeNode');
+var _elm_lang$svg$Svg$feMorphology = _elm_lang$svg$Svg$node('feMorphology');
+var _elm_lang$svg$Svg$feOffset = _elm_lang$svg$Svg$node('feOffset');
+var _elm_lang$svg$Svg$feSpecularLighting = _elm_lang$svg$Svg$node('feSpecularLighting');
+var _elm_lang$svg$Svg$feTile = _elm_lang$svg$Svg$node('feTile');
+var _elm_lang$svg$Svg$feTurbulence = _elm_lang$svg$Svg$node('feTurbulence');
+var _elm_lang$svg$Svg$font = _elm_lang$svg$Svg$node('font');
+var _elm_lang$svg$Svg$linearGradient = _elm_lang$svg$Svg$node('linearGradient');
+var _elm_lang$svg$Svg$radialGradient = _elm_lang$svg$Svg$node('radialGradient');
+var _elm_lang$svg$Svg$stop = _elm_lang$svg$Svg$node('stop');
+var _elm_lang$svg$Svg$circle = _elm_lang$svg$Svg$node('circle');
+var _elm_lang$svg$Svg$ellipse = _elm_lang$svg$Svg$node('ellipse');
+var _elm_lang$svg$Svg$image = _elm_lang$svg$Svg$node('image');
+var _elm_lang$svg$Svg$line = _elm_lang$svg$Svg$node('line');
+var _elm_lang$svg$Svg$path = _elm_lang$svg$Svg$node('path');
+var _elm_lang$svg$Svg$polygon = _elm_lang$svg$Svg$node('polygon');
+var _elm_lang$svg$Svg$polyline = _elm_lang$svg$Svg$node('polyline');
+var _elm_lang$svg$Svg$rect = _elm_lang$svg$Svg$node('rect');
+var _elm_lang$svg$Svg$use = _elm_lang$svg$Svg$node('use');
+var _elm_lang$svg$Svg$feDistantLight = _elm_lang$svg$Svg$node('feDistantLight');
+var _elm_lang$svg$Svg$fePointLight = _elm_lang$svg$Svg$node('fePointLight');
+var _elm_lang$svg$Svg$feSpotLight = _elm_lang$svg$Svg$node('feSpotLight');
+var _elm_lang$svg$Svg$altGlyph = _elm_lang$svg$Svg$node('altGlyph');
+var _elm_lang$svg$Svg$altGlyphDef = _elm_lang$svg$Svg$node('altGlyphDef');
+var _elm_lang$svg$Svg$altGlyphItem = _elm_lang$svg$Svg$node('altGlyphItem');
+var _elm_lang$svg$Svg$glyph = _elm_lang$svg$Svg$node('glyph');
+var _elm_lang$svg$Svg$glyphRef = _elm_lang$svg$Svg$node('glyphRef');
+var _elm_lang$svg$Svg$textPath = _elm_lang$svg$Svg$node('textPath');
+var _elm_lang$svg$Svg$text_ = _elm_lang$svg$Svg$node('text');
+var _elm_lang$svg$Svg$tref = _elm_lang$svg$Svg$node('tref');
+var _elm_lang$svg$Svg$tspan = _elm_lang$svg$Svg$node('tspan');
+var _elm_lang$svg$Svg$clipPath = _elm_lang$svg$Svg$node('clipPath');
+var _elm_lang$svg$Svg$colorProfile = _elm_lang$svg$Svg$node('colorProfile');
+var _elm_lang$svg$Svg$cursor = _elm_lang$svg$Svg$node('cursor');
+var _elm_lang$svg$Svg$filter = _elm_lang$svg$Svg$node('filter');
+var _elm_lang$svg$Svg$script = _elm_lang$svg$Svg$node('script');
+var _elm_lang$svg$Svg$style = _elm_lang$svg$Svg$node('style');
+var _elm_lang$svg$Svg$view = _elm_lang$svg$Svg$node('view');
+
+var _elm_lang$svg$Svg_Attributes$writingMode = _elm_lang$virtual_dom$VirtualDom$attribute('writing-mode');
+var _elm_lang$svg$Svg_Attributes$wordSpacing = _elm_lang$virtual_dom$VirtualDom$attribute('word-spacing');
+var _elm_lang$svg$Svg_Attributes$visibility = _elm_lang$virtual_dom$VirtualDom$attribute('visibility');
+var _elm_lang$svg$Svg_Attributes$unicodeBidi = _elm_lang$virtual_dom$VirtualDom$attribute('unicode-bidi');
+var _elm_lang$svg$Svg_Attributes$textRendering = _elm_lang$virtual_dom$VirtualDom$attribute('text-rendering');
+var _elm_lang$svg$Svg_Attributes$textDecoration = _elm_lang$virtual_dom$VirtualDom$attribute('text-decoration');
+var _elm_lang$svg$Svg_Attributes$textAnchor = _elm_lang$virtual_dom$VirtualDom$attribute('text-anchor');
+var _elm_lang$svg$Svg_Attributes$stroke = _elm_lang$virtual_dom$VirtualDom$attribute('stroke');
+var _elm_lang$svg$Svg_Attributes$strokeWidth = _elm_lang$virtual_dom$VirtualDom$attribute('stroke-width');
+var _elm_lang$svg$Svg_Attributes$strokeOpacity = _elm_lang$virtual_dom$VirtualDom$attribute('stroke-opacity');
+var _elm_lang$svg$Svg_Attributes$strokeMiterlimit = _elm_lang$virtual_dom$VirtualDom$attribute('stroke-miterlimit');
+var _elm_lang$svg$Svg_Attributes$strokeLinejoin = _elm_lang$virtual_dom$VirtualDom$attribute('stroke-linejoin');
+var _elm_lang$svg$Svg_Attributes$strokeLinecap = _elm_lang$virtual_dom$VirtualDom$attribute('stroke-linecap');
+var _elm_lang$svg$Svg_Attributes$strokeDashoffset = _elm_lang$virtual_dom$VirtualDom$attribute('stroke-dashoffset');
+var _elm_lang$svg$Svg_Attributes$strokeDasharray = _elm_lang$virtual_dom$VirtualDom$attribute('stroke-dasharray');
+var _elm_lang$svg$Svg_Attributes$stopOpacity = _elm_lang$virtual_dom$VirtualDom$attribute('stop-opacity');
+var _elm_lang$svg$Svg_Attributes$stopColor = _elm_lang$virtual_dom$VirtualDom$attribute('stop-color');
+var _elm_lang$svg$Svg_Attributes$shapeRendering = _elm_lang$virtual_dom$VirtualDom$attribute('shape-rendering');
+var _elm_lang$svg$Svg_Attributes$pointerEvents = _elm_lang$virtual_dom$VirtualDom$attribute('pointer-events');
+var _elm_lang$svg$Svg_Attributes$overflow = _elm_lang$virtual_dom$VirtualDom$attribute('overflow');
+var _elm_lang$svg$Svg_Attributes$opacity = _elm_lang$virtual_dom$VirtualDom$attribute('opacity');
+var _elm_lang$svg$Svg_Attributes$mask = _elm_lang$virtual_dom$VirtualDom$attribute('mask');
+var _elm_lang$svg$Svg_Attributes$markerStart = _elm_lang$virtual_dom$VirtualDom$attribute('marker-start');
+var _elm_lang$svg$Svg_Attributes$markerMid = _elm_lang$virtual_dom$VirtualDom$attribute('marker-mid');
+var _elm_lang$svg$Svg_Attributes$markerEnd = _elm_lang$virtual_dom$VirtualDom$attribute('marker-end');
+var _elm_lang$svg$Svg_Attributes$lightingColor = _elm_lang$virtual_dom$VirtualDom$attribute('lighting-color');
+var _elm_lang$svg$Svg_Attributes$letterSpacing = _elm_lang$virtual_dom$VirtualDom$attribute('letter-spacing');
+var _elm_lang$svg$Svg_Attributes$kerning = _elm_lang$virtual_dom$VirtualDom$attribute('kerning');
+var _elm_lang$svg$Svg_Attributes$imageRendering = _elm_lang$virtual_dom$VirtualDom$attribute('image-rendering');
+var _elm_lang$svg$Svg_Attributes$glyphOrientationVertical = _elm_lang$virtual_dom$VirtualDom$attribute('glyph-orientation-vertical');
+var _elm_lang$svg$Svg_Attributes$glyphOrientationHorizontal = _elm_lang$virtual_dom$VirtualDom$attribute('glyph-orientation-horizontal');
+var _elm_lang$svg$Svg_Attributes$fontWeight = _elm_lang$virtual_dom$VirtualDom$attribute('font-weight');
+var _elm_lang$svg$Svg_Attributes$fontVariant = _elm_lang$virtual_dom$VirtualDom$attribute('font-variant');
+var _elm_lang$svg$Svg_Attributes$fontStyle = _elm_lang$virtual_dom$VirtualDom$attribute('font-style');
+var _elm_lang$svg$Svg_Attributes$fontStretch = _elm_lang$virtual_dom$VirtualDom$attribute('font-stretch');
+var _elm_lang$svg$Svg_Attributes$fontSize = _elm_lang$virtual_dom$VirtualDom$attribute('font-size');
+var _elm_lang$svg$Svg_Attributes$fontSizeAdjust = _elm_lang$virtual_dom$VirtualDom$attribute('font-size-adjust');
+var _elm_lang$svg$Svg_Attributes$fontFamily = _elm_lang$virtual_dom$VirtualDom$attribute('font-family');
+var _elm_lang$svg$Svg_Attributes$floodOpacity = _elm_lang$virtual_dom$VirtualDom$attribute('flood-opacity');
+var _elm_lang$svg$Svg_Attributes$floodColor = _elm_lang$virtual_dom$VirtualDom$attribute('flood-color');
+var _elm_lang$svg$Svg_Attributes$filter = _elm_lang$virtual_dom$VirtualDom$attribute('filter');
+var _elm_lang$svg$Svg_Attributes$fill = _elm_lang$virtual_dom$VirtualDom$attribute('fill');
+var _elm_lang$svg$Svg_Attributes$fillRule = _elm_lang$virtual_dom$VirtualDom$attribute('fill-rule');
+var _elm_lang$svg$Svg_Attributes$fillOpacity = _elm_lang$virtual_dom$VirtualDom$attribute('fill-opacity');
+var _elm_lang$svg$Svg_Attributes$enableBackground = _elm_lang$virtual_dom$VirtualDom$attribute('enable-background');
+var _elm_lang$svg$Svg_Attributes$dominantBaseline = _elm_lang$virtual_dom$VirtualDom$attribute('dominant-baseline');
+var _elm_lang$svg$Svg_Attributes$display = _elm_lang$virtual_dom$VirtualDom$attribute('display');
+var _elm_lang$svg$Svg_Attributes$direction = _elm_lang$virtual_dom$VirtualDom$attribute('direction');
+var _elm_lang$svg$Svg_Attributes$cursor = _elm_lang$virtual_dom$VirtualDom$attribute('cursor');
+var _elm_lang$svg$Svg_Attributes$color = _elm_lang$virtual_dom$VirtualDom$attribute('color');
+var _elm_lang$svg$Svg_Attributes$colorRendering = _elm_lang$virtual_dom$VirtualDom$attribute('color-rendering');
+var _elm_lang$svg$Svg_Attributes$colorProfile = _elm_lang$virtual_dom$VirtualDom$attribute('color-profile');
+var _elm_lang$svg$Svg_Attributes$colorInterpolation = _elm_lang$virtual_dom$VirtualDom$attribute('color-interpolation');
+var _elm_lang$svg$Svg_Attributes$colorInterpolationFilters = _elm_lang$virtual_dom$VirtualDom$attribute('color-interpolation-filters');
+var _elm_lang$svg$Svg_Attributes$clip = _elm_lang$virtual_dom$VirtualDom$attribute('clip');
+var _elm_lang$svg$Svg_Attributes$clipRule = _elm_lang$virtual_dom$VirtualDom$attribute('clip-rule');
+var _elm_lang$svg$Svg_Attributes$clipPath = _elm_lang$virtual_dom$VirtualDom$attribute('clip-path');
+var _elm_lang$svg$Svg_Attributes$baselineShift = _elm_lang$virtual_dom$VirtualDom$attribute('baseline-shift');
+var _elm_lang$svg$Svg_Attributes$alignmentBaseline = _elm_lang$virtual_dom$VirtualDom$attribute('alignment-baseline');
+var _elm_lang$svg$Svg_Attributes$zoomAndPan = _elm_lang$virtual_dom$VirtualDom$attribute('zoomAndPan');
+var _elm_lang$svg$Svg_Attributes$z = _elm_lang$virtual_dom$VirtualDom$attribute('z');
+var _elm_lang$svg$Svg_Attributes$yChannelSelector = _elm_lang$virtual_dom$VirtualDom$attribute('yChannelSelector');
+var _elm_lang$svg$Svg_Attributes$y2 = _elm_lang$virtual_dom$VirtualDom$attribute('y2');
+var _elm_lang$svg$Svg_Attributes$y1 = _elm_lang$virtual_dom$VirtualDom$attribute('y1');
+var _elm_lang$svg$Svg_Attributes$y = _elm_lang$virtual_dom$VirtualDom$attribute('y');
+var _elm_lang$svg$Svg_Attributes$xmlSpace = A2(_elm_lang$virtual_dom$VirtualDom$attributeNS, 'http://www.w3.org/XML/1998/namespace', 'xml:space');
+var _elm_lang$svg$Svg_Attributes$xmlLang = A2(_elm_lang$virtual_dom$VirtualDom$attributeNS, 'http://www.w3.org/XML/1998/namespace', 'xml:lang');
+var _elm_lang$svg$Svg_Attributes$xmlBase = A2(_elm_lang$virtual_dom$VirtualDom$attributeNS, 'http://www.w3.org/XML/1998/namespace', 'xml:base');
+var _elm_lang$svg$Svg_Attributes$xlinkType = A2(_elm_lang$virtual_dom$VirtualDom$attributeNS, 'http://www.w3.org/1999/xlink', 'xlink:type');
+var _elm_lang$svg$Svg_Attributes$xlinkTitle = A2(_elm_lang$virtual_dom$VirtualDom$attributeNS, 'http://www.w3.org/1999/xlink', 'xlink:title');
+var _elm_lang$svg$Svg_Attributes$xlinkShow = A2(_elm_lang$virtual_dom$VirtualDom$attributeNS, 'http://www.w3.org/1999/xlink', 'xlink:show');
+var _elm_lang$svg$Svg_Attributes$xlinkRole = A2(_elm_lang$virtual_dom$VirtualDom$attributeNS, 'http://www.w3.org/1999/xlink', 'xlink:role');
+var _elm_lang$svg$Svg_Attributes$xlinkHref = A2(_elm_lang$virtual_dom$VirtualDom$attributeNS, 'http://www.w3.org/1999/xlink', 'xlink:href');
+var _elm_lang$svg$Svg_Attributes$xlinkArcrole = A2(_elm_lang$virtual_dom$VirtualDom$attributeNS, 'http://www.w3.org/1999/xlink', 'xlink:arcrole');
+var _elm_lang$svg$Svg_Attributes$xlinkActuate = A2(_elm_lang$virtual_dom$VirtualDom$attributeNS, 'http://www.w3.org/1999/xlink', 'xlink:actuate');
+var _elm_lang$svg$Svg_Attributes$xChannelSelector = _elm_lang$virtual_dom$VirtualDom$attribute('xChannelSelector');
+var _elm_lang$svg$Svg_Attributes$x2 = _elm_lang$virtual_dom$VirtualDom$attribute('x2');
+var _elm_lang$svg$Svg_Attributes$x1 = _elm_lang$virtual_dom$VirtualDom$attribute('x1');
+var _elm_lang$svg$Svg_Attributes$xHeight = _elm_lang$virtual_dom$VirtualDom$attribute('x-height');
+var _elm_lang$svg$Svg_Attributes$x = _elm_lang$virtual_dom$VirtualDom$attribute('x');
+var _elm_lang$svg$Svg_Attributes$widths = _elm_lang$virtual_dom$VirtualDom$attribute('widths');
+var _elm_lang$svg$Svg_Attributes$width = _elm_lang$virtual_dom$VirtualDom$attribute('width');
+var _elm_lang$svg$Svg_Attributes$viewTarget = _elm_lang$virtual_dom$VirtualDom$attribute('viewTarget');
+var _elm_lang$svg$Svg_Attributes$viewBox = _elm_lang$virtual_dom$VirtualDom$attribute('viewBox');
+var _elm_lang$svg$Svg_Attributes$vertOriginY = _elm_lang$virtual_dom$VirtualDom$attribute('vert-origin-y');
+var _elm_lang$svg$Svg_Attributes$vertOriginX = _elm_lang$virtual_dom$VirtualDom$attribute('vert-origin-x');
+var _elm_lang$svg$Svg_Attributes$vertAdvY = _elm_lang$virtual_dom$VirtualDom$attribute('vert-adv-y');
+var _elm_lang$svg$Svg_Attributes$version = _elm_lang$virtual_dom$VirtualDom$attribute('version');
+var _elm_lang$svg$Svg_Attributes$values = _elm_lang$virtual_dom$VirtualDom$attribute('values');
+var _elm_lang$svg$Svg_Attributes$vMathematical = _elm_lang$virtual_dom$VirtualDom$attribute('v-mathematical');
+var _elm_lang$svg$Svg_Attributes$vIdeographic = _elm_lang$virtual_dom$VirtualDom$attribute('v-ideographic');
+var _elm_lang$svg$Svg_Attributes$vHanging = _elm_lang$virtual_dom$VirtualDom$attribute('v-hanging');
+var _elm_lang$svg$Svg_Attributes$vAlphabetic = _elm_lang$virtual_dom$VirtualDom$attribute('v-alphabetic');
+var _elm_lang$svg$Svg_Attributes$unitsPerEm = _elm_lang$virtual_dom$VirtualDom$attribute('units-per-em');
+var _elm_lang$svg$Svg_Attributes$unicodeRange = _elm_lang$virtual_dom$VirtualDom$attribute('unicode-range');
+var _elm_lang$svg$Svg_Attributes$unicode = _elm_lang$virtual_dom$VirtualDom$attribute('unicode');
+var _elm_lang$svg$Svg_Attributes$underlineThickness = _elm_lang$virtual_dom$VirtualDom$attribute('underline-thickness');
+var _elm_lang$svg$Svg_Attributes$underlinePosition = _elm_lang$virtual_dom$VirtualDom$attribute('underline-position');
+var _elm_lang$svg$Svg_Attributes$u2 = _elm_lang$virtual_dom$VirtualDom$attribute('u2');
+var _elm_lang$svg$Svg_Attributes$u1 = _elm_lang$virtual_dom$VirtualDom$attribute('u1');
+var _elm_lang$svg$Svg_Attributes$type_ = _elm_lang$virtual_dom$VirtualDom$attribute('type');
+var _elm_lang$svg$Svg_Attributes$transform = _elm_lang$virtual_dom$VirtualDom$attribute('transform');
+var _elm_lang$svg$Svg_Attributes$to = _elm_lang$virtual_dom$VirtualDom$attribute('to');
+var _elm_lang$svg$Svg_Attributes$title = _elm_lang$virtual_dom$VirtualDom$attribute('title');
+var _elm_lang$svg$Svg_Attributes$textLength = _elm_lang$virtual_dom$VirtualDom$attribute('textLength');
+var _elm_lang$svg$Svg_Attributes$targetY = _elm_lang$virtual_dom$VirtualDom$attribute('targetY');
+var _elm_lang$svg$Svg_Attributes$targetX = _elm_lang$virtual_dom$VirtualDom$attribute('targetX');
+var _elm_lang$svg$Svg_Attributes$target = _elm_lang$virtual_dom$VirtualDom$attribute('target');
+var _elm_lang$svg$Svg_Attributes$tableValues = _elm_lang$virtual_dom$VirtualDom$attribute('tableValues');
+var _elm_lang$svg$Svg_Attributes$systemLanguage = _elm_lang$virtual_dom$VirtualDom$attribute('systemLanguage');
+var _elm_lang$svg$Svg_Attributes$surfaceScale = _elm_lang$virtual_dom$VirtualDom$attribute('surfaceScale');
+var _elm_lang$svg$Svg_Attributes$style = _elm_lang$virtual_dom$VirtualDom$attribute('style');
+var _elm_lang$svg$Svg_Attributes$string = _elm_lang$virtual_dom$VirtualDom$attribute('string');
+var _elm_lang$svg$Svg_Attributes$strikethroughThickness = _elm_lang$virtual_dom$VirtualDom$attribute('strikethrough-thickness');
+var _elm_lang$svg$Svg_Attributes$strikethroughPosition = _elm_lang$virtual_dom$VirtualDom$attribute('strikethrough-position');
+var _elm_lang$svg$Svg_Attributes$stitchTiles = _elm_lang$virtual_dom$VirtualDom$attribute('stitchTiles');
+var _elm_lang$svg$Svg_Attributes$stemv = _elm_lang$virtual_dom$VirtualDom$attribute('stemv');
+var _elm_lang$svg$Svg_Attributes$stemh = _elm_lang$virtual_dom$VirtualDom$attribute('stemh');
+var _elm_lang$svg$Svg_Attributes$stdDeviation = _elm_lang$virtual_dom$VirtualDom$attribute('stdDeviation');
+var _elm_lang$svg$Svg_Attributes$startOffset = _elm_lang$virtual_dom$VirtualDom$attribute('startOffset');
+var _elm_lang$svg$Svg_Attributes$spreadMethod = _elm_lang$virtual_dom$VirtualDom$attribute('spreadMethod');
+var _elm_lang$svg$Svg_Attributes$speed = _elm_lang$virtual_dom$VirtualDom$attribute('speed');
+var _elm_lang$svg$Svg_Attributes$specularExponent = _elm_lang$virtual_dom$VirtualDom$attribute('specularExponent');
+var _elm_lang$svg$Svg_Attributes$specularConstant = _elm_lang$virtual_dom$VirtualDom$attribute('specularConstant');
+var _elm_lang$svg$Svg_Attributes$spacing = _elm_lang$virtual_dom$VirtualDom$attribute('spacing');
+var _elm_lang$svg$Svg_Attributes$slope = _elm_lang$virtual_dom$VirtualDom$attribute('slope');
+var _elm_lang$svg$Svg_Attributes$seed = _elm_lang$virtual_dom$VirtualDom$attribute('seed');
+var _elm_lang$svg$Svg_Attributes$scale = _elm_lang$virtual_dom$VirtualDom$attribute('scale');
+var _elm_lang$svg$Svg_Attributes$ry = _elm_lang$virtual_dom$VirtualDom$attribute('ry');
+var _elm_lang$svg$Svg_Attributes$rx = _elm_lang$virtual_dom$VirtualDom$attribute('rx');
+var _elm_lang$svg$Svg_Attributes$rotate = _elm_lang$virtual_dom$VirtualDom$attribute('rotate');
+var _elm_lang$svg$Svg_Attributes$result = _elm_lang$virtual_dom$VirtualDom$attribute('result');
+var _elm_lang$svg$Svg_Attributes$restart = _elm_lang$virtual_dom$VirtualDom$attribute('restart');
+var _elm_lang$svg$Svg_Attributes$requiredFeatures = _elm_lang$virtual_dom$VirtualDom$attribute('requiredFeatures');
+var _elm_lang$svg$Svg_Attributes$requiredExtensions = _elm_lang$virtual_dom$VirtualDom$attribute('requiredExtensions');
+var _elm_lang$svg$Svg_Attributes$repeatDur = _elm_lang$virtual_dom$VirtualDom$attribute('repeatDur');
+var _elm_lang$svg$Svg_Attributes$repeatCount = _elm_lang$virtual_dom$VirtualDom$attribute('repeatCount');
+var _elm_lang$svg$Svg_Attributes$renderingIntent = _elm_lang$virtual_dom$VirtualDom$attribute('rendering-intent');
+var _elm_lang$svg$Svg_Attributes$refY = _elm_lang$virtual_dom$VirtualDom$attribute('refY');
+var _elm_lang$svg$Svg_Attributes$refX = _elm_lang$virtual_dom$VirtualDom$attribute('refX');
+var _elm_lang$svg$Svg_Attributes$radius = _elm_lang$virtual_dom$VirtualDom$attribute('radius');
+var _elm_lang$svg$Svg_Attributes$r = _elm_lang$virtual_dom$VirtualDom$attribute('r');
+var _elm_lang$svg$Svg_Attributes$primitiveUnits = _elm_lang$virtual_dom$VirtualDom$attribute('primitiveUnits');
+var _elm_lang$svg$Svg_Attributes$preserveAspectRatio = _elm_lang$virtual_dom$VirtualDom$attribute('preserveAspectRatio');
+var _elm_lang$svg$Svg_Attributes$preserveAlpha = _elm_lang$virtual_dom$VirtualDom$attribute('preserveAlpha');
+var _elm_lang$svg$Svg_Attributes$pointsAtZ = _elm_lang$virtual_dom$VirtualDom$attribute('pointsAtZ');
+var _elm_lang$svg$Svg_Attributes$pointsAtY = _elm_lang$virtual_dom$VirtualDom$attribute('pointsAtY');
+var _elm_lang$svg$Svg_Attributes$pointsAtX = _elm_lang$virtual_dom$VirtualDom$attribute('pointsAtX');
+var _elm_lang$svg$Svg_Attributes$points = _elm_lang$virtual_dom$VirtualDom$attribute('points');
+var _elm_lang$svg$Svg_Attributes$pointOrder = _elm_lang$virtual_dom$VirtualDom$attribute('point-order');
+var _elm_lang$svg$Svg_Attributes$patternUnits = _elm_lang$virtual_dom$VirtualDom$attribute('patternUnits');
+var _elm_lang$svg$Svg_Attributes$patternTransform = _elm_lang$virtual_dom$VirtualDom$attribute('patternTransform');
+var _elm_lang$svg$Svg_Attributes$patternContentUnits = _elm_lang$virtual_dom$VirtualDom$attribute('patternContentUnits');
+var _elm_lang$svg$Svg_Attributes$pathLength = _elm_lang$virtual_dom$VirtualDom$attribute('pathLength');
+var _elm_lang$svg$Svg_Attributes$path = _elm_lang$virtual_dom$VirtualDom$attribute('path');
+var _elm_lang$svg$Svg_Attributes$panose1 = _elm_lang$virtual_dom$VirtualDom$attribute('panose-1');
+var _elm_lang$svg$Svg_Attributes$overlineThickness = _elm_lang$virtual_dom$VirtualDom$attribute('overline-thickness');
+var _elm_lang$svg$Svg_Attributes$overlinePosition = _elm_lang$virtual_dom$VirtualDom$attribute('overline-position');
+var _elm_lang$svg$Svg_Attributes$origin = _elm_lang$virtual_dom$VirtualDom$attribute('origin');
+var _elm_lang$svg$Svg_Attributes$orientation = _elm_lang$virtual_dom$VirtualDom$attribute('orientation');
+var _elm_lang$svg$Svg_Attributes$orient = _elm_lang$virtual_dom$VirtualDom$attribute('orient');
+var _elm_lang$svg$Svg_Attributes$order = _elm_lang$virtual_dom$VirtualDom$attribute('order');
+var _elm_lang$svg$Svg_Attributes$operator = _elm_lang$virtual_dom$VirtualDom$attribute('operator');
+var _elm_lang$svg$Svg_Attributes$offset = _elm_lang$virtual_dom$VirtualDom$attribute('offset');
+var _elm_lang$svg$Svg_Attributes$numOctaves = _elm_lang$virtual_dom$VirtualDom$attribute('numOctaves');
+var _elm_lang$svg$Svg_Attributes$name = _elm_lang$virtual_dom$VirtualDom$attribute('name');
+var _elm_lang$svg$Svg_Attributes$mode = _elm_lang$virtual_dom$VirtualDom$attribute('mode');
+var _elm_lang$svg$Svg_Attributes$min = _elm_lang$virtual_dom$VirtualDom$attribute('min');
+var _elm_lang$svg$Svg_Attributes$method = _elm_lang$virtual_dom$VirtualDom$attribute('method');
+var _elm_lang$svg$Svg_Attributes$media = _elm_lang$virtual_dom$VirtualDom$attribute('media');
+var _elm_lang$svg$Svg_Attributes$max = _elm_lang$virtual_dom$VirtualDom$attribute('max');
+var _elm_lang$svg$Svg_Attributes$mathematical = _elm_lang$virtual_dom$VirtualDom$attribute('mathematical');
+var _elm_lang$svg$Svg_Attributes$maskUnits = _elm_lang$virtual_dom$VirtualDom$attribute('maskUnits');
+var _elm_lang$svg$Svg_Attributes$maskContentUnits = _elm_lang$virtual_dom$VirtualDom$attribute('maskContentUnits');
+var _elm_lang$svg$Svg_Attributes$markerWidth = _elm_lang$virtual_dom$VirtualDom$attribute('markerWidth');
+var _elm_lang$svg$Svg_Attributes$markerUnits = _elm_lang$virtual_dom$VirtualDom$attribute('markerUnits');
+var _elm_lang$svg$Svg_Attributes$markerHeight = _elm_lang$virtual_dom$VirtualDom$attribute('markerHeight');
+var _elm_lang$svg$Svg_Attributes$local = _elm_lang$virtual_dom$VirtualDom$attribute('local');
+var _elm_lang$svg$Svg_Attributes$limitingConeAngle = _elm_lang$virtual_dom$VirtualDom$attribute('limitingConeAngle');
+var _elm_lang$svg$Svg_Attributes$lengthAdjust = _elm_lang$virtual_dom$VirtualDom$attribute('lengthAdjust');
+var _elm_lang$svg$Svg_Attributes$lang = _elm_lang$virtual_dom$VirtualDom$attribute('lang');
+var _elm_lang$svg$Svg_Attributes$keyTimes = _elm_lang$virtual_dom$VirtualDom$attribute('keyTimes');
+var _elm_lang$svg$Svg_Attributes$keySplines = _elm_lang$virtual_dom$VirtualDom$attribute('keySplines');
+var _elm_lang$svg$Svg_Attributes$keyPoints = _elm_lang$virtual_dom$VirtualDom$attribute('keyPoints');
+var _elm_lang$svg$Svg_Attributes$kernelUnitLength = _elm_lang$virtual_dom$VirtualDom$attribute('kernelUnitLength');
+var _elm_lang$svg$Svg_Attributes$kernelMatrix = _elm_lang$virtual_dom$VirtualDom$attribute('kernelMatrix');
+var _elm_lang$svg$Svg_Attributes$k4 = _elm_lang$virtual_dom$VirtualDom$attribute('k4');
+var _elm_lang$svg$Svg_Attributes$k3 = _elm_lang$virtual_dom$VirtualDom$attribute('k3');
+var _elm_lang$svg$Svg_Attributes$k2 = _elm_lang$virtual_dom$VirtualDom$attribute('k2');
+var _elm_lang$svg$Svg_Attributes$k1 = _elm_lang$virtual_dom$VirtualDom$attribute('k1');
+var _elm_lang$svg$Svg_Attributes$k = _elm_lang$virtual_dom$VirtualDom$attribute('k');
+var _elm_lang$svg$Svg_Attributes$intercept = _elm_lang$virtual_dom$VirtualDom$attribute('intercept');
+var _elm_lang$svg$Svg_Attributes$in2 = _elm_lang$virtual_dom$VirtualDom$attribute('in2');
+var _elm_lang$svg$Svg_Attributes$in_ = _elm_lang$virtual_dom$VirtualDom$attribute('in');
+var _elm_lang$svg$Svg_Attributes$ideographic = _elm_lang$virtual_dom$VirtualDom$attribute('ideographic');
+var _elm_lang$svg$Svg_Attributes$id = _elm_lang$virtual_dom$VirtualDom$attribute('id');
+var _elm_lang$svg$Svg_Attributes$horizOriginY = _elm_lang$virtual_dom$VirtualDom$attribute('horiz-origin-y');
+var _elm_lang$svg$Svg_Attributes$horizOriginX = _elm_lang$virtual_dom$VirtualDom$attribute('horiz-origin-x');
+var _elm_lang$svg$Svg_Attributes$horizAdvX = _elm_lang$virtual_dom$VirtualDom$attribute('horiz-adv-x');
+var _elm_lang$svg$Svg_Attributes$height = _elm_lang$virtual_dom$VirtualDom$attribute('height');
+var _elm_lang$svg$Svg_Attributes$hanging = _elm_lang$virtual_dom$VirtualDom$attribute('hanging');
+var _elm_lang$svg$Svg_Attributes$gradientUnits = _elm_lang$virtual_dom$VirtualDom$attribute('gradientUnits');
+var _elm_lang$svg$Svg_Attributes$gradientTransform = _elm_lang$virtual_dom$VirtualDom$attribute('gradientTransform');
+var _elm_lang$svg$Svg_Attributes$glyphRef = _elm_lang$virtual_dom$VirtualDom$attribute('glyphRef');
+var _elm_lang$svg$Svg_Attributes$glyphName = _elm_lang$virtual_dom$VirtualDom$attribute('glyph-name');
+var _elm_lang$svg$Svg_Attributes$g2 = _elm_lang$virtual_dom$VirtualDom$attribute('g2');
+var _elm_lang$svg$Svg_Attributes$g1 = _elm_lang$virtual_dom$VirtualDom$attribute('g1');
+var _elm_lang$svg$Svg_Attributes$fy = _elm_lang$virtual_dom$VirtualDom$attribute('fy');
+var _elm_lang$svg$Svg_Attributes$fx = _elm_lang$virtual_dom$VirtualDom$attribute('fx');
+var _elm_lang$svg$Svg_Attributes$from = _elm_lang$virtual_dom$VirtualDom$attribute('from');
+var _elm_lang$svg$Svg_Attributes$format = _elm_lang$virtual_dom$VirtualDom$attribute('format');
+var _elm_lang$svg$Svg_Attributes$filterUnits = _elm_lang$virtual_dom$VirtualDom$attribute('filterUnits');
+var _elm_lang$svg$Svg_Attributes$filterRes = _elm_lang$virtual_dom$VirtualDom$attribute('filterRes');
+var _elm_lang$svg$Svg_Attributes$externalResourcesRequired = _elm_lang$virtual_dom$VirtualDom$attribute('externalResourcesRequired');
+var _elm_lang$svg$Svg_Attributes$exponent = _elm_lang$virtual_dom$VirtualDom$attribute('exponent');
+var _elm_lang$svg$Svg_Attributes$end = _elm_lang$virtual_dom$VirtualDom$attribute('end');
+var _elm_lang$svg$Svg_Attributes$elevation = _elm_lang$virtual_dom$VirtualDom$attribute('elevation');
+var _elm_lang$svg$Svg_Attributes$edgeMode = _elm_lang$virtual_dom$VirtualDom$attribute('edgeMode');
+var _elm_lang$svg$Svg_Attributes$dy = _elm_lang$virtual_dom$VirtualDom$attribute('dy');
+var _elm_lang$svg$Svg_Attributes$dx = _elm_lang$virtual_dom$VirtualDom$attribute('dx');
+var _elm_lang$svg$Svg_Attributes$dur = _elm_lang$virtual_dom$VirtualDom$attribute('dur');
+var _elm_lang$svg$Svg_Attributes$divisor = _elm_lang$virtual_dom$VirtualDom$attribute('divisor');
+var _elm_lang$svg$Svg_Attributes$diffuseConstant = _elm_lang$virtual_dom$VirtualDom$attribute('diffuseConstant');
+var _elm_lang$svg$Svg_Attributes$descent = _elm_lang$virtual_dom$VirtualDom$attribute('descent');
+var _elm_lang$svg$Svg_Attributes$decelerate = _elm_lang$virtual_dom$VirtualDom$attribute('decelerate');
+var _elm_lang$svg$Svg_Attributes$d = _elm_lang$virtual_dom$VirtualDom$attribute('d');
+var _elm_lang$svg$Svg_Attributes$cy = _elm_lang$virtual_dom$VirtualDom$attribute('cy');
+var _elm_lang$svg$Svg_Attributes$cx = _elm_lang$virtual_dom$VirtualDom$attribute('cx');
+var _elm_lang$svg$Svg_Attributes$contentStyleType = _elm_lang$virtual_dom$VirtualDom$attribute('contentStyleType');
+var _elm_lang$svg$Svg_Attributes$contentScriptType = _elm_lang$virtual_dom$VirtualDom$attribute('contentScriptType');
+var _elm_lang$svg$Svg_Attributes$clipPathUnits = _elm_lang$virtual_dom$VirtualDom$attribute('clipPathUnits');
+var _elm_lang$svg$Svg_Attributes$class = _elm_lang$virtual_dom$VirtualDom$attribute('class');
+var _elm_lang$svg$Svg_Attributes$capHeight = _elm_lang$virtual_dom$VirtualDom$attribute('cap-height');
+var _elm_lang$svg$Svg_Attributes$calcMode = _elm_lang$virtual_dom$VirtualDom$attribute('calcMode');
+var _elm_lang$svg$Svg_Attributes$by = _elm_lang$virtual_dom$VirtualDom$attribute('by');
+var _elm_lang$svg$Svg_Attributes$bias = _elm_lang$virtual_dom$VirtualDom$attribute('bias');
+var _elm_lang$svg$Svg_Attributes$begin = _elm_lang$virtual_dom$VirtualDom$attribute('begin');
+var _elm_lang$svg$Svg_Attributes$bbox = _elm_lang$virtual_dom$VirtualDom$attribute('bbox');
+var _elm_lang$svg$Svg_Attributes$baseProfile = _elm_lang$virtual_dom$VirtualDom$attribute('baseProfile');
+var _elm_lang$svg$Svg_Attributes$baseFrequency = _elm_lang$virtual_dom$VirtualDom$attribute('baseFrequency');
+var _elm_lang$svg$Svg_Attributes$azimuth = _elm_lang$virtual_dom$VirtualDom$attribute('azimuth');
+var _elm_lang$svg$Svg_Attributes$autoReverse = _elm_lang$virtual_dom$VirtualDom$attribute('autoReverse');
+var _elm_lang$svg$Svg_Attributes$attributeType = _elm_lang$virtual_dom$VirtualDom$attribute('attributeType');
+var _elm_lang$svg$Svg_Attributes$attributeName = _elm_lang$virtual_dom$VirtualDom$attribute('attributeName');
+var _elm_lang$svg$Svg_Attributes$ascent = _elm_lang$virtual_dom$VirtualDom$attribute('ascent');
+var _elm_lang$svg$Svg_Attributes$arabicForm = _elm_lang$virtual_dom$VirtualDom$attribute('arabic-form');
+var _elm_lang$svg$Svg_Attributes$amplitude = _elm_lang$virtual_dom$VirtualDom$attribute('amplitude');
+var _elm_lang$svg$Svg_Attributes$allowReorder = _elm_lang$virtual_dom$VirtualDom$attribute('allowReorder');
+var _elm_lang$svg$Svg_Attributes$alphabetic = _elm_lang$virtual_dom$VirtualDom$attribute('alphabetic');
+var _elm_lang$svg$Svg_Attributes$additive = _elm_lang$virtual_dom$VirtualDom$attribute('additive');
+var _elm_lang$svg$Svg_Attributes$accumulate = _elm_lang$virtual_dom$VirtualDom$attribute('accumulate');
+var _elm_lang$svg$Svg_Attributes$accelerate = _elm_lang$virtual_dom$VirtualDom$attribute('accelerate');
+var _elm_lang$svg$Svg_Attributes$accentHeight = _elm_lang$virtual_dom$VirtualDom$attribute('accent-height');
+
 var _elm_lang$window$Native_Window = function()
 {
 
@@ -10723,6 +11203,1110 @@ var _evancz$url_parser$UrlParser$stringParam = function (name) {
 };
 var _evancz$url_parser$UrlParser$intParam = function (name) {
 	return A2(_evancz$url_parser$UrlParser$customParam, name, _evancz$url_parser$UrlParser$intParamHelp);
+};
+
+var _folkertdev$svg_path_dsl$Svg_Path_Point$angleWithX = function (_p0) {
+	var _p1 = _p0;
+	var _p4 = _p1._1;
+	var _p3 = _p1._0;
+	var partial = _elm_lang$core$Native_Utils.eq(_p3, 0) ? 0 : _elm_lang$core$Basics$atan(
+		A2(_elm_lang$core$Debug$log, 'y / x', _p4 / _p3));
+	var _p2 = A2(
+		_elm_lang$core$Debug$log,
+		'x, y',
+		{ctor: '_Tuple2', _0: _p3, _1: _p4});
+	return (_elm_lang$core$Native_Utils.cmp(partial, 0) < 0) ? (_elm_lang$core$Basics$pi + partial) : partial;
+};
+var _folkertdev$svg_path_dsl$Svg_Path_Point$rotate = F2(
+	function (angle, _p5) {
+		var _p6 = _p5;
+		var _p9 = _p6._1;
+		var _p8 = _p6._0;
+		var _p7 = {
+			ctor: '_Tuple2',
+			_0: _elm_lang$core$Basics$cos(angle),
+			_1: _elm_lang$core$Basics$sin(angle)
+		};
+		var cs = _p7._0;
+		var sn = _p7._1;
+		return {ctor: '_Tuple2', _0: (_p8 * cs) - (_p9 * sn), _1: (_p8 * sn) + (_p9 * cs)};
+	});
+var _folkertdev$svg_path_dsl$Svg_Path_Point$length = function (_p10) {
+	var _p11 = _p10;
+	var _p13 = _p11._1;
+	var _p12 = _p11._0;
+	return _elm_lang$core$Basics$sqrt((_p12 * _p12) + (_p13 * _p13));
+};
+var _folkertdev$svg_path_dsl$Svg_Path_Point$mul = F2(
+	function (_p14, n) {
+		var _p15 = _p14;
+		return {ctor: '_Tuple2', _0: n * _p15._0, _1: n * _p15._1};
+	});
+var _folkertdev$svg_path_dsl$Svg_Path_Point$point = F2(
+	function (x, y) {
+		return {ctor: '_Tuple2', _0: x, _1: y};
+	});
+var _folkertdev$svg_path_dsl$Svg_Path_Point$div = F2(
+	function (p, n) {
+		return _elm_lang$core$Native_Utils.eq(n, 0) ? A2(_folkertdev$svg_path_dsl$Svg_Path_Point$point, 0, 0) : A2(_folkertdev$svg_path_dsl$Svg_Path_Point$mul, p, 1 / n);
+	});
+var _folkertdev$svg_path_dsl$Svg_Path_Point$normalize = function (v) {
+	return A2(
+		_folkertdev$svg_path_dsl$Svg_Path_Point$div,
+		v,
+		_folkertdev$svg_path_dsl$Svg_Path_Point$length(v));
+};
+var _folkertdev$svg_path_dsl$Svg_Path_Point$negate = function (_p16) {
+	var _p17 = _p16;
+	return {ctor: '_Tuple2', _0: 0 - _p17._0, _1: 0 - _p17._1};
+};
+var _folkertdev$svg_path_dsl$Svg_Path_Point$add = F2(
+	function (_p19, _p18) {
+		var _p20 = _p19;
+		var _p21 = _p18;
+		return {ctor: '_Tuple2', _0: _p20._0 + _p21._0, _1: _p20._1 + _p21._1};
+	});
+var _folkertdev$svg_path_dsl$Svg_Path_Point$sub = F2(
+	function (a, b) {
+		return A2(
+			_folkertdev$svg_path_dsl$Svg_Path_Point$add,
+			a,
+			_folkertdev$svg_path_dsl$Svg_Path_Point$negate(b));
+	});
+var _folkertdev$svg_path_dsl$Svg_Path_Point$direction = F2(
+	function (x, y) {
+		var _p22 = A2(
+			_elm_lang$core$Debug$log,
+			'x, y',
+			{ctor: '_Tuple2', _0: x, _1: y});
+		return A2(
+			_elm_lang$core$Debug$log,
+			'the direction',
+			_folkertdev$svg_path_dsl$Svg_Path_Point$normalize(
+				A2(_folkertdev$svg_path_dsl$Svg_Path_Point$sub, x, y)));
+	});
+
+var _folkertdev$svg_path_dsl$Svg_Path_Instruction$propagate = F2(
+	function (instruction, _p0) {
+		var _p1 = _p0;
+		var _p20 = _p1;
+		var _p19 = _p1.start;
+		var _p18 = _p1.current;
+		var resultContinuation = F2(
+			function (continuation, state) {
+				var _p2 = continuation;
+				switch (_p2.ctor) {
+					case 'QuadContAbsolute':
+						return _elm_lang$core$Native_Utils.update(
+							state,
+							{current: _p2._0});
+					case 'QuadContRelative':
+						return _elm_lang$core$Native_Utils.update(
+							state,
+							{
+								current: A2(_folkertdev$svg_path_dsl$Svg_Path_Point$add, state.current, _p2._0)
+							});
+					case 'CubiContAbsolute':
+						return _elm_lang$core$Native_Utils.update(
+							state,
+							{current: _p2._1});
+					default:
+						return _elm_lang$core$Native_Utils.update(
+							state,
+							{
+								current: A2(_folkertdev$svg_path_dsl$Svg_Path_Point$add, state.current, _p2._1)
+							});
+				}
+			});
+		var _p3 = _p18;
+		var cx = _p3._0;
+		var cy = _p3._1;
+		var _p4 = instruction;
+		switch (_p4.ctor) {
+			case 'Absolute':
+				switch (_p4._0.ctor) {
+					case 'Move':
+						var _p5 = _p4._0._0;
+						return _elm_lang$core$Native_Utils.update(
+							_p20,
+							{
+								current: _p5,
+								direction: A2(_folkertdev$svg_path_dsl$Svg_Path_Point$direction, _p5, _p20.current)
+							});
+					case 'Line':
+						var _p6 = _p4._0._0;
+						return _elm_lang$core$Native_Utils.update(
+							_p20,
+							{
+								current: _p6,
+								direction: A2(_folkertdev$svg_path_dsl$Svg_Path_Point$direction, _p18, _p6)
+							});
+					case 'Vertical':
+						var _p7 = _p4._0._0;
+						return _elm_lang$core$Native_Utils.update(
+							_p20,
+							{
+								current: A2(_folkertdev$svg_path_dsl$Svg_Path_Point$point, cx, _p7),
+								direction: A2(
+									_folkertdev$svg_path_dsl$Svg_Path_Point$direction,
+									_p18,
+									A2(_folkertdev$svg_path_dsl$Svg_Path_Point$point, cx, _p7))
+							});
+					case 'Horizontal':
+						var _p8 = _p4._0._0;
+						return _elm_lang$core$Native_Utils.update(
+							_p20,
+							{
+								current: A2(_folkertdev$svg_path_dsl$Svg_Path_Point$point, _p8, cy),
+								direction: A2(
+									_folkertdev$svg_path_dsl$Svg_Path_Point$direction,
+									_p18,
+									A2(_folkertdev$svg_path_dsl$Svg_Path_Point$point, _p8, cy))
+							});
+					case 'Arc':
+						var _p15 = _p4._0._3;
+						return _elm_lang$core$Native_Utils.update(
+							_p20,
+							{
+								current: _p15,
+								direction: A2(_folkertdev$svg_path_dsl$Svg_Path_Point$direction, _p20.current, _p15)
+							});
+					case 'Quadratic':
+						var _p16 = _p4._0._1;
+						return _elm_lang$core$Native_Utils.update(
+							_p20,
+							{
+								current: _p16,
+								direction: A2(_folkertdev$svg_path_dsl$Svg_Path_Point$direction, _p20.current, _p16)
+							});
+					case 'Cubic':
+						var _p17 = _p4._0._2;
+						return _elm_lang$core$Native_Utils.update(
+							_p20,
+							{
+								current: _p17,
+								direction: A2(_folkertdev$svg_path_dsl$Svg_Path_Point$direction, _p18, _p17)
+							});
+					default:
+						switch (_p4._0._0.ctor) {
+							case 'LineMany':
+								var _p12 = _p4._0._0._0;
+								var _p9 = A2(
+									_elm_lang$core$List$drop,
+									_elm_lang$core$List$length(_p12) - 2,
+									_p12);
+								_v3_2:
+								do {
+									if (_p9.ctor === '::') {
+										if (_p9._1.ctor === '::') {
+											if (_p9._1._1.ctor === '[]') {
+												var _p10 = _p9._1._0;
+												return _elm_lang$core$Native_Utils.update(
+													_p20,
+													{
+														current: _p10,
+														direction: A2(_folkertdev$svg_path_dsl$Svg_Path_Point$direction, _p9._0, _p10)
+													});
+											} else {
+												break _v3_2;
+											}
+										} else {
+											var _p11 = _p9._0;
+											return _elm_lang$core$Native_Utils.update(
+												_p20,
+												{
+													current: _p11,
+													direction: A2(_folkertdev$svg_path_dsl$Svg_Path_Point$direction, _p20.current, _p11)
+												});
+										}
+									} else {
+										break _v3_2;
+									}
+								} while(false);
+								return _p20;
+							case 'QuadraticMany':
+								var newState = A3(
+									_elm_lang$core$List$foldl,
+									resultContinuation,
+									_elm_lang$core$Native_Utils.update(
+										_p20,
+										{current: _p4._0._0._1}),
+									_p4._0._0._2);
+								return _elm_lang$core$Native_Utils.update(
+									newState,
+									{
+										direction: A2(_folkertdev$svg_path_dsl$Svg_Path_Point$direction, _p18, newState.current)
+									});
+							default:
+								var newState = A3(
+									_elm_lang$core$List$foldl,
+									resultContinuation,
+									_elm_lang$core$Native_Utils.update(
+										_p20,
+										{current: _p4._0._0._2}),
+									_p4._0._0._3);
+								return _elm_lang$core$Native_Utils.update(
+									newState,
+									{
+										direction: A2(_folkertdev$svg_path_dsl$Svg_Path_Point$direction, _p18, newState.current)
+									});
+						}
+				}
+			case 'Relative':
+				switch (_p4._0.ctor) {
+					case 'Move':
+						return _elm_lang$core$Native_Utils.update(
+							_p20,
+							{
+								current: A2(_folkertdev$svg_path_dsl$Svg_Path_Point$add, _p4._0._0, _p18)
+							});
+					case 'Line':
+						return _elm_lang$core$Native_Utils.update(
+							_p20,
+							{
+								current: A2(_folkertdev$svg_path_dsl$Svg_Path_Point$add, _p18, _p4._0._0)
+							});
+					case 'Vertical':
+						return _elm_lang$core$Native_Utils.update(
+							_p20,
+							{
+								current: A2(_folkertdev$svg_path_dsl$Svg_Path_Point$point, cx, cy + _p4._0._0)
+							});
+					case 'Horizontal':
+						return _elm_lang$core$Native_Utils.update(
+							_p20,
+							{
+								current: A2(_folkertdev$svg_path_dsl$Svg_Path_Point$point, cx + _p4._0._0, cy)
+							});
+					case 'Arc':
+						var $new = A2(_folkertdev$svg_path_dsl$Svg_Path_Point$add, _p18, _p4._0._3);
+						return _elm_lang$core$Native_Utils.update(
+							_p20,
+							{
+								current: $new,
+								direction: A2(_folkertdev$svg_path_dsl$Svg_Path_Point$direction, _p18, $new)
+							});
+					case 'Quadratic':
+						var $new = A2(_folkertdev$svg_path_dsl$Svg_Path_Point$add, _p18, _p4._0._1);
+						return _elm_lang$core$Native_Utils.update(
+							_p20,
+							{
+								current: $new,
+								direction: A2(_folkertdev$svg_path_dsl$Svg_Path_Point$direction, _p18, $new)
+							});
+					case 'Cubic':
+						var $new = A2(_folkertdev$svg_path_dsl$Svg_Path_Point$add, _p18, _p4._0._2);
+						return _elm_lang$core$Native_Utils.update(
+							_p20,
+							{
+								current: $new,
+								direction: A2(_folkertdev$svg_path_dsl$Svg_Path_Point$direction, _p18, $new)
+							});
+					default:
+						switch (_p4._0._0.ctor) {
+							case 'LineMany':
+								var _p14 = _p4._0._0._0;
+								var newState = A3(
+									_elm_lang$core$List$foldl,
+									F2(
+										function (rel, newState) {
+											return _elm_lang$core$Native_Utils.update(
+												newState,
+												{
+													current: A2(_folkertdev$svg_path_dsl$Svg_Path_Point$add, rel, newState.current)
+												});
+										}),
+									_p20,
+									_p14);
+								var _p13 = A2(
+									_elm_lang$core$List$drop,
+									_elm_lang$core$List$length(_p14) - 2,
+									_p14);
+								_v4_2:
+								do {
+									if (_p13.ctor === '::') {
+										if (_p13._1.ctor === '::') {
+											if (_p13._1._1.ctor === '[]') {
+												return _elm_lang$core$Native_Utils.update(
+													newState,
+													{
+														direction: A2(_folkertdev$svg_path_dsl$Svg_Path_Point$direction, _p13._0, _p13._1._0)
+													});
+											} else {
+												break _v4_2;
+											}
+										} else {
+											return _elm_lang$core$Native_Utils.update(
+												newState,
+												{
+													direction: _folkertdev$svg_path_dsl$Svg_Path_Point$normalize(_p13._0)
+												});
+										}
+									} else {
+										break _v4_2;
+									}
+								} while(false);
+								return newState;
+							case 'QuadraticMany':
+								var newState = A3(
+									_elm_lang$core$List$foldl,
+									resultContinuation,
+									_elm_lang$core$Native_Utils.update(
+										_p20,
+										{
+											current: A2(_folkertdev$svg_path_dsl$Svg_Path_Point$add, _p18, _p4._0._0._1)
+										}),
+									_p4._0._0._2);
+								return _elm_lang$core$Native_Utils.update(
+									newState,
+									{
+										direction: A2(_folkertdev$svg_path_dsl$Svg_Path_Point$direction, _p18, newState.current)
+									});
+							default:
+								var newState = A3(
+									_elm_lang$core$List$foldl,
+									resultContinuation,
+									_elm_lang$core$Native_Utils.update(
+										_p20,
+										{
+											current: A2(_folkertdev$svg_path_dsl$Svg_Path_Point$add, _p18, _p4._0._0._2)
+										}),
+									_p4._0._0._3);
+								return _elm_lang$core$Native_Utils.update(
+									newState,
+									{
+										direction: A2(_folkertdev$svg_path_dsl$Svg_Path_Point$direction, _p18, newState.current)
+									});
+						}
+				}
+			default:
+				return _elm_lang$core$Native_Utils.update(
+					_p20,
+					{
+						current: _p19,
+						direction: A2(_folkertdev$svg_path_dsl$Svg_Path_Point$direction, _p18, _p19)
+					});
+		}
+	});
+var _folkertdev$svg_path_dsl$Svg_Path_Instruction$fixed = F2(
+	function (i, n) {
+		var pow = _elm_lang$core$Basics$toFloat(
+			Math.pow(10, i));
+		var nInt = _elm_lang$core$Basics$round(n * pow);
+		return _elm_lang$core$Basics$toString(
+			_elm_lang$core$Basics$toFloat(nInt) / pow);
+	});
+var _folkertdev$svg_path_dsl$Svg_Path_Instruction$roundToAtMost = function (doRound) {
+	var _p21 = doRound;
+	if (_p21.ctor === 'Nothing') {
+		return _elm_lang$core$Basics$toString;
+	} else {
+		return _folkertdev$svg_path_dsl$Svg_Path_Instruction$fixed(_p21._0);
+	}
+};
+var _folkertdev$svg_path_dsl$Svg_Path_Instruction$formatPointWithPrecision = F2(
+	function (dp, _p22) {
+		var _p23 = _p22;
+		return A2(
+			_elm_lang$core$Basics_ops['++'],
+			A2(_folkertdev$svg_path_dsl$Svg_Path_Instruction$roundToAtMost, dp, _p23._0),
+			A2(
+				_elm_lang$core$Basics_ops['++'],
+				',',
+				A2(_folkertdev$svg_path_dsl$Svg_Path_Instruction$roundToAtMost, dp, _p23._1)));
+	});
+var _folkertdev$svg_path_dsl$Svg_Path_Instruction$Relative = function (a) {
+	return {ctor: 'Relative', _0: a};
+};
+var _folkertdev$svg_path_dsl$Svg_Path_Instruction$Absolute = function (a) {
+	return {ctor: 'Absolute', _0: a};
+};
+var _folkertdev$svg_path_dsl$Svg_Path_Instruction$ClosePath = {ctor: 'ClosePath'};
+var _folkertdev$svg_path_dsl$Svg_Path_Instruction$Many = function (a) {
+	return {ctor: 'Many', _0: a};
+};
+var _folkertdev$svg_path_dsl$Svg_Path_Instruction$Cubic = F3(
+	function (a, b, c) {
+		return {ctor: 'Cubic', _0: a, _1: b, _2: c};
+	});
+var _folkertdev$svg_path_dsl$Svg_Path_Instruction$Quadratic = F2(
+	function (a, b) {
+		return {ctor: 'Quadratic', _0: a, _1: b};
+	});
+var _folkertdev$svg_path_dsl$Svg_Path_Instruction$instructionToString = F2(
+	function (dp, instruction) {
+		var concatMapString = function (f) {
+			return A2(
+				_elm_lang$core$List$foldl,
+				F2(
+					function (e, accum) {
+						return A2(
+							_elm_lang$core$Basics_ops['++'],
+							accum,
+							f(e));
+					}),
+				'');
+		};
+		var doRound = _folkertdev$svg_path_dsl$Svg_Path_Instruction$roundToAtMost(dp);
+		var letterAndFloat = F2(
+			function (letter, num) {
+				return A2(
+					_elm_lang$core$Basics_ops['++'],
+					letter,
+					doRound(num));
+			});
+		var formatPoint = _folkertdev$svg_path_dsl$Svg_Path_Instruction$formatPointWithPrecision(dp);
+		var letterAndPoint = F2(
+			function (letter, point) {
+				return A2(
+					_elm_lang$core$Basics_ops['++'],
+					letter,
+					formatPoint(point));
+			});
+		var letterAndPoints = F2(
+			function (letter, points) {
+				return A2(
+					_elm_lang$core$Basics_ops['++'],
+					letter,
+					A2(
+						_elm_lang$core$String$join,
+						' ',
+						A2(_elm_lang$core$List$map, formatPoint, points)));
+			});
+		var letterAndPoint2 = F3(
+			function (letter, p1, p2) {
+				return A2(
+					_elm_lang$core$Basics_ops['++'],
+					letter,
+					A2(
+						_elm_lang$core$Basics_ops['++'],
+						formatPoint(p1),
+						A2(
+							_elm_lang$core$Basics_ops['++'],
+							' ',
+							formatPoint(p2))));
+			});
+		var formatCurveContinuation = function (continuation) {
+			var _p24 = continuation;
+			switch (_p24.ctor) {
+				case 'QuadContAbsolute':
+					return A2(letterAndPoint, 'T', _p24._0);
+				case 'QuadContRelative':
+					return A2(letterAndPoint, 't', _p24._0);
+				case 'CubiContAbsolute':
+					return A3(letterAndPoint2, 'S', _p24._0, _p24._1);
+				default:
+					return A3(letterAndPoint2, 's', _p24._0, _p24._1);
+			}
+		};
+		var letterAndPoint3 = F4(
+			function (letter, p1, p2, p3) {
+				return A2(
+					_elm_lang$core$Basics_ops['++'],
+					letter,
+					A2(
+						_elm_lang$core$Basics_ops['++'],
+						formatPoint(p1),
+						A2(
+							_elm_lang$core$Basics_ops['++'],
+							' ',
+							A2(
+								_elm_lang$core$Basics_ops['++'],
+								formatPoint(p2),
+								A2(
+									_elm_lang$core$Basics_ops['++'],
+									' ',
+									formatPoint(p3))))));
+			});
+		var _p25 = instruction;
+		switch (_p25.ctor) {
+			case 'ClosePath':
+				return 'Z';
+			case 'Absolute':
+				switch (_p25._0.ctor) {
+					case 'Move':
+						return A2(letterAndPoint, 'M', _p25._0._0);
+					case 'Line':
+						return A2(letterAndPoint, 'L', _p25._0._0);
+					case 'Vertical':
+						return A2(letterAndFloat, 'V', _p25._0._0);
+					case 'Horizontal':
+						return A2(letterAndFloat, 'H', _p25._0._0);
+					case 'Quadratic':
+						return A3(letterAndPoint2, 'Q', _p25._0._0, _p25._0._1);
+					case 'Cubic':
+						return A4(letterAndPoint3, 'C', _p25._0._0, _p25._0._1, _p25._0._2);
+					case 'Many':
+						switch (_p25._0._0.ctor) {
+							case 'LineMany':
+								var _p27 = _p25._0._0._0;
+								var _p26 = _p27;
+								if (_p26.ctor === '[]') {
+									return '';
+								} else {
+									return A2(letterAndPoints, 'L', _p27);
+								}
+							case 'QuadraticMany':
+								return A2(
+									_elm_lang$core$Basics_ops['++'],
+									A2(
+										_folkertdev$svg_path_dsl$Svg_Path_Instruction$instructionToString,
+										dp,
+										_folkertdev$svg_path_dsl$Svg_Path_Instruction$Absolute(
+											A2(_folkertdev$svg_path_dsl$Svg_Path_Instruction$Quadratic, _p25._0._0._0, _p25._0._0._1))),
+									A2(concatMapString, formatCurveContinuation, _p25._0._0._2));
+							default:
+								return A2(
+									_elm_lang$core$Basics_ops['++'],
+									A2(
+										_folkertdev$svg_path_dsl$Svg_Path_Instruction$instructionToString,
+										dp,
+										_folkertdev$svg_path_dsl$Svg_Path_Instruction$Absolute(
+											A3(_folkertdev$svg_path_dsl$Svg_Path_Instruction$Cubic, _p25._0._0._0, _p25._0._0._1, _p25._0._0._2))),
+									A2(concatMapString, formatCurveContinuation, _p25._0._0._3));
+						}
+					default:
+						var sweep = function () {
+							var _p30 = _p25._0._2._1;
+							if (_p30.ctor === 'AntiClockwise') {
+								return '0';
+							} else {
+								return '1';
+							}
+						}();
+						var arc = function () {
+							var _p31 = _p25._0._2._0;
+							if (_p31.ctor === 'Smallest') {
+								return '0';
+							} else {
+								return '1';
+							}
+						}();
+						return A2(
+							_elm_lang$core$Basics_ops['++'],
+							'A',
+							A2(
+								_elm_lang$core$Basics_ops['++'],
+								formatPoint(
+									{ctor: '_Tuple2', _0: _p25._0._0._0, _1: _p25._0._0._1}),
+								A2(
+									_elm_lang$core$Basics_ops['++'],
+									' ',
+									A2(
+										_elm_lang$core$Basics_ops['++'],
+										doRound(_p25._0._1),
+										A2(
+											_elm_lang$core$Basics_ops['++'],
+											' ',
+											A2(
+												_elm_lang$core$Basics_ops['++'],
+												arc,
+												A2(
+													_elm_lang$core$Basics_ops['++'],
+													',',
+													A2(
+														_elm_lang$core$Basics_ops['++'],
+														sweep,
+														A2(
+															_elm_lang$core$Basics_ops['++'],
+															' ',
+															formatPoint(
+																{ctor: '_Tuple2', _0: _p25._0._3._0, _1: _p25._0._3._1}))))))))));
+				}
+			default:
+				switch (_p25._0.ctor) {
+					case 'Move':
+						return A2(letterAndPoint, 'm', _p25._0._0);
+					case 'Line':
+						return A2(letterAndPoint, 'l', _p25._0._0);
+					case 'Vertical':
+						return A2(letterAndFloat, 'v', _p25._0._0);
+					case 'Horizontal':
+						return A2(letterAndFloat, 'h', _p25._0._0);
+					case 'Quadratic':
+						return A3(letterAndPoint2, 'q', _p25._0._0, _p25._0._1);
+					case 'Cubic':
+						return A4(letterAndPoint3, 'c', _p25._0._0, _p25._0._1, _p25._0._2);
+					case 'Many':
+						switch (_p25._0._0.ctor) {
+							case 'LineMany':
+								var _p29 = _p25._0._0._0;
+								var _p28 = _p29;
+								if (_p28.ctor === '[]') {
+									return '';
+								} else {
+									return A2(letterAndPoints, 'l', _p29);
+								}
+							case 'QuadraticMany':
+								return A2(
+									_elm_lang$core$Basics_ops['++'],
+									A2(
+										_folkertdev$svg_path_dsl$Svg_Path_Instruction$instructionToString,
+										dp,
+										_folkertdev$svg_path_dsl$Svg_Path_Instruction$Relative(
+											A2(_folkertdev$svg_path_dsl$Svg_Path_Instruction$Quadratic, _p25._0._0._0, _p25._0._0._1))),
+									A2(concatMapString, formatCurveContinuation, _p25._0._0._2));
+							default:
+								return A2(
+									_elm_lang$core$Basics_ops['++'],
+									A2(
+										_folkertdev$svg_path_dsl$Svg_Path_Instruction$instructionToString,
+										dp,
+										_folkertdev$svg_path_dsl$Svg_Path_Instruction$Relative(
+											A3(_folkertdev$svg_path_dsl$Svg_Path_Instruction$Cubic, _p25._0._0._0, _p25._0._0._1, _p25._0._0._2))),
+									A2(concatMapString, formatCurveContinuation, _p25._0._0._3));
+						}
+					default:
+						var sweep = function () {
+							var _p32 = _p25._0._2._1;
+							if (_p32.ctor === 'AntiClockwise') {
+								return '0';
+							} else {
+								return '1';
+							}
+						}();
+						var arc = function () {
+							var _p33 = _p25._0._2._0;
+							if (_p33.ctor === 'Smallest') {
+								return '0';
+							} else {
+								return '1';
+							}
+						}();
+						return A2(
+							_elm_lang$core$Basics_ops['++'],
+							'a',
+							A2(
+								_elm_lang$core$Basics_ops['++'],
+								formatPoint(
+									{ctor: '_Tuple2', _0: _p25._0._0._0, _1: _p25._0._0._1}),
+								A2(
+									_elm_lang$core$Basics_ops['++'],
+									' ',
+									A2(
+										_elm_lang$core$Basics_ops['++'],
+										doRound(_p25._0._1),
+										A2(
+											_elm_lang$core$Basics_ops['++'],
+											' ',
+											A2(
+												_elm_lang$core$Basics_ops['++'],
+												arc,
+												A2(
+													_elm_lang$core$Basics_ops['++'],
+													',',
+													A2(
+														_elm_lang$core$Basics_ops['++'],
+														sweep,
+														A2(
+															_elm_lang$core$Basics_ops['++'],
+															' ',
+															formatPoint(
+																{ctor: '_Tuple2', _0: _p25._0._3._0, _1: _p25._0._3._1}))))))))));
+				}
+		}
+	});
+var _folkertdev$svg_path_dsl$Svg_Path_Instruction$Arc = F4(
+	function (a, b, c, d) {
+		return {ctor: 'Arc', _0: a, _1: b, _2: c, _3: d};
+	});
+var _folkertdev$svg_path_dsl$Svg_Path_Instruction$Horizontal = function (a) {
+	return {ctor: 'Horizontal', _0: a};
+};
+var _folkertdev$svg_path_dsl$Svg_Path_Instruction$Vertical = function (a) {
+	return {ctor: 'Vertical', _0: a};
+};
+var _folkertdev$svg_path_dsl$Svg_Path_Instruction$Line = function (a) {
+	return {ctor: 'Line', _0: a};
+};
+var _folkertdev$svg_path_dsl$Svg_Path_Instruction$Move = function (a) {
+	return {ctor: 'Move', _0: a};
+};
+var _folkertdev$svg_path_dsl$Svg_Path_Instruction$CubicMany = F4(
+	function (a, b, c, d) {
+		return {ctor: 'CubicMany', _0: a, _1: b, _2: c, _3: d};
+	});
+var _folkertdev$svg_path_dsl$Svg_Path_Instruction$QuadraticMany = F3(
+	function (a, b, c) {
+		return {ctor: 'QuadraticMany', _0: a, _1: b, _2: c};
+	});
+var _folkertdev$svg_path_dsl$Svg_Path_Instruction$LineMany = function (a) {
+	return {ctor: 'LineMany', _0: a};
+};
+var _folkertdev$svg_path_dsl$Svg_Path_Instruction$CubiContRelative = F2(
+	function (a, b) {
+		return {ctor: 'CubiContRelative', _0: a, _1: b};
+	});
+var _folkertdev$svg_path_dsl$Svg_Path_Instruction$CubiContAbsolute = F2(
+	function (a, b) {
+		return {ctor: 'CubiContAbsolute', _0: a, _1: b};
+	});
+var _folkertdev$svg_path_dsl$Svg_Path_Instruction$QuadContRelative = function (a) {
+	return {ctor: 'QuadContRelative', _0: a};
+};
+var _folkertdev$svg_path_dsl$Svg_Path_Instruction$QuadContAbsolute = function (a) {
+	return {ctor: 'QuadContAbsolute', _0: a};
+};
+var _folkertdev$svg_path_dsl$Svg_Path_Instruction$mapAbsoluteCurveCont = F2(
+	function (f, curveCont) {
+		var _p34 = curveCont;
+		switch (_p34.ctor) {
+			case 'QuadContAbsolute':
+				return _folkertdev$svg_path_dsl$Svg_Path_Instruction$QuadContAbsolute(
+					f(_p34._0));
+			case 'CubiContAbsolute':
+				return A2(
+					_folkertdev$svg_path_dsl$Svg_Path_Instruction$CubiContAbsolute,
+					f(_p34._0),
+					f(_p34._1));
+			default:
+				return curveCont;
+		}
+	});
+var _folkertdev$svg_path_dsl$Svg_Path_Instruction$mapAbsolute = F2(
+	function (f, instruction) {
+		var _p35 = instruction;
+		switch (_p35.ctor) {
+			case 'ClosePath':
+				return _folkertdev$svg_path_dsl$Svg_Path_Instruction$ClosePath;
+			case 'Relative':
+				var _p36 = _p35._0;
+				if (_p36.ctor === 'Many') {
+					var _p38 = _p36._0;
+					var _p37 = _p38;
+					switch (_p37.ctor) {
+						case 'QuadraticMany':
+							return _folkertdev$svg_path_dsl$Svg_Path_Instruction$Relative(
+								_folkertdev$svg_path_dsl$Svg_Path_Instruction$Many(
+									A3(
+										_folkertdev$svg_path_dsl$Svg_Path_Instruction$QuadraticMany,
+										_p37._0,
+										_p37._1,
+										A2(
+											_elm_lang$core$List$map,
+											_folkertdev$svg_path_dsl$Svg_Path_Instruction$mapAbsoluteCurveCont(f),
+											_p37._2))));
+						case 'CubicMany':
+							return _folkertdev$svg_path_dsl$Svg_Path_Instruction$Relative(
+								_folkertdev$svg_path_dsl$Svg_Path_Instruction$Many(
+									A4(
+										_folkertdev$svg_path_dsl$Svg_Path_Instruction$CubicMany,
+										_p37._0,
+										_p37._1,
+										_p37._2,
+										A2(
+											_elm_lang$core$List$map,
+											_folkertdev$svg_path_dsl$Svg_Path_Instruction$mapAbsoluteCurveCont(f),
+											_p37._3))));
+						default:
+							return _folkertdev$svg_path_dsl$Svg_Path_Instruction$Relative(
+								_folkertdev$svg_path_dsl$Svg_Path_Instruction$Many(_p38));
+					}
+				} else {
+					return instruction;
+				}
+			default:
+				return _folkertdev$svg_path_dsl$Svg_Path_Instruction$Absolute(
+					function () {
+						var _p39 = _p35._0;
+						switch (_p39.ctor) {
+							case 'Move':
+								return _folkertdev$svg_path_dsl$Svg_Path_Instruction$Move(
+									f(_p39._0));
+							case 'Line':
+								return _folkertdev$svg_path_dsl$Svg_Path_Instruction$Line(
+									f(_p39._0));
+							case 'Arc':
+								return A4(
+									_folkertdev$svg_path_dsl$Svg_Path_Instruction$Arc,
+									_p39._0,
+									_p39._1,
+									_p39._2,
+									f(_p39._3));
+							case 'Quadratic':
+								return A2(
+									_folkertdev$svg_path_dsl$Svg_Path_Instruction$Quadratic,
+									f(_p39._0),
+									f(_p39._1));
+							case 'Cubic':
+								return A3(
+									_folkertdev$svg_path_dsl$Svg_Path_Instruction$Cubic,
+									f(_p39._0),
+									f(_p39._1),
+									f(_p39._2));
+							case 'Horizontal':
+								return _folkertdev$svg_path_dsl$Svg_Path_Instruction$Horizontal(
+									_elm_lang$core$Tuple$first(
+										f(
+											{ctor: '_Tuple2', _0: _p39._0, _1: 0})));
+							case 'Vertical':
+								return _folkertdev$svg_path_dsl$Svg_Path_Instruction$Vertical(
+									_elm_lang$core$Tuple$second(
+										f(
+											{ctor: '_Tuple2', _0: 0, _1: _p39._0})));
+							default:
+								var _p40 = _p39._0;
+								switch (_p40.ctor) {
+									case 'LineMany':
+										return _folkertdev$svg_path_dsl$Svg_Path_Instruction$Many(
+											_folkertdev$svg_path_dsl$Svg_Path_Instruction$LineMany(
+												A2(_elm_lang$core$List$map, f, _p40._0)));
+									case 'QuadraticMany':
+										return _folkertdev$svg_path_dsl$Svg_Path_Instruction$Many(
+											A3(
+												_folkertdev$svg_path_dsl$Svg_Path_Instruction$QuadraticMany,
+												_p40._0,
+												_p40._1,
+												A2(
+													_elm_lang$core$List$map,
+													_folkertdev$svg_path_dsl$Svg_Path_Instruction$mapAbsoluteCurveCont(f),
+													_p40._2)));
+									default:
+										return _folkertdev$svg_path_dsl$Svg_Path_Instruction$Many(
+											A4(
+												_folkertdev$svg_path_dsl$Svg_Path_Instruction$CubicMany,
+												_p40._0,
+												_p40._1,
+												_p40._2,
+												A2(
+													_elm_lang$core$List$map,
+													_folkertdev$svg_path_dsl$Svg_Path_Instruction$mapAbsoluteCurveCont(f),
+													_p40._3)));
+								}
+						}
+					}());
+		}
+	});
+var _folkertdev$svg_path_dsl$Svg_Path_Instruction$Largest = {ctor: 'Largest'};
+var _folkertdev$svg_path_dsl$Svg_Path_Instruction$Smallest = {ctor: 'Smallest'};
+var _folkertdev$svg_path_dsl$Svg_Path_Instruction$Clockwise = {ctor: 'Clockwise'};
+var _folkertdev$svg_path_dsl$Svg_Path_Instruction$AntiClockwise = {ctor: 'AntiClockwise'};
+
+var _folkertdev$svg_path_dsl$Svg_Path_Subpath$subpathToInstructions = F2(
+	function (_p0, accum) {
+		var _p1 = _p0;
+		var _p3 = _p1._0._0;
+		var _p2 = _p1._2;
+		return _p1._1._0 ? A2(
+			_elm_lang$core$Basics_ops['++'],
+			{ctor: '::', _0: _p3, _1: _p2},
+			{ctor: '::', _0: _folkertdev$svg_path_dsl$Svg_Path_Instruction$ClosePath, _1: accum}) : A2(
+			_elm_lang$core$Basics_ops['++'],
+			{ctor: '::', _0: _p3, _1: _p2},
+			accum);
+	});
+var _folkertdev$svg_path_dsl$Svg_Path_Subpath$Subpath = F3(
+	function (a, b, c) {
+		return {ctor: 'Subpath', _0: a, _1: b, _2: c};
+	});
+var _folkertdev$svg_path_dsl$Svg_Path_Subpath$subpath = _folkertdev$svg_path_dsl$Svg_Path_Subpath$Subpath;
+var _folkertdev$svg_path_dsl$Svg_Path_Subpath$CloseOption = function (a) {
+	return {ctor: 'CloseOption', _0: a};
+};
+var _folkertdev$svg_path_dsl$Svg_Path_Subpath$StartingPoint = function (a) {
+	return {ctor: 'StartingPoint', _0: a};
+};
+var _folkertdev$svg_path_dsl$Svg_Path_Subpath$mapAbsolute = F2(
+	function (f, _p4) {
+		var _p5 = _p4;
+		return A3(
+			_folkertdev$svg_path_dsl$Svg_Path_Subpath$Subpath,
+			_folkertdev$svg_path_dsl$Svg_Path_Subpath$StartingPoint(
+				A2(_folkertdev$svg_path_dsl$Svg_Path_Instruction$mapAbsolute, f, _p5._0._0)),
+			_p5._1,
+			A2(
+				_elm_lang$core$List$map,
+				_folkertdev$svg_path_dsl$Svg_Path_Instruction$mapAbsolute(f),
+				_p5._2));
+	});
+
+var _folkertdev$svg_path_dsl$Svg_Path$quadraticContinueBy = _folkertdev$svg_path_dsl$Svg_Path_Instruction$QuadContRelative;
+var _folkertdev$svg_path_dsl$Svg_Path$quadraticContinueTo = _folkertdev$svg_path_dsl$Svg_Path_Instruction$QuadContAbsolute;
+var _folkertdev$svg_path_dsl$Svg_Path$cubicContinueBy = _folkertdev$svg_path_dsl$Svg_Path_Instruction$CubiContRelative;
+var _folkertdev$svg_path_dsl$Svg_Path$cubicContinueTo = _folkertdev$svg_path_dsl$Svg_Path_Instruction$CubiContAbsolute;
+var _folkertdev$svg_path_dsl$Svg_Path$cubicByMany = F3(
+	function (c1, c2, p) {
+		return function (_p0) {
+			return _folkertdev$svg_path_dsl$Svg_Path_Instruction$Absolute(
+				_folkertdev$svg_path_dsl$Svg_Path_Instruction$Many(
+					A4(_folkertdev$svg_path_dsl$Svg_Path_Instruction$CubicMany, c1, c2, p, _p0)));
+		};
+	});
+var _folkertdev$svg_path_dsl$Svg_Path$cubicToMany = F3(
+	function (c1, c2, p) {
+		return function (_p1) {
+			return _folkertdev$svg_path_dsl$Svg_Path_Instruction$Absolute(
+				_folkertdev$svg_path_dsl$Svg_Path_Instruction$Many(
+					A4(_folkertdev$svg_path_dsl$Svg_Path_Instruction$CubicMany, c1, c2, p, _p1)));
+		};
+	});
+var _folkertdev$svg_path_dsl$Svg_Path$cubicBy = F3(
+	function (c1, c2, p) {
+		return _folkertdev$svg_path_dsl$Svg_Path_Instruction$Relative(
+			A3(_folkertdev$svg_path_dsl$Svg_Path_Instruction$Cubic, c1, c2, p));
+	});
+var _folkertdev$svg_path_dsl$Svg_Path$cubicTo = F3(
+	function (c1, c2, p) {
+		return _folkertdev$svg_path_dsl$Svg_Path_Instruction$Absolute(
+			A3(_folkertdev$svg_path_dsl$Svg_Path_Instruction$Cubic, c1, c2, p));
+	});
+var _folkertdev$svg_path_dsl$Svg_Path$quadraticByMany = F3(
+	function (c, p, cs) {
+		return function (_p2) {
+			return _folkertdev$svg_path_dsl$Svg_Path_Instruction$Relative(
+				_folkertdev$svg_path_dsl$Svg_Path_Instruction$Many(_p2));
+		}(
+			A3(_folkertdev$svg_path_dsl$Svg_Path_Instruction$QuadraticMany, c, p, cs));
+	});
+var _folkertdev$svg_path_dsl$Svg_Path$quadraticToMany = F3(
+	function (c, p, cs) {
+		return function (_p3) {
+			return _folkertdev$svg_path_dsl$Svg_Path_Instruction$Absolute(
+				_folkertdev$svg_path_dsl$Svg_Path_Instruction$Many(_p3));
+		}(
+			A3(_folkertdev$svg_path_dsl$Svg_Path_Instruction$QuadraticMany, c, p, cs));
+	});
+var _folkertdev$svg_path_dsl$Svg_Path$quadraticBy = function (c) {
+	return function (_p4) {
+		return _folkertdev$svg_path_dsl$Svg_Path_Instruction$Relative(
+			A2(_folkertdev$svg_path_dsl$Svg_Path_Instruction$Quadratic, c, _p4));
+	};
+};
+var _folkertdev$svg_path_dsl$Svg_Path$quadraticTo = function (c) {
+	return function (_p5) {
+		return _folkertdev$svg_path_dsl$Svg_Path_Instruction$Absolute(
+			A2(_folkertdev$svg_path_dsl$Svg_Path_Instruction$Quadratic, c, _p5));
+	};
+};
+var _folkertdev$svg_path_dsl$Svg_Path$toStart = _folkertdev$svg_path_dsl$Svg_Path_Instruction$ClosePath;
+var _folkertdev$svg_path_dsl$Svg_Path$smallestArc = _folkertdev$svg_path_dsl$Svg_Path_Instruction$Smallest;
+var _folkertdev$svg_path_dsl$Svg_Path$largestArc = _folkertdev$svg_path_dsl$Svg_Path_Instruction$Largest;
+var _folkertdev$svg_path_dsl$Svg_Path$antiClockwise = _folkertdev$svg_path_dsl$Svg_Path_Instruction$AntiClockwise;
+var _folkertdev$svg_path_dsl$Svg_Path$clockwise = _folkertdev$svg_path_dsl$Svg_Path_Instruction$Clockwise;
+var _folkertdev$svg_path_dsl$Svg_Path$arcBy = F4(
+	function (radius, xstartangle, _p6, point) {
+		var _p7 = _p6;
+		return _folkertdev$svg_path_dsl$Svg_Path_Instruction$Relative(
+			A4(
+				_folkertdev$svg_path_dsl$Svg_Path_Instruction$Arc,
+				radius,
+				xstartangle,
+				{ctor: '_Tuple2', _0: _p7._0, _1: _p7._1},
+				point));
+	});
+var _folkertdev$svg_path_dsl$Svg_Path$arcTo = F4(
+	function (radius, xstartangle, _p8, point) {
+		var _p9 = _p8;
+		return _folkertdev$svg_path_dsl$Svg_Path_Instruction$Absolute(
+			A4(
+				_folkertdev$svg_path_dsl$Svg_Path_Instruction$Arc,
+				radius,
+				xstartangle,
+				{ctor: '_Tuple2', _0: _p9._0, _1: _p9._1},
+				point));
+	});
+var _folkertdev$svg_path_dsl$Svg_Path$horizontalBy = function (_p10) {
+	return _folkertdev$svg_path_dsl$Svg_Path_Instruction$Relative(
+		_folkertdev$svg_path_dsl$Svg_Path_Instruction$Horizontal(_p10));
+};
+var _folkertdev$svg_path_dsl$Svg_Path$horizontalTo = function (_p11) {
+	return _folkertdev$svg_path_dsl$Svg_Path_Instruction$Absolute(
+		_folkertdev$svg_path_dsl$Svg_Path_Instruction$Horizontal(_p11));
+};
+var _folkertdev$svg_path_dsl$Svg_Path$verticalBy = function (_p12) {
+	return _folkertdev$svg_path_dsl$Svg_Path_Instruction$Relative(
+		_folkertdev$svg_path_dsl$Svg_Path_Instruction$Vertical(_p12));
+};
+var _folkertdev$svg_path_dsl$Svg_Path$verticalTo = function (_p13) {
+	return _folkertdev$svg_path_dsl$Svg_Path_Instruction$Absolute(
+		_folkertdev$svg_path_dsl$Svg_Path_Instruction$Vertical(_p13));
+};
+var _folkertdev$svg_path_dsl$Svg_Path$lineByMany = function (_p14) {
+	return _folkertdev$svg_path_dsl$Svg_Path_Instruction$Relative(
+		_folkertdev$svg_path_dsl$Svg_Path_Instruction$Many(
+			_folkertdev$svg_path_dsl$Svg_Path_Instruction$LineMany(_p14)));
+};
+var _folkertdev$svg_path_dsl$Svg_Path$lineBy = function (_p15) {
+	return _folkertdev$svg_path_dsl$Svg_Path_Instruction$Relative(
+		_folkertdev$svg_path_dsl$Svg_Path_Instruction$Line(_p15));
+};
+var _folkertdev$svg_path_dsl$Svg_Path$lineToMany = function (_p16) {
+	return _folkertdev$svg_path_dsl$Svg_Path_Instruction$Absolute(
+		_folkertdev$svg_path_dsl$Svg_Path_Instruction$Many(
+			_folkertdev$svg_path_dsl$Svg_Path_Instruction$LineMany(_p16)));
+};
+var _folkertdev$svg_path_dsl$Svg_Path$lineTo = function (_p17) {
+	return _folkertdev$svg_path_dsl$Svg_Path_Instruction$Absolute(
+		_folkertdev$svg_path_dsl$Svg_Path_Instruction$Line(_p17));
+};
+var _folkertdev$svg_path_dsl$Svg_Path$instructionsToString = function (maxNumOfDecimals) {
+	return function (_p18) {
+		return A2(
+			_elm_lang$core$String$join,
+			' ',
+			A2(
+				_elm_lang$core$List$map,
+				_folkertdev$svg_path_dsl$Svg_Path_Instruction$instructionToString(maxNumOfDecimals),
+				_p18));
+	};
+};
+var _folkertdev$svg_path_dsl$Svg_Path$instructionsToAttribute = function (maxNumOfDecimals) {
+	return function (_p19) {
+		return _elm_lang$svg$Svg_Attributes$d(
+			A2(_folkertdev$svg_path_dsl$Svg_Path$instructionsToString, maxNumOfDecimals, _p19));
+	};
+};
+var _folkertdev$svg_path_dsl$Svg_Path$instructionToString = _folkertdev$svg_path_dsl$Svg_Path_Instruction$instructionToString;
+var _folkertdev$svg_path_dsl$Svg_Path$open = _folkertdev$svg_path_dsl$Svg_Path_Subpath$CloseOption(false);
+var _folkertdev$svg_path_dsl$Svg_Path$closed = _folkertdev$svg_path_dsl$Svg_Path_Subpath$CloseOption(true);
+var _folkertdev$svg_path_dsl$Svg_Path$moveBy = function (_p20) {
+	return _folkertdev$svg_path_dsl$Svg_Path_Subpath$StartingPoint(
+		_folkertdev$svg_path_dsl$Svg_Path_Instruction$Relative(
+			_folkertdev$svg_path_dsl$Svg_Path_Instruction$Move(_p20)));
+};
+var _folkertdev$svg_path_dsl$Svg_Path$startAt = function (_p21) {
+	return _folkertdev$svg_path_dsl$Svg_Path_Subpath$StartingPoint(
+		_folkertdev$svg_path_dsl$Svg_Path_Instruction$Absolute(
+			_folkertdev$svg_path_dsl$Svg_Path_Instruction$Move(_p21)));
+};
+var _folkertdev$svg_path_dsl$Svg_Path$subpath = _folkertdev$svg_path_dsl$Svg_Path_Subpath$subpath;
+var _folkertdev$svg_path_dsl$Svg_Path$emptySubpath = A3(
+	_folkertdev$svg_path_dsl$Svg_Path$subpath,
+	_folkertdev$svg_path_dsl$Svg_Path$moveBy(
+		{ctor: '_Tuple2', _0: 0, _1: 0}),
+	_folkertdev$svg_path_dsl$Svg_Path$open,
+	{ctor: '[]'});
+var _folkertdev$svg_path_dsl$Svg_Path$pathToStringWithPrecision = F2(
+	function (decimalPlaces, path) {
+		return A2(
+			_folkertdev$svg_path_dsl$Svg_Path$instructionsToString,
+			_elm_lang$core$Maybe$Just(decimalPlaces),
+			A3(
+				_elm_lang$core$List$foldr,
+				_folkertdev$svg_path_dsl$Svg_Path_Subpath$subpathToInstructions,
+				{ctor: '[]'},
+				path));
+	});
+var _folkertdev$svg_path_dsl$Svg_Path$pathToAttribute = function (path) {
+	return _elm_lang$svg$Svg_Attributes$d(
+		A2(
+			_folkertdev$svg_path_dsl$Svg_Path$instructionsToString,
+			_elm_lang$core$Maybe$Nothing,
+			A3(
+				_elm_lang$core$List$foldr,
+				_folkertdev$svg_path_dsl$Svg_Path_Subpath$subpathToInstructions,
+				{ctor: '[]'},
+				path)));
+};
+var _folkertdev$svg_path_dsl$Svg_Path$pathToString = function (path) {
+	return A2(
+		_folkertdev$svg_path_dsl$Svg_Path$instructionsToString,
+		_elm_lang$core$Maybe$Nothing,
+		A3(
+			_elm_lang$core$List$foldr,
+			_folkertdev$svg_path_dsl$Svg_Path_Subpath$subpathToInstructions,
+			{ctor: '[]'},
+			path));
 };
 
 var _lukewestby$elm_http_builder$HttpBuilder$replace = F2(
@@ -16463,6 +18047,26 @@ var _rundis$elm_bootstrap$Bootstrap_Table$tbody = F2(
 			{attributes: attributes, rows: rows});
 	});
 
+var _user$project$Animation$lerp = F3(
+	function (x0, x1, u) {
+		return (u * x1) + ((1 - u) * x0);
+	});
+var _user$project$Animation$easeMove = F5(
+	function (startPos, stopPos, duration, startTime, curTime) {
+		var v = A3(_elm_lang$core$Basics$clamp, 0, 1, (curTime - startTime) / duration);
+		return A3(
+			_user$project$Animation$lerp,
+			startPos,
+			stopPos,
+			_elm_community$easing_functions$Ease$outQuint(v));
+	});
+var _user$project$Animation$slide = F3(
+	function (updater, startTime, nowTime) {
+		var currentValue = A4(_user$project$Animation$easeMove, 0, 1, _elm_lang$core$Time$second, startTime);
+		return updater(
+			currentValue(nowTime));
+	});
+
 var _user$project$Util$encodeMaybe = F2(
 	function (encoder, maybeVal) {
 		var _p0 = maybeVal;
@@ -16654,6 +18258,38 @@ var _user$project$Data_Allocation$decoder = A3(
 			'expenses',
 			_elm_lang$core$Json_Decode$list(_user$project$Data_Allocation$expenseDecoder),
 			_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$decode(_user$project$Data_Allocation$Allocation))));
+
+var _user$project$Data_Budget$Budget = F4(
+	function (a, b, c, d) {
+		return {coreExpenses: a, leases: b, leaseAdmin: c, leaseMember: d};
+	});
+var _user$project$Data_Budget$Lease = F4(
+	function (a, b, c, d) {
+		return {currentRent: a, proposedRent: b, name: c, adminName: d};
+	});
+var _user$project$Data_Budget$decoder = function () {
+	var rent = A5(
+		_elm_lang$core$Json_Decode$map4,
+		_user$project$Data_Budget$Lease,
+		A2(_elm_lang$core$Json_Decode$field, 'current_rent', _elm_lang$core$Json_Decode$float),
+		A2(_elm_lang$core$Json_Decode$field, 'proposed_rent', _elm_lang$core$Json_Decode$float),
+		A2(_elm_lang$core$Json_Decode$field, 'name', _elm_lang$core$Json_Decode$string),
+		A2(_elm_lang$core$Json_Decode$field, 'admin_name', _elm_lang$core$Json_Decode$string));
+	return A5(
+		_elm_lang$core$Json_Decode$map4,
+		_user$project$Data_Budget$Budget,
+		A2(_elm_lang$core$Json_Decode$field, 'core_expenses', _elm_lang$core$Json_Decode$float),
+		A2(
+			_elm_lang$core$Json_Decode$field,
+			'leases',
+			_elm_lang$core$Json_Decode$list(rent)),
+		_elm_lang$core$Json_Decode$maybe(
+			A2(_elm_lang$core$Json_Decode$field, 'lease_admin', _elm_lang$core$Json_Decode$string)),
+		A2(
+			_elm_lang$core$Json_Decode$field,
+			'lease_member',
+			_elm_lang$core$Json_Decode$list(_elm_lang$core$Json_Decode$string)));
+}();
 
 var _user$project$Data_User$User = F2(
 	function (a, b) {
@@ -17017,7 +18653,2464 @@ var _user$project$Page_Errored$pageLoadError = F2(
 	});
 
 var _user$project$Request_Helpers$apiUrl = function (url) {
-	return A2(_elm_lang$core$Basics_ops['++'], 'http://localhost:8000/process/api', url);
+	return A2(_elm_lang$core$Basics_ops['++'], '/process/api', url);
+};
+
+var _user$project$Request_Budget$changeRent = F2(
+	function (newRent, session) {
+		var body = _elm_lang$core$Json_Encode$object(
+			{
+				ctor: '::',
+				_0: A2(
+					_user$project$Util_ops['=>'],
+					'new_rent',
+					_elm_lang$core$Json_Encode$int(newRent)),
+				_1: {ctor: '[]'}
+			});
+		return _lukewestby$elm_http_builder$HttpBuilder$toRequest(
+			A2(
+				_user$project$Data_Session$withAuthorization,
+				session,
+				A2(
+					_lukewestby$elm_http_builder$HttpBuilder$withExpect,
+					_elm_lang$http$Http$expectJson(
+						_elm_lang$core$Json_Decode$succeed(
+							{ctor: '_Tuple0'})),
+					A2(
+						_lukewestby$elm_http_builder$HttpBuilder$withJsonBody,
+						body,
+						_lukewestby$elm_http_builder$HttpBuilder$post(
+							_user$project$Request_Helpers$apiUrl('/rent.json'))))));
+	});
+var _user$project$Request_Budget$budget = _lukewestby$elm_http_builder$HttpBuilder$toRequest(
+	A2(
+		_lukewestby$elm_http_builder$HttpBuilder$withExpect,
+		_elm_lang$http$Http$expectJson(
+			A2(_elm_lang$core$Json_Decode$field, 'budget', _user$project$Data_Budget$decoder)),
+		_lukewestby$elm_http_builder$HttpBuilder$get(
+			_user$project$Request_Helpers$apiUrl('/budget.json'))));
+
+var _user$project$View_BarPlot$lerp = F5(
+	function (u, d0, d1, r0, r1) {
+		var ud = (u - d0) / (d1 - d0);
+		return (r1 * ud) + (r0 * (1 - ud));
+	});
+var _user$project$View_BarPlot$polyPoints = function (points) {
+	return A2(
+		_elm_lang$core$String$join,
+		' ',
+		A2(
+			_elm_lang$core$List$map,
+			function (_p0) {
+				var _p1 = _p0;
+				return A2(
+					_elm_lang$core$Basics_ops['++'],
+					_elm_lang$core$Basics$toString(_p1._0),
+					A2(
+						_elm_lang$core$Basics_ops['++'],
+						', ',
+						_elm_lang$core$Basics$toString(_p1._1)));
+			},
+			points));
+};
+var _user$project$View_BarPlot$annotationOptionBuilder = F2(
+	function (option, optionSet) {
+		var _p2 = option;
+		switch (_p2.ctor) {
+			case 'Text':
+				return _elm_lang$core$Native_Utils.update(
+					optionSet,
+					{text: _p2._0});
+			case 'Location':
+				return _elm_lang$core$Native_Utils.update(
+					optionSet,
+					{location: _p2._0});
+			case 'Type':
+				return _elm_lang$core$Native_Utils.update(
+					optionSet,
+					{atype: _p2._0});
+			default:
+				return _elm_lang$core$Native_Utils.update(
+					optionSet,
+					{fontSize: _p2._0});
+		}
+	});
+var _user$project$View_BarPlot$plotToVis = F2(
+	function (params, value) {
+		return A5(_user$project$View_BarPlot$lerp, value, params.minValue, params.maxValue, 0, 100);
+	});
+var _user$project$View_BarPlot$bracket = F4(
+	function (params, location, pleft, pright) {
+		var position = function () {
+			var _p3 = location;
+			switch (_p3.ctor) {
+				case 'Above':
+					return 'translate (0,-0.5) scale(1, -1)';
+				case 'Below':
+					return 'translate (0, 10.5)';
+				default:
+					return A2(
+						_elm_lang$core$Basics_ops['++'],
+						'translate (0, ',
+						A2(
+							_elm_lang$core$Basics_ops['++'],
+							_elm_lang$core$Basics$toString(params.height / 2),
+							')'));
+			}
+		}();
+		var right = A2(_user$project$View_BarPlot$plotToVis, params, pright);
+		var left = A2(_user$project$View_BarPlot$plotToVis, params, pleft);
+		var midpoint = (left + right) / 2;
+		return A2(
+			_elm_lang$svg$Svg$g,
+			{
+				ctor: '::',
+				_0: _elm_lang$svg$Svg_Attributes$transform(position),
+				_1: {ctor: '[]'}
+			},
+			{
+				ctor: '::',
+				_0: A2(
+					_elm_lang$svg$Svg$polyline,
+					{
+						ctor: '::',
+						_0: _elm_lang$svg$Svg_Attributes$stroke('#000000'),
+						_1: {
+							ctor: '::',
+							_0: _elm_lang$svg$Svg_Attributes$strokeWidth('.5'),
+							_1: {
+								ctor: '::',
+								_0: _elm_lang$svg$Svg_Attributes$fill('none'),
+								_1: {
+									ctor: '::',
+									_0: _elm_lang$svg$Svg_Attributes$points(
+										_user$project$View_BarPlot$polyPoints(
+											{
+												ctor: '::',
+												_0: {ctor: '_Tuple2', _0: left, _1: 0},
+												_1: {
+													ctor: '::',
+													_0: {
+														ctor: '_Tuple2',
+														_0: A2(_elm_lang$core$Basics$min, left + 1.5, midpoint),
+														_1: 1.5
+													},
+													_1: {
+														ctor: '::',
+														_0: {
+															ctor: '_Tuple2',
+															_0: A2(_elm_lang$core$Basics$max, right - 1.5, midpoint),
+															_1: 1.5
+														},
+														_1: {
+															ctor: '::',
+															_0: {ctor: '_Tuple2', _0: right, _1: 0},
+															_1: {ctor: '[]'}
+														}
+													}
+												}
+											})),
+									_1: {ctor: '[]'}
+								}
+							}
+						}
+					},
+					{ctor: '[]'}),
+				_1: {
+					ctor: '::',
+					_0: A2(
+						_elm_lang$svg$Svg$line,
+						{
+							ctor: '::',
+							_0: _elm_lang$svg$Svg_Attributes$x1(
+								_elm_lang$core$Basics$toString(midpoint)),
+							_1: {
+								ctor: '::',
+								_0: _elm_lang$svg$Svg_Attributes$y1('1.5'),
+								_1: {
+									ctor: '::',
+									_0: _elm_lang$svg$Svg_Attributes$x2(
+										_elm_lang$core$Basics$toString(midpoint)),
+									_1: {
+										ctor: '::',
+										_0: _elm_lang$svg$Svg_Attributes$y2('2.5'),
+										_1: {
+											ctor: '::',
+											_0: _elm_lang$svg$Svg_Attributes$stroke('#000000'),
+											_1: {
+												ctor: '::',
+												_0: _elm_lang$svg$Svg_Attributes$strokeWidth('0.5'),
+												_1: {
+													ctor: '::',
+													_0: _elm_lang$svg$Svg_Attributes$fill('none'),
+													_1: {ctor: '[]'}
+												}
+											}
+										}
+									}
+								}
+							}
+						},
+						{ctor: '[]'}),
+					_1: {ctor: '[]'}
+				}
+			});
+	});
+var _user$project$View_BarPlot$tupleMap2 = F2(
+	function (f, _p4) {
+		var _p5 = _p4;
+		return {
+			ctor: '_Tuple2',
+			_0: f(_p5._0),
+			_1: f(_p5._1)
+		};
+	});
+var _user$project$View_BarPlot$drawSeparator = F3(
+	function (params, textLoc, location) {
+		var _p6 = A2(
+			_user$project$View_BarPlot$tupleMap2,
+			_elm_lang$core$Basics$toString,
+			function () {
+				var _p7 = textLoc;
+				switch (_p7.ctor) {
+					case 'Above':
+						return {ctor: '_Tuple2', _0: -3, _1: params.height};
+					case 'Below':
+						return {ctor: '_Tuple2', _0: 0, _1: params.height + 3};
+					default:
+						return {ctor: '_Tuple2', _0: 0, _1: params.height};
+				}
+			}());
+		var y1s = _p6._0;
+		var y2s = _p6._1;
+		var pos = _elm_lang$core$Basics$toString(
+			A2(_user$project$View_BarPlot$plotToVis, params, location));
+		return A2(
+			_elm_lang$svg$Svg$line,
+			{
+				ctor: '::',
+				_0: _elm_lang$svg$Svg_Attributes$x1(pos),
+				_1: {
+					ctor: '::',
+					_0: _elm_lang$svg$Svg_Attributes$y1(y1s),
+					_1: {
+						ctor: '::',
+						_0: _elm_lang$svg$Svg_Attributes$x2(pos),
+						_1: {
+							ctor: '::',
+							_0: _elm_lang$svg$Svg_Attributes$y2(y2s),
+							_1: {
+								ctor: '::',
+								_0: _elm_lang$svg$Svg_Attributes$strokeWidth('.5'),
+								_1: {
+									ctor: '::',
+									_0: _elm_lang$svg$Svg_Attributes$fill('none'),
+									_1: {
+										ctor: '::',
+										_0: _elm_lang$svg$Svg_Attributes$stroke('#000000'),
+										_1: {ctor: '[]'}
+									}
+								}
+							}
+						}
+					}
+				}
+			},
+			{ctor: '[]'});
+	});
+var _user$project$View_BarPlot$drawBox = F2(
+	function (params, _p8) {
+		var _p9 = _p8;
+		var _p13 = _p9._1;
+		var _p12 = _p9._0;
+		var _p11 = _p9._2;
+		var h = _elm_lang$core$Basics$toString(params.height);
+		var v1 = A2(
+			_user$project$View_BarPlot$plotToVis,
+			params,
+			A2(_elm_lang$core$Basics$max, _p12, _p13));
+		var v0 = A2(
+			_user$project$View_BarPlot$plotToVis,
+			params,
+			A2(_elm_lang$core$Basics$min, _p13, _p12));
+		return A2(
+			_elm_lang$svg$Svg$rect,
+			A2(
+				_elm_lang$core$List$append,
+				{
+					ctor: '::',
+					_0: _elm_lang$svg$Svg_Attributes$x(
+						_elm_lang$core$Basics$toString(v0)),
+					_1: {
+						ctor: '::',
+						_0: _elm_lang$svg$Svg_Attributes$y('0'),
+						_1: {
+							ctor: '::',
+							_0: _elm_lang$svg$Svg_Attributes$width(
+								_elm_lang$core$Basics$toString(v1 - v0)),
+							_1: {
+								ctor: '::',
+								_0: _elm_lang$svg$Svg_Attributes$height(
+									_elm_lang$core$Basics$toString(params.height)),
+								_1: {ctor: '[]'}
+							}
+						}
+					}
+				},
+				function () {
+					var _p10 = params.filled;
+					if (_p10 === true) {
+						return {
+							ctor: '::',
+							_0: _elm_lang$svg$Svg_Attributes$fill(_p11),
+							_1: {
+								ctor: '::',
+								_0: _elm_lang$svg$Svg_Attributes$stroke('none'),
+								_1: {ctor: '[]'}
+							}
+						};
+					} else {
+						return {
+							ctor: '::',
+							_0: _elm_lang$svg$Svg_Attributes$fill('none'),
+							_1: {
+								ctor: '::',
+								_0: _elm_lang$svg$Svg_Attributes$stroke(_p11),
+								_1: {ctor: '[]'}
+							}
+						};
+					}
+				}()),
+			{ctor: '[]'});
+	});
+var _user$project$View_BarPlot$defaultPlotParams = {minValue: 0, maxValue: 0, height: 10, filled: true};
+var _user$project$View_BarPlot$BarPlot = F4(
+	function (a, b, c, d) {
+		return {minValue: a, maxValue: b, height: c, filled: d};
+	});
+var _user$project$View_BarPlot$AnnotationOptions = F4(
+	function (a, b, c, d) {
+		return {location: a, atype: b, text: c, fontSize: d};
+	});
+var _user$project$View_BarPlot$Right = {ctor: 'Right'};
+var _user$project$View_BarPlot$Left = {ctor: 'Left'};
+var _user$project$View_BarPlot$Inside = function (a) {
+	return {ctor: 'Inside', _0: a};
+};
+var _user$project$View_BarPlot$Below = {ctor: 'Below'};
+var _user$project$View_BarPlot$Above = {ctor: 'Above'};
+var _user$project$View_BarPlot$TextOnly = function (a) {
+	return {ctor: 'TextOnly', _0: a};
+};
+var _user$project$View_BarPlot$defaultOptions = {
+	location: _user$project$View_BarPlot$Below,
+	atype: _user$project$View_BarPlot$TextOnly(0),
+	text: '',
+	fontSize: '5px'
+};
+var _user$project$View_BarPlot$annotate = F2(
+	function (params, optList) {
+		var options = A3(_elm_lang$core$List$foldr, _user$project$View_BarPlot$annotationOptionBuilder, _user$project$View_BarPlot$defaultOptions, optList);
+		var initTextCenter = A2(
+			_user$project$View_BarPlot$plotToVis,
+			params,
+			function () {
+				var _p14 = options.atype;
+				switch (_p14.ctor) {
+					case 'Bracket':
+						return (_p14._0 + _p14._1) / 2;
+					case 'Separator':
+						return _p14._0;
+					default:
+						return _p14._0;
+				}
+			}());
+		var textCenter = _elm_lang$core$Basics$toString(
+			function () {
+				var _p15 = options.location;
+				if (_p15.ctor === 'Inside') {
+					if (_p15._0.ctor === 'Left') {
+						return initTextCenter - 1;
+					} else {
+						return initTextCenter + 1;
+					}
+				} else {
+					return initTextCenter;
+				}
+			}());
+		var _p16 = function () {
+			var _p17 = options.location;
+			switch (_p17.ctor) {
+				case 'Above':
+					return {ctor: '_Tuple2', _0: -4, _1: 'bottom'};
+				case 'Below':
+					return {ctor: '_Tuple2', _0: params.height + 3.5, _1: 'hanging'};
+				default:
+					return {ctor: '_Tuple2', _0: params.height / 2, _1: 'central'};
+			}
+		}();
+		var yPos = _p16._0;
+		var textBaseline = _p16._1;
+		var anchor = function () {
+			var _p18 = options.location;
+			if (_p18.ctor === 'Inside') {
+				if (_p18._0.ctor === 'Left') {
+					return 'end';
+				} else {
+					return 'start';
+				}
+			} else {
+				return 'middle';
+			}
+		}();
+		return A2(
+			_elm_lang$svg$Svg$g,
+			{ctor: '[]'},
+			_elm_lang$core$List$concat(
+				{
+					ctor: '::',
+					_0: function () {
+						var _p19 = options.atype;
+						switch (_p19.ctor) {
+							case 'Bracket':
+								return {
+									ctor: '::',
+									_0: A4(_user$project$View_BarPlot$bracket, params, options.location, _p19._0, _p19._1),
+									_1: {ctor: '[]'}
+								};
+							case 'Separator':
+								return {
+									ctor: '::',
+									_0: A3(_user$project$View_BarPlot$drawSeparator, params, options.location, _p19._0),
+									_1: {ctor: '[]'}
+								};
+							default:
+								return {ctor: '[]'};
+						}
+					}(),
+					_1: {
+						ctor: '::',
+						_0: {
+							ctor: '::',
+							_0: A2(
+								_elm_lang$svg$Svg$text_,
+								{
+									ctor: '::',
+									_0: _elm_lang$svg$Svg_Attributes$x(textCenter),
+									_1: {
+										ctor: '::',
+										_0: _elm_lang$svg$Svg_Attributes$y(
+											_elm_lang$core$Basics$toString(yPos)),
+										_1: {
+											ctor: '::',
+											_0: _elm_lang$svg$Svg_Attributes$textAnchor(anchor),
+											_1: {
+												ctor: '::',
+												_0: _elm_lang$svg$Svg_Attributes$alignmentBaseline(textBaseline),
+												_1: {
+													ctor: '::',
+													_0: _elm_lang$svg$Svg_Attributes$style(
+														A2(_elm_lang$core$Basics_ops['++'], 'font-size: ', options.fontSize)),
+													_1: {
+														ctor: '::',
+														_0: _elm_lang$svg$Svg_Attributes$pointerEvents('none'),
+														_1: {ctor: '[]'}
+													}
+												}
+											}
+										}
+									}
+								},
+								{
+									ctor: '::',
+									_0: _elm_lang$svg$Svg$text(options.text),
+									_1: {ctor: '[]'}
+								}),
+							_1: {ctor: '[]'}
+						},
+						_1: {ctor: '[]'}
+					}
+				}));
+	});
+var _user$project$View_BarPlot$Separator = function (a) {
+	return {ctor: 'Separator', _0: a};
+};
+var _user$project$View_BarPlot$Bracket = F2(
+	function (a, b) {
+		return {ctor: 'Bracket', _0: a, _1: b};
+	});
+var _user$project$View_BarPlot$Size = function (a) {
+	return {ctor: 'Size', _0: a};
+};
+var _user$project$View_BarPlot$Type = function (a) {
+	return {ctor: 'Type', _0: a};
+};
+var _user$project$View_BarPlot$Location = function (a) {
+	return {ctor: 'Location', _0: a};
+};
+var _user$project$View_BarPlot$Text = function (a) {
+	return {ctor: 'Text', _0: a};
+};
+
+var _user$project$View_Colors$nextColor = function (wheel) {
+	var _p0 = wheel;
+	if (_p0.ctor === '[]') {
+		return '#FF0000';
+	} else {
+		return _p0._0;
+	}
+};
+var _user$project$View_Colors$defaultColorWheel = {
+	ctor: '::',
+	_0: '#1D9382',
+	_1: {
+		ctor: '::',
+		_0: '#3933A3',
+		_1: {
+			ctor: '::',
+			_0: '#93D72B',
+			_1: {ctor: '[]'}
+		}
+	}
+};
+var _user$project$View_Colors$lightRedColor = '#EE494B';
+var _user$project$View_Colors$redColor = '#CE292B';
+var _user$project$View_Colors$darkGreenColor = '#16660D';
+var _user$project$View_Colors$greenColor = '#30CE1E';
+var _user$project$View_Colors$greyColor = '#808080';
+var _user$project$View_Colors$lightBlueColor = '#3B70FE';
+var _user$project$View_Colors$blueColor = '#0B40CE';
+
+var _user$project$Page_Budget$interpolateBudget = F3(
+	function (startBudget, u, targetBudget) {
+		var findLease = F2(
+			function (leaseList, targetLease) {
+				var _p0 = A2(
+					_elm_lang$core$List$partition,
+					function (lease) {
+						return _elm_lang$core$Native_Utils.eq(lease.name, targetLease.name);
+					},
+					leaseList);
+				var matched = _p0._0;
+				var _p1 = matched;
+				if ((_p1.ctor === '::') && (_p1._1.ctor === '[]')) {
+					return _elm_lang$core$Maybe$Just(_p1._0);
+				} else {
+					return _elm_lang$core$Maybe$Nothing;
+				}
+			});
+		var interpolateLease = F3(
+			function (u, maybeSL, tL) {
+				var _p2 = maybeSL;
+				if (_p2.ctor === 'Just') {
+					var _p3 = _p2._0;
+					return _elm_lang$core$Native_Utils.update(
+						tL,
+						{
+							currentRent: A3(_user$project$Animation$lerp, _p3.currentRent, tL.currentRent, u),
+							proposedRent: A3(_user$project$Animation$lerp, _p3.proposedRent, tL.proposedRent, u)
+						});
+				} else {
+					return tL;
+				}
+			});
+		var interpIfFound = F3(
+			function (u, sLlist, tL) {
+				return A3(
+					interpolateLease,
+					u,
+					A2(findLease, sLlist, tL),
+					tL);
+			});
+		var interpolateLeases = F3(
+			function (u, sLList, tLList) {
+				return A2(
+					_elm_lang$core$List$map,
+					A2(interpIfFound, u, sLList),
+					tLList);
+			});
+		var tB = targetBudget;
+		var sB = startBudget;
+		return _elm_lang$core$Native_Utils.update(
+			tB,
+			{
+				coreExpenses: A3(_user$project$Animation$lerp, sB.coreExpenses, tB.coreExpenses, u),
+				leases: A3(interpolateLeases, u, sB.leases, tB.leases)
+			});
+	});
+var _user$project$Page_Budget$validateRent = function (input) {
+	if (_elm_lang$core$Native_Utils.eq(
+		_elm_lang$core$String$length(input),
+		0)) {
+		return _elm_lang$core$Result$Err('');
+	} else {
+		var _p4 = _elm_lang$core$String$toInt(input);
+		if (_p4.ctor === 'Ok') {
+			var _p5 = _p4._0;
+			return (_elm_lang$core$Native_Utils.cmp(_p5, 0) > -1) ? _elm_lang$core$Result$Ok(_p5) : _elm_lang$core$Result$Err('Nice try.  Rent can\'t be negative');
+		} else {
+			return _elm_lang$core$Result$Err('Rent must be a whole number');
+		}
+	}
+};
+var _user$project$Page_Budget$summaryRow = F2(
+	function (lStr, rStr) {
+		return A2(
+			_rundis$elm_bootstrap$Bootstrap_Grid$row,
+			{ctor: '[]'},
+			{
+				ctor: '::',
+				_0: A2(
+					_rundis$elm_bootstrap$Bootstrap_Grid$col,
+					{
+						ctor: '::',
+						_0: _rundis$elm_bootstrap$Bootstrap_Grid_Col$attrs(
+							{
+								ctor: '::',
+								_0: _elm_lang$html$Html_Attributes$class('pr-0'),
+								_1: {ctor: '[]'}
+							}),
+						_1: {ctor: '[]'}
+					},
+					{
+						ctor: '::',
+						_0: A2(
+							_elm_lang$html$Html$div,
+							{
+								ctor: '::',
+								_0: _elm_lang$html$Html_Attributes$class('text-right'),
+								_1: {ctor: '[]'}
+							},
+							{
+								ctor: '::',
+								_0: _elm_lang$html$Html$text(lStr),
+								_1: {ctor: '[]'}
+							}),
+						_1: {ctor: '[]'}
+					}),
+				_1: {
+					ctor: '::',
+					_0: A2(
+						_rundis$elm_bootstrap$Bootstrap_Grid$col,
+						{ctor: '[]'},
+						{
+							ctor: '::',
+							_0: _elm_lang$html$Html$text(rStr),
+							_1: {ctor: '[]'}
+						}),
+					_1: {ctor: '[]'}
+				}
+			});
+	});
+var _user$project$Page_Budget$totalIncome = function (budget) {
+	return _elm_lang$core$List$sum(
+		A2(
+			_elm_lang$core$List$map,
+			function (t) {
+				return t.proposedRent;
+			},
+			budget.leases));
+};
+var _user$project$Page_Budget$startingIncome = function (budget) {
+	return _elm_lang$core$List$sum(
+		A2(
+			_elm_lang$core$List$map,
+			function (_) {
+				return _.currentRent;
+			},
+			budget.leases));
+};
+var _user$project$Page_Budget$requiredPctIncrease = function (budget) {
+	var expenses = budget.coreExpenses;
+	var income = _user$project$Page_Budget$startingIncome(budget);
+	return A2(_elm_lang$core$Basics$max, 0, (expenses - income) / income);
+};
+var _user$project$Page_Budget$pctStr = function (x) {
+	var signStr = function (x) {
+		return (_elm_lang$core$Native_Utils.cmp(x, 0) > 0) ? '+' : '';
+	};
+	return A2(
+		_elm_lang$core$Basics_ops['++'],
+		signStr(x),
+		A2(
+			_elm_lang$core$Basics_ops['++'],
+			_elm_lang$core$Basics$toString(
+				_elm_lang$core$Basics$round(x * 100)),
+			'%'));
+};
+var _user$project$Page_Budget$change = function (lease) {
+	return (lease.proposedRent - lease.currentRent) / lease.currentRent;
+};
+var _user$project$Page_Budget$viewRent = F3(
+	function (pp, lease, baseLine) {
+		var color = (_elm_lang$core$Native_Utils.cmp(
+			_elm_lang$core$Basics$round(lease.proposedRent),
+			_elm_lang$core$Basics$floor((1 + baseLine) * lease.currentRent)) > -1) ? _user$project$View_Colors$blueColor : _user$project$View_Colors$redColor;
+		var val = _user$project$Page_Budget$change(lease);
+		return A2(
+			_elm_lang$svg$Svg$g,
+			{ctor: '[]'},
+			A2(
+				_elm_lang$core$List$append,
+				(_elm_lang$core$Native_Utils.cmp(val, baseLine) > 0) ? {
+					ctor: '::',
+					_0: A2(
+						_user$project$View_BarPlot$drawBox,
+						pp,
+						{ctor: '_Tuple3', _0: 0, _1: baseLine, _2: _user$project$View_Colors$blueColor}),
+					_1: {
+						ctor: '::',
+						_0: A2(
+							_user$project$View_BarPlot$drawBox,
+							pp,
+							{ctor: '_Tuple3', _0: baseLine, _1: val, _2: _user$project$View_Colors$lightBlueColor}),
+						_1: {ctor: '[]'}
+					}
+				} : {
+					ctor: '::',
+					_0: A2(
+						_user$project$View_BarPlot$drawBox,
+						pp,
+						{ctor: '_Tuple3', _0: 0, _1: val, _2: _user$project$View_Colors$blueColor}),
+					_1: {
+						ctor: '::',
+						_0: A2(
+							_user$project$View_BarPlot$drawBox,
+							pp,
+							{ctor: '_Tuple3', _0: val, _1: baseLine, _2: _user$project$View_Colors$lightRedColor}),
+						_1: {ctor: '[]'}
+					}
+				},
+				{
+					ctor: '::',
+					_0: A2(
+						_user$project$View_BarPlot$annotate,
+						pp,
+						{
+							ctor: '::',
+							_0: _user$project$View_BarPlot$Text(lease.name),
+							_1: {
+								ctor: '::',
+								_0: _user$project$View_BarPlot$Location(
+									_user$project$View_BarPlot$Inside(_user$project$View_BarPlot$Right)),
+								_1: {
+									ctor: '::',
+									_0: _user$project$View_BarPlot$Type(
+										_user$project$View_BarPlot$TextOnly(0)),
+									_1: {
+										ctor: '::',
+										_0: _user$project$View_BarPlot$Size('3px'),
+										_1: {ctor: '[]'}
+									}
+								}
+							}
+						}),
+					_1: {ctor: '[]'}
+				}));
+	});
+var _user$project$Page_Budget$compareRentsByPctChangePlot = function (budget) {
+	var leaseName = function (lease) {
+		return lease.name;
+	};
+	var increasePct = _user$project$Page_Budget$requiredPctIncrease(budget);
+	var unsortedLeases = budget.leases;
+	var sortedLeases = _elm_lang$core$List$reverse(
+		A2(_elm_lang$core$List$sortBy, _user$project$Page_Budget$change, unsortedLeases));
+	var leasePair = A2(
+		_elm_lang$core$List$partition,
+		function (_p6) {
+			return function (n) {
+				return A2(_elm_lang$core$List$member, n, budget.leaseMember);
+			}(
+				function (_) {
+					return _.name;
+				}(_p6));
+		},
+		sortedLeases);
+	var _p7 = leasePair;
+	var usersLeases = _p7._0;
+	var otherLeases = _p7._1;
+	var leases = A2(_elm_lang$core$List$append, usersLeases, otherLeases);
+	var changes = A2(_elm_lang$core$List$map, _user$project$Page_Budget$change, leases);
+	var maxChange = A2(
+		_elm_lang$core$Basics$max,
+		increasePct * 1.2,
+		A2(
+			_elm_lang$core$Maybe$withDefault,
+			0,
+			_elm_lang$core$List$maximum(changes)));
+	var minChange = A2(
+		_elm_lang$core$Basics$min,
+		0,
+		A2(
+			_elm_lang$core$Maybe$withDefault,
+			0,
+			_elm_lang$core$List$minimum(changes)));
+	var barWidth = _elm_lang$core$Native_Utils.update(
+		_user$project$View_BarPlot$defaultPlotParams,
+		{minValue: minChange, maxValue: maxChange});
+	var pp = _elm_lang$core$Native_Utils.update(
+		barWidth,
+		{height: 5});
+	var drawLease = F2(
+		function (pos, lease) {
+			return A2(
+				_elm_lang$svg$Svg$g,
+				{
+					ctor: '::',
+					_0: _elm_lang$svg$Svg_Attributes$transform(
+						A2(
+							_elm_lang$core$Basics_ops['++'],
+							'translate (0, ',
+							A2(
+								_elm_lang$core$Basics_ops['++'],
+								_elm_lang$core$Basics$toString(
+									_elm_lang$core$Basics$toFloat(pos) * (pp.height + 1)),
+								')'))),
+					_1: {ctor: '[]'}
+				},
+				{
+					ctor: '::',
+					_0: A3(_user$project$Page_Budget$viewRent, pp, lease, increasePct),
+					_1: {ctor: '[]'}
+				});
+		});
+	var nLease = _elm_lang$core$List$length(leases);
+	return A2(
+		_elm_lang$svg$Svg$svg,
+		{
+			ctor: '::',
+			_0: _elm_lang$svg$Svg_Attributes$viewBox(
+				A2(
+					_elm_lang$core$Basics_ops['++'],
+					'0 0 120 ',
+					_elm_lang$core$Basics$toString(
+						(_elm_lang$core$Basics$toFloat(nLease) * (pp.height + 1)) + 10))),
+			_1: {
+				ctor: '::',
+				_0: _elm_lang$svg$Svg_Attributes$width('100%'),
+				_1: {ctor: '[]'}
+			}
+		},
+		{
+			ctor: '::',
+			_0: A2(
+				_elm_lang$svg$Svg$g,
+				{
+					ctor: '::',
+					_0: _elm_lang$svg$Svg_Attributes$transform('translate(20,10)'),
+					_1: {ctor: '[]'}
+				},
+				_elm_lang$core$List$concat(
+					{
+						ctor: '::',
+						_0: A2(_elm_lang$core$List$indexedMap, drawLease, leases),
+						_1: {
+							ctor: '::',
+							_0: {
+								ctor: '::',
+								_0: A2(
+									_user$project$View_BarPlot$annotate,
+									_elm_lang$core$Native_Utils.update(
+										barWidth,
+										{
+											height: _elm_lang$core$Basics$toFloat(nLease) * (pp.height + 1)
+										}),
+									{
+										ctor: '::',
+										_0: _user$project$View_BarPlot$Text('Default New Rent'),
+										_1: {
+											ctor: '::',
+											_0: _user$project$View_BarPlot$Location(_user$project$View_BarPlot$Above),
+											_1: {
+												ctor: '::',
+												_0: _user$project$View_BarPlot$Type(
+													_user$project$View_BarPlot$Separator(increasePct)),
+												_1: {
+													ctor: '::',
+													_0: _user$project$View_BarPlot$Size('3px'),
+													_1: {ctor: '[]'}
+												}
+											}
+										}
+									}),
+								_1: {
+									ctor: '::',
+									_0: A2(
+										_user$project$View_BarPlot$annotate,
+										_elm_lang$core$Native_Utils.update(
+											barWidth,
+											{
+												height: _elm_lang$core$Basics$toFloat(nLease) * (pp.height + 1)
+											}),
+										{
+											ctor: '::',
+											_0: _user$project$View_BarPlot$Text('Current Rent'),
+											_1: {
+												ctor: '::',
+												_0: _user$project$View_BarPlot$Location(_user$project$View_BarPlot$Above),
+												_1: {
+													ctor: '::',
+													_0: _user$project$View_BarPlot$Type(
+														_user$project$View_BarPlot$Separator(0)),
+													_1: {
+														ctor: '::',
+														_0: _user$project$View_BarPlot$Size('3px'),
+														_1: {ctor: '[]'}
+													}
+												}
+											}
+										}),
+									_1: {ctor: '[]'}
+								}
+							},
+							_1: {ctor: '[]'}
+						}
+					})),
+			_1: {ctor: '[]'}
+		});
+};
+var _user$project$Page_Budget$compareRentsView = function (budget) {
+	return _rundis$elm_bootstrap$Bootstrap_Card$view(
+		A3(
+			_rundis$elm_bootstrap$Bootstrap_Card$block,
+			{ctor: '[]'},
+			{
+				ctor: '::',
+				_0: _rundis$elm_bootstrap$Bootstrap_Card$custom(
+					_user$project$Page_Budget$compareRentsByPctChangePlot(budget)),
+				_1: {ctor: '[]'}
+			},
+			A3(
+				_rundis$elm_bootstrap$Bootstrap_Card$headerH3,
+				{ctor: '[]'},
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html$text('Proposed New Rents'),
+					_1: {ctor: '[]'}
+				},
+				_rundis$elm_bootstrap$Bootstrap_Card$config(
+					{
+						ctor: '::',
+						_0: _rundis$elm_bootstrap$Bootstrap_Card$attrs(
+							{
+								ctor: '::',
+								_0: _elm_lang$html$Html_Attributes$class('mt-2'),
+								_1: {ctor: '[]'}
+							}),
+						_1: {ctor: '[]'}
+					}))));
+};
+var _user$project$Page_Budget$topLineSvg = function (budget) {
+	var currentIncome = _user$project$Page_Budget$startingIncome(budget);
+	var coreExpenses = budget.coreExpenses;
+	var income = _user$project$Page_Budget$totalIncome(budget);
+	var scaleMax = 1.25 * A2(_elm_lang$core$Basics$max, income, coreExpenses);
+	var plotParam = _elm_lang$core$Native_Utils.update(
+		_user$project$View_BarPlot$defaultPlotParams,
+		{maxValue: scaleMax});
+	return A2(
+		_rundis$elm_bootstrap$Bootstrap_Grid$row,
+		{ctor: '[]'},
+		{
+			ctor: '::',
+			_0: A2(
+				_rundis$elm_bootstrap$Bootstrap_Grid$col,
+				{ctor: '[]'},
+				{
+					ctor: '::',
+					_0: A2(
+						_elm_lang$svg$Svg$svg,
+						{
+							ctor: '::',
+							_0: _elm_lang$svg$Svg_Attributes$viewBox('0 0 110 30'),
+							_1: {
+								ctor: '::',
+								_0: _elm_lang$svg$Svg_Attributes$width('100%'),
+								_1: {ctor: '[]'}
+							}
+						},
+						{
+							ctor: '::',
+							_0: A2(
+								_elm_lang$svg$Svg$g,
+								{
+									ctor: '::',
+									_0: _elm_lang$svg$Svg_Attributes$transform('translate(5,10)'),
+									_1: {ctor: '[]'}
+								},
+								A2(
+									_elm_lang$core$List$append,
+									(_elm_lang$core$Native_Utils.cmp(income, currentIncome) > 0) ? {
+										ctor: '::',
+										_0: A2(
+											_user$project$View_BarPlot$annotate,
+											plotParam,
+											{
+												ctor: '::',
+												_0: _user$project$View_BarPlot$Text('New Income'),
+												_1: {
+													ctor: '::',
+													_0: _user$project$View_BarPlot$Type(
+														A2(_user$project$View_BarPlot$Bracket, currentIncome, income)),
+													_1: {ctor: '[]'}
+												}
+											}),
+										_1: {ctor: '[]'}
+									} : {
+										ctor: '::',
+										_0: A2(
+											_user$project$View_BarPlot$annotate,
+											plotParam,
+											{
+												ctor: '::',
+												_0: _user$project$View_BarPlot$Type(
+													_user$project$View_BarPlot$TextOnly(0)),
+												_1: {ctor: '[]'}
+											}),
+										_1: {ctor: '[]'}
+									},
+									(_elm_lang$core$Native_Utils.cmp(income, coreExpenses) > -1) ? {
+										ctor: '::',
+										_0: A2(
+											_user$project$View_BarPlot$drawBox,
+											plotParam,
+											{ctor: '_Tuple3', _0: 0, _1: income, _2: _user$project$View_Colors$lightBlueColor}),
+										_1: {
+											ctor: '::',
+											_0: A2(
+												_user$project$View_BarPlot$drawBox,
+												plotParam,
+												{ctor: '_Tuple3', _0: 0, _1: coreExpenses, _2: _user$project$View_Colors$blueColor}),
+											_1: {
+												ctor: '::',
+												_0: A2(
+													_user$project$View_BarPlot$annotate,
+													plotParam,
+													{
+														ctor: '::',
+														_0: _user$project$View_BarPlot$Text('Current Income'),
+														_1: {
+															ctor: '::',
+															_0: _user$project$View_BarPlot$Type(
+																A2(_user$project$View_BarPlot$Bracket, 0, currentIncome)),
+															_1: {ctor: '[]'}
+														}
+													}),
+												_1: {
+													ctor: '::',
+													_0: A2(
+														_user$project$View_BarPlot$annotate,
+														plotParam,
+														{
+															ctor: '::',
+															_0: _user$project$View_BarPlot$Text('Core Expenses'),
+															_1: {
+																ctor: '::',
+																_0: _user$project$View_BarPlot$Type(
+																	A2(_user$project$View_BarPlot$Bracket, 0, coreExpenses)),
+																_1: {
+																	ctor: '::',
+																	_0: _user$project$View_BarPlot$Location(_user$project$View_BarPlot$Above),
+																	_1: {ctor: '[]'}
+																}
+															}
+														}),
+													_1: {
+														ctor: '::',
+														_0: A2(
+															_user$project$View_BarPlot$annotate,
+															plotParam,
+															{
+																ctor: '::',
+																_0: _user$project$View_BarPlot$Text('Surplus'),
+																_1: {
+																	ctor: '::',
+																	_0: _user$project$View_BarPlot$Type(
+																		A2(_user$project$View_BarPlot$Bracket, coreExpenses, income)),
+																	_1: {
+																		ctor: '::',
+																		_0: _user$project$View_BarPlot$Location(_user$project$View_BarPlot$Above),
+																		_1: {ctor: '[]'}
+																	}
+																}
+															}),
+														_1: {ctor: '[]'}
+													}
+												}
+											}
+										}
+									} : {
+										ctor: '::',
+										_0: A2(
+											_user$project$View_BarPlot$drawBox,
+											plotParam,
+											{ctor: '_Tuple3', _0: 0, _1: coreExpenses, _2: _user$project$View_Colors$redColor}),
+										_1: {
+											ctor: '::',
+											_0: A2(
+												_user$project$View_BarPlot$drawBox,
+												plotParam,
+												{ctor: '_Tuple3', _0: 0, _1: income, _2: _user$project$View_Colors$blueColor}),
+											_1: {
+												ctor: '::',
+												_0: A2(
+													_user$project$View_BarPlot$annotate,
+													plotParam,
+													{
+														ctor: '::',
+														_0: _user$project$View_BarPlot$Text('Current Income'),
+														_1: {
+															ctor: '::',
+															_0: _user$project$View_BarPlot$Type(
+																A2(_user$project$View_BarPlot$Bracket, 0, currentIncome)),
+															_1: {ctor: '[]'}
+														}
+													}),
+												_1: {
+													ctor: '::',
+													_0: A2(
+														_user$project$View_BarPlot$annotate,
+														plotParam,
+														{
+															ctor: '::',
+															_0: _user$project$View_BarPlot$Text('Core Expenses'),
+															_1: {
+																ctor: '::',
+																_0: _user$project$View_BarPlot$Type(
+																	A2(_user$project$View_BarPlot$Bracket, 0, coreExpenses)),
+																_1: {
+																	ctor: '::',
+																	_0: _user$project$View_BarPlot$Location(_user$project$View_BarPlot$Above),
+																	_1: {ctor: '[]'}
+																}
+															}
+														}),
+													_1: {ctor: '[]'}
+												}
+											}
+										}
+									})),
+							_1: {ctor: '[]'}
+						}),
+					_1: {ctor: '[]'}
+				}),
+			_1: {ctor: '[]'}
+		});
+};
+var _user$project$Page_Budget$detailSummaryText = F2(
+	function (lease, defaultRent) {
+		var moreOrLess = function (val) {
+			return (_elm_lang$core$Native_Utils.cmp(val, 0) > -1) ? 'more' : 'less';
+		};
+		var rentDiff = function (lease) {
+			return lease.proposedRent - lease.currentRent;
+		};
+		var raiseOrLower = function (lease) {
+			return (_elm_lang$core$Native_Utils.cmp(
+				rentDiff(lease),
+				0) > -1) ? 'raise' : 'lower';
+		};
+		return _elm_lang$html$Html$text(
+			A2(
+				_elm_lang$core$Basics_ops['++'],
+				'The current proposal is to ',
+				A2(
+					_elm_lang$core$Basics_ops['++'],
+					raiseOrLower(lease),
+					A2(
+						_elm_lang$core$Basics_ops['++'],
+						' ',
+						A2(
+							_elm_lang$core$Basics_ops['++'],
+							lease.name,
+							A2(
+								_elm_lang$core$Basics_ops['++'],
+								'\'s monthly rent by $',
+								A2(
+									_elm_lang$core$Basics_ops['++'],
+									_elm_lang$core$Basics$toString(
+										_elm_lang$core$Basics$round(
+											_elm_lang$core$Basics$abs(
+												rentDiff(lease)))),
+									A2(
+										_elm_lang$core$Basics_ops['++'],
+										' to $',
+										A2(
+											_elm_lang$core$Basics_ops['++'],
+											_elm_lang$core$Basics$toString(
+												_elm_lang$core$Basics$round(lease.proposedRent)),
+											A2(
+												_elm_lang$core$Basics_ops['++'],
+												'.  This is $',
+												A2(
+													_elm_lang$core$Basics_ops['++'],
+													_elm_lang$core$Basics$toString(
+														_elm_lang$core$Basics$round(
+															_elm_lang$core$Basics$abs(lease.proposedRent - defaultRent))),
+													A2(
+														_elm_lang$core$Basics_ops['++'],
+														' ',
+														A2(
+															_elm_lang$core$Basics_ops['++'],
+															moreOrLess(lease.proposedRent - defaultRent),
+															A2(
+																_elm_lang$core$Basics_ops['++'],
+																' than the minimum recommended new rent of $',
+																A2(
+																	_elm_lang$core$Basics_ops['++'],
+																	_elm_lang$core$Basics$toString(
+																		_elm_lang$core$Basics$round(defaultRent)),
+																	'.')))))))))))))));
+	});
+var _user$project$Page_Budget$explainerText = function (budget) {
+	var changeWord = function (val) {
+		return (_elm_lang$core$Native_Utils.cmp(val, 0) > -1) ? 'an increase' : 'a decrease';
+	};
+	var increaseOrDecrease = function (val) {
+		return (_elm_lang$core$Native_Utils.cmp(val, 0) > -1) ? 'increase' : 'decrease';
+	};
+	var surplusOrDeficit = function (val) {
+		return (_elm_lang$core$Native_Utils.cmp(val, 0) > -1) ? 'surplus' : 'deficit';
+	};
+	var format = function (num) {
+		var intStr = _elm_lang$core$Basics$toString(
+			_elm_lang$core$Basics$round(num * 1000));
+		return A2(
+			_elm_lang$core$Basics_ops['++'],
+			A2(_elm_lang$core$String$left, 2, intStr),
+			A2(
+				_elm_lang$core$Basics_ops['++'],
+				'.',
+				A2(_elm_lang$core$String$right, 1, intStr)));
+	};
+	var showPct = function (num) {
+		return A2(
+			_elm_lang$core$Basics_ops['++'],
+			format(num),
+			'%');
+	};
+	var defaultIncreasePct = showPct(
+		_user$project$Page_Budget$requiredPctIncrease(budget));
+	var currentIncome = _user$project$Page_Budget$startingIncome(budget);
+	var coreExpense = budget.coreExpenses;
+	var income = _user$project$Page_Budget$totalIncome(budget);
+	var summaryExplainerText = function (budget) {
+		return _elm_lang$html$Html$text(
+			A2(
+				_elm_lang$core$Basics_ops['++'],
+				'This page shows proposed changes to rents, and how those changes would affect Bloomcraft\'s budget.',
+				A2(
+					_elm_lang$core$Basics_ops['++'],
+					' To cover our core expenses, the proposed budget must ',
+					A2(
+						_elm_lang$core$Basics_ops['++'],
+						increaseOrDecrease(coreExpense - currentIncome),
+						A2(
+							_elm_lang$core$Basics_ops['++'],
+							' total rental income by $',
+							A2(
+								_elm_lang$core$Basics_ops['++'],
+								_elm_lang$core$Basics$toString(coreExpense - currentIncome),
+								A2(
+									_elm_lang$core$Basics_ops['++'],
+									', ',
+									A2(
+										_elm_lang$core$Basics_ops['++'],
+										changeWord(
+											_user$project$Page_Budget$requiredPctIncrease(budget)),
+										A2(
+											_elm_lang$core$Basics_ops['++'],
+											' of ',
+											A2(
+												_elm_lang$core$Basics_ops['++'],
+												defaultIncreasePct,
+												A2(
+													_elm_lang$core$Basics_ops['++'],
+													'.  Currently the proposed rents will ',
+													A2(
+														_elm_lang$core$Basics_ops['++'],
+														increaseOrDecrease(income - currentIncome),
+														A2(
+															_elm_lang$core$Basics_ops['++'],
+															' income by $',
+															A2(
+																_elm_lang$core$Basics_ops['++'],
+																_elm_lang$core$Basics$toString(
+																	_elm_lang$core$Basics$round(income - currentIncome)),
+																A2(
+																	_elm_lang$core$Basics_ops['++'],
+																	'.  This change will create a projected $',
+																	A2(
+																		_elm_lang$core$Basics_ops['++'],
+																		_elm_lang$core$Basics$toString(
+																			_elm_lang$core$Basics$abs(
+																				_elm_lang$core$Basics$round(income - coreExpense))),
+																		A2(
+																			_elm_lang$core$Basics_ops['++'],
+																			' ',
+																			A2(
+																				_elm_lang$core$Basics_ops['++'],
+																				surplusOrDeficit(income - coreExpense),
+																				A2(_elm_lang$core$Basics_ops['++'], '.', ' If we have a surplus, those funds will be available for discretionary spending at the end of the upcoming quarter.')))))))))))))))))));
+	};
+	return _rundis$elm_bootstrap$Bootstrap_Card$view(
+		A3(
+			_rundis$elm_bootstrap$Bootstrap_Card$block,
+			{ctor: '[]'},
+			{
+				ctor: '::',
+				_0: _rundis$elm_bootstrap$Bootstrap_Card$custom(
+					A2(
+						_elm_lang$html$Html$div,
+						{ctor: '[]'},
+						{
+							ctor: '::',
+							_0: A2(
+								_rundis$elm_bootstrap$Bootstrap_Grid$row,
+								{ctor: '[]'},
+								{
+									ctor: '::',
+									_0: A2(
+										_rundis$elm_bootstrap$Bootstrap_Grid$col,
+										{ctor: '[]'},
+										{
+											ctor: '::',
+											_0: _user$project$Page_Budget$topLineSvg(budget),
+											_1: {ctor: '[]'}
+										}),
+									_1: {ctor: '[]'}
+								}),
+							_1: {
+								ctor: '::',
+								_0: A2(
+									_elm_lang$html$Html$p,
+									{
+										ctor: '::',
+										_0: _elm_lang$html$Html_Attributes$class('lead'),
+										_1: {ctor: '[]'}
+									},
+									{
+										ctor: '::',
+										_0: summaryExplainerText(budget),
+										_1: {ctor: '[]'}
+									}),
+								_1: {ctor: '[]'}
+							}
+						})),
+				_1: {ctor: '[]'}
+			},
+			A3(
+				_rundis$elm_bootstrap$Bootstrap_Card$headerH3,
+				{ctor: '[]'},
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html$text('Summary of Proposed Budget'),
+					_1: {ctor: '[]'}
+				},
+				_rundis$elm_bootstrap$Bootstrap_Card$config(
+					{
+						ctor: '::',
+						_0: _rundis$elm_bootstrap$Bootstrap_Card$attrs(
+							{
+								ctor: '::',
+								_0: _elm_lang$html$Html_Attributes$class('mt-2'),
+								_1: {ctor: '[]'}
+							}),
+						_1: {ctor: '[]'}
+					}))));
+};
+var _user$project$Page_Budget$animate = function (_p8) {
+	var _p9 = _p8;
+	var _p13 = _p9.budget;
+	var _p10 = _p9.animation;
+	if (_p10.ctor === 'Just') {
+		var _p12 = _p10._0;
+		var _p11 = _p12.startTime;
+		if (_p11.ctor === 'Just') {
+			return A3(_p12.budget, _p11._0, _p9.time, _p13);
+		} else {
+			return A3(_p12.budget, 0, 0, _p13);
+		}
+	} else {
+		return _p13;
+	}
+};
+var _user$project$Page_Budget$init = function () {
+	var initModel = F2(
+		function (budget, time) {
+			return {
+				budget: budget,
+				requestedRent: _elm_lang$core$Result$Err(''),
+				time: time,
+				animation: _elm_lang$core$Maybe$Nothing
+			};
+		});
+	var handleLoadError = function (err) {
+		var l = A2(_elm_lang$core$Debug$log, 'Budget Load Err', err);
+		return A2(_user$project$Page_Errored$pageLoadError, _user$project$View_Page$Budget, 'Failed to load budget');
+	};
+	var loadBudget = _elm_lang$http$Http$toTask(_user$project$Request_Budget$budget);
+	return A2(
+		_elm_lang$core$Task$mapError,
+		handleLoadError,
+		A3(_elm_lang$core$Task$map2, initModel, loadBudget, _elm_lang$core$Time$now));
+}();
+var _user$project$Page_Budget$Model = F4(
+	function (a, b, c, d) {
+		return {budget: a, requestedRent: b, time: c, animation: d};
+	});
+var _user$project$Page_Budget$Animation = F2(
+	function (a, b) {
+		return {startTime: a, budget: b};
+	});
+var _user$project$Page_Budget$Animate = function (a) {
+	return {ctor: 'Animate', _0: a};
+};
+var _user$project$Page_Budget$subscriptions = function (model) {
+	var _p14 = model.animation;
+	if (_p14.ctor === 'Just') {
+		return _elm_lang$animation_frame$AnimationFrame$times(_user$project$Page_Budget$Animate);
+	} else {
+		return _elm_lang$core$Platform_Sub$none;
+	}
+};
+var _user$project$Page_Budget$ChangeRent = {ctor: 'ChangeRent'};
+var _user$project$Page_Budget$UpdateRentInput = function (a) {
+	return {ctor: 'UpdateRentInput', _0: a};
+};
+var _user$project$Page_Budget$rentInputView = function (model) {
+	return A2(
+		_elm_lang$html$Html$div,
+		{ctor: '[]'},
+		{
+			ctor: '::',
+			_0: _rundis$elm_bootstrap$Bootstrap_Form_InputGroup$view(
+				A2(
+					_rundis$elm_bootstrap$Bootstrap_Form_InputGroup$successors,
+					{
+						ctor: '::',
+						_0: A2(
+							_rundis$elm_bootstrap$Bootstrap_Form_InputGroup$button,
+							A2(
+								_elm_lang$core$List$append,
+								function () {
+									var _p15 = model.requestedRent;
+									if (_p15.ctor === 'Ok') {
+										return {ctor: '[]'};
+									} else {
+										return {
+											ctor: '::',
+											_0: _rundis$elm_bootstrap$Bootstrap_Button$disabled(true),
+											_1: {ctor: '[]'}
+										};
+									}
+								}(),
+								{
+									ctor: '::',
+									_0: _rundis$elm_bootstrap$Bootstrap_Button$primary,
+									_1: {
+										ctor: '::',
+										_0: _rundis$elm_bootstrap$Bootstrap_Button$onClick(_user$project$Page_Budget$ChangeRent),
+										_1: {ctor: '[]'}
+									}
+								}),
+							{
+								ctor: '::',
+								_0: _elm_lang$html$Html$text('Change'),
+								_1: {ctor: '[]'}
+							}),
+						_1: {ctor: '[]'}
+					},
+					A2(
+						_rundis$elm_bootstrap$Bootstrap_Form_InputGroup$predecessors,
+						{
+							ctor: '::',
+							_0: A2(
+								_rundis$elm_bootstrap$Bootstrap_Form_InputGroup$span,
+								{ctor: '[]'},
+								{
+									ctor: '::',
+									_0: _elm_lang$html$Html$text('$'),
+									_1: {ctor: '[]'}
+								}),
+							_1: {ctor: '[]'}
+						},
+						_rundis$elm_bootstrap$Bootstrap_Form_InputGroup$config(
+							_rundis$elm_bootstrap$Bootstrap_Form_InputGroup$number(
+								{
+									ctor: '::',
+									_0: _rundis$elm_bootstrap$Bootstrap_Form_Input$placeholder(
+										_elm_lang$core$Basics$toString(0)),
+									_1: {
+										ctor: '::',
+										_0: _rundis$elm_bootstrap$Bootstrap_Form_Input$onInput(_user$project$Page_Budget$UpdateRentInput),
+										_1: {ctor: '[]'}
+									}
+								}))))),
+			_1: {
+				ctor: '::',
+				_0: A2(
+					_rundis$elm_bootstrap$Bootstrap_Form$validationText,
+					{ctor: '[]'},
+					function () {
+						var _p16 = model.requestedRent;
+						if (_p16.ctor === 'Ok') {
+							return {ctor: '[]'};
+						} else {
+							return {
+								ctor: '::',
+								_0: _elm_lang$html$Html$text(_p16._0),
+								_1: {ctor: '[]'}
+							};
+						}
+					}()),
+				_1: {ctor: '[]'}
+			}
+		});
+};
+var _user$project$Page_Budget$changeRentView = F3(
+	function (model, budget, viewLease) {
+		var changeRentButton = F2(
+			function (budget, adminLease) {
+				return _rundis$elm_bootstrap$Bootstrap_Alert$info(
+					{
+						ctor: '::',
+						_0: _elm_lang$html$Html$text('Change proposed rent'),
+						_1: {
+							ctor: '::',
+							_0: _user$project$Page_Budget$rentInputView(model),
+							_1: {ctor: '[]'}
+						}
+					});
+			});
+		var nonAdminView = A2(
+			_elm_lang$html$Html$div,
+			{
+				ctor: '::',
+				_0: _elm_lang$html$Html_Attributes$class('mt-4'),
+				_1: {ctor: '[]'}
+			},
+			{
+				ctor: '::',
+				_0: _rundis$elm_bootstrap$Bootstrap_Alert$info(
+					{
+						ctor: '::',
+						_0: _elm_lang$html$Html$text(
+							A2(
+								_elm_lang$core$Basics_ops['++'],
+								viewLease.adminName,
+								A2(
+									_elm_lang$core$Basics_ops['++'],
+									' is able to change the proposed ',
+									A2(_elm_lang$core$Basics_ops['++'], viewLease.name, ' rent')))),
+						_1: {ctor: '[]'}
+					}),
+				_1: {ctor: '[]'}
+			});
+		var _p17 = budget.leaseAdmin;
+		if (_p17.ctor === 'Just') {
+			var _p18 = _p17._0;
+			return _elm_lang$core$Native_Utils.eq(_p18, viewLease.name) ? A2(changeRentButton, budget, _p18) : nonAdminView;
+		} else {
+			return nonAdminView;
+		}
+	});
+var _user$project$Page_Budget$leaseDetailView = F3(
+	function (model, budget, lease) {
+		var defaultRent = _elm_lang$core$Basics$ceiling(
+			lease.currentRent * (1 + _user$project$Page_Budget$requiredPctIncrease(budget)));
+		return _rundis$elm_bootstrap$Bootstrap_Card$view(
+			A3(
+				_rundis$elm_bootstrap$Bootstrap_Card$block,
+				{ctor: '[]'},
+				{
+					ctor: '::',
+					_0: _rundis$elm_bootstrap$Bootstrap_Card$custom(
+						A2(
+							_elm_lang$html$Html$div,
+							{ctor: '[]'},
+							{
+								ctor: '::',
+								_0: A2(
+									_elm_lang$html$Html$p,
+									{
+										ctor: '::',
+										_0: _elm_lang$html$Html_Attributes$class('lead'),
+										_1: {ctor: '[]'}
+									},
+									{
+										ctor: '::',
+										_0: A2(
+											_user$project$Page_Budget$detailSummaryText,
+											lease,
+											_elm_lang$core$Basics$toFloat(defaultRent)),
+										_1: {ctor: '[]'}
+									}),
+								_1: {ctor: '[]'}
+							})),
+					_1: {ctor: '[]'}
+				},
+				A2(
+					_rundis$elm_bootstrap$Bootstrap_Card$listGroup,
+					{
+						ctor: '::',
+						_0: A2(
+							_rundis$elm_bootstrap$Bootstrap_ListGroup$li,
+							{ctor: '[]'},
+							{
+								ctor: '::',
+								_0: A3(_user$project$Page_Budget$changeRentView, model, budget, lease),
+								_1: {ctor: '[]'}
+							}),
+						_1: {ctor: '[]'}
+					},
+					A3(
+						_rundis$elm_bootstrap$Bootstrap_Card$headerH3,
+						{ctor: '[]'},
+						{
+							ctor: '::',
+							_0: _elm_lang$html$Html$text(
+								A2(_elm_lang$core$Basics_ops['++'], 'Detail: ', lease.name)),
+							_1: {ctor: '[]'}
+						},
+						_rundis$elm_bootstrap$Bootstrap_Card$config(
+							{
+								ctor: '::',
+								_0: _rundis$elm_bootstrap$Bootstrap_Card$attrs(
+									{
+										ctor: '::',
+										_0: _elm_lang$html$Html_Attributes$class('mt-2'),
+										_1: {ctor: '[]'}
+									}),
+								_1: {ctor: '[]'}
+							})))));
+	});
+var _user$project$Page_Budget$leaseDetailViews = F2(
+	function (model, budget) {
+		var leases = A2(
+			_elm_lang$core$List$filter,
+			function (_p19) {
+				return function (n) {
+					return A2(_elm_lang$core$List$member, n, budget.leaseMember);
+				}(
+					function (_) {
+						return _.name;
+					}(_p19));
+			},
+			budget.leases);
+		var detailCards = A2(
+			_elm_lang$core$List$map,
+			A2(_user$project$Page_Budget$leaseDetailView, model, budget),
+			leases);
+		return A2(
+			_elm_lang$core$List$map,
+			function (x) {
+				return A2(
+					_rundis$elm_bootstrap$Bootstrap_Grid$col,
+					{
+						ctor: '::',
+						_0: _rundis$elm_bootstrap$Bootstrap_Grid_Col$md4,
+						_1: {ctor: '[]'}
+					},
+					{
+						ctor: '::',
+						_0: x,
+						_1: {ctor: '[]'}
+					});
+			},
+			detailCards);
+	});
+var _user$project$Page_Budget$view = F2(
+	function (session, model) {
+		var animatedBudget = _user$project$Page_Budget$animate(model);
+		return A2(
+			_rundis$elm_bootstrap$Bootstrap_Grid$container,
+			{ctor: '[]'},
+			{
+				ctor: '::',
+				_0: A2(
+					_rundis$elm_bootstrap$Bootstrap_Grid$row,
+					{ctor: '[]'},
+					_elm_lang$core$List$concat(
+						{
+							ctor: '::',
+							_0: {
+								ctor: '::',
+								_0: A2(
+									_rundis$elm_bootstrap$Bootstrap_Grid$col,
+									{
+										ctor: '::',
+										_0: _rundis$elm_bootstrap$Bootstrap_Grid_Col$md12,
+										_1: {ctor: '[]'}
+									},
+									{
+										ctor: '::',
+										_0: _user$project$Page_Budget$explainerText(animatedBudget),
+										_1: {ctor: '[]'}
+									}),
+								_1: {ctor: '[]'}
+							},
+							_1: {
+								ctor: '::',
+								_0: {
+									ctor: '::',
+									_0: A2(
+										_rundis$elm_bootstrap$Bootstrap_Grid$col,
+										{
+											ctor: '::',
+											_0: _rundis$elm_bootstrap$Bootstrap_Grid_Col$md8,
+											_1: {ctor: '[]'}
+										},
+										{
+											ctor: '::',
+											_0: _user$project$Page_Budget$compareRentsView(animatedBudget),
+											_1: {ctor: '[]'}
+										}),
+									_1: {ctor: '[]'}
+								},
+								_1: {
+									ctor: '::',
+									_0: A2(_user$project$Page_Budget$leaseDetailViews, model, animatedBudget),
+									_1: {ctor: '[]'}
+								}
+							}
+						})),
+				_1: {ctor: '[]'}
+			});
+	});
+var _user$project$Page_Budget$RentChanged = function (a) {
+	return {ctor: 'RentChanged', _0: a};
+};
+var _user$project$Page_Budget$NewBudget = function (a) {
+	return {ctor: 'NewBudget', _0: a};
+};
+var _user$project$Page_Budget$update = F3(
+	function (session, msg, model) {
+		var _p20 = msg;
+		switch (_p20.ctor) {
+			case 'NewBudget':
+				if (_p20._0.ctor === 'Err') {
+					return {
+						ctor: '_Tuple2',
+						_0: A2(
+							_elm_lang$core$Debug$log,
+							_elm_lang$core$Basics$toString(_p20._0._0),
+							model),
+						_1: _elm_lang$core$Platform_Cmd$none
+					};
+				} else {
+					return {
+						ctor: '_Tuple2',
+						_0: _elm_lang$core$Native_Utils.update(
+							model,
+							{
+								budget: _p20._0._0,
+								animation: function () {
+									var currentAnimatedBudget = _user$project$Page_Budget$animate(model);
+									return _elm_lang$core$Maybe$Just(
+										{
+											startTime: _elm_lang$core$Maybe$Nothing,
+											budget: _user$project$Animation$slide(
+												_user$project$Page_Budget$interpolateBudget(currentAnimatedBudget))
+										});
+								}()
+							}),
+						_1: _elm_lang$core$Platform_Cmd$none
+					};
+				}
+			case 'ChangeRent':
+				return {
+					ctor: '_Tuple2',
+					_0: model,
+					_1: function () {
+						var _p21 = model.requestedRent;
+						if (_p21.ctor === 'Ok') {
+							return A2(
+								_elm_lang$http$Http$send,
+								_user$project$Page_Budget$RentChanged,
+								A2(_user$project$Request_Budget$changeRent, _p21._0, session));
+						} else {
+							return _elm_lang$core$Platform_Cmd$none;
+						}
+					}()
+				};
+			case 'RentChanged':
+				if (_p20._0.ctor === 'Ok') {
+					return {
+						ctor: '_Tuple2',
+						_0: model,
+						_1: A2(_elm_lang$http$Http$send, _user$project$Page_Budget$NewBudget, _user$project$Request_Budget$budget)
+					};
+				} else {
+					return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
+				}
+			case 'UpdateRentInput':
+				return {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Native_Utils.update(
+						model,
+						{
+							requestedRent: _user$project$Page_Budget$validateRent(_p20._0)
+						}),
+					_1: _elm_lang$core$Platform_Cmd$none
+				};
+			default:
+				var _p25 = _p20._0;
+				var _p22 = model.animation;
+				if (_p22.ctor === 'Just') {
+					var _p24 = _p22._0;
+					var _p23 = _p24.startTime;
+					if (_p23.ctor === 'Just') {
+						return (_elm_lang$core$Native_Utils.cmp(_p23._0 + _elm_lang$core$Time$second, _p25) > 0) ? {
+							ctor: '_Tuple2',
+							_0: _elm_lang$core$Native_Utils.update(
+								model,
+								{time: _p25}),
+							_1: _elm_lang$core$Platform_Cmd$none
+						} : {
+							ctor: '_Tuple2',
+							_0: _elm_lang$core$Native_Utils.update(
+								model,
+								{time: _p25, animation: _elm_lang$core$Maybe$Nothing}),
+							_1: _elm_lang$core$Platform_Cmd$none
+						};
+					} else {
+						return {
+							ctor: '_Tuple2',
+							_0: _elm_lang$core$Native_Utils.update(
+								model,
+								{
+									time: _p25,
+									animation: _elm_lang$core$Maybe$Just(
+										_elm_lang$core$Native_Utils.update(
+											_p24,
+											{
+												startTime: _elm_lang$core$Maybe$Just(_p25)
+											}))
+								}),
+							_1: _elm_lang$core$Platform_Cmd$none
+						};
+					}
+				} else {
+					return {
+						ctor: '_Tuple2',
+						_0: _elm_lang$core$Native_Utils.update(
+							model,
+							{time: _p25}),
+						_1: _elm_lang$core$Platform_Cmd$none
+					};
+				}
+		}
+	});
+
+var _user$project$Request_User$logout = function (session) {
+	return _lukewestby$elm_http_builder$HttpBuilder$toRequest(
+		A2(
+			_user$project$Data_Session$withAuthorization,
+			session,
+			A2(
+				_lukewestby$elm_http_builder$HttpBuilder$withExpect,
+				_elm_lang$http$Http$expectJson(_user$project$Data_Session$decoder),
+				_lukewestby$elm_http_builder$HttpBuilder$post(
+					_user$project$Request_Helpers$apiUrl('/logout.json')))));
+};
+var _user$project$Request_User$login = F2(
+	function (username, password) {
+		var credentials = _elm_lang$core$Json_Encode$object(
+			{
+				ctor: '::',
+				_0: A2(
+					_user$project$Util_ops['=>'],
+					'username',
+					_elm_lang$core$Json_Encode$string(username)),
+				_1: {
+					ctor: '::',
+					_0: A2(
+						_user$project$Util_ops['=>'],
+						'password',
+						_elm_lang$core$Json_Encode$string(password)),
+					_1: {ctor: '[]'}
+				}
+			});
+		var body = _elm_lang$core$Json_Encode$object(
+			{
+				ctor: '::',
+				_0: A2(_user$project$Util_ops['=>'], 'credentials', credentials),
+				_1: {ctor: '[]'}
+			});
+		return _lukewestby$elm_http_builder$HttpBuilder$toRequest(
+			A2(
+				_lukewestby$elm_http_builder$HttpBuilder$withJsonBody,
+				body,
+				A2(
+					_lukewestby$elm_http_builder$HttpBuilder$withExpect,
+					_elm_lang$http$Http$expectJson(_user$project$Data_Session$decoder),
+					_lukewestby$elm_http_builder$HttpBuilder$post(
+						_user$project$Request_Helpers$apiUrl('/login.json')))));
+	});
+
+var _user$project$Page_Profile$init = {ctor: '_Tuple0'};
+var _user$project$Page_Profile$LoggedOut = function (a) {
+	return {ctor: 'LoggedOut', _0: a};
+};
+var _user$project$Page_Profile$Logout = {ctor: 'Logout'};
+var _user$project$Page_Profile$view = F2(
+	function (session, model) {
+		return A2(
+			_rundis$elm_bootstrap$Bootstrap_Grid$row,
+			{ctor: '[]'},
+			{
+				ctor: '::',
+				_0: A2(
+					_rundis$elm_bootstrap$Bootstrap_Grid$col,
+					{
+						ctor: '::',
+						_0: _rundis$elm_bootstrap$Bootstrap_Grid_Col$md12,
+						_1: {ctor: '[]'}
+					},
+					{
+						ctor: '::',
+						_0: A2(
+							_elm_lang$html$Html$div,
+							{
+								ctor: '::',
+								_0: _elm_lang$html$Html_Attributes$class('text-center mt-4'),
+								_1: {ctor: '[]'}
+							},
+							{
+								ctor: '::',
+								_0: A2(
+									_rundis$elm_bootstrap$Bootstrap_Button$button,
+									{
+										ctor: '::',
+										_0: _rundis$elm_bootstrap$Bootstrap_Button$warning,
+										_1: {
+											ctor: '::',
+											_0: _rundis$elm_bootstrap$Bootstrap_Button$onClick(_user$project$Page_Profile$Logout),
+											_1: {ctor: '[]'}
+										}
+									},
+									{
+										ctor: '::',
+										_0: _elm_lang$html$Html$text('Sign out'),
+										_1: {ctor: '[]'}
+									}),
+								_1: {ctor: '[]'}
+							}),
+						_1: {ctor: '[]'}
+					}),
+				_1: {ctor: '[]'}
+			});
+	});
+var _user$project$Page_Profile$SetSession = function (a) {
+	return {ctor: 'SetSession', _0: a};
+};
+var _user$project$Page_Profile$update = F3(
+	function (session, msg, model) {
+		var _p0 = msg;
+		if (_p0.ctor === 'Logout') {
+			return {
+				ctor: '_Tuple3',
+				_0: model,
+				_1: A2(
+					_elm_lang$http$Http$send,
+					_user$project$Page_Profile$LoggedOut,
+					_user$project$Request_User$logout(session)),
+				_2: _elm_lang$core$Maybe$Nothing
+			};
+		} else {
+			if (_p0._0.ctor === 'Ok') {
+				return {
+					ctor: '_Tuple3',
+					_0: model,
+					_1: _elm_lang$core$Platform_Cmd$none,
+					_2: _elm_lang$core$Maybe$Just(
+						_user$project$Page_Profile$SetSession(_p0._0._0))
+				};
+			} else {
+				return {ctor: '_Tuple3', _0: model, _1: _elm_lang$core$Platform_Cmd$none, _2: _elm_lang$core$Maybe$Nothing};
+			}
+		}
+	});
+
+var _user$project$Page_Home$view = F2(
+	function (session, model) {
+		return A2(
+			_elm_lang$html$Html$div,
+			{
+				ctor: '::',
+				_0: _elm_lang$html$Html_Attributes$class('jumbotron m-4'),
+				_1: {ctor: '[]'}
+			},
+			{
+				ctor: '::',
+				_0: A2(
+					_elm_lang$html$Html$h1,
+					{
+						ctor: '::',
+						_0: _elm_lang$html$Html_Attributes$class('display-3'),
+						_1: {ctor: '[]'}
+					},
+					{
+						ctor: '::',
+						_0: _elm_lang$html$Html$text('Welcome!'),
+						_1: {ctor: '[]'}
+					}),
+				_1: {
+					ctor: '::',
+					_0: A2(
+						_elm_lang$html$Html$p,
+						{
+							ctor: '::',
+							_0: _elm_lang$html$Html_Attributes$class('lead'),
+							_1: {ctor: '[]'}
+						},
+						{
+							ctor: '::',
+							_0: _elm_lang$html$Html$text('This site helps to support Bloomcraft\'s governance process.  Today, you can use it to help make decisions about '),
+							_1: {
+								ctor: '::',
+								_0: A2(
+									_elm_lang$html$Html$a,
+									{
+										ctor: '::',
+										_0: _user$project$Route$href(_user$project$Route$Budget),
+										_1: {ctor: '[]'}
+									},
+									{
+										ctor: '::',
+										_0: _elm_lang$html$Html$text('rents'),
+										_1: {ctor: '[]'}
+									}),
+								_1: {
+									ctor: '::',
+									_0: _elm_lang$html$Html$text(' and '),
+									_1: {
+										ctor: '::',
+										_0: A2(
+											_elm_lang$html$Html$a,
+											{
+												ctor: '::',
+												_0: _user$project$Route$href(_user$project$Route$Expense),
+												_1: {ctor: '[]'}
+											},
+											{
+												ctor: '::',
+												_0: _elm_lang$html$Html$text('budgeting'),
+												_1: {ctor: '[]'}
+											}),
+										_1: {
+											ctor: '::',
+											_0: _elm_lang$html$Html$text('.'),
+											_1: {ctor: '[]'}
+										}
+									}
+								}
+							}
+						}),
+					_1: {
+						ctor: '::',
+						_0: A2(
+							_elm_lang$html$Html$hr,
+							{
+								ctor: '::',
+								_0: _elm_lang$html$Html_Attributes$class('my-4'),
+								_1: {ctor: '[]'}
+							},
+							{ctor: '[]'}),
+						_1: {
+							ctor: '::',
+							_0: A2(
+								_elm_lang$html$Html$p,
+								{ctor: '[]'},
+								{
+									ctor: '::',
+									_0: _elm_lang$html$Html$text('If you run into trouble, contact admin@bloomcraft.space'),
+									_1: {ctor: '[]'}
+								}),
+							_1: {ctor: '[]'}
+						}
+					}
+				}
+			});
+	});
+var _user$project$Page_Home$initialModel = {ctor: '_Tuple0'};
+
+var _user$project$Page_Login$initialModel = {username: '', password: ''};
+var _user$project$Page_Login$Model = F2(
+	function (a, b) {
+		return {username: a, password: b};
+	});
+var _user$project$Page_Login$LoginResponse = function (a) {
+	return {ctor: 'LoginResponse', _0: a};
+};
+var _user$project$Page_Login$SubmitLogin = {ctor: 'SubmitLogin'};
+var _user$project$Page_Login$SetPassword = function (a) {
+	return {ctor: 'SetPassword', _0: a};
+};
+var _user$project$Page_Login$SetUsername = function (a) {
+	return {ctor: 'SetUsername', _0: a};
+};
+var _user$project$Page_Login$view = function (model) {
+	return _rundis$elm_bootstrap$Bootstrap_Card$view(
+		A3(
+			_rundis$elm_bootstrap$Bootstrap_Card$block,
+			{ctor: '[]'},
+			{
+				ctor: '::',
+				_0: _rundis$elm_bootstrap$Bootstrap_Card$custom(
+					A2(
+						_rundis$elm_bootstrap$Bootstrap_Form$form,
+						{ctor: '[]'},
+						{
+							ctor: '::',
+							_0: A2(
+								_rundis$elm_bootstrap$Bootstrap_Form$group,
+								{ctor: '[]'},
+								{
+									ctor: '::',
+									_0: A2(
+										_rundis$elm_bootstrap$Bootstrap_Form$label,
+										{
+											ctor: '::',
+											_0: _elm_lang$html$Html_Attributes$for('username'),
+											_1: {ctor: '[]'}
+										},
+										{
+											ctor: '::',
+											_0: _elm_lang$html$Html$text('Username'),
+											_1: {ctor: '[]'}
+										}),
+									_1: {
+										ctor: '::',
+										_0: _rundis$elm_bootstrap$Bootstrap_Form_Input$text(
+											{
+												ctor: '::',
+												_0: _rundis$elm_bootstrap$Bootstrap_Form_Input$id('username'),
+												_1: {
+													ctor: '::',
+													_0: _rundis$elm_bootstrap$Bootstrap_Form_Input$onInput(_user$project$Page_Login$SetUsername),
+													_1: {ctor: '[]'}
+												}
+											}),
+										_1: {
+											ctor: '::',
+											_0: A2(
+												_rundis$elm_bootstrap$Bootstrap_Form$help,
+												{ctor: '[]'},
+												{
+													ctor: '::',
+													_0: _elm_lang$html$Html$text('Check your email for a message with your username'),
+													_1: {ctor: '[]'}
+												}),
+											_1: {ctor: '[]'}
+										}
+									}
+								}),
+							_1: {
+								ctor: '::',
+								_0: A2(
+									_rundis$elm_bootstrap$Bootstrap_Form$group,
+									{ctor: '[]'},
+									{
+										ctor: '::',
+										_0: A2(
+											_rundis$elm_bootstrap$Bootstrap_Form$label,
+											{
+												ctor: '::',
+												_0: _elm_lang$html$Html_Attributes$for('password'),
+												_1: {ctor: '[]'}
+											},
+											{
+												ctor: '::',
+												_0: _elm_lang$html$Html$text('Password'),
+												_1: {ctor: '[]'}
+											}),
+										_1: {
+											ctor: '::',
+											_0: _rundis$elm_bootstrap$Bootstrap_Form_Input$password(
+												{
+													ctor: '::',
+													_0: _rundis$elm_bootstrap$Bootstrap_Form_Input$id('password'),
+													_1: {
+														ctor: '::',
+														_0: _rundis$elm_bootstrap$Bootstrap_Form_Input$onInput(_user$project$Page_Login$SetPassword),
+														_1: {ctor: '[]'}
+													}
+												}),
+											_1: {ctor: '[]'}
+										}
+									}),
+								_1: {
+									ctor: '::',
+									_0: A2(
+										_rundis$elm_bootstrap$Bootstrap_Button$button,
+										{
+											ctor: '::',
+											_0: _rundis$elm_bootstrap$Bootstrap_Button$primary,
+											_1: {
+												ctor: '::',
+												_0: _rundis$elm_bootstrap$Bootstrap_Button$onClick(_user$project$Page_Login$SubmitLogin),
+												_1: {ctor: '[]'}
+											}
+										},
+										{
+											ctor: '::',
+											_0: _elm_lang$html$Html$text('Login'),
+											_1: {ctor: '[]'}
+										}),
+									_1: {ctor: '[]'}
+								}
+							}
+						})),
+				_1: {ctor: '[]'}
+			},
+			A3(
+				_rundis$elm_bootstrap$Bootstrap_Card$headerH3,
+				{ctor: '[]'},
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html$text('Sign in to Bloomcraft Here!'),
+					_1: {ctor: '[]'}
+				},
+				_rundis$elm_bootstrap$Bootstrap_Card$config(
+					{
+						ctor: '::',
+						_0: _rundis$elm_bootstrap$Bootstrap_Card$attrs(
+							{
+								ctor: '::',
+								_0: _elm_lang$html$Html_Attributes$class('m-4'),
+								_1: {ctor: '[]'}
+							}),
+						_1: {ctor: '[]'}
+					}))));
+};
+var _user$project$Page_Login$SetSession = function (a) {
+	return {ctor: 'SetSession', _0: a};
+};
+var _user$project$Page_Login$update = F2(
+	function (msg, model) {
+		var _p0 = msg;
+		switch (_p0.ctor) {
+			case 'SetPassword':
+				return {
+					ctor: '_Tuple3',
+					_0: _elm_lang$core$Native_Utils.update(
+						model,
+						{password: _p0._0}),
+					_1: _elm_lang$core$Platform_Cmd$none,
+					_2: _elm_lang$core$Maybe$Nothing
+				};
+			case 'SetUsername':
+				return {
+					ctor: '_Tuple3',
+					_0: _elm_lang$core$Native_Utils.update(
+						model,
+						{username: _p0._0}),
+					_1: _elm_lang$core$Platform_Cmd$none,
+					_2: _elm_lang$core$Maybe$Nothing
+				};
+			case 'SubmitLogin':
+				return {
+					ctor: '_Tuple3',
+					_0: model,
+					_1: A2(
+						_elm_lang$http$Http$send,
+						_user$project$Page_Login$LoginResponse,
+						A2(_user$project$Request_User$login, model.username, 'development')),
+					_2: _elm_lang$core$Maybe$Nothing
+				};
+			default:
+				if (_p0._0.ctor === 'Ok') {
+					return {
+						ctor: '_Tuple3',
+						_0: model,
+						_1: _elm_lang$core$Platform_Cmd$none,
+						_2: _elm_lang$core$Maybe$Just(
+							_user$project$Page_Login$SetSession(_p0._0._0))
+					};
+				} else {
+					return {ctor: '_Tuple3', _0: model, _1: _elm_lang$core$Platform_Cmd$none, _2: _elm_lang$core$Maybe$Nothing};
+				}
+		}
+	});
+
+var _user$project$View_PieChart$pieChart = function (data) {
+	var pieStart = {
+		startAngle: 0,
+		colorWheel: _user$project$View_Colors$defaultColorWheel,
+		elements: {
+			ctor: '_Tuple2',
+			_0: {ctor: '[]'},
+			_1: {ctor: '[]'}
+		}
+	};
+	var totalAmount = _elm_lang$core$Basics$toFloat(
+		_elm_lang$core$List$sum(
+			A2(_elm_lang$core$List$map, _elm_lang$core$Tuple$first, data)));
+	var radius = 50;
+	var wedgePath = F2(
+		function (startAngle, endAngle) {
+			var arcType = (_elm_lang$core$Native_Utils.cmp(endAngle - startAngle, _elm_lang$core$Basics$pi) > 0) ? _folkertdev$svg_path_dsl$Svg_Path$largestArc : _folkertdev$svg_path_dsl$Svg_Path$smallestArc;
+			return A3(
+				_folkertdev$svg_path_dsl$Svg_Path$subpath,
+				_folkertdev$svg_path_dsl$Svg_Path$startAt(
+					{ctor: '_Tuple2', _0: 0, _1: 0}),
+				_folkertdev$svg_path_dsl$Svg_Path$closed,
+				{
+					ctor: '::',
+					_0: _folkertdev$svg_path_dsl$Svg_Path$lineTo(
+						{
+							ctor: '_Tuple2',
+							_0: radius * _elm_lang$core$Basics$cos(startAngle),
+							_1: radius * (0 - _elm_lang$core$Basics$sin(startAngle))
+						}),
+					_1: {
+						ctor: '::',
+						_0: A4(
+							_folkertdev$svg_path_dsl$Svg_Path$arcTo,
+							{ctor: '_Tuple2', _0: radius, _1: radius},
+							0,
+							{ctor: '_Tuple2', _0: arcType, _1: _folkertdev$svg_path_dsl$Svg_Path$antiClockwise},
+							{
+								ctor: '_Tuple2',
+								_0: radius * _elm_lang$core$Basics$cos(endAngle),
+								_1: radius * (0 - _elm_lang$core$Basics$sin(endAngle))
+							}),
+						_1: {ctor: '[]'}
+					}
+				});
+		});
+	var wedge = F2(
+		function (_p1, _p0) {
+			var _p2 = _p1;
+			var _p7 = _p2._0;
+			var _p3 = _p0;
+			var _p6 = _p3.startAngle;
+			var _p5 = _p3.colorWheel;
+			var _p4 = _p3.elements;
+			var texts = _p4._0;
+			var paths = _p4._1;
+			var textTranslate = A2(
+				_elm_lang$core$Basics_ops['++'],
+				' translate (',
+				A2(
+					_elm_lang$core$Basics_ops['++'],
+					_elm_lang$core$Basics$toString(20),
+					',0) '));
+			var endAngle = _p6 + (((2 * _elm_lang$core$Basics$pi) * _elm_lang$core$Basics$toFloat(_p7)) / totalAmount);
+			var midAngle = (_p6 + endAngle) / 2;
+			var textRotation = A2(
+				_elm_lang$core$Basics_ops['++'],
+				'rotate(',
+				A2(
+					_elm_lang$core$Basics_ops['++'],
+					_elm_lang$core$Basics$toString((-360 / (2 * _elm_lang$core$Basics$pi)) * midAngle),
+					')'));
+			var flipText = (_elm_lang$core$Native_Utils.cmp(midAngle, _elm_lang$core$Basics$pi / 2) > 0) && (_elm_lang$core$Native_Utils.cmp(midAngle, (3 * _elm_lang$core$Basics$pi) / 2) < 0);
+			var anchor = flipText ? 'end' : 'start';
+			var textFlip = flipText ? 'scale(-1,-1)' : '';
+			return (!_elm_lang$core$Native_Utils.eq(_p7, 0)) ? {
+				startAngle: endAngle,
+				colorWheel: _user$project$Util$rotateList(_p5),
+				elements: {
+					ctor: '_Tuple2',
+					_0: {
+						ctor: '::',
+						_0: A2(
+							_elm_lang$svg$Svg$g,
+							{
+								ctor: '::',
+								_0: _elm_lang$svg$Svg_Attributes$transform(
+									A2(
+										_elm_lang$core$Basics_ops['++'],
+										textRotation,
+										A2(_elm_lang$core$Basics_ops['++'], textTranslate, textFlip))),
+								_1: {ctor: '[]'}
+							},
+							{
+								ctor: '::',
+								_0: A2(
+									_elm_lang$svg$Svg$text_,
+									{
+										ctor: '::',
+										_0: _elm_lang$svg$Svg_Attributes$x('0'),
+										_1: {
+											ctor: '::',
+											_0: _elm_lang$svg$Svg_Attributes$y('0'),
+											_1: {
+												ctor: '::',
+												_0: _elm_lang$svg$Svg_Attributes$fontSize('5px'),
+												_1: {
+													ctor: '::',
+													_0: _elm_lang$svg$Svg_Attributes$alignmentBaseline('middle'),
+													_1: {
+														ctor: '::',
+														_0: _elm_lang$svg$Svg_Attributes$textAnchor(anchor),
+														_1: {ctor: '[]'}
+													}
+												}
+											}
+										}
+									},
+									{
+										ctor: '::',
+										_0: _elm_lang$svg$Svg$text(_p2._1),
+										_1: {ctor: '[]'}
+									}),
+								_1: {ctor: '[]'}
+							}),
+						_1: texts
+					},
+					_1: {
+						ctor: '::',
+						_0: A2(
+							_elm_lang$svg$Svg$path,
+							{
+								ctor: '::',
+								_0: _elm_lang$svg$Svg_Attributes$d(
+									_folkertdev$svg_path_dsl$Svg_Path$pathToString(
+										{
+											ctor: '::',
+											_0: A2(wedgePath, _p6, endAngle),
+											_1: {ctor: '[]'}
+										})),
+								_1: {
+									ctor: '::',
+									_0: _elm_lang$svg$Svg_Attributes$fill(
+										_user$project$View_Colors$nextColor(_p5)),
+									_1: {
+										ctor: '::',
+										_0: _elm_lang$svg$Svg_Attributes$stroke('#FFFFFF'),
+										_1: {
+											ctor: '::',
+											_0: _elm_lang$svg$Svg_Attributes$strokeLinejoin('round'),
+											_1: {ctor: '[]'}
+										}
+									}
+								}
+							},
+							{ctor: '[]'}),
+						_1: paths
+					}
+				}
+			} : _p3;
+		});
+	var _p8 = function (_) {
+		return _.elements;
+	}(
+		A3(_elm_lang$core$List$foldr, wedge, pieStart, data));
+	var texts = _p8._0;
+	var paths = _p8._1;
+	return A2(
+		_elm_lang$svg$Svg$g,
+		{
+			ctor: '::',
+			_0: _elm_lang$svg$Svg_Attributes$transform('translate(50,50)'),
+			_1: {ctor: '[]'}
+		},
+		A2(_elm_lang$core$Basics_ops['++'], paths, texts));
 };
 
 var _user$project$Request_Allocation$postVote = F3(
@@ -17092,6 +21185,483 @@ var _user$project$Request_Allocation$allocation = _lukewestby$elm_http_builder$H
 			A2(_elm_lang$core$Json_Decode$field, 'allocation', _user$project$Data_Allocation$decoder)),
 		_lukewestby$elm_http_builder$HttpBuilder$get(
 			_user$project$Request_Helpers$apiUrl('/allocation.json'))));
+
+var _user$project$Page_Expense$init = function () {
+	var initModel = function (allocation) {
+		return {allocation: allocation};
+	};
+	var handleLoadError = function (err) {
+		var l = A2(_elm_lang$core$Debug$log, 'Expense Load Err', err);
+		return A2(_user$project$Page_Errored$pageLoadError, _user$project$View_Page$Expense, 'Failed to load expenses');
+	};
+	var loadAllocation = _elm_lang$http$Http$toTask(_user$project$Request_Allocation$allocation);
+	return A2(
+		_elm_lang$core$Task$mapError,
+		handleLoadError,
+		A2(_elm_lang$core$Task$map, initModel, loadAllocation));
+}();
+var _user$project$Page_Expense$update = F2(
+	function (msg, model) {
+		return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
+	});
+var _user$project$Page_Expense$expenseView = function (expense) {
+	var totalFunds = expense.currentAllocatedFunds + expense.newAllocatedFunds;
+	var width = A2(_elm_lang$core$Basics$max, expense.requestedFunds, totalFunds);
+	var pp = _elm_lang$core$Native_Utils.update(
+		_user$project$View_BarPlot$defaultPlotParams,
+		{
+			maxValue: _elm_lang$core$Basics$toFloat(width),
+			height: 50
+		});
+	var isFunded = _elm_lang$core$Native_Utils.cmp(totalFunds, expense.requestedFunds) > -1;
+	var fundColor = function () {
+		var _p0 = isFunded;
+		if (_p0 === true) {
+			return _user$project$View_Colors$greenColor;
+		} else {
+			return _user$project$View_Colors$blueColor;
+		}
+	}();
+	var greyFundColor = function () {
+		var _p1 = isFunded;
+		if (_p1 === true) {
+			return _user$project$View_Colors$darkGreenColor;
+		} else {
+			return _user$project$View_Colors$greyColor;
+		}
+	}();
+	var svg = A2(
+		_elm_lang$svg$Svg$g,
+		{ctor: '[]'},
+		{
+			ctor: '::',
+			_0: A2(
+				_user$project$View_BarPlot$drawBox,
+				pp,
+				{
+					ctor: '_Tuple3',
+					_0: 0,
+					_1: _elm_lang$core$Basics$toFloat(totalFunds),
+					_2: _user$project$View_Colors$greyColor
+				}),
+			_1: {
+				ctor: '::',
+				_0: A2(
+					_user$project$View_BarPlot$drawBox,
+					pp,
+					{
+						ctor: '_Tuple3',
+						_0: _elm_lang$core$Basics$toFloat(expense.currentAllocatedFunds),
+						_1: _elm_lang$core$Basics$toFloat(expense.currentAllocatedFunds + expense.newAllocatedFunds),
+						_2: fundColor
+					}),
+				_1: {
+					ctor: '::',
+					_0: A2(
+						_user$project$View_BarPlot$drawBox,
+						_elm_lang$core$Native_Utils.update(
+							pp,
+							{filled: false}),
+						{
+							ctor: '_Tuple3',
+							_0: 0,
+							_1: _elm_lang$core$Basics$toFloat(width),
+							_2: '#202020'
+						}),
+					_1: {ctor: '[]'}
+				}
+			}
+		});
+	return svg;
+};
+var _user$project$Page_Expense$expenseDetailsView = function (expenses) {
+	var voteResultText = function (expense) {
+		return (_elm_lang$core$Native_Utils.cmp(expense.userNewAllocatedFunds, 0) > 0) ? A2(
+			_elm_lang$core$Basics_ops['++'],
+			' You\'ve allocated $',
+			A2(
+				_elm_lang$core$Basics_ops['++'],
+				_elm_lang$core$Basics$toString(expense.userNewAllocatedFunds),
+				' to this item.')) : '';
+	};
+	var expenseBoxer = function (expense) {
+		return A2(
+			_rundis$elm_bootstrap$Bootstrap_Grid$col,
+			{
+				ctor: '::',
+				_0: _rundis$elm_bootstrap$Bootstrap_Grid_Col$md6,
+				_1: {
+					ctor: '::',
+					_0: _rundis$elm_bootstrap$Bootstrap_Grid_Col$xs6,
+					_1: {ctor: '[]'}
+				}
+			},
+			{
+				ctor: '::',
+				_0: A2(
+					_elm_lang$html$Html$div,
+					{ctor: '[]'},
+					{
+						ctor: '::',
+						_0: A2(
+							_elm_lang$html$Html$div,
+							{
+								ctor: '::',
+								_0: _elm_lang$html$Html_Attributes$style(
+									{
+										ctor: '::',
+										_0: {ctor: '_Tuple2', _0: 'border-width', _1: '1px'},
+										_1: {
+											ctor: '::',
+											_0: {ctor: '_Tuple2', _0: 'border-style', _1: 'solid'},
+											_1: {
+												ctor: '::',
+												_0: {ctor: '_Tuple2', _0: 'box-shadow', _1: '2px 3px 6px 3px rgba(0,0,0,0.1)'},
+												_1: {ctor: '[]'}
+											}
+										}
+									}),
+								_1: {
+									ctor: '::',
+									_0: _elm_lang$html$Html_Attributes$class('rounded p-1 mb-2'),
+									_1: {ctor: '[]'}
+								}
+							},
+							{
+								ctor: '::',
+								_0: A2(
+									_elm_lang$html$Html$p,
+									{
+										ctor: '::',
+										_0: _elm_lang$html$Html_Attributes$class('h5'),
+										_1: {ctor: '[]'}
+									},
+									{
+										ctor: '::',
+										_0: _elm_lang$html$Html$text(expense.name),
+										_1: {ctor: '[]'}
+									}),
+								_1: {
+									ctor: '::',
+									_0: A2(
+										_elm_lang$svg$Svg$svg,
+										{
+											ctor: '::',
+											_0: _elm_lang$svg$Svg_Attributes$viewBox('0 0 100 50'),
+											_1: {
+												ctor: '::',
+												_0: _elm_lang$svg$Svg_Attributes$width('100%'),
+												_1: {ctor: '[]'}
+											}
+										},
+										{
+											ctor: '::',
+											_0: _user$project$Page_Expense$expenseView(expense),
+											_1: {ctor: '[]'}
+										}),
+									_1: {
+										ctor: '::',
+										_0: A2(
+											_elm_lang$html$Html$p,
+											{
+												ctor: '::',
+												_0: _elm_lang$html$Html_Attributes$class('small mb-0'),
+												_1: {ctor: '[]'}
+											},
+											{
+												ctor: '::',
+												_0: _elm_lang$html$Html$text(
+													voteResultText(expense)),
+												_1: {ctor: '[]'}
+											}),
+										_1: {
+											ctor: '::',
+											_0: A2(
+												_elm_lang$html$Html$hr,
+												{
+													ctor: '::',
+													_0: _elm_lang$html$Html_Attributes$class('m-1'),
+													_1: {ctor: '[]'}
+												},
+												{ctor: '[]'}),
+											_1: {
+												ctor: '::',
+												_0: A2(
+													_elm_lang$html$Html$p,
+													{
+														ctor: '::',
+														_0: _elm_lang$html$Html_Attributes$class('small mb-0 text-muted'),
+														_1: {ctor: '[]'}
+													},
+													{
+														ctor: '::',
+														_0: _elm_lang$html$Html$text(
+															A2(
+																_elm_lang$core$Basics_ops['++'],
+																expense.owner,
+																A2(
+																	_elm_lang$core$Basics_ops['++'],
+																	' requested $',
+																	A2(
+																		_elm_lang$core$Basics_ops['++'],
+																		_elm_lang$core$Basics$toString(expense.requestedFunds),
+																		A2(
+																			_elm_lang$core$Basics_ops['++'],
+																			' and is currently allocated $',
+																			A2(
+																				_elm_lang$core$Basics_ops['++'],
+																				_elm_lang$core$Basics$toString(expense.newAllocatedFunds),
+																				'.')))))),
+														_1: {ctor: '[]'}
+													}),
+												_1: {
+													ctor: '::',
+													_0: A2(
+														_rundis$elm_bootstrap$Bootstrap_Button$linkButton,
+														{
+															ctor: '::',
+															_0: _rundis$elm_bootstrap$Bootstrap_Button$primary,
+															_1: {
+																ctor: '::',
+																_0: _rundis$elm_bootstrap$Bootstrap_Button$block,
+																_1: {
+																	ctor: '::',
+																	_0: _rundis$elm_bootstrap$Bootstrap_Button$attrs(
+																		{
+																			ctor: '::',
+																			_0: _user$project$Route$href(
+																				_user$project$Route$ExpenseDetail(expense.slug)),
+																			_1: {ctor: '[]'}
+																		}),
+																	_1: {ctor: '[]'}
+																}
+															}
+														},
+														{
+															ctor: '::',
+															_0: _elm_lang$html$Html$text('Vote'),
+															_1: {ctor: '[]'}
+														}),
+													_1: {ctor: '[]'}
+												}
+											}
+										}
+									}
+								}
+							}),
+						_1: {ctor: '[]'}
+					}),
+				_1: {ctor: '[]'}
+			});
+	};
+	var maxFunds = function (e) {
+		return A2(_elm_lang$core$Basics$max, e.requestedFunds, e.currentAllocatedFunds + e.newAllocatedFunds);
+	};
+	return _rundis$elm_bootstrap$Bootstrap_Card$view(
+		A3(
+			_rundis$elm_bootstrap$Bootstrap_Card$block,
+			{ctor: '[]'},
+			{
+				ctor: '::',
+				_0: _rundis$elm_bootstrap$Bootstrap_Card$custom(
+					A2(
+						_rundis$elm_bootstrap$Bootstrap_Grid$row,
+						{ctor: '[]'},
+						A2(_elm_lang$core$List$map, expenseBoxer, expenses))),
+				_1: {ctor: '[]'}
+			},
+			A3(
+				_rundis$elm_bootstrap$Bootstrap_Card$headerH3,
+				{ctor: '[]'},
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html$text('Expense Funding'),
+					_1: {ctor: '[]'}
+				},
+				_rundis$elm_bootstrap$Bootstrap_Card$config(
+					{
+						ctor: '::',
+						_0: _rundis$elm_bootstrap$Bootstrap_Card$attrs(
+							{
+								ctor: '::',
+								_0: _elm_lang$html$Html_Attributes$class('mt-2'),
+								_1: {ctor: '[]'}
+							}),
+						_1: {ctor: '[]'}
+					}))));
+};
+var _user$project$Page_Expense$allocationPieSummary = function (allocation) {
+	var toPieData = function (expense) {
+		return {ctor: '_Tuple2', _0: expense.newAllocatedFunds, _1: expense.name};
+	};
+	return A2(_elm_lang$core$List$map, toPieData, allocation.expenses);
+};
+var _user$project$Page_Expense$allocationSummary = function (model) {
+	var allocation = model.allocation;
+	var summaryText = A2(
+		_elm_lang$core$Basics_ops['++'],
+		'This page shows how the $',
+		A2(
+			_elm_lang$core$Basics_ops['++'],
+			_elm_lang$core$Basics$toString(allocation.amount),
+			A2(
+				_elm_lang$core$Basics_ops['++'],
+				' in surplus funds will be allocated.',
+				A2(
+					_elm_lang$core$Basics_ops['++'],
+					' Because ',
+					A2(
+						_elm_lang$core$Basics_ops['++'],
+						_elm_lang$core$Basics$toString(allocation.numVoters),
+						A2(
+							_elm_lang$core$Basics_ops['++'],
+							' Bloomcraft keyholders have participated so far, you have ',
+							A2(
+								_elm_lang$core$Basics_ops['++'],
+								'$',
+								A2(
+									_elm_lang$core$Basics_ops['++'],
+									_elm_lang$core$Basics$toString(
+										_elm_lang$core$Basics$ceiling(
+											_elm_lang$core$Basics$toFloat(allocation.amount) / _elm_lang$core$Basics$toFloat(allocation.numVoters))),
+									' to allocate. Use the vote buttons to share your preferences, and the allocation will change to reflect them.'))))))));
+	return _rundis$elm_bootstrap$Bootstrap_Card$view(
+		A3(
+			_rundis$elm_bootstrap$Bootstrap_Card$block,
+			{ctor: '[]'},
+			{
+				ctor: '::',
+				_0: _rundis$elm_bootstrap$Bootstrap_Card$custom(
+					A2(
+						_elm_lang$html$Html$div,
+						{ctor: '[]'},
+						{
+							ctor: '::',
+							_0: A2(
+								_elm_lang$html$Html$div,
+								{
+									ctor: '::',
+									_0: _elm_lang$html$Html_Attributes$style(
+										{
+											ctor: '::',
+											_0: {ctor: '_Tuple2', _0: 'width', _1: '100%'},
+											_1: {
+												ctor: '::',
+												_0: {ctor: '_Tuple2', _0: 'margin', _1: '0 auto'},
+												_1: {ctor: '[]'}
+											}
+										}),
+									_1: {ctor: '[]'}
+								},
+								{
+									ctor: '::',
+									_0: A2(
+										_elm_lang$svg$Svg$svg,
+										{
+											ctor: '::',
+											_0: _elm_lang$svg$Svg_Attributes$viewBox('-25 -15 150 130'),
+											_1: {ctor: '[]'}
+										},
+										{
+											ctor: '::',
+											_0: _user$project$View_PieChart$pieChart(
+												_user$project$Page_Expense$allocationPieSummary(model.allocation)),
+											_1: {ctor: '[]'}
+										}),
+									_1: {ctor: '[]'}
+								}),
+							_1: {
+								ctor: '::',
+								_0: A2(
+									_elm_lang$html$Html$p,
+									{
+										ctor: '::',
+										_0: _elm_lang$html$Html_Attributes$class('lead'),
+										_1: {ctor: '[]'}
+									},
+									{
+										ctor: '::',
+										_0: _elm_lang$html$Html$text(summaryText),
+										_1: {ctor: '[]'}
+									}),
+								_1: {ctor: '[]'}
+							}
+						})),
+				_1: {ctor: '[]'}
+			},
+			A3(
+				_rundis$elm_bootstrap$Bootstrap_Card$headerH3,
+				{ctor: '[]'},
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html$text('Summary of Allocation'),
+					_1: {ctor: '[]'}
+				},
+				_rundis$elm_bootstrap$Bootstrap_Card$config(
+					{
+						ctor: '::',
+						_0: _rundis$elm_bootstrap$Bootstrap_Card$attrs(
+							{
+								ctor: '::',
+								_0: _elm_lang$html$Html_Attributes$class('mt-2'),
+								_1: {ctor: '[]'}
+							}),
+						_1: {ctor: '[]'}
+					}))));
+};
+var _user$project$Page_Expense$view = function (model) {
+	return A2(
+		_rundis$elm_bootstrap$Bootstrap_Grid$container,
+		{ctor: '[]'},
+		{
+			ctor: '::',
+			_0: A2(
+				_rundis$elm_bootstrap$Bootstrap_Grid$row,
+				{
+					ctor: '::',
+					_0: _rundis$elm_bootstrap$Bootstrap_Grid_Row$centerMd,
+					_1: {ctor: '[]'}
+				},
+				{
+					ctor: '::',
+					_0: A2(
+						_rundis$elm_bootstrap$Bootstrap_Grid$col,
+						{
+							ctor: '::',
+							_0: _rundis$elm_bootstrap$Bootstrap_Grid_Col$lg6,
+							_1: {ctor: '[]'}
+						},
+						{
+							ctor: '::',
+							_0: _user$project$Page_Expense$allocationSummary(model),
+							_1: {ctor: '[]'}
+						}),
+					_1: {
+						ctor: '::',
+						_0: A2(
+							_rundis$elm_bootstrap$Bootstrap_Grid$col,
+							{
+								ctor: '::',
+								_0: _rundis$elm_bootstrap$Bootstrap_Grid_Col$lg6,
+								_1: {ctor: '[]'}
+							},
+							{
+								ctor: '::',
+								_0: _user$project$Page_Expense$expenseDetailsView(model.allocation.expenses),
+								_1: {ctor: '[]'}
+							}),
+						_1: {ctor: '[]'}
+					}
+				}),
+			_1: {ctor: '[]'}
+		});
+};
+var _user$project$Page_Expense$Model = function (a) {
+	return {allocation: a};
+};
+var _user$project$Page_Expense$AllocationLoaded = function (a) {
+	return {ctor: 'AllocationLoaded', _0: a};
+};
 
 var _user$project$Page_ExpenseDetail$expenseSummaryTable = function (expense) {
 	var maybeNot = function (x) {
@@ -17954,11 +22524,618 @@ var _user$project$Page_ExpenseDetail$view = function (model) {
 		});
 };
 
+var _user$project$Request_Session$getSession = A2(
+	_elm_lang$http$Http$get,
+	_user$project$Request_Helpers$apiUrl('/session.json'),
+	_user$project$Data_Session$decoder);
+
+var _user$project$Main$getPage = function (pageState) {
+	var _p0 = pageState;
+	if (_p0.ctor === 'Loaded') {
+		return _p0._0;
+	} else {
+		return _p0._0;
+	}
+};
+var _user$project$Main$Model = F3(
+	function (a, b, c) {
+		return {session: a, pageState: b, navState: c};
+	});
+var _user$project$Main$ExpenseDetail = function (a) {
+	return {ctor: 'ExpenseDetail', _0: a};
+};
+var _user$project$Main$Expense = function (a) {
+	return {ctor: 'Expense', _0: a};
+};
+var _user$project$Main$Profile = function (a) {
+	return {ctor: 'Profile', _0: a};
+};
+var _user$project$Main$Budget = function (a) {
+	return {ctor: 'Budget', _0: a};
+};
+var _user$project$Main$Login = function (a) {
+	return {ctor: 'Login', _0: a};
+};
+var _user$project$Main$Home = function (a) {
+	return {ctor: 'Home', _0: a};
+};
+var _user$project$Main$Errored = function (a) {
+	return {ctor: 'Errored', _0: a};
+};
+var _user$project$Main$NotFound = {ctor: 'NotFound'};
+var _user$project$Main$Blank = {ctor: 'Blank'};
+var _user$project$Main$TransitioningFrom = function (a) {
+	return {ctor: 'TransitioningFrom', _0: a};
+};
+var _user$project$Main$Loaded = function (a) {
+	return {ctor: 'Loaded', _0: a};
+};
+var _user$project$Main$pageErrored = F3(
+	function (model, activePage, errorMessage) {
+		var error = A2(_user$project$Page_Errored$pageLoadError, activePage, errorMessage);
+		return A2(
+			_user$project$Util_ops['=>'],
+			_elm_lang$core$Native_Utils.update(
+				model,
+				{
+					pageState: _user$project$Main$Loaded(
+						_user$project$Main$Errored(error))
+				}),
+			_elm_lang$core$Platform_Cmd$none);
+	});
+var _user$project$Main$WaitingForSession = function (a) {
+	return {ctor: 'WaitingForSession', _0: a};
+};
+var _user$project$Main$HaveSession = function (a) {
+	return {ctor: 'HaveSession', _0: a};
+};
+var _user$project$Main$ExpenseDetailMsg = function (a) {
+	return {ctor: 'ExpenseDetailMsg', _0: a};
+};
+var _user$project$Main$ExpenseMsg = function (a) {
+	return {ctor: 'ExpenseMsg', _0: a};
+};
+var _user$project$Main$ProfileMsg = function (a) {
+	return {ctor: 'ProfileMsg', _0: a};
+};
+var _user$project$Main$LoginMsg = function (a) {
+	return {ctor: 'LoginMsg', _0: a};
+};
+var _user$project$Main$BudgetMsg = function (a) {
+	return {ctor: 'BudgetMsg', _0: a};
+};
+var _user$project$Main$NavMsg = function (a) {
+	return {ctor: 'NavMsg', _0: a};
+};
+var _user$project$Main$viewPage = F3(
+	function (model, isLoading, page) {
+		var session = model.session;
+		var frame = A4(_user$project$View_Page$frame, _user$project$Main$NavMsg, model.navState, isLoading, session);
+		var _p1 = page;
+		switch (_p1.ctor) {
+			case 'Errored':
+				return A2(
+					frame,
+					_user$project$View_Page$Other,
+					A2(_user$project$Page_Errored$view, session, _p1._0));
+			case 'Home':
+				return A2(
+					frame,
+					_user$project$View_Page$Home,
+					A2(_user$project$Page_Home$view, session, _p1._0));
+			case 'Budget':
+				return A2(
+					frame,
+					_user$project$View_Page$Budget,
+					A2(
+						_elm_lang$html$Html$map,
+						_user$project$Main$BudgetMsg,
+						A2(_user$project$Page_Budget$view, session, _p1._0)));
+			case 'Login':
+				return A2(
+					frame,
+					_user$project$View_Page$Budget,
+					A2(
+						_elm_lang$html$Html$map,
+						_user$project$Main$LoginMsg,
+						_user$project$Page_Login$view(_p1._0)));
+			case 'Profile':
+				return A2(
+					frame,
+					_user$project$View_Page$Profile,
+					A2(
+						_elm_lang$html$Html$map,
+						_user$project$Main$ProfileMsg,
+						A2(_user$project$Page_Profile$view, session, _p1._0)));
+			case 'Expense':
+				return A2(
+					frame,
+					_user$project$View_Page$Expense,
+					A2(
+						_elm_lang$html$Html$map,
+						_user$project$Main$ExpenseMsg,
+						_user$project$Page_Expense$view(_p1._0)));
+			case 'ExpenseDetail':
+				return A2(
+					frame,
+					_user$project$View_Page$Other,
+					A2(
+						_elm_lang$html$Html$map,
+						_user$project$Main$ExpenseDetailMsg,
+						_user$project$Page_ExpenseDetail$view(_p1._0)));
+			case 'NotFound':
+				return A2(
+					frame,
+					_user$project$View_Page$Other,
+					_elm_lang$html$Html$text('Page Not Found'));
+			default:
+				return A2(
+					frame,
+					_user$project$View_Page$Other,
+					_elm_lang$html$Html$text(''));
+		}
+	});
+var _user$project$Main$view = function (model) {
+	var _p2 = model.pageState;
+	if (_p2.ctor === 'Loaded') {
+		return A3(_user$project$Main$viewPage, model, false, _p2._0);
+	} else {
+		return A3(_user$project$Main$viewPage, model, true, _p2._0);
+	}
+};
+var _user$project$Main$startupView = function (model) {
+	var _p3 = model;
+	if (_p3.ctor === 'WaitingForSession') {
+		return A2(
+			_elm_lang$html$Html$div,
+			{ctor: '[]'},
+			{ctor: '[]'});
+	} else {
+		return _user$project$Main$view(_p3._0);
+	}
+};
+var _user$project$Main$subscriptions = function (startModel) {
+	var _p4 = startModel;
+	if (_p4.ctor === 'WaitingForSession') {
+		return _elm_lang$core$Platform_Sub$none;
+	} else {
+		var _p6 = _p4._0;
+		return _elm_lang$core$Platform_Sub$batch(
+			{
+				ctor: '::',
+				_0: function () {
+					var _p5 = _p6.pageState;
+					if ((_p5.ctor === 'Loaded') && (_p5._0.ctor === 'Budget')) {
+						return A2(
+							_elm_lang$core$Platform_Sub$map,
+							_user$project$Main$BudgetMsg,
+							_user$project$Page_Budget$subscriptions(_p5._0._0));
+					} else {
+						return _elm_lang$core$Platform_Sub$none;
+					}
+				}(),
+				_1: {
+					ctor: '::',
+					_0: A2(_rundis$elm_bootstrap$Bootstrap_Navbar$subscriptions, _p6.navState, _user$project$Main$NavMsg),
+					_1: {ctor: '[]'}
+				}
+			});
+	}
+};
+var _user$project$Main$ExpenseDetailLoaded = function (a) {
+	return {ctor: 'ExpenseDetailLoaded', _0: a};
+};
+var _user$project$Main$ExpenseLoaded = function (a) {
+	return {ctor: 'ExpenseLoaded', _0: a};
+};
+var _user$project$Main$BudgetLoaded = function (a) {
+	return {ctor: 'BudgetLoaded', _0: a};
+};
+var _user$project$Main$setRoute = F2(
+	function (maybeRoute, model) {
+		var loggedIn = !_elm_lang$core$Native_Utils.eq(model.session.user, _elm_lang$core$Maybe$Nothing);
+		var errored = _user$project$Main$pageErrored(model);
+		var transition = F2(
+			function (toMsg, task) {
+				return A2(
+					_user$project$Util_ops['=>'],
+					_elm_lang$core$Native_Utils.update(
+						model,
+						{
+							pageState: _user$project$Main$TransitioningFrom(
+								_user$project$Main$getPage(model.pageState))
+						}),
+					A2(_elm_lang$core$Task$attempt, toMsg, task));
+			});
+		var _p7 = maybeRoute;
+		if (_p7.ctor === 'Nothing') {
+			return A2(
+				_user$project$Util_ops['=>'],
+				_elm_lang$core$Native_Utils.update(
+					model,
+					{
+						pageState: _user$project$Main$Loaded(_user$project$Main$NotFound)
+					}),
+				_elm_lang$core$Platform_Cmd$none);
+		} else {
+			switch (_p7._0.ctor) {
+				case 'Home':
+					return A2(
+						_user$project$Util_ops['=>'],
+						_elm_lang$core$Native_Utils.update(
+							model,
+							{
+								pageState: _user$project$Main$Loaded(
+									_user$project$Main$Home(_user$project$Page_Home$initialModel))
+							}),
+						_elm_lang$core$Platform_Cmd$none);
+				case 'Budget':
+					return loggedIn ? A2(transition, _user$project$Main$BudgetLoaded, _user$project$Page_Budget$init) : {
+						ctor: '_Tuple2',
+						_0: model,
+						_1: _user$project$Route$modifyUrl(_user$project$Route$Login)
+					};
+				case 'Expense':
+					return loggedIn ? A2(transition, _user$project$Main$ExpenseLoaded, _user$project$Page_Expense$init) : {
+						ctor: '_Tuple2',
+						_0: model,
+						_1: _user$project$Route$modifyUrl(_user$project$Route$Login)
+					};
+				case 'Login':
+					return loggedIn ? {
+						ctor: '_Tuple2',
+						_0: model,
+						_1: _user$project$Route$modifyUrl(_user$project$Route$Home)
+					} : A2(
+						_user$project$Util_ops['=>'],
+						_elm_lang$core$Native_Utils.update(
+							model,
+							{
+								pageState: _user$project$Main$Loaded(
+									_user$project$Main$Login(_user$project$Page_Login$initialModel))
+							}),
+						_elm_lang$core$Platform_Cmd$none);
+				case 'Profile':
+					return loggedIn ? A2(
+						_user$project$Util_ops['=>'],
+						_elm_lang$core$Native_Utils.update(
+							model,
+							{
+								pageState: _user$project$Main$Loaded(
+									_user$project$Main$Profile(_user$project$Page_Profile$init))
+							}),
+						_elm_lang$core$Platform_Cmd$none) : {
+						ctor: '_Tuple2',
+						_0: model,
+						_1: _user$project$Route$modifyUrl(_user$project$Route$Login)
+					};
+				default:
+					return loggedIn ? A2(
+						transition,
+						_user$project$Main$ExpenseDetailLoaded,
+						_user$project$Page_ExpenseDetail$init(_p7._0._0)) : {
+						ctor: '_Tuple2',
+						_0: model,
+						_1: _user$project$Route$modifyUrl(_user$project$Route$Login)
+					};
+			}
+		}
+	});
+var _user$project$Main$init = F2(
+	function (location, session) {
+		var _p8 = _rundis$elm_bootstrap$Bootstrap_Navbar$initialState(_user$project$Main$NavMsg);
+		var navState = _p8._0;
+		var navCmd = _p8._1;
+		var _p9 = A2(
+			_user$project$Main$setRoute,
+			_user$project$Route$fromLocation(
+				A2(_elm_lang$core$Debug$log, 'Starting Loc', location)),
+			{
+				pageState: _user$project$Main$Loaded(_user$project$Main$Blank),
+				session: session,
+				navState: navState
+			});
+		var model = _p9._0;
+		var cmd = _p9._1;
+		return A2(
+			_elm_lang$core$Platform_Cmd_ops['!'],
+			model,
+			{
+				ctor: '::',
+				_0: cmd,
+				_1: {
+					ctor: '::',
+					_0: navCmd,
+					_1: {ctor: '[]'}
+				}
+			});
+	});
+var _user$project$Main$updatePage = F3(
+	function (page, msg, model) {
+		var toPageWithOut = F5(
+			function (toModel, toMsg, subUpdate, subMsg, subModel) {
+				var _p10 = A2(subUpdate, subMsg, subModel);
+				var newModel = _p10._0;
+				var newCmd = _p10._1;
+				var outMsg = _p10._2;
+				return {
+					ctor: '_Tuple3',
+					_0: _elm_lang$core$Native_Utils.update(
+						model,
+						{
+							pageState: _user$project$Main$Loaded(
+								toModel(newModel))
+						}),
+					_1: A2(_elm_lang$core$Platform_Cmd$map, toMsg, newCmd),
+					_2: outMsg
+				};
+			});
+		var toPage = F5(
+			function (toModel, toMsg, subUpdate, subMsg, subModel) {
+				var _p11 = A2(subUpdate, subMsg, subModel);
+				var newModel = _p11._0;
+				var newCmd = _p11._1;
+				return {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Native_Utils.update(
+						model,
+						{
+							pageState: _user$project$Main$Loaded(
+								toModel(newModel))
+						}),
+					_1: A2(_elm_lang$core$Platform_Cmd$map, toMsg, newCmd)
+				};
+			});
+		var setSession = F3(
+			function (newModel, cmd, newSession) {
+				var sessionCmd = (!_elm_lang$core$Native_Utils.eq(model.session.authToken, _elm_lang$core$Maybe$Nothing)) ? _user$project$Route$modifyUrl(_user$project$Route$Home) : _elm_lang$core$Platform_Cmd$none;
+				return A2(
+					_elm_lang$core$Platform_Cmd_ops['!'],
+					_elm_lang$core$Native_Utils.update(
+						newModel,
+						{session: newSession}),
+					{
+						ctor: '::',
+						_0: cmd,
+						_1: {
+							ctor: '::',
+							_0: sessionCmd,
+							_1: {ctor: '[]'}
+						}
+					});
+			});
+		var session = model.session;
+		return A2(
+			_elm_lang$core$Debug$log,
+			'Result',
+			function () {
+				var _p12 = {ctor: '_Tuple2', _0: msg, _1: page};
+				_v7_14:
+				do {
+					switch (_p12._0.ctor) {
+						case 'SetRoute':
+							return A2(_user$project$Main$setRoute, _p12._0._0, model);
+						case 'SetSession':
+							if (_p12._0._0.ctor === 'Ok') {
+								return A3(setSession, model, _elm_lang$core$Platform_Cmd$none, _p12._0._0._0);
+							} else {
+								return _elm_lang$core$Tuple$first(
+									{
+										ctor: '_Tuple2',
+										_0: A3(_user$project$Main$pageErrored, model, _user$project$View_Page$Home, 'Failed to get session state from server'),
+										_1: A2(_elm_lang$core$Debug$log, 'Load Error: ', _p12._0._0._0)
+									});
+							}
+						case 'BudgetLoaded':
+							if (_p12._0._0.ctor === 'Ok') {
+								return A2(
+									_user$project$Util_ops['=>'],
+									_elm_lang$core$Native_Utils.update(
+										model,
+										{
+											pageState: _user$project$Main$Loaded(
+												_user$project$Main$Budget(_p12._0._0._0))
+										}),
+									_elm_lang$core$Platform_Cmd$none);
+							} else {
+								return A2(
+									_user$project$Util_ops['=>'],
+									_elm_lang$core$Native_Utils.update(
+										model,
+										{
+											pageState: _user$project$Main$Loaded(
+												_user$project$Main$Errored(_p12._0._0._0))
+										}),
+									_elm_lang$core$Platform_Cmd$none);
+							}
+						case 'ExpenseLoaded':
+							if (_p12._0._0.ctor === 'Ok') {
+								return A2(
+									_user$project$Util_ops['=>'],
+									_elm_lang$core$Native_Utils.update(
+										model,
+										{
+											pageState: _user$project$Main$Loaded(
+												_user$project$Main$Expense(_p12._0._0._0))
+										}),
+									_elm_lang$core$Platform_Cmd$none);
+							} else {
+								return A2(
+									_user$project$Util_ops['=>'],
+									_elm_lang$core$Native_Utils.update(
+										model,
+										{
+											pageState: _user$project$Main$Loaded(
+												_user$project$Main$Errored(_p12._0._0._0))
+										}),
+									_elm_lang$core$Platform_Cmd$none);
+							}
+						case 'ExpenseDetailLoaded':
+							if (_p12._0._0.ctor === 'Ok') {
+								return A2(
+									_user$project$Util_ops['=>'],
+									_elm_lang$core$Native_Utils.update(
+										model,
+										{
+											pageState: _user$project$Main$Loaded(
+												_user$project$Main$ExpenseDetail(_p12._0._0._0))
+										}),
+									_elm_lang$core$Platform_Cmd$none);
+							} else {
+								return A2(
+									_user$project$Util_ops['=>'],
+									_elm_lang$core$Native_Utils.update(
+										model,
+										{
+											pageState: _user$project$Main$Loaded(
+												_user$project$Main$Errored(_p12._0._0._0))
+										}),
+									_elm_lang$core$Platform_Cmd$none);
+							}
+						case 'NavMsg':
+							return A2(
+								_user$project$Util_ops['=>'],
+								_elm_lang$core$Native_Utils.update(
+									model,
+									{navState: _p12._0._0}),
+								_elm_lang$core$Platform_Cmd$none);
+						case 'BudgetMsg':
+							if (_p12._1.ctor === 'Budget') {
+								return A5(
+									toPage,
+									_user$project$Main$Budget,
+									_user$project$Main$BudgetMsg,
+									_user$project$Page_Budget$update(session),
+									_p12._0._0,
+									_p12._1._0);
+							} else {
+								break _v7_14;
+							}
+						case 'LoginMsg':
+							if (_p12._1.ctor === 'Login') {
+								var _p13 = A5(toPageWithOut, _user$project$Main$Login, _user$project$Main$LoginMsg, _user$project$Page_Login$update, _p12._0._0, _p12._1._0);
+								var newModel = _p13._0;
+								var cmd = _p13._1;
+								var outMsg = _p13._2;
+								var _p14 = outMsg;
+								if (_p14.ctor === 'Just') {
+									return A3(setSession, newModel, cmd, _p14._0._0);
+								} else {
+									return {ctor: '_Tuple2', _0: newModel, _1: cmd};
+								}
+							} else {
+								break _v7_14;
+							}
+						case 'ProfileMsg':
+							if (_p12._1.ctor === 'Profile') {
+								var _p15 = A5(
+									toPageWithOut,
+									_user$project$Main$Profile,
+									_user$project$Main$ProfileMsg,
+									_user$project$Page_Profile$update(session),
+									_p12._0._0,
+									_p12._1._0);
+								var newModel = _p15._0;
+								var cmd = _p15._1;
+								var outMsg = _p15._2;
+								var _p16 = outMsg;
+								if (_p16.ctor === 'Just') {
+									return A3(setSession, newModel, cmd, _p16._0._0);
+								} else {
+									return {ctor: '_Tuple2', _0: newModel, _1: cmd};
+								}
+							} else {
+								break _v7_14;
+							}
+						case 'ExpenseDetailMsg':
+							if (_p12._1.ctor === 'ExpenseDetail') {
+								return A5(
+									toPage,
+									_user$project$Main$ExpenseDetail,
+									_user$project$Main$ExpenseDetailMsg,
+									_user$project$Page_ExpenseDetail$update(session),
+									_p12._0._0,
+									_p12._1._0);
+							} else {
+								break _v7_14;
+							}
+						default:
+							break _v7_14;
+					}
+				} while(false);
+				return A2(_user$project$Util_ops['=>'], model, _elm_lang$core$Platform_Cmd$none);
+			}());
+	});
+var _user$project$Main$update = F2(
+	function (msg, model) {
+		var x = A2(_elm_lang$core$Debug$log, 'Msg', msg);
+		return A3(
+			_user$project$Main$updatePage,
+			_user$project$Main$getPage(model.pageState),
+			msg,
+			model);
+	});
+var _user$project$Main$startupUpdate = F2(
+	function (msg, startModel) {
+		var _p17 = startModel;
+		if (_p17.ctor === 'WaitingForSession') {
+			var _p18 = msg;
+			if ((_p18.ctor === 'SetSession') && (_p18._0.ctor === 'Ok')) {
+				var _p19 = A2(_user$project$Main$init, _p17._0, _p18._0._0);
+				var model = _p19._0;
+				var cmd = _p19._1;
+				return {
+					ctor: '_Tuple2',
+					_0: _user$project$Main$HaveSession(model),
+					_1: cmd
+				};
+			} else {
+				return A2(
+					_elm_lang$core$Native_Utils.crash(
+						'Main',
+						{
+							start: {line: 230, column: 24},
+							end: {line: 230, column: 35}
+						}),
+					'Got a non-session message during startup',
+					_p18);
+			}
+		} else {
+			var _p20 = A2(_user$project$Main$update, msg, _p17._0);
+			var newModel = _p20._0;
+			var cmd = _p20._1;
+			return {
+				ctor: '_Tuple2',
+				_0: _user$project$Main$HaveSession(newModel),
+				_1: cmd
+			};
+		}
+	});
+var _user$project$Main$SetRoute = function (a) {
+	return {ctor: 'SetRoute', _0: a};
+};
+var _user$project$Main$SetSession = function (a) {
+	return {ctor: 'SetSession', _0: a};
+};
+var _user$project$Main$startupInit = function (location) {
+	return {
+		ctor: '_Tuple2',
+		_0: _user$project$Main$WaitingForSession(location),
+		_1: A2(_elm_lang$http$Http$send, _user$project$Main$SetSession, _user$project$Request_Session$getSession)
+	};
+};
+var _user$project$Main$main = A2(
+	_elm_lang$navigation$Navigation$program,
+	function (_p21) {
+		return _user$project$Main$SetRoute(
+			_user$project$Route$fromLocation(_p21));
+	},
+	{init: _user$project$Main$startupInit, view: _user$project$Main$startupView, update: _user$project$Main$startupUpdate, subscriptions: _user$project$Main$subscriptions})();
+
 var Elm = {};
-Elm['Page'] = Elm['Page'] || {};
-Elm['Page']['ExpenseDetail'] = Elm['Page']['ExpenseDetail'] || {};
-if (typeof _user$project$Page_ExpenseDetail$main !== 'undefined') {
-    _user$project$Page_ExpenseDetail$main(Elm['Page']['ExpenseDetail'], 'Page.ExpenseDetail', undefined);
+Elm['Main'] = Elm['Main'] || {};
+if (typeof _user$project$Main$main !== 'undefined') {
+    _user$project$Main$main(Elm['Main'], 'Main', undefined);
 }
 
 if (typeof define === "function" && define['amd'])

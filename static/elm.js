@@ -18653,7 +18653,7 @@ var _user$project$Page_Errored$pageLoadError = F2(
 	});
 
 var _user$project$Request_Helpers$apiUrl = function (url) {
-	return A2(_elm_lang$core$Basics_ops['++'], 'http://localhost:8000/process/api', url);
+	return A2(_elm_lang$core$Basics_ops['++'], '/process/api', url);
 };
 
 var _user$project$Request_Budget$changeRent = F2(

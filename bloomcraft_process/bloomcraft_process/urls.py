@@ -15,8 +15,18 @@ Including another URLconf
 """
 from django.conf.urls import include, url
 from django.contrib import admin
+from django.conf import settings
+from django.views.static import serve as static_serve
 
 urlpatterns = [
-    url(r'^process/', include('budgeting.urls')),
-    url(r'^admin/', admin.site.urls),
+    url(r'^process/admin/', admin.site.urls),    
+    url(r'^process/api/', include('budgeting.urls')),
+    url(r'^process/invitations/', include('invitations.urls', namespace='invitations'))    
 ]
+
+if settings.DEBUG:
+    urlpatterns += [url(
+        r'^process/elm.js$', static_serve, kwargs={'document_root': settings.STATIC_ROOT, 'path': 'elm.js'})]
+
+    urlpatterns += [url(
+        r'^process/app', static_serve, kwargs={'document_root': settings.STATIC_ROOT, 'path': 'index.html'})]

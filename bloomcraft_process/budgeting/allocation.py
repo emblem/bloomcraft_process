@@ -123,6 +123,13 @@ class RankedAllocator:
             user_votes[vote.user].append(vote)
 
         voter_count = len(user_votes)
+
+        if voter_count == 0:
+            for expense in expenses:
+                expense.new_allocated_funds = 0
+                expense.user_new_allocated_funds = 0
+            return expenses
+        
         allocation.num_voters = voter_count
             
         amount_remaining = allocation.amount

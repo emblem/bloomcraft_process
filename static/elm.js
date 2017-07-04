@@ -19681,7 +19681,7 @@ var _user$project$Page_Budget$topLineSvg = function (budget) {
 											_0: A2(
 												_user$project$View_BarPlot$drawBox,
 												plotParam,
-												{ctor: '_Tuple3', _0: 0, _1: coreExpenses, _2: _user$project$View_Colors$blueColor}),
+												{ctor: '_Tuple3', _0: 0, _1: currentIncome, _2: _user$project$View_Colors$blueColor}),
 											_1: {
 												ctor: '::',
 												_0: A2(
@@ -19751,22 +19751,13 @@ var _user$project$Page_Budget$topLineSvg = function (budget) {
 											_0: A2(
 												_user$project$View_BarPlot$drawBox,
 												plotParam,
-												{ctor: '_Tuple3', _0: 0, _1: income, _2: _user$project$View_Colors$blueColor}),
+												{ctor: '_Tuple3', _0: 0, _1: income, _2: _user$project$View_Colors$lightBlueColor}),
 											_1: {
 												ctor: '::',
 												_0: A2(
-													_user$project$View_BarPlot$annotate,
+													_user$project$View_BarPlot$drawBox,
 													plotParam,
-													{
-														ctor: '::',
-														_0: _user$project$View_BarPlot$Text('Current Income'),
-														_1: {
-															ctor: '::',
-															_0: _user$project$View_BarPlot$Type(
-																A2(_user$project$View_BarPlot$Bracket, 0, currentIncome)),
-															_1: {ctor: '[]'}
-														}
-													}),
+													{ctor: '_Tuple3', _0: 0, _1: currentIncome, _2: _user$project$View_Colors$blueColor}),
 												_1: {
 													ctor: '::',
 													_0: A2(
@@ -19774,19 +19765,35 @@ var _user$project$Page_Budget$topLineSvg = function (budget) {
 														plotParam,
 														{
 															ctor: '::',
-															_0: _user$project$View_BarPlot$Text('Core Expenses'),
+															_0: _user$project$View_BarPlot$Text('Current Income'),
 															_1: {
 																ctor: '::',
 																_0: _user$project$View_BarPlot$Type(
-																	A2(_user$project$View_BarPlot$Bracket, 0, coreExpenses)),
-																_1: {
-																	ctor: '::',
-																	_0: _user$project$View_BarPlot$Location(_user$project$View_BarPlot$Above),
-																	_1: {ctor: '[]'}
-																}
+																	A2(_user$project$View_BarPlot$Bracket, 0, currentIncome)),
+																_1: {ctor: '[]'}
 															}
 														}),
-													_1: {ctor: '[]'}
+													_1: {
+														ctor: '::',
+														_0: A2(
+															_user$project$View_BarPlot$annotate,
+															plotParam,
+															{
+																ctor: '::',
+																_0: _user$project$View_BarPlot$Text('Core Expenses'),
+																_1: {
+																	ctor: '::',
+																	_0: _user$project$View_BarPlot$Type(
+																		A2(_user$project$View_BarPlot$Bracket, 0, coreExpenses)),
+																	_1: {
+																		ctor: '::',
+																		_0: _user$project$View_BarPlot$Location(_user$project$View_BarPlot$Above),
+																		_1: {ctor: '[]'}
+																	}
+																}
+															}),
+														_1: {ctor: '[]'}
+													}
 												}
 											}
 										}

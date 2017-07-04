@@ -34,7 +34,7 @@ viewHeader toMsg navState page session isLoading =
         |> Navbar.items
            (case session.user of
                Just user ->
-                   [ activeLinkIf Profile page [Route.href Route.Profile ] [text user.fullname]
+                   [ activeLinkIf Profile page [Route.href Route.Profile ] [text (if user.fullname == "" then user.username else user.fullname) ]
                    , activeLinkIf Budget page [Route.href Route.Budget] [text "Income"]
                    , activeLinkIf Expense page [Route.href Route.Expense] [text "Expenses"]
                    ]

@@ -18477,6 +18477,7 @@ var _user$project$View_Page$viewHeader = F5(
 				function () {
 					var _p0 = session.user;
 					if (_p0.ctor === 'Just') {
+						var _p1 = _p0._0;
 						return {
 							ctor: '::',
 							_0: A4(
@@ -18490,7 +18491,8 @@ var _user$project$View_Page$viewHeader = F5(
 								},
 								{
 									ctor: '::',
-									_0: _elm_lang$html$Html$text(_p0._0.fullname),
+									_0: _elm_lang$html$Html$text(
+										_elm_lang$core$Native_Utils.eq(_p1.fullname, '') ? _p1.username : _p1.fullname),
 									_1: {ctor: '[]'}
 								}),
 							_1: {

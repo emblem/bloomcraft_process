@@ -29,12 +29,12 @@ route =
 routeToString : Route -> String
 routeToString page =
     case page of
-        Home -> "app#home"
-        Login -> "app#login"
-        Budget -> "app#budget"
-        Expense -> "app#expense"
-        Profile -> "app#profile"
-        ExpenseDetail slug -> "app#expense/" ++ Allocation.slugToString slug
+        Home -> "/process#home"
+        Login -> "/process#login"
+        Budget -> "/process#budget"
+        Expense -> "/process#expense"
+        Profile -> "/process#profile"
+        ExpenseDetail slug -> "/process#expense/" ++ Allocation.slugToString slug
 
 href : Route -> Html.Attribute a
 href route =

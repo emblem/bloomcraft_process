@@ -6,6 +6,15 @@ blueColor = "#0B40CE"
 lightBlueColor : String
 lightBlueColor = "#3B70FE"
 
+greyColor : String
+greyColor = "#808080"
+
+greenColor : String
+greenColor = "#30CE1E"
+
+darkGreenColor : String
+darkGreenColor = "#16660D"
+
 redColor : String
 redColor = "#CE292B"
 

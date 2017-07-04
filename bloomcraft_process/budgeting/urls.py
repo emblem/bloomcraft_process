@@ -16,7 +16,10 @@ urlpatterns += [
 #    url("^api/user.json", views.user_view),
     url("^api/rent.json", views.rent_view),
     url("^api/allocation.json", views.allocation_view),
-    url("^api/session.json", views.session_view)
+    url("^api/session.json", views.session_view),
+    url(r"^api/expenses/(?P<slug>[-\w]+)/expense.json", views.expense_view),
+    url(r"^api/expenses/(?P<slug>[-\w]+)/vote.json", views.vote_view),
+    url(r'^invitations/', include('invitations.urls', namespace='invitations'))    
 ]
 
 if settings.DEBUG:
@@ -24,7 +27,7 @@ if settings.DEBUG:
         r'^elm.js', static_serve, kwargs={'document_root': settings.STATIC_ROOT, 'path': 'elm.js'})]
 
     urlpatterns += [url(
-        r'^(?!api/).*', static_serve, kwargs={'document_root': settings.STATIC_ROOT, 'path': 'index.html'})]
+        r'^app', static_serve, kwargs={'document_root': settings.STATIC_ROOT, 'path': 'index.html'})]
 
 
 

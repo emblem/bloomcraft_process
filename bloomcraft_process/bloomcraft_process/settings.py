@@ -37,9 +37,16 @@ INSTALLED_APPS = [
 #    'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
     'budgeting.apps.BudgetingConfig',
     'ws4redis',
+    'invitations',
 ]
+
+INVITATIONS_INVITATION_EXPIRY = 30
+
+
+SITE_ID=1
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

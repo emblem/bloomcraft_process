@@ -31,46 +31,49 @@ pieChart data =
         wedge :(Int, String)
               -> {startAngle:Float, colorWheel:ColorWheel, elements:(List (Svg a), List (Svg a))}
               -> {startAngle:Float, colorWheel:ColorWheel, elements:(List (Svg a), List (Svg a))}
-        wedge (amount, label) {startAngle, colorWheel, elements} =
+        wedge (amount, label) ({startAngle, colorWheel, elements} as initialState)  =
             let
                 endAngle = startAngle + 2 *pi * (toFloat amount)/totalAmount
                 midAngle = (startAngle + endAngle)/2
                 textRotation = "rotate(" ++ toString (-360/(2*pi)*midAngle) ++ ")"
                 flipText = midAngle > pi/2 && midAngle < 3*pi/2
                 anchor = if flipText then
-                             "start"
-                         else
                              "end"
+                         else
+                             "start"
 
                 textFlip = if flipText then
                                "scale(-1,-1)"
                            else
                                ""
 
-                textTranslate = " translate (" ++ toString (radius-2) ++ ",0) "
+                textTranslate = " translate (" ++ toString (20) ++ ",0) "
                            
                 (texts, paths) = elements
             in
-                { startAngle = endAngle
-                , colorWheel = rotateList colorWheel
-                , elements =
-                    ( g [ transform <| textRotation ++ textTranslate ++ textFlip]
-                          [ Svg.text_
-                                [ x "0"
-                                , y "0"
-                                , fontSize "5px"
-                                , alignmentBaseline "middle"
-                                , textAnchor anchor
-                                ] [Svg.text label]
-                          ] :: texts
-                    , Svg.path
-                        [ d <| pathToString [wedgePath startAngle endAngle]
-                        , fill (Colors.nextColor colorWheel)
-                        , stroke "#FFFFFF"
-                        , strokeLinejoin "round"
-                        ] [] :: paths
-                    )
-                }
+                if amount /= 0 then
+                    { startAngle = endAngle
+                    , colorWheel = rotateList colorWheel
+                    , elements =
+                          ( g [ transform <| textRotation ++ textTranslate ++ textFlip]
+                                [ Svg.text_
+                                      [ x "0"
+                                      , y "0"
+                                      , fontSize "5px"
+                                      , alignmentBaseline "middle"
+                                      , textAnchor anchor
+                                      ] [Svg.text label]
+                                ] :: texts
+                          , Svg.path
+                              [ d <| pathToString [wedgePath startAngle endAngle]
+                              , fill (Colors.nextColor colorWheel)
+                              , stroke "#FFFFFF"
+                              , strokeLinejoin "round"
+                              ] [] :: paths
+                          )
+                    }
+                else
+                    initialState
 
         pieStart = { startAngle = 0
                    , colorWheel = Colors.defaultColorWheel

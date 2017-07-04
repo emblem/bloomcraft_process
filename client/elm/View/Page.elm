@@ -52,4 +52,4 @@ activeLinkIf activePage page =
                        
 viewFooter : Html a
 viewFooter =
-    Grid.container [] [ span [ class "attribution" ] [ text "Stoneship, LLC. 2017. MIT license." ] ]
+    Grid.containerFluid [] [ div [class "mt-4"] [span [ class "attribution small text-muted" ] [ text "Stoneship, LLC. 2017. MIT license." ] ] ]

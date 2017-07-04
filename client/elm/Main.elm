@@ -11,6 +11,7 @@ import Page.Errored as Errored exposing (PageLoadError, pageLoadError)
 import Page.Home as Home
 import Page.Login as Login
 import Page.Expense as Expense
+import Page.ExpenseDetail as ExpenseDetail
 import Request.Session
 import Route exposing (Route)
 import Task
@@ -27,6 +28,7 @@ type Page
     | Budget Budget.Model
     | Profile Profile.Model
     | Expense Expense.Model
+    | ExpenseDetail ExpenseDetail.Model
 
 type PageState
     = Loaded Page
@@ -119,8 +121,18 @@ viewPage model isLoading page =
                 Expense.view subModel
                     |> Html.map ExpenseMsg
                     |> frame Page.Expense
+
+            ExpenseDetail subModel ->
+                ExpenseDetail.view subModel
+                    |> Html.map ExpenseDetailMsg
+                    |> frame Page.Other
+
+            NotFound ->
+                Html.text "Page Not Found" |> frame Page.Other
+
+            Blank -> Html.text "" |> frame Page.Other
                        
-            _ -> Html.text "Unsupported View" |> frame Page.Other
+--            _ -> Html.text "Unsupported View" |> frame Page.Other
 
 
 subscriptions : StartupModel -> Sub Msg
@@ -144,11 +156,14 @@ type Msg
     | SetRoute (Maybe Route)
     | BudgetLoaded (Result PageLoadError Budget.Model)
     | ExpenseLoaded (Result PageLoadError Expense.Model)
+    | ExpenseDetailLoaded (Result PageLoadError ExpenseDetail.Model)
     | NavMsg Navbar.State
     | BudgetMsg Budget.Msg
     | LoginMsg Login.Msg
     | ProfileMsg Profile.Msg
     | ExpenseMsg Expense.Msg
+    | ExpenseDetailMsg ExpenseDetail.Msg
+
 
 
 setRoute : Maybe Route -> Model -> (Model, Cmd Msg)
@@ -189,6 +204,12 @@ setRoute maybeRoute model =
                 else
                     (model, Route.modifyUrl Route.Login)
 
+            Just (Route.ExpenseDetail slug) ->
+                if loggedIn then
+                    transition ExpenseDetailLoaded (ExpenseDetail.init slug)
+                else
+                    (model, Route.modifyUrl Route.Login)        
+
 pageErrored : Model -> ActivePage -> String -> ( Model, Cmd msg )
 pageErrored model activePage errorMessage =
     let
@@ -216,7 +237,7 @@ startupUpdate msg startModel =
 update : Msg -> Model -> (Model, Cmd Msg)
 update msg model =
     let
-        x = Debug.log "Msg" (msg, model)
+        x = Debug.log "Msg" msg
     in
         updatePage (getPage model.pageState) msg model
 
@@ -270,7 +291,12 @@ updatePage page msg model =
                     
             (ExpenseLoaded (Err error), _) ->
                 { model | pageState = Loaded (Errored error) } => Cmd.none
+                    
+            (ExpenseDetailLoaded (Ok subModel), _) ->
+                { model | pageState = Loaded (ExpenseDetail subModel) } => Cmd.none
 
+            (ExpenseDetailLoaded (Err error), _) ->
+                { model | pageState = Loaded (Errored error) } => Cmd.none
 
             (NavMsg navState, _) ->
                 { model | navState = navState } => Cmd.none
@@ -297,6 +323,8 @@ updatePage page msg model =
                             setSession newModel cmd newSession
 
                         Nothing -> (newModel, cmd)
+            (ExpenseDetailMsg subMsg, ExpenseDetail subModel) ->
+                    toPage ExpenseDetail ExpenseDetailMsg (ExpenseDetail.update session) subMsg subModel
                         
             --(_, NotFound) ->
             --  model => Cmd.none

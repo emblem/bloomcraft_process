@@ -284,7 +284,7 @@ topLineSvg budget =
         income = totalIncome budget
         coreExpenses = budget.coreExpenses
         scaleMax = 1.25 * (Basics.max income coreExpenses)
-        plotParam = BarPlot 0 scaleMax 10
+        plotParam = {defaultPlotParams | maxValue = scaleMax}
         currentIncome = startingIncome budget
     in
         Grid.row []
@@ -367,8 +367,8 @@ compareRentsByPctChangePlot budget =
         maxChange = Basics.max (increasePct * 1.2) (List.maximum changes |> Maybe.withDefault 0)
         minChange = Basics.min 0 (List.minimum changes |> Maybe.withDefault 0)
 
-        barWidth = (BarPlot minChange maxChange)
-        pp = barWidth 5
+        barWidth = {defaultPlotParams | minValue = minChange, maxValue = maxChange }
+        pp = { barWidth | height = 5 }
 
         drawLease pos lease = g [ transform <| "translate (0, " ++ (toString ((toFloat pos)*(pp.height+1))) ++ ")" ]
                           [ viewRent pp lease increasePct ]
@@ -390,9 +390,9 @@ compareRentsByPctChangePlot budget =
             [ g [transform "translate(20,10)"] <|
                   List.concat
                       [ List.indexedMap drawLease leases
-                      , [ annotate (barWidth ((toFloat nLease) * (pp.height+1)))
+                      , [ annotate {barWidth | height = ((toFloat nLease) * (pp.height+1))}
                               [Text "Default New Rent" , Location Above, Type (Separator increasePct), Size "3px"]
-                        , annotate (barWidth ((toFloat nLease) * (pp.height+1)))
+                        , annotate {barWidth | height = ((toFloat nLease) * (pp.height+1))}
                               [Text "Current Rent", Location Above, Type (Separator 0), Size "3px"]
                         ] 
                       ]

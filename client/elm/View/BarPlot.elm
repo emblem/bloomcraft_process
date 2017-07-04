@@ -7,7 +7,17 @@ type alias BarPlot =
     { minValue : Float
     , maxValue : Float
     , height : Float
+    , filled : Bool
     }
+
+defaultPlotParams : BarPlot
+defaultPlotParams =
+    { minValue = 0
+    , maxValue = 0
+    , height = 10
+    , filled = True
+    }
+        
 
     
 drawBox : BarPlot -> (Float, Float, String) -> Svg msg
@@ -17,7 +27,17 @@ drawBox params (value0, value1, color) =
         v1 = plotToVis params <| Basics.max value0 value1
         h = params.height |> toString
     in
-        rect [ v0 |>toString |> x, y "0", v1 - v0 |> toString |> width, params.height |> toString |> height, fill color ] []
+        rect (List.append
+                  [ v0 |>toString |> x
+                  , y "0"
+                  , v1 - v0 |> toString |> width
+                  , params.height |> toString |> height
+                  ] 
+                  (case params.filled of
+                    True -> [fill color, stroke "none"]
+                    False -> [fill "none", stroke color]
+                  )
+             ) []
 
 tupleMap2 : (a->b) -> (a, a) -> (b, b)
 tupleMap2 f (a1, a2) =

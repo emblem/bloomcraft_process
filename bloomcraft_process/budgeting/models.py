@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import AbstractUser
 from django.dispatch import receiver
+from django.template.defaultfilters import slugify
 
 import math
 
@@ -77,9 +78,19 @@ class AllocationExpense(models.Model):
     excess_allowed = models.BooleanField(default = False)
     requested_funds = models.IntegerField()
     current_allocated_funds = models.IntegerField()
+    detail_text = models.TextField()
+
+    slug = models.SlugField()
 
     def __str__(self):
         return self.name + " by " + self.owner.username
+
+    def save(self, *args, **kwargs):
+        if not self.id:
+            # Newly created object, so set slug
+            self.slug = slugify(self.name)
+
+        super(AllocationExpense, self).save(*args, **kwargs)
         
         
 class AllocationVote(models.Model):
@@ -98,3 +109,15 @@ class AllocationVote(models.Model):
 
     def __str__(self):
         return "Vote by " + self.user.username + " on " + self.expense.name
+
+    def toJson(self):
+        return { "weight" : self.weight,
+                 "personal_abs_max" : self.personal_abs_max,
+                 "global_abs_max": self.global_abs_max,
+                 "personal_pct_max": self.personal_pct_max,
+                 "global_pct_max": self.global_pct_max }
+                 
+                 
+                 
+                 
+                 

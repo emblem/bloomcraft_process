@@ -9,7 +9,7 @@ from django.core import serializers
 import json
 import pprint
 
-from .allocation import allocation_to_json
+from .allocation import allocation_to_json, expense_to_json, RankedAllocator
 
 from .models import *
 
@@ -119,6 +119,49 @@ def session_view(request):
 @login_required
 def allocation_view(request):
     allocation = current_allocation()
-    allocation_json = allocation_to_json(allocation)
+    expenses = RankedAllocator().allocate_funds(allocation, request.user)
+    allocation_json = allocation_to_json(allocation, expenses)
     
     return JsonResponse({'allocation' : allocation_json})
+
+@login_required
+def expense_view(request, slug):
+    allocation = current_allocation()
+    expenses = RankedAllocator().allocate_funds(allocation, request.user)
+
+    expense = [e for e in expenses if e.slug == slug][0]
+    
+    return JsonResponse({'expense' : expense_to_json(expense)})
+
+@login_required
+def vote_view(request, slug):
+    if request.method == 'GET':
+        expense = AllocationExpense.objects.get(slug = slug)
+        try:
+            vote = AllocationVote.objects.get(user = request.user, expense = expense)
+            vote = vote.toJson()
+        except AllocationVote.DoesNotExist:
+            vote = None
+    
+
+        return JsonResponse({"vote":vote})
+
+    if request.method == 'POST':
+        newVote = json.loads(request.body.decode('utf-8'))['vote']
+        expense = AllocationExpense.objects.get(slug=slug)
+        vote = AllocationVote(weight = newVote['weight'],
+                              personal_abs_max = newVote['personal_abs_max'],
+                              global_abs_max = newVote['global_abs_max'],
+                              user = request.user,
+                              expense = expense)
+
+        try:
+            existingVote = AllocationVote.objects.get(expense=expense, user=request.user)
+            vote.id = existingVote.id
+        except AllocationVote.DoesNotExist:
+            pass
+
+        vote.save()
+
+        return JsonResponse({"result": "Thanks for voting :)"})
+        

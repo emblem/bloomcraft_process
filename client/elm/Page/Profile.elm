@@ -1,7 +1,8 @@
 module Page.Profile exposing (init, view, update, Msg, Model, OutMsg(..))
 
 import Http
-import Html exposing (Html, text)
+import Html exposing (Html, text, div)
+import Html.Attributes exposing (class)
 import Bootstrap.Grid as Grid
 import Bootstrap.Grid.Col as Col
 import Bootstrap.Button as Button
@@ -23,8 +24,11 @@ init = ()
 view : Session -> Model -> Html Msg
 view session model =
     Grid.row []
-        [ Grid.col [ Col.md8 ]
-              [ Button.button [Button.warning, Button.onClick Logout] [ text "Sign out" ] ]
+        [ Grid.col [ Col.md12 ]
+              [ div [ class "text-center mt-4" ]
+                    [ Button.button [Button.warning, Button.onClick Logout] [ text "Sign out" ]
+                    ]
+              ]
         ]
         
 update : Session -> Msg -> Model -> (Model, Cmd Msg, Maybe OutMsg)

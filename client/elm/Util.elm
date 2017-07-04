@@ -1,11 +1,11 @@
 --From rtfeldman/elm-spa-example, licensing uncertain
 
-module Util exposing ((=>), appendErrors, onClickStopPropagation, pair, viewIf, rotateList)
+module Util exposing ((=>), appendErrors, onClickStopPropagation, pair, viewIf, rotateList, encodeMaybe)
 
 import Html exposing (Attribute, Html)
 import Html.Events exposing (defaultOptions, onWithOptions)
 import Json.Decode as Decode
-
+import Json.Encode as Encode
 
 (=>) : a -> b -> ( a, b )
 (=>) =
@@ -54,3 +54,9 @@ rotateList list =
     case list of
         [] -> []
         a :: rest -> List.append rest [a]
+
+encodeMaybe : (a -> Encode.Value) -> Maybe a -> Encode.Value
+encodeMaybe encoder maybeVal =
+    case maybeVal of
+        Just val -> encoder val
+        Nothing -> Encode.null

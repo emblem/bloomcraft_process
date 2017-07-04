@@ -17,7 +17,7 @@ class RankedAllocator:
         allowed_personal_allocation = self.total_amount #(global, personal)
 
         if not expense.excess_allowed:
-            allowed_global_allocation = min(allowed_global_allocation, expense.requested_funds - working_allocation[expense])
+            allowed_global_allocation = min(allowed_global_allocation, expense.requested_funds - (expense.current_allocated_funds + working_allocation[expense]))
 
         if vote.personal_abs_max:
             allowed_personal_allocation = min(allowed_personal_allocation, vote.personal_abs_max - working_user_allocation[user][expense])
@@ -114,7 +114,7 @@ class RankedAllocator:
 #        print( "Active Constraint: " + str(activeConstraint[0]) + " is " + activeConstraint[1] )
         return violated_at_percent
 
-    def allocate_funds(self, allocation):
+    def allocate_funds(self, allocation, requesting_user):
         expenses = allocation.allocationexpense_set.all()    
         votes = flatten([expense.allocationvote_set.all() for expense in expenses])
 
@@ -123,6 +123,7 @@ class RankedAllocator:
             user_votes[vote.user].append(vote)
 
         voter_count = len(user_votes)
+        allocation.num_voters = voter_count
             
         amount_remaining = allocation.amount
         self.total_amount = amount_remaining
@@ -161,26 +162,29 @@ class RankedAllocator:
         #update the expense objects
         for expense in expenses:
             expense.new_allocated_funds = ceil(working_allocation[expense])
-            
+            expense.user_new_allocated_funds = ceil(working_user_allocation[requesting_user][expense])
+                                                    
         return expenses
 
 def expense_to_json(expense):
     expense_json = {
         'name' : expense.name,
         'owner' : expense.owner.get_full_name(),
+        'detail_text' : expense.detail_text,        
         'requested_funds' : expense.requested_funds,
         'current_allocated_funds' : expense.current_allocated_funds,
         'partial_allowed' : expense.partial_allowed,
         'excess_allowed' : expense.excess_allowed,
-        'new_allocated_funds' : expense.new_allocated_funds
+        'new_allocated_funds' : expense.new_allocated_funds,
+        'user_new_allocated_funds' : expense.user_new_allocated_funds,
+        'slug' : expense.slug
     }
     return expense_json
 
-def allocation_to_json(allocation):
-    expenses = RankedAllocator().allocate_funds(allocation)
-    
+def allocation_to_json(allocation, expenses):
     allocation_json = {
         'amount' : allocation.amount,
+        'num_voters' : allocation.num_voters,
         'expenses' : [expense_to_json(expense) for expense in expenses]
         }
     

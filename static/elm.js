@@ -19279,10 +19279,14 @@ var _user$project$View_BarPlot$annotationOptionBuilder = F2(
 				return _elm_lang$core$Native_Utils.update(
 					optionSet,
 					{atype: _p2._0});
-			default:
+			case 'Size':
 				return _elm_lang$core$Native_Utils.update(
 					optionSet,
 					{fontSize: _p2._0});
+			default:
+				return _elm_lang$core$Native_Utils.update(
+					optionSet,
+					{color: _p2._0});
 		}
 	});
 var _user$project$View_BarPlot$plotToVis = F2(
@@ -19538,9 +19542,9 @@ var _user$project$View_BarPlot$BarPlot = F4(
 	function (a, b, c, d) {
 		return {minValue: a, maxValue: b, height: c, filled: d};
 	});
-var _user$project$View_BarPlot$AnnotationOptions = F4(
-	function (a, b, c, d) {
-		return {location: a, atype: b, text: c, fontSize: d};
+var _user$project$View_BarPlot$AnnotationOptions = F5(
+	function (a, b, c, d, e) {
+		return {location: a, atype: b, text: c, fontSize: d, color: e};
 	});
 var _user$project$View_BarPlot$Right = {ctor: 'Right'};
 var _user$project$View_BarPlot$Left = {ctor: 'Left'};
@@ -19556,7 +19560,8 @@ var _user$project$View_BarPlot$defaultOptions = {
 	location: _user$project$View_BarPlot$Below,
 	atype: _user$project$View_BarPlot$TextOnly(0),
 	text: '',
-	fontSize: '5px'
+	fontSize: '5px',
+	color: '#000000'
 };
 var _user$project$View_BarPlot$annotate = F2(
 	function (params, optList) {
@@ -19659,12 +19664,16 @@ var _user$project$View_BarPlot$annotate = F2(
 												_0: _elm_lang$svg$Svg_Attributes$alignmentBaseline(textBaseline),
 												_1: {
 													ctor: '::',
-													_0: _elm_lang$svg$Svg_Attributes$style(
-														A2(_elm_lang$core$Basics_ops['++'], 'font-size: ', options.fontSize)),
+													_0: _elm_lang$svg$Svg_Attributes$fill(options.color),
 													_1: {
 														ctor: '::',
-														_0: _elm_lang$svg$Svg_Attributes$pointerEvents('none'),
-														_1: {ctor: '[]'}
+														_0: _elm_lang$svg$Svg_Attributes$style(
+															A2(_elm_lang$core$Basics_ops['++'], 'font-size: ', options.fontSize)),
+														_1: {
+															ctor: '::',
+															_0: _elm_lang$svg$Svg_Attributes$pointerEvents('none'),
+															_1: {ctor: '[]'}
+														}
 													}
 												}
 											}
@@ -19689,6 +19698,9 @@ var _user$project$View_BarPlot$Bracket = F2(
 	function (a, b) {
 		return {ctor: 'Bracket', _0: a, _1: b};
 	});
+var _user$project$View_BarPlot$Color = function (a) {
+	return {ctor: 'Color', _0: a};
+};
 var _user$project$View_BarPlot$Size = function (a) {
 	return {ctor: 'Size', _0: a};
 };
@@ -19950,7 +19962,11 @@ var _user$project$Page_Budget$viewRent = F3(
 									_1: {
 										ctor: '::',
 										_0: _user$project$View_BarPlot$Size('3px'),
-										_1: {ctor: '[]'}
+										_1: {
+											ctor: '::',
+											_0: _user$project$View_BarPlot$Color('#FFFFFF'),
+											_1: {ctor: '[]'}
+										}
 									}
 								}
 							}
@@ -20803,7 +20819,16 @@ var _user$project$Page_Budget$leaseDetailView = F3(
 									{
 										ctor: '::',
 										_0: _elm_lang$html$Html_Attributes$class('lead'),
-										_1: {ctor: '[]'}
+										_1: {
+											ctor: '::',
+											_0: _elm_lang$html$Html_Attributes$style(
+												{
+													ctor: '::',
+													_0: {ctor: '_Tuple2', _0: 'color', _1: '#FFFFFF'},
+													_1: {ctor: '[]'}
+												}),
+											_1: {ctor: '[]'}
+										}
 									},
 									{
 										ctor: '::',

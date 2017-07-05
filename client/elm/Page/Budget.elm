@@ -1,3 +1,4 @@
+
 module Page.Budget exposing (init, Model, view, Msg, update, subscriptions)
 
 import AnimationFrame
@@ -14,7 +15,7 @@ import Bootstrap.ListGroup as ListGroup
 import Data.Budget exposing (Budget, Lease)
 import Data.Session exposing (Session)
 import Html exposing (Html,text,div, p)
-import Html.Attributes exposing (class)
+import Html.Attributes exposing (class, style)
 import Http
 import Page.Errored exposing (pageLoadError, PageLoadError)
 import Request.Budget
@@ -251,7 +252,7 @@ leaseDetailView model budget lease =
                ]
             |> Card.block []
                [ Card.custom <| div []
-                 [ p [class "lead"] [detailSummaryText lease (toFloat defaultRent)]
+                 [ p [class "lead", style [("color", "#FFFFFF")] ] [detailSummaryText lease (toFloat defaultRent)]
 {--                 , summaryRow "Proposed New Rent:" ("$" ++ toString (round lease.proposedRent))
                  , summaryRow "Current Rent:" ("$" ++ toString lease.currentRent)
                  , summaryRow "Default New Rent:" ("$" ++ toString defaultRent)--}
@@ -427,7 +428,7 @@ viewRent pp lease baseLine =
                   [ drawBox pp (0, val, blueColor)                        
                   , drawBox pp (val, baseLine, lightRedColor)
                   ])
-             [ annotate pp [Text <| lease.name {-- ++ ": " ++ pctStr (val-baseLine) --}, Location (Inside Right), Type (TextOnly 0), Size "3px"]
+             [ annotate pp [Text <| lease.name {-- ++ ": " ++ pctStr (val-baseLine) --}, Location (Inside Right), Type (TextOnly 0), Size "3px", Color "#FFFFFF"]
 --             , annotate pp [Text <| , Location (Inside Right), Type (TextOnly 0), Size "3px"]
              ]            
 

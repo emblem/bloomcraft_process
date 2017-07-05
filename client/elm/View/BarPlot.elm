@@ -62,13 +62,14 @@ plotToVis params value =
 type Side = Left | Right
 type AnnotationLocation = Above | Below | Inside Side
 type AnnotationType = Bracket Float Float | Separator Float | TextOnly Float
-type AnnotationOption = Text String | Location AnnotationLocation | Type AnnotationType | Size String
+type AnnotationOption = Text String | Location AnnotationLocation | Type AnnotationType | Size String | Color String
 
 type alias AnnotationOptions =
     { location : AnnotationLocation
     , atype : AnnotationType
     , text : String
     , fontSize : String
+    , color : String
     }
     
 annotationOptionBuilder : AnnotationOption -> AnnotationOptions -> AnnotationOptions
@@ -78,6 +79,7 @@ annotationOptionBuilder option optionSet =
         Location loc -> { optionSet | location = loc }
         Type atype -> { optionSet | atype = atype }
         Size size -> {optionSet | fontSize = size }
+        Color color -> {optionSet | color = color}
 
 defaultOptions : AnnotationOptions
 defaultOptions =
@@ -85,6 +87,7 @@ defaultOptions =
     , atype = TextOnly 0
     , text = ""
     , fontSize = "5px"
+    , color = "#000000"
     }
             
 annotate : BarPlot -> List AnnotationOption -> Svg a
@@ -119,7 +122,7 @@ annotate params optList =
                        TextOnly _ -> []
                   )
                 , [ text_ [ x textCenter, y <| toString yPos, textAnchor anchor,
-                            alignmentBaseline textBaseline,
+                            alignmentBaseline textBaseline, fill options.color,
                             Svg.Attributes.style ("font-size: " ++ options.fontSize), pointerEvents "none"
                           ] [Svg.text options.text]
                   ]

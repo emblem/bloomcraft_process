@@ -24,12 +24,14 @@ type OutMsg
 type alias Model =
     { username : String
     , password : String
+    , error :String
     }
 
 initialModel : Model
 initialModel =
     { username = ""
     , password = ""
+    , error = ""
     }
     
 view : Model -> Html Msg
@@ -50,7 +52,11 @@ view model =
                        [ Form.label [ for "password" ] [ text "Password" ]
                        , Input.password [ Input.id "password", Input.onInput SetPassword ]
                        ]
-                     , Button.button [ Button.primary, Button.onClick SubmitLogin ] [ text "Login" ]
+                     , Button.button [ Button.primary
+                                     , Button.onClick SubmitLogin
+                                     , Button.disabled (model.username == "" || model.password == "")
+                                     ] [ text "Login" ]
+                     , Form.validationText [ class "text-danger" ] [ text model.error ]
                      ]
            ]
         |> Card.view
@@ -62,8 +68,11 @@ update msg model =
 
         SetUsername username -> ( {model | username = username}, Cmd.none, Nothing )
 
-        SubmitLogin -> (model, Http.send LoginResponse (Request.User.login model.username "development"), Nothing)
+        SubmitLogin -> (model, Http.send LoginResponse (Request.User.login model.username model.password), Nothing)
 
-        LoginResponse (Ok session) -> (model, Cmd.none, Just (SetSession session))
+        LoginResponse (Ok session) ->
+            case session.user of
+                Just user -> (model, Cmd.none, Just (SetSession session))
+                Nothing -> ({model | error = "Sorry, check your username and password."}, Cmd.none, Nothing)
 
         LoginResponse (Err _) -> (model, Cmd.none, Nothing)                       

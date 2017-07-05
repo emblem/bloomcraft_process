@@ -21319,10 +21319,10 @@ var _user$project$Page_Home$view = F2(
 	});
 var _user$project$Page_Home$initialModel = {ctor: '_Tuple0'};
 
-var _user$project$Page_Login$initialModel = {username: '', password: ''};
-var _user$project$Page_Login$Model = F2(
-	function (a, b) {
-		return {username: a, password: b};
+var _user$project$Page_Login$initialModel = {username: '', password: '', error: ''};
+var _user$project$Page_Login$Model = F3(
+	function (a, b, c) {
+		return {username: a, password: b, error: c};
 	});
 var _user$project$Page_Login$LoginResponse = function (a) {
 	return {ctor: 'LoginResponse', _0: a};
@@ -21434,7 +21434,12 @@ var _user$project$Page_Login$view = function (model) {
 											_1: {
 												ctor: '::',
 												_0: _rundis$elm_bootstrap$Bootstrap_Button$onClick(_user$project$Page_Login$SubmitLogin),
-												_1: {ctor: '[]'}
+												_1: {
+													ctor: '::',
+													_0: _rundis$elm_bootstrap$Bootstrap_Button$disabled(
+														_elm_lang$core$Native_Utils.eq(model.username, '') || _elm_lang$core$Native_Utils.eq(model.password, '')),
+													_1: {ctor: '[]'}
+												}
 											}
 										},
 										{
@@ -21442,7 +21447,22 @@ var _user$project$Page_Login$view = function (model) {
 											_0: _elm_lang$html$Html$text('Login'),
 											_1: {ctor: '[]'}
 										}),
-									_1: {ctor: '[]'}
+									_1: {
+										ctor: '::',
+										_0: A2(
+											_rundis$elm_bootstrap$Bootstrap_Form$validationText,
+											{
+												ctor: '::',
+												_0: _elm_lang$html$Html_Attributes$class('text-danger'),
+												_1: {ctor: '[]'}
+											},
+											{
+												ctor: '::',
+												_0: _elm_lang$html$Html$text(model.error),
+												_1: {ctor: '[]'}
+											}),
+										_1: {ctor: '[]'}
+									}
 								}
 							}
 						})),
@@ -21500,18 +21520,31 @@ var _user$project$Page_Login$update = F2(
 					_1: A2(
 						_elm_lang$http$Http$send,
 						_user$project$Page_Login$LoginResponse,
-						A2(_user$project$Request_User$login, model.username, 'development')),
+						A2(_user$project$Request_User$login, model.username, model.password)),
 					_2: _elm_lang$core$Maybe$Nothing
 				};
 			default:
 				if (_p0._0.ctor === 'Ok') {
-					return {
-						ctor: '_Tuple3',
-						_0: model,
-						_1: _elm_lang$core$Platform_Cmd$none,
-						_2: _elm_lang$core$Maybe$Just(
-							_user$project$Page_Login$SetSession(_p0._0._0))
-					};
+					var _p2 = _p0._0._0;
+					var _p1 = _p2.user;
+					if (_p1.ctor === 'Just') {
+						return {
+							ctor: '_Tuple3',
+							_0: model,
+							_1: _elm_lang$core$Platform_Cmd$none,
+							_2: _elm_lang$core$Maybe$Just(
+								_user$project$Page_Login$SetSession(_p2))
+						};
+					} else {
+						return {
+							ctor: '_Tuple3',
+							_0: _elm_lang$core$Native_Utils.update(
+								model,
+								{error: 'Sorry, check your username and password.'}),
+							_1: _elm_lang$core$Platform_Cmd$none,
+							_2: _elm_lang$core$Maybe$Nothing
+						};
+					}
 				} else {
 					return {ctor: '_Tuple3', _0: model, _1: _elm_lang$core$Platform_Cmd$none, _2: _elm_lang$core$Maybe$Nothing};
 				}

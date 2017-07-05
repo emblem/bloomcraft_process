@@ -20819,16 +20819,7 @@ var _user$project$Page_Budget$leaseDetailView = F3(
 									{
 										ctor: '::',
 										_0: _elm_lang$html$Html_Attributes$class('lead'),
-										_1: {
-											ctor: '::',
-											_0: _elm_lang$html$Html_Attributes$style(
-												{
-													ctor: '::',
-													_0: {ctor: '_Tuple2', _0: 'color', _1: '#FFFFFF'},
-													_1: {ctor: '[]'}
-												}),
-											_1: {ctor: '[]'}
-										}
+										_1: {ctor: '[]'}
 									},
 									{
 										ctor: '::',

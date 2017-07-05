@@ -252,7 +252,7 @@ leaseDetailView model budget lease =
                ]
             |> Card.block []
                [ Card.custom <| div []
-                 [ p [class "lead", style [("color", "#FFFFFF")] ] [detailSummaryText lease (toFloat defaultRent)]
+                 [ p [class "lead"] [detailSummaryText lease (toFloat defaultRent)]
 {--                 , summaryRow "Proposed New Rent:" ("$" ++ toString (round lease.proposedRent))
                  , summaryRow "Current Rent:" ("$" ++ toString lease.currentRent)
                  , summaryRow "Default New Rent:" ("$" ++ toString defaultRent)--}

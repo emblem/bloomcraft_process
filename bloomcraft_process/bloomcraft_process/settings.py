@@ -32,9 +32,12 @@ if DEBUG:
     SECRET_KEY = 'tk2=w*2kb0u4*9-)f&wnjv=gc(7@m78#0)a6l6o_(871!=m@b!'
     ALLOWED_HOSTS = ["*"]
 else:
-    print("Running as PROD, so pulling SECRET_KEY from ENV")
-    SECRET_KEY = os.environ['SECRET_KEY']
-    ALLOWED_HOSTS = ["bloomcraft.space"]
+    try :
+        print("Running as PROD, so pulling SECRET_KEY from ENV")
+        SECRET_KEY = os.environ['SECRET_KEY']
+        ALLOWED_HOSTS = ["bloomcraft.space"]
+    except KeyError:
+        raise Exception("You probably want to run with environment variable DEBUG=True, or set SECRET_KEY")
 
 
 # Application definition
@@ -49,11 +52,12 @@ INSTALLED_APPS = [
     'django.contrib.sites',
     'budgeting.apps.BudgetingConfig',
     'ws4redis',
-    'invitations',
 ]
 
 INVITATIONS_INVITATION_EXPIRY = 30
-
+INVITATIONS_EMAIL_SUBJECT_PREFIX = "[Bloomcraft]"
+DEFAULT_FROM_EMAIL = "stuart@bloomcraft.space"
+EMAIL_TIMEOUT = 3
 
 SITE_ID=1
 
@@ -161,6 +165,10 @@ if not DEBUG:
     CSRF_COOKIE_SECURE = True
     X_FRAME_OPTIONS = "DENY"
     SECURE_HSTS_PRELOAD = True
-    
-    
 
+EMAIL_HOST = "ghost.mxroute.com"
+EMAIL_PORT = "465"
+EMAIL_HOST_USER = "stuart@bloomcraft.space"
+EMAIL_HOST_PASSWORD = ""
+EMAIL_SUBJECT_PREFIX = "[Bloomcraft]"
+EMAIL_USE_SSL = "True"

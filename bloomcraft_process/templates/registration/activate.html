@@ -1,0 +1,5 @@
+{% extends "jumbotron.html" %}
+
+{% block title %}Uh-oh...{% endblock %}
+
+{% block body %}Your activation key didn't work.  Try <a href="{% url 'registration_register' %}">registering</a> again, or contact an admin.{% endblock %}

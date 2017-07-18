@@ -1,8 +1,8 @@
 module Page.Profile exposing (init, view, update, Msg, Model, OutMsg(..))
 
 import Http
-import Html exposing (Html, text, div)
-import Html.Attributes exposing (class)
+import Html exposing (Html, text, div, a)
+import Html.Attributes exposing (class, href)
 import Bootstrap.Grid as Grid
 import Bootstrap.Grid.Col as Col
 import Bootstrap.Button as Button
@@ -25,7 +25,10 @@ view : Session -> Model -> Html Msg
 view session model =
     Grid.row []
         [ Grid.col [ Col.md12 ]
-              [ div [ class "text-center mt-4" ]
+              [ div [ ]
+                    [ a [ href "/process/accounts/password/change" ] [ text "Change Password" ]
+                    ]                    
+              , div [ class "text-center mt-4" ]
                     [ Button.button [Button.warning, Button.onClick Logout] [ text "Sign out" ]
                     ]
               ]

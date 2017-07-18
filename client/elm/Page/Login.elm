@@ -1,7 +1,7 @@
 module Page.Login exposing (Model, view, update, Msg, initialModel, OutMsg(..))
 
-import Html exposing (Html, div, text, input, button)
-import Html.Attributes exposing (type_, placeholder, value, class, for)
+import Html exposing (Html, div, text, input, button, a, span)
+import Html.Attributes exposing (type_, placeholder, value, class, for, href)
 import Http
 import Bootstrap.Card as Card
 import Bootstrap.Form as Form
@@ -24,14 +24,14 @@ type OutMsg
 type alias Model =
     { username : String
     , password : String
-    , error :String
+    , error : Html Msg
     }
 
 initialModel : Model
 initialModel =
     { username = ""
     , password = ""
-    , error = ""
+    , error = text ""
     }
     
 view : Model -> Html Msg
@@ -44,23 +44,40 @@ view model =
            [ Card.custom <|
                  Form.form []
                      [ Form.group []
-                       [ Form.label [ for "username" ] [ text "Username" ]
+                       [ Form.label [ for "username" ] [ text "Email Address" ]
                        , Input.text [ Input.id "username", Input.onInput SetUsername ]
-                       , Form.help [] [ text  "Check your email for a message with your username" ]
+                       , Form.help []
+                           [ text "Don't have an account? "
+                           , a [ href "/process/accounts/register" ] [ text "Register" ]
+                           , text " for a new account"
+                           ]
                        ]
                      , Form.group []
                        [ Form.label [ for "password" ] [ text "Password" ]
                        , Input.password [ Input.id "password", Input.onInput SetPassword ]
+                       , Form.help []
+                           [ text "Forgot your password? "
+                           , a [ href "/process/accounts/password/reset" ] [ text "Reset password" ]
+                           , text "."
+                           ]
                        ]
                      , Button.button [ Button.primary
                                      , Button.onClick SubmitLogin
                                      , Button.disabled (model.username == "" || model.password == "")
                                      ] [ text "Login" ]
-                     , Form.validationText [ class "text-danger" ] [ text model.error ]
+                     , Form.validationText [ class "text-danger" ] [ model.error ]
                      ]
            ]
         |> Card.view
-         
+
+pwError : Html msg
+pwError =
+    span []
+        [ text "Sorry, please check your username and password, or "
+        , a [href "/process/accounts/password/reset"] [ text "reset password" ]
+        , text "."
+        ]
+           
 update : Msg -> Model -> (Model, Cmd Msg, Maybe OutMsg)
 update msg model =
     case msg of
@@ -68,11 +85,11 @@ update msg model =
 
         SetUsername username -> ( {model | username = username}, Cmd.none, Nothing )
 
-        SubmitLogin -> (model, Http.send LoginResponse (Request.User.login model.username model.password), Nothing)
-
+        SubmitLogin -> (model, Http.send LoginResponse (Request.User.login model.username model.password), Nothing)        
+                       
         LoginResponse (Ok session) ->
             case session.user of
                 Just user -> (model, Cmd.none, Just (SetSession session))
-                Nothing -> ({model | error = "Sorry, check your username and password."}, Cmd.none, Nothing)
+                Nothing -> ({model | error = pwError }, Cmd.none, Nothing)
 
         LoginResponse (Err _) -> (model, Cmd.none, Nothing)                       

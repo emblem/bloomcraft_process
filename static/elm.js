@@ -21176,32 +21176,54 @@ var _user$project$Page_Profile$view = F2(
 						ctor: '::',
 						_0: A2(
 							_elm_lang$html$Html$div,
-							{
-								ctor: '::',
-								_0: _elm_lang$html$Html_Attributes$class('text-center mt-4'),
-								_1: {ctor: '[]'}
-							},
+							{ctor: '[]'},
 							{
 								ctor: '::',
 								_0: A2(
-									_rundis$elm_bootstrap$Bootstrap_Button$button,
+									_elm_lang$html$Html$a,
 									{
 										ctor: '::',
-										_0: _rundis$elm_bootstrap$Bootstrap_Button$warning,
-										_1: {
-											ctor: '::',
-											_0: _rundis$elm_bootstrap$Bootstrap_Button$onClick(_user$project$Page_Profile$Logout),
-											_1: {ctor: '[]'}
-										}
+										_0: _elm_lang$html$Html_Attributes$href('/process/accounts/password/change'),
+										_1: {ctor: '[]'}
 									},
 									{
 										ctor: '::',
-										_0: _elm_lang$html$Html$text('Sign out'),
+										_0: _elm_lang$html$Html$text('Change Password'),
 										_1: {ctor: '[]'}
 									}),
 								_1: {ctor: '[]'}
 							}),
-						_1: {ctor: '[]'}
+						_1: {
+							ctor: '::',
+							_0: A2(
+								_elm_lang$html$Html$div,
+								{
+									ctor: '::',
+									_0: _elm_lang$html$Html_Attributes$class('text-center mt-4'),
+									_1: {ctor: '[]'}
+								},
+								{
+									ctor: '::',
+									_0: A2(
+										_rundis$elm_bootstrap$Bootstrap_Button$button,
+										{
+											ctor: '::',
+											_0: _rundis$elm_bootstrap$Bootstrap_Button$warning,
+											_1: {
+												ctor: '::',
+												_0: _rundis$elm_bootstrap$Bootstrap_Button$onClick(_user$project$Page_Profile$Logout),
+												_1: {ctor: '[]'}
+											}
+										},
+										{
+											ctor: '::',
+											_0: _elm_lang$html$Html$text('Sign out'),
+											_1: {ctor: '[]'}
+										}),
+									_1: {ctor: '[]'}
+								}),
+							_1: {ctor: '[]'}
+						}
 					}),
 				_1: {ctor: '[]'}
 			});
@@ -21340,7 +21362,38 @@ var _user$project$Page_Home$view = F2(
 	});
 var _user$project$Page_Home$initialModel = {ctor: '_Tuple0'};
 
-var _user$project$Page_Login$initialModel = {username: '', password: '', error: ''};
+var _user$project$Page_Login$pwError = A2(
+	_elm_lang$html$Html$span,
+	{ctor: '[]'},
+	{
+		ctor: '::',
+		_0: _elm_lang$html$Html$text('Sorry, please check your username and password, or '),
+		_1: {
+			ctor: '::',
+			_0: A2(
+				_elm_lang$html$Html$a,
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html_Attributes$href('/process/accounts/password/reset'),
+					_1: {ctor: '[]'}
+				},
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html$text('reset password'),
+					_1: {ctor: '[]'}
+				}),
+			_1: {
+				ctor: '::',
+				_0: _elm_lang$html$Html$text('.'),
+				_1: {ctor: '[]'}
+			}
+		}
+	});
+var _user$project$Page_Login$initialModel = {
+	username: '',
+	password: '',
+	error: _elm_lang$html$Html$text('')
+};
 var _user$project$Page_Login$Model = F3(
 	function (a, b, c) {
 		return {username: a, password: b, error: c};
@@ -21382,7 +21435,7 @@ var _user$project$Page_Login$view = function (model) {
 										},
 										{
 											ctor: '::',
-											_0: _elm_lang$html$Html$text('Username'),
+											_0: _elm_lang$html$Html$text('Email Address'),
 											_1: {ctor: '[]'}
 										}),
 									_1: {
@@ -21404,8 +21457,27 @@ var _user$project$Page_Login$view = function (model) {
 												{ctor: '[]'},
 												{
 													ctor: '::',
-													_0: _elm_lang$html$Html$text('Check your email for a message with your username'),
-													_1: {ctor: '[]'}
+													_0: _elm_lang$html$Html$text('Don\'t have an account? '),
+													_1: {
+														ctor: '::',
+														_0: A2(
+															_elm_lang$html$Html$a,
+															{
+																ctor: '::',
+																_0: _elm_lang$html$Html_Attributes$href('/process/accounts/register'),
+																_1: {ctor: '[]'}
+															},
+															{
+																ctor: '::',
+																_0: _elm_lang$html$Html$text('Register'),
+																_1: {ctor: '[]'}
+															}),
+														_1: {
+															ctor: '::',
+															_0: _elm_lang$html$Html$text(' for a new account'),
+															_1: {ctor: '[]'}
+														}
+													}
 												}),
 											_1: {ctor: '[]'}
 										}
@@ -21442,7 +21514,37 @@ var _user$project$Page_Login$view = function (model) {
 														_1: {ctor: '[]'}
 													}
 												}),
-											_1: {ctor: '[]'}
+											_1: {
+												ctor: '::',
+												_0: A2(
+													_rundis$elm_bootstrap$Bootstrap_Form$help,
+													{ctor: '[]'},
+													{
+														ctor: '::',
+														_0: _elm_lang$html$Html$text('Forgot your password? '),
+														_1: {
+															ctor: '::',
+															_0: A2(
+																_elm_lang$html$Html$a,
+																{
+																	ctor: '::',
+																	_0: _elm_lang$html$Html_Attributes$href('/process/accounts/password/reset'),
+																	_1: {ctor: '[]'}
+																},
+																{
+																	ctor: '::',
+																	_0: _elm_lang$html$Html$text('Reset password'),
+																	_1: {ctor: '[]'}
+																}),
+															_1: {
+																ctor: '::',
+																_0: _elm_lang$html$Html$text('.'),
+																_1: {ctor: '[]'}
+															}
+														}
+													}),
+												_1: {ctor: '[]'}
+											}
 										}
 									}),
 								_1: {
@@ -21479,7 +21581,7 @@ var _user$project$Page_Login$view = function (model) {
 											},
 											{
 												ctor: '::',
-												_0: _elm_lang$html$Html$text(model.error),
+												_0: model.error,
 												_1: {ctor: '[]'}
 											}),
 										_1: {ctor: '[]'}
@@ -21561,7 +21663,7 @@ var _user$project$Page_Login$update = F2(
 							ctor: '_Tuple3',
 							_0: _elm_lang$core$Native_Utils.update(
 								model,
-								{error: 'Sorry, check your username and password.'}),
+								{error: _user$project$Page_Login$pwError}),
 							_1: _elm_lang$core$Platform_Cmd$none,
 							_2: _elm_lang$core$Maybe$Nothing
 						};

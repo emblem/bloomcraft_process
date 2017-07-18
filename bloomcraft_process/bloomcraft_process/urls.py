@@ -21,7 +21,7 @@ from django.views.static import serve as static_serve
 urlpatterns = [
     url(r'^process/admin/', admin.site.urls),    
     url(r'^process/api/', include('budgeting.urls')),
-    url(r'^process/invitations/', include('invitations.urls', namespace='invitations'))    
+#    url(r'^process/signup/', core_views.signup, name='signup')
 ]
 
 if settings.DEBUG:

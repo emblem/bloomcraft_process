@@ -1,16 +1,105 @@
 from django.db import models
 from django.contrib.auth import get_user_model
-from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
+from django.utils import six, timezone
 from django.dispatch import receiver
 from django.template.defaultfilters import slugify
+from django.utils.translation import ugettext_lazy as _
+from django.contrib.auth.validators import ASCIIUsernameValidator, UnicodeUsernameValidator
 
 import math
 
-class User(AbstractUser):
-    pass
+class UserManager(BaseUserManager):
+    use_in_migrations = True
+
+    def _create_user(self, email, password, first_name, last_name, **extra_fields):
+        """
+        Creates and saves a User with the given username, email and password.
+        """
+        email = self.normalize_email(email)
+        user = self.model(email=email, first_name = first_name, last_name = last_name, **extra_fields)
+        user.set_password(password)
+        user.save(using=self._db)
+        return user
+
+    def create_user(self, email, password, first_name, last_name, **extra_fields):
+        extra_fields.setdefault('is_staff', False)
+        extra_fields.setdefault('is_superuser', False)
+        return self._create_user(email, password, first_name, last_name, **extra_fields)
+
+    def create_superuser(self, email, password, first_name, last_name, **extra_fields):
+        extra_fields.setdefault('is_staff', True)
+        extra_fields.setdefault('is_superuser', True)
+
+        if extra_fields.get('is_staff') is not True:
+            raise ValueError('Superuser must have is_staff=True.')
+        if extra_fields.get('is_superuser') is not True:
+            raise ValueError('Superuser must have is_superuser=True.')
+
+        return self._create_user(email, password, first_name, last_name, **extra_fields)
+
+class User(AbstractBaseUser, PermissionsMixin):
+    """
+    An abstract base class implementing a fully featured User model with
+    admin-compliant permissions.
+
+    Username and password are required. Other fields are optional.
+    """
+
+    first_name = models.CharField(_('first name'), max_length=30, blank=True)
+    last_name = models.CharField(_('last name'), max_length=30, blank=True)
+    email = models.EmailField(_('email address'), blank=False, unique=True,
+                              error_messages = { 'unique': _("A user with that email address already exists."),
+                              })
+    is_staff = models.BooleanField(
+        _('staff status'),
+        default=False,
+        help_text=_('Designates whether the user can log into this admin site.'),
+    )
+    is_active = models.BooleanField(
+        _('active'),
+        default=True,
+        help_text=_(
+            'Designates whether this user should be treated as active. '
+            'Unselect this instead of deleting accounts.'
+        ),
+    )
+    date_joined = models.DateTimeField(_('date joined'), default=timezone.now)
+
+    objects = UserManager()
+
+    EMAIL_FIELD = 'email'
+    USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = ['first_name', 'last_name']
+
+    class Meta:
+        verbose_name = _('user')
+        verbose_name_plural = _('users')
+        abstract = False
+
+    def clean(self):
+        super(AbstractBaseUser, self).clean()
+        self.email = self.__class__.objects.normalize_email(self.email)
+
+    def get_full_name(self):
+        """
+        Returns the first_name plus the last_name, with a space in between.
+        """
+        full_name = '%s %s' % (self.first_name, self.last_name)
+        return full_name.strip()
+
+    def get_short_name(self):
+        "Returns the short name for the user."
+        return self.first_name
+
+    def email_user(self, subject, message, from_email=None, **kwargs):
+        """
+        Sends an email to this User.
+        """
+        send_mail(subject, message, from_email, [self.email], **kwargs)
 
 def get_sentinel_user():
-    return get_user_model().objects.get_or_create(username='deleted')[0]
+    return get_user_model().objects.get_or_create(email='deleted@deleted.com')[0]
 
 class Lease(models.Model):
     #Name of the Leaseholding Entity
@@ -19,8 +108,10 @@ class Lease(models.Model):
     original_rent = models.IntegerField(default=0)
     rent = models.IntegerField(default=0)
     admin = models.OneToOneField(User
-                              , on_delete=models.SET(get_sentinel_user)
-                              , related_name="lease_admin" )
+                                 , on_delete=models.SET_NULL
+                                 , blank=True
+                                 , null=True
+                                 , related_name="lease_admin" )
     members = models.ManyToManyField(User, blank = True)
 
     def __str__(self):
@@ -83,7 +174,7 @@ class AllocationExpense(models.Model):
     slug = models.SlugField()
 
     def __str__(self):
-        return self.name + " by " + self.owner.username
+        return self.name + " by " + self.owner.get_full_name()
 
     def save(self, *args, **kwargs):
         if not self.id:
@@ -108,7 +199,7 @@ class AllocationVote(models.Model):
         unique_together = ('user', 'expense')
 
     def __str__(self):
-        return "Vote by " + self.user.username + " on " + str(self.expense.name) + " <" + str(self.personal_abs_max) + ", "  + str(self.personal_pct_max) + ", "  + str(self.global_abs_max) + ", "  + str(self.global_pct_max) + ">"
+        return "Vote by " + self.user.get_full_name() + " on " + str(self.expense.name) + " <" + str(self.personal_abs_max) + ", "  + str(self.personal_pct_max) + ", "  + str(self.global_abs_max) + ", "  + str(self.global_pct_max) + ">"
 
     def toJson(self):
         return { "weight" : self.weight,

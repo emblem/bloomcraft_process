@@ -264,7 +264,10 @@ leaseDetailView model budget lease =
 changeRentView : Model -> Budget -> Lease -> Html Msg
 changeRentView model budget viewLease =
     let
-        nonAdminView = div [ class "mt-4" ] [ Alert.info [ text <| viewLease.adminName ++ " is able to change the proposed " ++ viewLease.name ++ " rent"] ]
+        nonAdminView = div [ class "mt-4" ] <|
+                       case viewLease.adminName of
+                           Just name ->  [ Alert.info [ text <| name ++ " is able to change the proposed " ++ viewLease.name ++ " rent"] ]
+                           Nothing -> [ Alert.info [ text <| "No admin person is designated to change " ++ viewLease.name ++ "'s rent.  Please contact zoe@bloomcraft.space to designate someone" ] ]
 
         changeRentButton budget adminLease =
             Alert.info

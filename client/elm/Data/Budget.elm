@@ -13,7 +13,7 @@ type alias Lease =
     { currentRent : Float
     , proposedRent : Float
     , name : String
-    , adminName : String
+    , adminName : Maybe String
     }
 
     
@@ -24,7 +24,7 @@ decoder =
                (field "current_rent" float)
                (field "proposed_rent" float)
                (field "name" string)
-               (field "admin_name" string)
+               (maybe <| field "admin_name" string)
     in
         Json.Decode.map4 Budget
             (field "core_expenses" float)

@@ -24,7 +24,7 @@ def login_view(request):
     if user is not None:
         login(request, user)        
         response['user'] = {
-            'username' : user.username,
+            'username' : user.email,
             'fullname' : user.get_full_name(),
             }
     else:
@@ -59,7 +59,7 @@ def budget_view(request):
                 "proposed_rent" : rate.rent,
                 "current_rent" : rate.lease.rent,
                 "name" : rate.lease.name,
-                "admin_name" : rate.lease.admin.get_full_name()
+                "admin_name" : rate.lease.admin.get_full_name() if rate.lease.admin else None
             }
             for rate in rental_rates
         ]
@@ -78,7 +78,7 @@ def user_view(request):
     userJson = {}
     
     if request.user.is_authenticated():
-        userJson['username'] = request.user.username
+        userJson['username'] = request.user.email
 
     return JsonResponse(userJson)
 
@@ -106,7 +106,7 @@ def session_view(request):
     if request.user.is_authenticated():
         user = request.user
         response['user'] = {
-            "username" : user.username,
+            "username" : user.email,
             "fullname" : user.get_full_name(),
         }
     else :

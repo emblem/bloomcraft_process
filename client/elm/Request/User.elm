@@ -35,3 +35,4 @@ logout session =
         |> HttpBuilder.withExpect (Http.expectJson (Session.decoder))
         |> withAuthorization session
         |> HttpBuilder.toRequest
+           

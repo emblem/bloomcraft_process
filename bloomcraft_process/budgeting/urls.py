@@ -13,7 +13,6 @@ urlpatterns += [
     url("^login.json$", views.login_view),
     url("^logout.json$", views.logout_view),
     url("^budget.json$", views.budget_view),
-#    url("^api/user.json", views.user_view),
     url("^rent.json$", views.rent_view),
     url("^allocation.json$", views.allocation_view),
     url("^session.json$", views.session_view),

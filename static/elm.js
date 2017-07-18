@@ -18800,7 +18800,8 @@ var _user$project$Data_Budget$decoder = function () {
 		A2(_elm_lang$core$Json_Decode$field, 'current_rent', _elm_lang$core$Json_Decode$float),
 		A2(_elm_lang$core$Json_Decode$field, 'proposed_rent', _elm_lang$core$Json_Decode$float),
 		A2(_elm_lang$core$Json_Decode$field, 'name', _elm_lang$core$Json_Decode$string),
-		A2(_elm_lang$core$Json_Decode$field, 'admin_name', _elm_lang$core$Json_Decode$string));
+		_elm_lang$core$Json_Decode$maybe(
+			A2(_elm_lang$core$Json_Decode$field, 'admin_name', _elm_lang$core$Json_Decode$string)));
 	return A5(
 		_elm_lang$core$Json_Decode$map4,
 		_user$project$Data_Budget$Budget,
@@ -20773,27 +20774,47 @@ var _user$project$Page_Budget$changeRentView = F3(
 				_0: _elm_lang$html$Html_Attributes$class('mt-4'),
 				_1: {ctor: '[]'}
 			},
-			{
-				ctor: '::',
-				_0: _rundis$elm_bootstrap$Bootstrap_Alert$info(
-					{
+			function () {
+				var _p17 = viewLease.adminName;
+				if (_p17.ctor === 'Just') {
+					return {
 						ctor: '::',
-						_0: _elm_lang$html$Html$text(
-							A2(
-								_elm_lang$core$Basics_ops['++'],
-								viewLease.adminName,
-								A2(
-									_elm_lang$core$Basics_ops['++'],
-									' is able to change the proposed ',
-									A2(_elm_lang$core$Basics_ops['++'], viewLease.name, ' rent')))),
+						_0: _rundis$elm_bootstrap$Bootstrap_Alert$info(
+							{
+								ctor: '::',
+								_0: _elm_lang$html$Html$text(
+									A2(
+										_elm_lang$core$Basics_ops['++'],
+										_p17._0,
+										A2(
+											_elm_lang$core$Basics_ops['++'],
+											' is able to change the proposed ',
+											A2(_elm_lang$core$Basics_ops['++'], viewLease.name, ' rent')))),
+								_1: {ctor: '[]'}
+							}),
 						_1: {ctor: '[]'}
-					}),
-				_1: {ctor: '[]'}
-			});
-		var _p17 = budget.leaseAdmin;
-		if (_p17.ctor === 'Just') {
-			var _p18 = _p17._0;
-			return _elm_lang$core$Native_Utils.eq(_p18, viewLease.name) ? A2(changeRentButton, budget, _p18) : nonAdminView;
+					};
+				} else {
+					return {
+						ctor: '::',
+						_0: _rundis$elm_bootstrap$Bootstrap_Alert$info(
+							{
+								ctor: '::',
+								_0: _elm_lang$html$Html$text(
+									A2(
+										_elm_lang$core$Basics_ops['++'],
+										'No admin person is designated to change ',
+										A2(_elm_lang$core$Basics_ops['++'], viewLease.name, '\'s rent.  Please contact zoe@bloomcraft.space to designate someone'))),
+								_1: {ctor: '[]'}
+							}),
+						_1: {ctor: '[]'}
+					};
+				}
+			}());
+		var _p18 = budget.leaseAdmin;
+		if (_p18.ctor === 'Just') {
+			var _p19 = _p18._0;
+			return _elm_lang$core$Native_Utils.eq(_p19, viewLease.name) ? A2(changeRentButton, budget, _p19) : nonAdminView;
 		} else {
 			return nonAdminView;
 		}
@@ -20872,13 +20893,13 @@ var _user$project$Page_Budget$leaseDetailViews = F2(
 	function (model, budget) {
 		var leases = A2(
 			_elm_lang$core$List$filter,
-			function (_p19) {
+			function (_p20) {
 				return function (n) {
 					return A2(_elm_lang$core$List$member, n, budget.leaseMember);
 				}(
 					function (_) {
 						return _.name;
-					}(_p19));
+					}(_p20));
 			},
 			budget.leases);
 		var detailCards = A2(
@@ -20969,15 +20990,15 @@ var _user$project$Page_Budget$NewBudget = function (a) {
 };
 var _user$project$Page_Budget$update = F3(
 	function (session, msg, model) {
-		var _p20 = msg;
-		switch (_p20.ctor) {
+		var _p21 = msg;
+		switch (_p21.ctor) {
 			case 'NewBudget':
-				if (_p20._0.ctor === 'Err') {
+				if (_p21._0.ctor === 'Err') {
 					return {
 						ctor: '_Tuple2',
 						_0: A2(
 							_elm_lang$core$Debug$log,
-							_elm_lang$core$Basics$toString(_p20._0._0),
+							_elm_lang$core$Basics$toString(_p21._0._0),
 							model),
 						_1: _elm_lang$core$Platform_Cmd$none
 					};
@@ -20987,7 +21008,7 @@ var _user$project$Page_Budget$update = F3(
 						_0: _elm_lang$core$Native_Utils.update(
 							model,
 							{
-								budget: _p20._0._0,
+								budget: _p21._0._0,
 								animation: function () {
 									var currentAnimatedBudget = _user$project$Page_Budget$animate(model);
 									return _elm_lang$core$Maybe$Just(
@@ -21006,19 +21027,19 @@ var _user$project$Page_Budget$update = F3(
 					ctor: '_Tuple2',
 					_0: model,
 					_1: function () {
-						var _p21 = model.requestedRent;
-						if (_p21.ctor === 'Ok') {
+						var _p22 = model.requestedRent;
+						if (_p22.ctor === 'Ok') {
 							return A2(
 								_elm_lang$http$Http$send,
 								_user$project$Page_Budget$RentChanged,
-								A2(_user$project$Request_Budget$changeRent, _p21._0, session));
+								A2(_user$project$Request_Budget$changeRent, _p22._0, session));
 						} else {
 							return _elm_lang$core$Platform_Cmd$none;
 						}
 					}()
 				};
 			case 'RentChanged':
-				if (_p20._0.ctor === 'Ok') {
+				if (_p21._0.ctor === 'Ok') {
 					return {
 						ctor: '_Tuple2',
 						_0: model,
@@ -21033,28 +21054,28 @@ var _user$project$Page_Budget$update = F3(
 					_0: _elm_lang$core$Native_Utils.update(
 						model,
 						{
-							requestedRent: _user$project$Page_Budget$validateRent(_p20._0)
+							requestedRent: _user$project$Page_Budget$validateRent(_p21._0)
 						}),
 					_1: _elm_lang$core$Platform_Cmd$none
 				};
 			default:
-				var _p25 = _p20._0;
-				var _p22 = model.animation;
-				if (_p22.ctor === 'Just') {
-					var _p24 = _p22._0;
-					var _p23 = _p24.startTime;
-					if (_p23.ctor === 'Just') {
-						return (_elm_lang$core$Native_Utils.cmp(_p23._0 + _elm_lang$core$Time$second, _p25) > 0) ? {
+				var _p26 = _p21._0;
+				var _p23 = model.animation;
+				if (_p23.ctor === 'Just') {
+					var _p25 = _p23._0;
+					var _p24 = _p25.startTime;
+					if (_p24.ctor === 'Just') {
+						return (_elm_lang$core$Native_Utils.cmp(_p24._0 + _elm_lang$core$Time$second, _p26) > 0) ? {
 							ctor: '_Tuple2',
 							_0: _elm_lang$core$Native_Utils.update(
 								model,
-								{time: _p25}),
+								{time: _p26}),
 							_1: _elm_lang$core$Platform_Cmd$none
 						} : {
 							ctor: '_Tuple2',
 							_0: _elm_lang$core$Native_Utils.update(
 								model,
-								{time: _p25, animation: _elm_lang$core$Maybe$Nothing}),
+								{time: _p26, animation: _elm_lang$core$Maybe$Nothing}),
 							_1: _elm_lang$core$Platform_Cmd$none
 						};
 					} else {
@@ -21063,12 +21084,12 @@ var _user$project$Page_Budget$update = F3(
 							_0: _elm_lang$core$Native_Utils.update(
 								model,
 								{
-									time: _p25,
+									time: _p26,
 									animation: _elm_lang$core$Maybe$Just(
 										_elm_lang$core$Native_Utils.update(
-											_p24,
+											_p25,
 											{
-												startTime: _elm_lang$core$Maybe$Just(_p25)
+												startTime: _elm_lang$core$Maybe$Just(_p26)
 											}))
 								}),
 							_1: _elm_lang$core$Platform_Cmd$none
@@ -21079,7 +21100,7 @@ var _user$project$Page_Budget$update = F3(
 						ctor: '_Tuple2',
 						_0: _elm_lang$core$Native_Utils.update(
 							model,
-							{time: _p25}),
+							{time: _p26}),
 						_1: _elm_lang$core$Platform_Cmd$none
 					};
 				}

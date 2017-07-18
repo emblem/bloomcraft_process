@@ -171,6 +171,9 @@ if not DEBUG:
 EMAIL_HOST = "ghost.mxroute.com"
 EMAIL_PORT = "465"
 EMAIL_HOST_USER = "stuart@bloomcraft.space"
-EMAIL_HOST_PASSWORD = ""
+EMAIL_HOST_PASSWORD = getattr(os.environ, 'SMTP_PASSWORD', "")
 EMAIL_SUBJECT_PREFIX = "[Bloomcraft]"
 EMAIL_USE_SSL = "True"
+
+LOGIN_REDIRECT_URL = "/process#home"
+LOGIN_URL = "/process/accounts/login"

@@ -17,11 +17,17 @@ from django.conf.urls import include, url
 from django.contrib import admin
 from django.conf import settings
 from django.views.static import serve as static_serve
+import budgeting.views
+from budgeting.forms import CustomRegistrationForm
 
 urlpatterns = [
     url(r'^process/admin/', admin.site.urls),    
     url(r'^process/api/', include('budgeting.urls')),
-#    url(r'^process/signup/', core_views.signup, name='signup')
+    url(r'^process/accounts/register/$',
+        budgeting.views.Register.as_view( form_class = CustomRegistrationForm ),
+        name='registration_register',
+    ),
+    url(r'^process/accounts/', include('registration.backends.hmac.urls')),
 ]
 
 if settings.DEBUG:

@@ -1,9 +1,11 @@
 from django.views.decorators.csrf import csrf_exempt, ensure_csrf_cookie
 from django.views.decorators.http import require_http_methods
 from django.shortcuts import render
+from django.views import View
 from django.http import HttpResponse, JsonResponse
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+from registration.backends.hmac.views import RegistrationView
 from django.middleware import csrf
 from django.core import serializers
 import json
@@ -44,6 +46,23 @@ def logout_view(request):
         }
     
     return JsonResponse(response)
+
+class Register(RegistrationView):
+    def create_inactive_user(self, form):
+        new_user = form.save(commit=False)        
+        new_user.is_active = False
+        new_user.save()
+        
+        leases = form.cleaned_data['lease']
+        for lease in leases:
+            lease.members.add(new_user)
+            lease.save()
+
+        self.send_activation_email(new_user)
+                    
+        return new_user
+
+        
 
 @require_http_methods(["GET"])
 @login_required

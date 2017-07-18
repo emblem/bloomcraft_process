@@ -44,20 +44,22 @@ else:
 
 INSTALLED_APPS = [
     'django.contrib.admin',
+    'django.contrib.auth',
     'django.contrib.contenttypes',
 #    'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.sites',
     'budgeting.apps.BudgetingConfig',
-    'django.contrib.auth',
     'ws4redis',
+    'bootstrapform',
 ]
 
-INVITATIONS_INVITATION_EXPIRY = 30
-INVITATIONS_EMAIL_SUBJECT_PREFIX = "[Bloomcraft]"
+ACCOUNT_ACTIVATION_DAYS = 3
+
+
 DEFAULT_FROM_EMAIL = "stuart@bloomcraft.space"
-EMAIL_TIMEOUT = 3
+EMAIL_TIMEOUT = 15
 
 SITE_ID=1
 
@@ -76,7 +78,7 @@ ROOT_URLCONF = 'bloomcraft_process.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, "templates")],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

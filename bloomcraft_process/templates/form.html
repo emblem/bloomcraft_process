@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-sm-2"></div>
+    <div class="col-sm-8">
+      <h2>{% block formtitle %}{%endblock%}</h2>
+      <hr>
+      {%block formcontent %}
+      {%endblock%}
+    </div>
+    <div class="col-sm-2"></div>
+  </div>
+</div>
+{% endblock %}

@@ -20513,32 +20513,35 @@ var _user$project$Page_Budget$explainerText = function (budget) {
 												defaultIncreasePct,
 												A2(
 													_elm_lang$core$Basics_ops['++'],
-													'.  Currently the proposed rents will ',
+													'.  Currently the proposed rents will',
 													A2(
 														_elm_lang$core$Basics_ops['++'],
-														increaseOrDecrease(income - currentIncome),
+														(_elm_lang$core$Native_Utils.cmp(income - coreExpense, 0) > 0) ? '' : ' only ',
 														A2(
 															_elm_lang$core$Basics_ops['++'],
-															' income by $',
+															increaseOrDecrease(income - currentIncome),
 															A2(
 																_elm_lang$core$Basics_ops['++'],
-																_elm_lang$core$Basics$toString(
-																	_elm_lang$core$Basics$round(income - currentIncome)),
+																' income by $',
 																A2(
 																	_elm_lang$core$Basics_ops['++'],
-																	'.  This change will create a projected $',
+																	_elm_lang$core$Basics$toString(
+																		_elm_lang$core$Basics$round(income - currentIncome)),
 																	A2(
 																		_elm_lang$core$Basics_ops['++'],
-																		_elm_lang$core$Basics$toString(
-																			_elm_lang$core$Basics$abs(
-																				_elm_lang$core$Basics$round(income - coreExpense))),
+																		'.  This change will create a projected $',
 																		A2(
 																			_elm_lang$core$Basics_ops['++'],
-																			' ',
+																			_elm_lang$core$Basics$toString(
+																				_elm_lang$core$Basics$abs(
+																					_elm_lang$core$Basics$round(income - coreExpense))),
 																			A2(
 																				_elm_lang$core$Basics_ops['++'],
-																				surplusOrDeficit(income - coreExpense),
-																				A2(_elm_lang$core$Basics_ops['++'], '.', ' If we have a surplus, those funds will be available for discretionary spending at the end of the upcoming quarter.')))))))))))))))))));
+																				' ',
+																				A2(
+																					_elm_lang$core$Basics_ops['++'],
+																					surplusOrDeficit(income - coreExpense),
+																					A2(_elm_lang$core$Basics_ops['++'], '.', ' If we do have a surplus, those funds will be available for discretionary spending at the end of the upcoming quarter.'))))))))))))))))))));
 	};
 	return _rundis$elm_bootstrap$Bootstrap_Card$view(
 		A3(
@@ -22188,7 +22191,7 @@ var _user$project$Page_Expense$expenseDetailsView = function (expenses) {
 										},
 										{
 											ctor: '::',
-											_0: _elm_lang$html$Html$text('Vote'),
+											_0: _elm_lang$html$Html$text('See Detail'),
 											_1: {ctor: '[]'}
 										}),
 									_1: {ctor: '[]'}

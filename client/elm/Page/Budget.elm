@@ -162,6 +162,7 @@ explainerText budget =
         defaultIncreasePct = showPct <| requiredPctIncrease budget
 
         increaseOrDecrease val = if val >= 0 then "increase" else "decrease"
+                                                 
         changeWord val = if val >= 0 then "an increase" else "a decrease"
 
         summaryExplainerText : Budget -> Html a
@@ -173,7 +174,8 @@ explainerText budget =
             ++ toString (coreExpense - currentIncome)
             ++ ", " ++ changeWord (requiredPctIncrease budget) ++ " of "
             ++ defaultIncreasePct
-            ++ ".  Currently the proposed rents will "
+            ++ ".  Currently the proposed rents will"
+            ++ (if (income-coreExpense) > 0 then "" else " only ")
             ++ increaseOrDecrease (income - currentIncome)
             ++ " income by $"
             ++ toString (round (income - currentIncome))
@@ -182,7 +184,7 @@ explainerText budget =
             ++ " "
             ++ surplusOrDeficit (income - coreExpense)
             ++ "."
-            ++ " If we have a surplus, those funds will be available for discretionary spending at the end of the upcoming quarter."
+            ++ " If we do have a surplus, those funds will be available for discretionary spending at the end of the upcoming quarter."
                 |> text
                       
     in

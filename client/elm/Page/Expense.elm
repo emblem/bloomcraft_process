@@ -114,7 +114,7 @@ expenseDetailsView expenses =
                                                                         ++ toString expense.newAllocatedFunds
                                                                         ++ "."
                                                                    ]
-                               , Button.linkButton [ Button.primary, Button.block, Button.attrs [Route.href (Route.ExpenseDetail expense.slug)] ] [ text "Vote" ]
+                               , Button.linkButton [ Button.primary, Button.block, Button.attrs [Route.href (Route.ExpenseDetail expense.slug)] ] [ text "See Detail" ]
                                ]
     in
         Card.config [ Card.attrs [class "mt-2" ]]

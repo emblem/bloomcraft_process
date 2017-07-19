@@ -58,7 +58,7 @@ INSTALLED_APPS = [
 ACCOUNT_ACTIVATION_DAYS = 3
 
 
-DEFAULT_FROM_EMAIL = "stuart@bloomcraft.space"
+DEFAULT_FROM_EMAIL = "Bloomcraft Automation <donotreply@bloomcraft.space>"
 EMAIL_TIMEOUT = 15
 
 SITE_ID=1
@@ -170,10 +170,14 @@ if not DEBUG:
 
 EMAIL_HOST = "ghost.mxroute.com"
 EMAIL_PORT = "465"
-EMAIL_HOST_USER = "stuart@bloomcraft.space"
-EMAIL_HOST_PASSWORD = getattr(os.environ, 'SMTP_PASSWORD', "")
+EMAIL_HOST_USER = "donotreply@bloomcraft.space"
+EMAIL_HOST_PASSWORD = os.environ.get('SMTP_PASSWORD', '')
 EMAIL_SUBJECT_PREFIX = "[Bloomcraft]"
 EMAIL_USE_SSL = "True"
+
+if EMAIL_HOST_PASSWORD == "" and DEBUG == False:
+    raise Exception("No Mail Password Found")
+
 
 LOGIN_REDIRECT_URL = "/process#home"
 LOGIN_URL = "/process/accounts/login"

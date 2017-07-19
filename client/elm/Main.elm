@@ -9,6 +9,7 @@ import Page.Budget as Budget
 import Page.Profile as Profile
 import Page.Errored as Errored exposing (PageLoadError, pageLoadError)
 import Page.Home as Home
+import Page.Help as Help
 import Page.Login as Login
 import Page.Expense as Expense
 import Page.ExpenseDetail as ExpenseDetail
@@ -30,6 +31,7 @@ type Page
     | Profile Profile.Model
     | Expense Expense.Model
     | ExpenseDetail ExpenseDetail.Model
+    | Help Help.Model
 
 type PageState
     = Loaded Page
@@ -117,10 +119,15 @@ viewPage model isLoading page =
                     |> frame Page.Budget
 
             Profile subModel ->
-                Profile.view session subModel
-                    |> Html.map ProfileMsg
-                    |> frame Page.Profile
-
+                case session.user of
+                    Just user ->
+                        Profile.view user subModel
+                            |> Html.map ProfileMsg
+                            |> frame Page.Profile
+                    Nothing ->
+                        Html.text "Error: Can't display profile, not logged in"
+                            |> frame Page.Other
+                        
             Expense subModel ->
                 Expense.view subModel
                     |> Html.map ExpenseMsg
@@ -130,6 +137,11 @@ viewPage model isLoading page =
                 ExpenseDetail.view subModel
                     |> Html.map ExpenseDetailMsg
                     |> frame Page.Other
+                       
+            Help subModel ->
+                Help.view subModel
+                    |> Html.map HelpMsg
+                    |> frame Page.Help
 
             NotFound ->
                 Html.text "Page Not Found" |> frame Page.Other
@@ -162,6 +174,7 @@ type Msg
     | ExpenseLoaded (Result PageLoadError Expense.Model)
     | ExpenseDetailLoaded (Result PageLoadError ExpenseDetail.Model)
     | TutorialLoaded (Result PageLoadError Tutorial.Model)
+    | HelpLoaded (Result PageLoadError Help.Model)
     | NavMsg Navbar.State
     | BudgetMsg Budget.Msg
     | LoginMsg Login.Msg
@@ -169,6 +182,7 @@ type Msg
     | ExpenseMsg Expense.Msg
     | ExpenseDetailMsg ExpenseDetail.Msg
     | TutorialMsg Tutorial.Msg
+    | HelpMsg Help.Msg
 
 
 
@@ -217,6 +231,9 @@ setRoute maybeRoute model =
                         transition ExpenseDetailLoaded (ExpenseDetail.init slug)
                     else
                         (model, Route.modifyUrl Route.Login)
+                Just (Route.Help) ->
+                    transition HelpLoaded Help.init
+                Just _ -> { model | pageState = Loaded NotFound } => Cmd.none
 
             in
                 pageMdl ! [loadPage, loadTutorial]
@@ -305,6 +322,12 @@ updatePage page msg model =
 
             (ExpenseDetailLoaded (Err error), _) ->
                 { model | pageState = Loaded (Errored error) } => Cmd.none
+
+            (HelpLoaded (Ok subModel), _) ->
+                { model | pageState = Loaded (Help subModel) } => Cmd.none
+
+            (HelpLoaded (Err error), _) ->
+                { model | pageState = Loaded (Errored error) } => Cmd.none            
 
             (TutorialLoaded (Ok subModel), _) ->
                 { model | tutorialState = subModel } => Cmd.none

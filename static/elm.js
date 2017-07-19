@@ -18893,10 +18893,22 @@ var _user$project$Route$routeToString = function (page) {
 			return '/process#expense';
 		case 'Profile':
 			return '/process#profile';
-		default:
+		case 'ExpenseDetail':
 			return A2(
 				_elm_lang$core$Basics_ops['++'],
 				'/process#expense/view/',
+				_user$project$Data_Allocation$slugToString(_p0._0));
+		case 'Help':
+			return '/process#help';
+		case 'EditExpense':
+			return A2(
+				_elm_lang$core$Basics_ops['++'],
+				'/process/expense/edit/',
+				_user$project$Data_Allocation$slugToString(_p0._0));
+		default:
+			return A2(
+				_elm_lang$core$Basics_ops['++'],
+				'/process/expense/delete/',
 				_user$project$Data_Allocation$slugToString(_p0._0));
 	}
 };
@@ -18907,6 +18919,13 @@ var _user$project$Route$href = function (route) {
 var _user$project$Route$modifyUrl = function (_p1) {
 	return _elm_lang$navigation$Navigation$modifyUrl(
 		_user$project$Route$routeToString(_p1));
+};
+var _user$project$Route$Help = {ctor: 'Help'};
+var _user$project$Route$DeleteExpense = function (a) {
+	return {ctor: 'DeleteExpense', _0: a};
+};
+var _user$project$Route$EditExpense = function (a) {
+	return {ctor: 'EditExpense', _0: a};
 };
 var _user$project$Route$ExpenseDetail = function (a) {
 	return {ctor: 'ExpenseDetail', _0: a};
@@ -18959,7 +18978,14 @@ var _user$project$Route$route = _evancz$url_parser$UrlParser$oneOf(
 										_evancz$url_parser$UrlParser_ops['</>'],
 										_evancz$url_parser$UrlParser$s('view'),
 										_user$project$Data_Allocation$slugParser))),
-							_1: {ctor: '[]'}
+							_1: {
+								ctor: '::',
+								_0: A2(
+									_evancz$url_parser$UrlParser$map,
+									_user$project$Route$Help,
+									_evancz$url_parser$UrlParser$s('help')),
+								_1: {ctor: '[]'}
+							}
 						}
 					}
 				}
@@ -19011,6 +19037,7 @@ var _user$project$View_Page$activeLinkIf = F2(
 		return _elm_lang$core$Native_Utils.eq(activePage, page) ? _rundis$elm_bootstrap$Bootstrap_Navbar$itemLinkActive : _rundis$elm_bootstrap$Bootstrap_Navbar$itemLink;
 	});
 var _user$project$View_Page$Other = {ctor: 'Other'};
+var _user$project$View_Page$Help = {ctor: 'Help'};
 var _user$project$View_Page$Profile = {ctor: 'Profile'};
 var _user$project$View_Page$Login = {ctor: 'Login'};
 var _user$project$View_Page$Expense = {ctor: 'Expense'};
@@ -19075,7 +19102,24 @@ var _user$project$View_Page$viewHeader = F5(
 											_0: _elm_lang$html$Html$text('Expenses'),
 											_1: {ctor: '[]'}
 										}),
-									_1: {ctor: '[]'}
+									_1: {
+										ctor: '::',
+										_0: A4(
+											_user$project$View_Page$activeLinkIf,
+											_user$project$View_Page$Help,
+											page,
+											{
+												ctor: '::',
+												_0: _user$project$Route$href(_user$project$Route$Help),
+												_1: {ctor: '[]'}
+											},
+											{
+												ctor: '::',
+												_0: _elm_lang$html$Html$text('Help'),
+												_1: {ctor: '[]'}
+											}),
+										_1: {ctor: '[]'}
+									}
 								}
 							}
 						};
@@ -21165,71 +21209,176 @@ var _user$project$Page_Profile$LoggedOut = function (a) {
 };
 var _user$project$Page_Profile$Logout = {ctor: 'Logout'};
 var _user$project$Page_Profile$view = F2(
-	function (session, model) {
+	function (user, model) {
 		return A2(
-			_rundis$elm_bootstrap$Bootstrap_Grid$row,
+			_rundis$elm_bootstrap$Bootstrap_Grid$container,
 			{ctor: '[]'},
 			{
 				ctor: '::',
 				_0: A2(
-					_rundis$elm_bootstrap$Bootstrap_Grid$col,
-					{
-						ctor: '::',
-						_0: _rundis$elm_bootstrap$Bootstrap_Grid_Col$md12,
-						_1: {ctor: '[]'}
-					},
+					_rundis$elm_bootstrap$Bootstrap_Grid$row,
+					{ctor: '[]'},
 					{
 						ctor: '::',
 						_0: A2(
-							_elm_lang$html$Html$div,
-							{ctor: '[]'},
+							_rundis$elm_bootstrap$Bootstrap_Grid$col,
+							{
+								ctor: '::',
+								_0: _rundis$elm_bootstrap$Bootstrap_Grid_Col$md10,
+								_1: {ctor: '[]'}
+							},
 							{
 								ctor: '::',
 								_0: A2(
-									_elm_lang$html$Html$a,
+									_elm_lang$html$Html$p,
+									{ctor: '[]'},
 									{
 										ctor: '::',
-										_0: _elm_lang$html$Html_Attributes$href('/process/accounts/password/change'),
-										_1: {ctor: '[]'}
-									},
-									{
-										ctor: '::',
-										_0: _elm_lang$html$Html$text('Change Password'),
+										_0: _elm_lang$html$Html$text('Your Profile Information:'),
 										_1: {ctor: '[]'}
 									}),
-								_1: {ctor: '[]'}
-							}),
-						_1: {
-							ctor: '::',
-							_0: A2(
-								_elm_lang$html$Html$div,
-								{
-									ctor: '::',
-									_0: _elm_lang$html$Html_Attributes$class('text-center mt-4'),
-									_1: {ctor: '[]'}
-								},
-								{
+								_1: {
 									ctor: '::',
 									_0: A2(
-										_rundis$elm_bootstrap$Bootstrap_Button$button,
+										_elm_lang$html$Html$p,
+										{ctor: '[]'},
 										{
 											ctor: '::',
-											_0: _rundis$elm_bootstrap$Bootstrap_Button$warning,
+											_0: A2(
+												_elm_lang$html$Html$span,
+												{
+													ctor: '::',
+													_0: _elm_lang$html$Html_Attributes$class('muted'),
+													_1: {ctor: '[]'}
+												},
+												{
+													ctor: '::',
+													_0: _elm_lang$html$Html$text('Name: '),
+													_1: {ctor: '[]'}
+												}),
 											_1: {
 												ctor: '::',
-												_0: _rundis$elm_bootstrap$Bootstrap_Button$onClick(_user$project$Page_Profile$Logout),
+												_0: A2(
+													_elm_lang$html$Html$span,
+													{
+														ctor: '::',
+														_0: _elm_lang$html$Html_Attributes$class('lead'),
+														_1: {ctor: '[]'}
+													},
+													{
+														ctor: '::',
+														_0: _elm_lang$html$Html$text(user.fullname),
+														_1: {ctor: '[]'}
+													}),
 												_1: {ctor: '[]'}
 											}
-										},
-										{
-											ctor: '::',
-											_0: _elm_lang$html$Html$text('Sign out'),
-											_1: {ctor: '[]'}
 										}),
-									_1: {ctor: '[]'}
-								}),
-							_1: {ctor: '[]'}
-						}
+									_1: {
+										ctor: '::',
+										_0: A2(
+											_elm_lang$html$Html$p,
+											{ctor: '[]'},
+											{
+												ctor: '::',
+												_0: A2(
+													_elm_lang$html$Html$span,
+													{
+														ctor: '::',
+														_0: _elm_lang$html$Html_Attributes$class('muted'),
+														_1: {ctor: '[]'}
+													},
+													{
+														ctor: '::',
+														_0: _elm_lang$html$Html$text('Email Address: '),
+														_1: {ctor: '[]'}
+													}),
+												_1: {
+													ctor: '::',
+													_0: A2(
+														_elm_lang$html$Html$span,
+														{
+															ctor: '::',
+															_0: _elm_lang$html$Html_Attributes$class('lead'),
+															_1: {ctor: '[]'}
+														},
+														{
+															ctor: '::',
+															_0: _elm_lang$html$Html$text(user.username),
+															_1: {ctor: '[]'}
+														}),
+													_1: {ctor: '[]'}
+												}
+											}),
+										_1: {
+											ctor: '::',
+											_0: A2(
+												_elm_lang$html$Html$div,
+												{
+													ctor: '::',
+													_0: _elm_lang$html$Html_Attributes$class('text-center mt-4'),
+													_1: {ctor: '[]'}
+												},
+												{
+													ctor: '::',
+													_0: A2(
+														_rundis$elm_bootstrap$Bootstrap_Button$linkButton,
+														{
+															ctor: '::',
+															_0: _rundis$elm_bootstrap$Bootstrap_Button$secondary,
+															_1: {
+																ctor: '::',
+																_0: _rundis$elm_bootstrap$Bootstrap_Button$attrs(
+																	{
+																		ctor: '::',
+																		_0: _elm_lang$html$Html_Attributes$href('/process/accounts/password/change'),
+																		_1: {ctor: '[]'}
+																	}),
+																_1: {ctor: '[]'}
+															}
+														},
+														{
+															ctor: '::',
+															_0: _elm_lang$html$Html$text('Change Password'),
+															_1: {ctor: '[]'}
+														}),
+													_1: {ctor: '[]'}
+												}),
+											_1: {
+												ctor: '::',
+												_0: A2(
+													_elm_lang$html$Html$div,
+													{
+														ctor: '::',
+														_0: _elm_lang$html$Html_Attributes$class('text-center mt-4'),
+														_1: {ctor: '[]'}
+													},
+													{
+														ctor: '::',
+														_0: A2(
+															_rundis$elm_bootstrap$Bootstrap_Button$button,
+															{
+																ctor: '::',
+																_0: _rundis$elm_bootstrap$Bootstrap_Button$warning,
+																_1: {
+																	ctor: '::',
+																	_0: _rundis$elm_bootstrap$Bootstrap_Button$onClick(_user$project$Page_Profile$Logout),
+																	_1: {ctor: '[]'}
+																}
+															},
+															{
+																ctor: '::',
+																_0: _elm_lang$html$Html$text('Sign out'),
+																_1: {ctor: '[]'}
+															}),
+														_1: {ctor: '[]'}
+													}),
+												_1: {ctor: '[]'}
+											}
+										}
+									}
+								}
+							}),
+						_1: {ctor: '[]'}
 					}),
 				_1: {ctor: '[]'}
 			});
@@ -21367,6 +21516,159 @@ var _user$project$Page_Home$view = F2(
 			});
 	});
 var _user$project$Page_Home$initialModel = {ctor: '_Tuple0'};
+
+var _user$project$Request_Tutorial$help = _lukewestby$elm_http_builder$HttpBuilder$toRequest(
+	A2(
+		_lukewestby$elm_http_builder$HttpBuilder$withExpect,
+		_elm_lang$http$Http$expectJson(
+			A2(
+				_elm_lang$core$Json_Decode$field,
+				'help',
+				_elm_lang$core$Json_Decode$list(_user$project$Data_Tutorial$decoder))),
+		_lukewestby$elm_http_builder$HttpBuilder$get(
+			_user$project$Request_Helpers$apiUrl('/help.json'))));
+var _user$project$Request_Tutorial$tutorial = function (route) {
+	return _lukewestby$elm_http_builder$HttpBuilder$toRequest(
+		A2(
+			_lukewestby$elm_http_builder$HttpBuilder$withExpect,
+			_elm_lang$http$Http$expectJson(
+				A2(
+					_elm_lang$core$Json_Decode$field,
+					'tutorial',
+					_elm_lang$core$Json_Decode$nullable(_user$project$Data_Tutorial$decoder))),
+			A2(
+				_lukewestby$elm_http_builder$HttpBuilder$withQueryParams,
+				{
+					ctor: '::',
+					_0: {
+						ctor: '_Tuple2',
+						_0: 'route',
+						_1: _user$project$Route$routeToString(route)
+					},
+					_1: {ctor: '[]'}
+				},
+				_lukewestby$elm_http_builder$HttpBuilder$get(
+					_user$project$Request_Helpers$apiUrl('/tutorial.json')))));
+};
+
+var _user$project$Page_Help$init = function () {
+	var initModel = function (content) {
+		return {content: content};
+	};
+	var handleLoadError = function (err) {
+		var l = A2(_elm_lang$core$Debug$log, 'Help Page Load Err', err);
+		return A2(_user$project$Page_Errored$pageLoadError, _user$project$View_Page$Expense, 'Failed to load help page');
+	};
+	var loadHelp = _elm_lang$http$Http$toTask(_user$project$Request_Tutorial$help);
+	return A2(
+		_elm_lang$core$Task$mapError,
+		handleLoadError,
+		A2(_elm_lang$core$Task$map, initModel, loadHelp));
+}();
+var _user$project$Page_Help$update = F2(
+	function (msg, model) {
+		return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
+	});
+var _user$project$Page_Help$tutorialView = function (tutorial) {
+	return A2(
+		_elm_lang$html$Html$div,
+		{ctor: '[]'},
+		{
+			ctor: '::',
+			_0: A2(
+				_elm_lang$html$Html$h5,
+				{ctor: '[]'},
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html$text(tutorial.header),
+					_1: {ctor: '[]'}
+				}),
+			_1: {
+				ctor: '::',
+				_0: A2(
+					_elm_lang$html$Html$hr,
+					{ctor: '[]'},
+					{ctor: '[]'}),
+				_1: {
+					ctor: '::',
+					_0: A2(
+						_elm_lang$html$Html$div,
+						{
+							ctor: '::',
+							_0: _elm_lang$html$Html_Attributes$class('ml-5'),
+							_1: {ctor: '[]'}
+						},
+						{
+							ctor: '::',
+							_0: tutorial.body,
+							_1: {ctor: '[]'}
+						}),
+					_1: {ctor: '[]'}
+				}
+			}
+		});
+};
+var _user$project$Page_Help$view = function (model) {
+	return A2(
+		_rundis$elm_bootstrap$Bootstrap_Grid$container,
+		{ctor: '[]'},
+		{
+			ctor: '::',
+			_0: A2(
+				_rundis$elm_bootstrap$Bootstrap_Grid$row,
+				{
+					ctor: '::',
+					_0: _rundis$elm_bootstrap$Bootstrap_Grid_Row$centerMd,
+					_1: {ctor: '[]'}
+				},
+				{
+					ctor: '::',
+					_0: A2(
+						_rundis$elm_bootstrap$Bootstrap_Grid$col,
+						{
+							ctor: '::',
+							_0: _rundis$elm_bootstrap$Bootstrap_Grid_Col$lg12,
+							_1: {ctor: '[]'}
+						},
+						{
+							ctor: '::',
+							_0: A2(
+								_elm_lang$html$Html$h3,
+								{ctor: '[]'},
+								{
+									ctor: '::',
+									_0: _elm_lang$html$Html$text('Help'),
+									_1: {ctor: '[]'}
+								}),
+							_1: {
+								ctor: '::',
+								_0: A2(
+									_elm_lang$html$Html$hr,
+									{ctor: '[]'},
+									{ctor: '[]'}),
+								_1: {ctor: '[]'}
+							}
+						}),
+					_1: {
+						ctor: '::',
+						_0: A2(
+							_rundis$elm_bootstrap$Bootstrap_Grid$col,
+							{
+								ctor: '::',
+								_0: _rundis$elm_bootstrap$Bootstrap_Grid_Col$lg12,
+								_1: {ctor: '[]'}
+							},
+							A2(_elm_lang$core$List$map, _user$project$Page_Help$tutorialView, model.content)),
+						_1: {ctor: '[]'}
+					}
+				}),
+			_1: {ctor: '[]'}
+		});
+};
+var _user$project$Page_Help$Model = function (a) {
+	return {content: a};
+};
+var _user$project$Page_Help$Msg = {ctor: 'Msg'};
 
 var _user$project$Page_Login$pwError = A2(
 	_elm_lang$html$Html$span,
@@ -21907,11 +22209,18 @@ var _user$project$Request_Allocation$vote = function (slug) {
 							'/vote.json'))))));
 };
 var _user$project$Request_Allocation$expense = function (slug) {
+	var decoder = A3(
+		_elm_lang$core$Json_Decode$map2,
+		F2(
+			function (v0, v1) {
+				return {ctor: '_Tuple2', _0: v0, _1: v1};
+			}),
+		A2(_elm_lang$core$Json_Decode$field, 'user_is_owner', _elm_lang$core$Json_Decode$bool),
+		A2(_elm_lang$core$Json_Decode$field, 'expense', _user$project$Data_Allocation$expenseDecoder));
 	return _lukewestby$elm_http_builder$HttpBuilder$toRequest(
 		A2(
 			_lukewestby$elm_http_builder$HttpBuilder$withExpect,
-			_elm_lang$http$Http$expectJson(
-				A2(_elm_lang$core$Json_Decode$field, 'expense', _user$project$Data_Allocation$expenseDecoder)),
+			_elm_lang$http$Http$expectJson(decoder),
 			_lukewestby$elm_http_builder$HttpBuilder$get(
 				_user$project$Request_Helpers$apiUrl(
 					A2(
@@ -21955,13 +22264,13 @@ var _user$project$Page_Expense$expenseView = function (expense) {
 		_user$project$View_BarPlot$defaultPlotParams,
 		{
 			maxValue: _elm_lang$core$Basics$toFloat(width),
-			height: 50
+			height: 10
 		});
 	var isFunded = _elm_lang$core$Native_Utils.cmp(totalFunds, expense.requestedFunds) > -1;
 	var fundColor = function () {
 		var _p0 = isFunded;
 		if (_p0 === true) {
-			return _user$project$View_Colors$greenColor;
+			return _user$project$View_Colors$blueColor;
 		} else {
 			return _user$project$View_Colors$blueColor;
 		}
@@ -22099,7 +22408,7 @@ var _user$project$Page_Expense$expenseDetailsView = function (expenses) {
 						_elm_lang$svg$Svg$svg,
 						{
 							ctor: '::',
-							_0: _elm_lang$svg$Svg_Attributes$viewBox('0 0 100 50'),
+							_0: _elm_lang$svg$Svg_Attributes$viewBox('0 0 100 10'),
 							_1: {
 								ctor: '::',
 								_0: _elm_lang$svg$Svg_Attributes$width('100%'),
@@ -22117,84 +22426,95 @@ var _user$project$Page_Expense$expenseDetailsView = function (expenses) {
 							_elm_lang$html$Html$p,
 							{
 								ctor: '::',
-								_0: _elm_lang$html$Html_Attributes$class('small mb-0'),
+								_0: _elm_lang$html$Html_Attributes$class('small mb-0 text-muted'),
 								_1: {ctor: '[]'}
 							},
 							{
 								ctor: '::',
 								_0: _elm_lang$html$Html$text(
-									voteResultText(expense)),
+									A2(
+										_elm_lang$core$Basics_ops['++'],
+										'Currently Allocated: ',
+										_elm_lang$core$Basics$toString(expense.newAllocatedFunds))),
 								_1: {ctor: '[]'}
 							}),
 						_1: {
 							ctor: '::',
 							_0: A2(
-								_elm_lang$html$Html$hr,
+								_elm_lang$html$Html$p,
 								{
 									ctor: '::',
-									_0: _elm_lang$html$Html_Attributes$class('m-1'),
+									_0: _elm_lang$html$Html_Attributes$class('small mb-0 text-muted'),
 									_1: {ctor: '[]'}
 								},
-								{ctor: '[]'}),
+								{
+									ctor: '::',
+									_0: _elm_lang$html$Html$text(
+										A2(
+											_elm_lang$core$Basics_ops['++'],
+											'Requested: ',
+											_elm_lang$core$Basics$toString(expense.requestedFunds))),
+									_1: {ctor: '[]'}
+								}),
 							_1: {
 								ctor: '::',
 								_0: A2(
-									_elm_lang$html$Html$p,
+									_elm_lang$html$Html$hr,
 									{
 										ctor: '::',
-										_0: _elm_lang$html$Html_Attributes$class('small mb-0 text-muted'),
+										_0: _elm_lang$html$Html_Attributes$class('m-1'),
 										_1: {ctor: '[]'}
 									},
-									{
-										ctor: '::',
-										_0: _elm_lang$html$Html$text(
-											A2(
-												_elm_lang$core$Basics_ops['++'],
-												expense.owner,
-												A2(
-													_elm_lang$core$Basics_ops['++'],
-													' requested $',
-													A2(
-														_elm_lang$core$Basics_ops['++'],
-														_elm_lang$core$Basics$toString(expense.requestedFunds),
-														A2(
-															_elm_lang$core$Basics_ops['++'],
-															' and is currently allocated $',
-															A2(
-																_elm_lang$core$Basics_ops['++'],
-																_elm_lang$core$Basics$toString(expense.newAllocatedFunds),
-																'.')))))),
-										_1: {ctor: '[]'}
-									}),
+									{ctor: '[]'}),
 								_1: {
 									ctor: '::',
 									_0: A2(
-										_rundis$elm_bootstrap$Bootstrap_Button$linkButton,
+										_elm_lang$html$Html$p,
 										{
 											ctor: '::',
-											_0: _rundis$elm_bootstrap$Bootstrap_Button$primary,
-											_1: {
-												ctor: '::',
-												_0: _rundis$elm_bootstrap$Bootstrap_Button$block,
-												_1: {
-													ctor: '::',
-													_0: _rundis$elm_bootstrap$Bootstrap_Button$attrs(
-														{
-															ctor: '::',
-															_0: _user$project$Route$href(
-																_user$project$Route$ExpenseDetail(expense.slug)),
-															_1: {ctor: '[]'}
-														}),
-													_1: {ctor: '[]'}
-												}
-											}
+											_0: _elm_lang$html$Html_Attributes$class('small mb-0'),
+											_1: {ctor: '[]'}
 										},
 										{
 											ctor: '::',
-											_0: _elm_lang$html$Html$text('See Detail'),
+											_0: _elm_lang$html$Html$text(
+												voteResultText(expense)),
 											_1: {ctor: '[]'}
 										}),
-									_1: {ctor: '[]'}
+									_1: {
+										ctor: '::',
+										_0: A2(
+											_rundis$elm_bootstrap$Bootstrap_Button$linkButton,
+											{
+												ctor: '::',
+												_0: _rundis$elm_bootstrap$Bootstrap_Button$primary,
+												_1: {
+													ctor: '::',
+													_0: _rundis$elm_bootstrap$Bootstrap_Button$block,
+													_1: {
+														ctor: '::',
+														_0: _rundis$elm_bootstrap$Bootstrap_Button$attrs(
+															{
+																ctor: '::',
+																_0: _elm_lang$html$Html_Attributes$class('mt-3'),
+																_1: {
+																	ctor: '::',
+																	_0: _user$project$Route$href(
+																		_user$project$Route$ExpenseDetail(expense.slug)),
+																	_1: {ctor: '[]'}
+																}
+															}),
+														_1: {ctor: '[]'}
+													}
+												}
+											},
+											{
+												ctor: '::',
+												_0: _elm_lang$html$Html$text('See Detail'),
+												_1: {ctor: '[]'}
+											}),
+										_1: {ctor: '[]'}
+									}
 								}
 							}
 						}
@@ -22321,7 +22641,7 @@ var _user$project$Page_Expense$allocationSummary = function (model) {
 								A2(
 									_elm_lang$core$Basics_ops['++'],
 									_elm_lang$core$Basics$toString(amtPerPerson),
-									' to allocate. Use the vote buttons to share your preferences, and the allocation will change to reflect them.'))))))));
+									' to allocate. Click \"See Detail\" to share your preferences, and the allocation will change to reflect them.'))))))));
 	return _rundis$elm_bootstrap$Bootstrap_Card$view(
 		A3(
 			_rundis$elm_bootstrap$Bootstrap_Card$block,
@@ -22671,59 +22991,128 @@ var _user$project$Page_ExpenseDetail$expenseSummaryTable = function (expense) {
 				})
 		});
 };
-var _user$project$Page_ExpenseDetail$expenseView = function (expense) {
-	return _rundis$elm_bootstrap$Bootstrap_Card$view(
-		A3(
-			_rundis$elm_bootstrap$Bootstrap_Card$block,
-			{ctor: '[]'},
-			{
-				ctor: '::',
-				_0: _rundis$elm_bootstrap$Bootstrap_Card$custom(
-					A2(
-						_elm_lang$html$Html$div,
-						{ctor: '[]'},
-						{
-							ctor: '::',
-							_0: _rundis$elm_bootstrap$Bootstrap_Alert$info(
-								{
-									ctor: '::',
-									_0: _elm_lang$html$Html$text(expense.detailText),
-									_1: {ctor: '[]'}
-								}),
-							_1: {
-								ctor: '::',
-								_0: _user$project$Page_ExpenseDetail$expenseSummaryTable(expense),
-								_1: {ctor: '[]'}
-							}
-						})),
-				_1: {ctor: '[]'}
-			},
-			A3(
-				_rundis$elm_bootstrap$Bootstrap_Card$headerH4,
-				{ctor: '[]'},
+var _user$project$Page_ExpenseDetail$editButtons = function (expense) {
+	return A2(
+		_elm_lang$html$Html$div,
+		{ctor: '[]'},
+		{
+			ctor: '::',
+			_0: A2(
+				_rundis$elm_bootstrap$Bootstrap_Button$linkButton,
 				{
 					ctor: '::',
-					_0: _elm_lang$html$Html$text(
-						A2(_elm_lang$core$Basics_ops['++'], 'Expense: ', expense.name)),
-					_1: {ctor: '[]'}
-				},
-				_rundis$elm_bootstrap$Bootstrap_Card$config(
-					{
+					_0: _rundis$elm_bootstrap$Bootstrap_Button$secondary,
+					_1: {
 						ctor: '::',
-						_0: _rundis$elm_bootstrap$Bootstrap_Card$attrs(
+						_0: _rundis$elm_bootstrap$Bootstrap_Button$attrs(
 							{
 								ctor: '::',
-								_0: _elm_lang$html$Html_Attributes$class('mt-2'),
+								_0: _user$project$Route$href(
+									_user$project$Route$EditExpense(expense.slug)),
 								_1: {ctor: '[]'}
 							}),
 						_1: {ctor: '[]'}
-					}))));
+					}
+				},
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html$text('Edit Expense'),
+					_1: {ctor: '[]'}
+				}),
+			_1: {
+				ctor: '::',
+				_0: A2(
+					_rundis$elm_bootstrap$Bootstrap_Button$linkButton,
+					{
+						ctor: '::',
+						_0: _rundis$elm_bootstrap$Bootstrap_Button$danger,
+						_1: {
+							ctor: '::',
+							_0: _rundis$elm_bootstrap$Bootstrap_Button$attrs(
+								{
+									ctor: '::',
+									_0: _elm_lang$html$Html_Attributes$class('ml-2'),
+									_1: {
+										ctor: '::',
+										_0: _user$project$Route$href(
+											_user$project$Route$DeleteExpense(expense.slug)),
+										_1: {ctor: '[]'}
+									}
+								}),
+							_1: {ctor: '[]'}
+						}
+					},
+					{
+						ctor: '::',
+						_0: _elm_lang$html$Html$text('Delete Expense'),
+						_1: {ctor: '[]'}
+					}),
+				_1: {ctor: '[]'}
+			}
+		});
 };
+var _user$project$Page_ExpenseDetail$expenseView = F2(
+	function (showButtons, expense) {
+		return _rundis$elm_bootstrap$Bootstrap_Card$view(
+			A3(
+				_rundis$elm_bootstrap$Bootstrap_Card$block,
+				{ctor: '[]'},
+				{
+					ctor: '::',
+					_0: _rundis$elm_bootstrap$Bootstrap_Card$custom(
+						A2(
+							_elm_lang$html$Html$div,
+							{ctor: '[]'},
+							{
+								ctor: '::',
+								_0: _rundis$elm_bootstrap$Bootstrap_Alert$info(
+									{
+										ctor: '::',
+										_0: _elm_lang$html$Html$text(expense.detailText),
+										_1: {ctor: '[]'}
+									}),
+								_1: {
+									ctor: '::',
+									_0: _user$project$Page_ExpenseDetail$expenseSummaryTable(expense),
+									_1: {
+										ctor: '::',
+										_0: showButtons ? _user$project$Page_ExpenseDetail$editButtons(expense) : A2(
+											_elm_lang$html$Html$div,
+											{ctor: '[]'},
+											{ctor: '[]'}),
+										_1: {ctor: '[]'}
+									}
+								}
+							})),
+					_1: {ctor: '[]'}
+				},
+				A3(
+					_rundis$elm_bootstrap$Bootstrap_Card$headerH4,
+					{ctor: '[]'},
+					{
+						ctor: '::',
+						_0: _elm_lang$html$Html$text(
+							A2(_elm_lang$core$Basics_ops['++'], 'Expense: ', expense.name)),
+						_1: {ctor: '[]'}
+					},
+					_rundis$elm_bootstrap$Bootstrap_Card$config(
+						{
+							ctor: '::',
+							_0: _rundis$elm_bootstrap$Bootstrap_Card$attrs(
+								{
+									ctor: '::',
+									_0: _elm_lang$html$Html_Attributes$class('mt-2'),
+									_1: {ctor: '[]'}
+								}),
+							_1: {ctor: '[]'}
+						}))));
+	});
 var _user$project$Page_ExpenseDetail$init = function (slug) {
 	var initModel = F2(
-		function (expense, maybeVote) {
+		function (_p0, maybeVote) {
+			var _p1 = _p0;
 			return {
-				expense: expense,
+				expense: _p1._1,
 				weight: A2(
 					_elm_lang$core$Maybe$map,
 					_elm_lang$core$Result$Ok,
@@ -22753,7 +23142,8 @@ var _user$project$Page_ExpenseDetail$init = function (slug) {
 						function (_) {
 							return _.globalMax;
 						},
-						maybeVote))
+						maybeVote)),
+				userIsOwner: _p1._0
 			};
 		});
 	var handleLoadError = function (err) {
@@ -22769,13 +23159,10 @@ var _user$project$Page_ExpenseDetail$init = function (slug) {
 		handleLoadError,
 		A3(_elm_lang$core$Task$map2, initModel, loadExpense, loadVote));
 };
-var _user$project$Page_ExpenseDetail$Model = F4(
-	function (a, b, c, d) {
-		return {expense: a, personalMax: b, globalMax: c, weight: d};
+var _user$project$Page_ExpenseDetail$Model = F5(
+	function (a, b, c, d, e) {
+		return {expense: a, personalMax: b, globalMax: c, weight: d, userIsOwner: e};
 	});
-var _user$project$Page_ExpenseDetail$LoadedExpense = function (a) {
-	return {ctor: 'LoadedExpense', _0: a};
-};
 var _user$project$Page_ExpenseDetail$VoteResponse = function (a) {
 	return {ctor: 'VoteResponse', _0: a};
 };
@@ -22796,16 +23183,16 @@ var _user$project$Page_ExpenseDetail$update = F3(
 			};
 		};
 		var maybeToInt = function (str) {
-			var _p0 = str;
-			if (_p0 === '') {
+			var _p2 = str;
+			if (_p2 === '') {
 				return _elm_lang$core$Maybe$Nothing;
 			} else {
 				return _elm_lang$core$Maybe$Just(
 					_elm_lang$core$String$toInt(str));
 			}
 		};
-		var _p1 = msg;
-		switch (_p1.ctor) {
+		var _p3 = msg;
+		switch (_p3.ctor) {
 			case 'SubmitVote':
 				return {
 					ctor: '_Tuple2',
@@ -22820,9 +23207,9 @@ var _user$project$Page_ExpenseDetail$update = F3(
 							model.expense.slug))
 				};
 			case 'SetWeight':
-				var _p3 = _p1._0;
-				var _p2 = _p3;
-				if (_p2 === '') {
+				var _p5 = _p3._0;
+				var _p4 = _p5;
+				if (_p4 === '') {
 					return {
 						ctor: '_Tuple2',
 						_0: _elm_lang$core$Native_Utils.update(
@@ -22839,7 +23226,7 @@ var _user$project$Page_ExpenseDetail$update = F3(
 						_0: _elm_lang$core$Native_Utils.update(
 							model,
 							{
-								weight: maybeToInt(_p3)
+								weight: maybeToInt(_p5)
 							}),
 						_1: _elm_lang$core$Platform_Cmd$none
 					};
@@ -22850,7 +23237,7 @@ var _user$project$Page_ExpenseDetail$update = F3(
 					_0: _elm_lang$core$Native_Utils.update(
 						model,
 						{
-							globalMax: maybeToInt(_p1._0)
+							globalMax: maybeToInt(_p3._0)
 						}),
 					_1: _elm_lang$core$Platform_Cmd$none
 				};
@@ -22860,40 +23247,16 @@ var _user$project$Page_ExpenseDetail$update = F3(
 					_0: _elm_lang$core$Native_Utils.update(
 						model,
 						{
-							personalMax: maybeToInt(_p1._0)
+							personalMax: maybeToInt(_p3._0)
 						}),
 					_1: _elm_lang$core$Platform_Cmd$none
 				};
-			case 'VoteResponse':
-				if (_p1._0.ctor === 'Ok') {
+			default:
+				if (_p3._0.ctor === 'Ok') {
 					return {
 						ctor: '_Tuple2',
 						_0: model,
-						_1: _elm_lang$core$Platform_Cmd$batch(
-							{
-								ctor: '::',
-								_0: A2(
-									_elm_lang$http$Http$send,
-									_user$project$Page_ExpenseDetail$LoadedExpense,
-									_user$project$Request_Allocation$expense(model.expense.slug)),
-								_1: {
-									ctor: '::',
-									_0: _user$project$Route$modifyUrl(_user$project$Route$Expense),
-									_1: {ctor: '[]'}
-								}
-							})
-					};
-				} else {
-					return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
-				}
-			default:
-				if (_p1._0.ctor === 'Ok') {
-					return {
-						ctor: '_Tuple2',
-						_0: _elm_lang$core$Native_Utils.update(
-							model,
-							{expense: _p1._0._0}),
-						_1: _elm_lang$core$Platform_Cmd$none
+						_1: _user$project$Route$modifyUrl(_user$project$Route$Expense)
 					};
 				} else {
 					return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
@@ -22915,32 +23278,32 @@ var _user$project$Page_ExpenseDetail$voteForm = function (model) {
 		_elm_lang$core$Debug$log,
 		'DIS',
 		function () {
-			var _p4 = {ctor: '_Tuple3', _0: model.weight, _1: model.globalMax, _2: model.personalMax};
-			_v3_3:
+			var _p6 = {ctor: '_Tuple3', _0: model.weight, _1: model.globalMax, _2: model.personalMax};
+			_v4_3:
 			do {
-				if (_p4.ctor === '_Tuple3') {
-					if ((_p4._0.ctor === 'Just') && (_p4._0._0.ctor === 'Err')) {
+				if (_p6.ctor === '_Tuple3') {
+					if ((_p6._0.ctor === 'Just') && (_p6._0._0.ctor === 'Err')) {
 						return true;
 					} else {
-						if ((_p4._1.ctor === 'Just') && (_p4._1._0.ctor === 'Err')) {
+						if ((_p6._1.ctor === 'Just') && (_p6._1._0.ctor === 'Err')) {
 							return true;
 						} else {
-							if ((_p4._2.ctor === 'Just') && (_p4._2._0.ctor === 'Err')) {
+							if ((_p6._2.ctor === 'Just') && (_p6._2._0.ctor === 'Err')) {
 								return true;
 							} else {
-								break _v3_3;
+								break _v4_3;
 							}
 						}
 					}
 				} else {
-					break _v3_3;
+					break _v4_3;
 				}
 			} while(false);
 			return false;
 		}());
 	var errState = function (result) {
-		var _p5 = result;
-		if (_p5.ctor === 'Nothing') {
+		var _p7 = result;
+		if (_p7.ctor === 'Nothing') {
 			return {
 				ctor: '_Tuple4',
 				_0: {ctor: '[]'},
@@ -22958,12 +23321,12 @@ var _user$project$Page_ExpenseDetail$voteForm = function (model) {
 				}
 			};
 		} else {
-			if (_p5._0.ctor === 'Ok') {
+			if (_p7._0.ctor === 'Ok') {
 				return {
 					ctor: '_Tuple4',
 					_0: {ctor: '[]'},
 					_1: '.',
-					_2: _elm_lang$core$Basics$toString(_p5._0._0),
+					_2: _elm_lang$core$Basics$toString(_p7._0._0),
 					_3: {
 						ctor: '::',
 						_0: _elm_lang$html$Html_Attributes$style(
@@ -22990,21 +23353,21 @@ var _user$project$Page_ExpenseDetail$voteForm = function (model) {
 			}
 		}
 	};
-	var _p6 = errState(model.weight);
-	var wError = _p6._0;
-	var wValTxt = _p6._1;
-	var wDef = _p6._2;
-	var wHidden = _p6._3;
-	var _p7 = errState(model.globalMax);
-	var gError = _p7._0;
-	var gValTxt = _p7._1;
-	var gDef = _p7._2;
-	var gHidden = _p7._3;
-	var _p8 = errState(model.personalMax);
-	var pError = _p8._0;
-	var pValTxt = _p8._1;
-	var pDef = _p8._2;
-	var pHidden = _p8._3;
+	var _p8 = errState(model.weight);
+	var wError = _p8._0;
+	var wValTxt = _p8._1;
+	var wDef = _p8._2;
+	var wHidden = _p8._3;
+	var _p9 = errState(model.globalMax);
+	var gError = _p9._0;
+	var gValTxt = _p9._1;
+	var gDef = _p9._2;
+	var gHidden = _p9._3;
+	var _p10 = errState(model.personalMax);
+	var pError = _p10._0;
+	var pValTxt = _p10._1;
+	var pDef = _p10._2;
+	var pHidden = _p10._3;
 	var viewString = function (maybeVal) {
 		return A2(
 			_elm_lang$core$Maybe$withDefault,
@@ -23322,7 +23685,7 @@ var _user$project$Page_ExpenseDetail$view = function (model) {
 						},
 						{
 							ctor: '::',
-							_0: _user$project$Page_ExpenseDetail$expenseView(expense),
+							_0: A2(_user$project$Page_ExpenseDetail$expenseView, model.userIsOwner, expense),
 							_1: {ctor: '[]'}
 						}),
 					_1: {
@@ -23344,30 +23707,6 @@ var _user$project$Page_ExpenseDetail$view = function (model) {
 				}),
 			_1: {ctor: '[]'}
 		});
-};
-
-var _user$project$Request_Tutorial$tutorial = function (route) {
-	return _lukewestby$elm_http_builder$HttpBuilder$toRequest(
-		A2(
-			_lukewestby$elm_http_builder$HttpBuilder$withExpect,
-			_elm_lang$http$Http$expectJson(
-				A2(
-					_elm_lang$core$Json_Decode$field,
-					'tutorial',
-					_elm_lang$core$Json_Decode$nullable(_user$project$Data_Tutorial$decoder))),
-			A2(
-				_lukewestby$elm_http_builder$HttpBuilder$withQueryParams,
-				{
-					ctor: '::',
-					_0: {
-						ctor: '_Tuple2',
-						_0: 'route',
-						_1: _user$project$Route$routeToString(route)
-					},
-					_1: {ctor: '[]'}
-				},
-				_lukewestby$elm_http_builder$HttpBuilder$get(
-					_user$project$Request_Helpers$apiUrl('/tutorial.json')))));
 };
 
 var _user$project$Page_Tutorial$update = F2(
@@ -23512,6 +23851,9 @@ var _user$project$Main$Model = F4(
 	function (a, b, c, d) {
 		return {session: a, pageState: b, navState: c, tutorialState: d};
 	});
+var _user$project$Main$Help = function (a) {
+	return {ctor: 'Help', _0: a};
+};
 var _user$project$Main$ExpenseDetail = function (a) {
 	return {ctor: 'ExpenseDetail', _0: a};
 };
@@ -23559,6 +23901,9 @@ var _user$project$Main$WaitingForSession = function (a) {
 };
 var _user$project$Main$HaveSession = function (a) {
 	return {ctor: 'HaveSession', _0: a};
+};
+var _user$project$Main$HelpMsg = function (a) {
+	return {ctor: 'HelpMsg', _0: a};
 };
 var _user$project$Main$TutorialMsg = function (a) {
 	return {ctor: 'TutorialMsg', _0: a};
@@ -23618,13 +23963,21 @@ var _user$project$Main$viewPage = F3(
 						_user$project$Main$LoginMsg,
 						_user$project$Page_Login$view(_p1._0)));
 			case 'Profile':
-				return A2(
-					frame,
-					_user$project$View_Page$Profile,
-					A2(
-						_elm_lang$html$Html$map,
-						_user$project$Main$ProfileMsg,
-						A2(_user$project$Page_Profile$view, session, _p1._0)));
+				var _p2 = session.user;
+				if (_p2.ctor === 'Just') {
+					return A2(
+						frame,
+						_user$project$View_Page$Profile,
+						A2(
+							_elm_lang$html$Html$map,
+							_user$project$Main$ProfileMsg,
+							A2(_user$project$Page_Profile$view, _p2._0, _p1._0)));
+				} else {
+					return A2(
+						frame,
+						_user$project$View_Page$Other,
+						_elm_lang$html$Html$text('Error: Can\'t display profile, not logged in'));
+				}
 			case 'Expense':
 				return A2(
 					frame,
@@ -23641,6 +23994,14 @@ var _user$project$Main$viewPage = F3(
 						_elm_lang$html$Html$map,
 						_user$project$Main$ExpenseDetailMsg,
 						_user$project$Page_ExpenseDetail$view(_p1._0)));
+			case 'Help':
+				return A2(
+					frame,
+					_user$project$View_Page$Help,
+					A2(
+						_elm_lang$html$Html$map,
+						_user$project$Main$HelpMsg,
+						_user$project$Page_Help$view(_p1._0)));
 			case 'NotFound':
 				return A2(
 					frame,
@@ -23654,51 +24015,54 @@ var _user$project$Main$viewPage = F3(
 		}
 	});
 var _user$project$Main$view = function (model) {
-	var _p2 = model.pageState;
-	if (_p2.ctor === 'Loaded') {
-		return A3(_user$project$Main$viewPage, model, false, _p2._0);
+	var _p3 = model.pageState;
+	if (_p3.ctor === 'Loaded') {
+		return A3(_user$project$Main$viewPage, model, false, _p3._0);
 	} else {
-		return A3(_user$project$Main$viewPage, model, true, _p2._0);
+		return A3(_user$project$Main$viewPage, model, true, _p3._0);
 	}
 };
 var _user$project$Main$startupView = function (model) {
-	var _p3 = model;
-	if (_p3.ctor === 'WaitingForSession') {
+	var _p4 = model;
+	if (_p4.ctor === 'WaitingForSession') {
 		return A2(
 			_elm_lang$html$Html$div,
 			{ctor: '[]'},
 			{ctor: '[]'});
 	} else {
-		return _user$project$Main$view(_p3._0);
+		return _user$project$Main$view(_p4._0);
 	}
 };
 var _user$project$Main$subscriptions = function (startModel) {
-	var _p4 = startModel;
-	if (_p4.ctor === 'WaitingForSession') {
+	var _p5 = startModel;
+	if (_p5.ctor === 'WaitingForSession') {
 		return _elm_lang$core$Platform_Sub$none;
 	} else {
-		var _p6 = _p4._0;
+		var _p7 = _p5._0;
 		return _elm_lang$core$Platform_Sub$batch(
 			{
 				ctor: '::',
 				_0: function () {
-					var _p5 = _p6.pageState;
-					if ((_p5.ctor === 'Loaded') && (_p5._0.ctor === 'Budget')) {
+					var _p6 = _p7.pageState;
+					if ((_p6.ctor === 'Loaded') && (_p6._0.ctor === 'Budget')) {
 						return A2(
 							_elm_lang$core$Platform_Sub$map,
 							_user$project$Main$BudgetMsg,
-							_user$project$Page_Budget$subscriptions(_p5._0._0));
+							_user$project$Page_Budget$subscriptions(_p6._0._0));
 					} else {
 						return _elm_lang$core$Platform_Sub$none;
 					}
 				}(),
 				_1: {
 					ctor: '::',
-					_0: A2(_rundis$elm_bootstrap$Bootstrap_Navbar$subscriptions, _p6.navState, _user$project$Main$NavMsg),
+					_0: A2(_rundis$elm_bootstrap$Bootstrap_Navbar$subscriptions, _p7.navState, _user$project$Main$NavMsg),
 					_1: {ctor: '[]'}
 				}
 			});
 	}
+};
+var _user$project$Main$HelpLoaded = function (a) {
+	return {ctor: 'HelpLoaded', _0: a};
 };
 var _user$project$Main$TutorialLoaded = function (a) {
 	return {ctor: 'TutorialLoaded', _0: a};
@@ -23732,9 +24096,9 @@ var _user$project$Main$setRoute = F2(
 						}),
 					A2(_elm_lang$core$Task$attempt, toMsg, task));
 			});
-		var _p7 = function () {
-			var _p8 = maybeRoute;
-			if (_p8.ctor === 'Nothing') {
+		var _p8 = function () {
+			var _p9 = maybeRoute;
+			if (_p9.ctor === 'Nothing') {
 				return A2(
 					_user$project$Util_ops['=>'],
 					_elm_lang$core$Native_Utils.update(
@@ -23744,7 +24108,7 @@ var _user$project$Main$setRoute = F2(
 						}),
 					_elm_lang$core$Platform_Cmd$none);
 			} else {
-				switch (_p8._0.ctor) {
+				switch (_p9._0.ctor) {
 					case 'Home':
 						return A2(
 							_user$project$Util_ops['=>'],
@@ -23795,20 +24159,31 @@ var _user$project$Main$setRoute = F2(
 							_0: model,
 							_1: _user$project$Route$modifyUrl(_user$project$Route$Login)
 						};
-					default:
+					case 'ExpenseDetail':
 						return loggedIn ? A2(
 							transition,
 							_user$project$Main$ExpenseDetailLoaded,
-							_user$project$Page_ExpenseDetail$init(_p8._0._0)) : {
+							_user$project$Page_ExpenseDetail$init(_p9._0._0)) : {
 							ctor: '_Tuple2',
 							_0: model,
 							_1: _user$project$Route$modifyUrl(_user$project$Route$Login)
 						};
+					case 'Help':
+						return A2(transition, _user$project$Main$HelpLoaded, _user$project$Page_Help$init);
+					default:
+						return A2(
+							_user$project$Util_ops['=>'],
+							_elm_lang$core$Native_Utils.update(
+								model,
+								{
+									pageState: _user$project$Main$Loaded(_user$project$Main$NotFound)
+								}),
+							_elm_lang$core$Platform_Cmd$none);
 				}
 			}
 		}();
-		var pageMdl = _p7._0;
-		var loadPage = _p7._1;
+		var pageMdl = _p8._0;
+		var loadPage = _p8._1;
 		return A2(
 			_elm_lang$core$Platform_Cmd_ops['!'],
 			pageMdl,
@@ -23824,10 +24199,10 @@ var _user$project$Main$setRoute = F2(
 	});
 var _user$project$Main$init = F2(
 	function (location, session) {
-		var _p9 = _rundis$elm_bootstrap$Bootstrap_Navbar$initialState(_user$project$Main$NavMsg);
-		var navState = _p9._0;
-		var navCmd = _p9._1;
-		var _p10 = A2(
+		var _p10 = _rundis$elm_bootstrap$Bootstrap_Navbar$initialState(_user$project$Main$NavMsg);
+		var navState = _p10._0;
+		var navCmd = _p10._1;
+		var _p11 = A2(
 			_user$project$Main$setRoute,
 			_user$project$Route$fromLocation(
 				A2(_elm_lang$core$Debug$log, 'Starting Loc', location)),
@@ -23837,8 +24212,8 @@ var _user$project$Main$init = F2(
 				navState: navState,
 				tutorialState: _user$project$Page_Tutorial$initialState
 			});
-		var model = _p10._0;
-		var cmd = _p10._1;
+		var model = _p11._0;
+		var cmd = _p11._1;
 		return A2(
 			_elm_lang$core$Platform_Cmd_ops['!'],
 			model,
@@ -23856,10 +24231,10 @@ var _user$project$Main$updatePage = F3(
 	function (page, msg, model) {
 		var toPageWithOut = F5(
 			function (toModel, toMsg, subUpdate, subMsg, subModel) {
-				var _p11 = A2(subUpdate, subMsg, subModel);
-				var newModel = _p11._0;
-				var newCmd = _p11._1;
-				var outMsg = _p11._2;
+				var _p12 = A2(subUpdate, subMsg, subModel);
+				var newModel = _p12._0;
+				var newCmd = _p12._1;
+				var outMsg = _p12._2;
 				return {
 					ctor: '_Tuple3',
 					_0: _elm_lang$core$Native_Utils.update(
@@ -23874,9 +24249,9 @@ var _user$project$Main$updatePage = F3(
 			});
 		var toPage = F5(
 			function (toModel, toMsg, subUpdate, subMsg, subModel) {
-				var _p12 = A2(subUpdate, subMsg, subModel);
-				var newModel = _p12._0;
-				var newCmd = _p12._1;
+				var _p13 = A2(subUpdate, subMsg, subModel);
+				var newModel = _p13._0;
+				var newCmd = _p13._1;
 				return {
 					ctor: '_Tuple2',
 					_0: _elm_lang$core$Native_Utils.update(
@@ -23907,32 +24282,32 @@ var _user$project$Main$updatePage = F3(
 					});
 			});
 		var session = model.session;
-		var _p13 = {ctor: '_Tuple2', _0: msg, _1: page};
-		_v7_17:
+		var _p14 = {ctor: '_Tuple2', _0: msg, _1: page};
+		_v8_19:
 		do {
-			switch (_p13._0.ctor) {
+			switch (_p14._0.ctor) {
 				case 'SetRoute':
-					return A2(_user$project$Main$setRoute, _p13._0._0, model);
+					return A2(_user$project$Main$setRoute, _p14._0._0, model);
 				case 'SetSession':
-					if (_p13._0._0.ctor === 'Ok') {
-						return A3(setSession, model, _elm_lang$core$Platform_Cmd$none, _p13._0._0._0);
+					if (_p14._0._0.ctor === 'Ok') {
+						return A3(setSession, model, _elm_lang$core$Platform_Cmd$none, _p14._0._0._0);
 					} else {
 						return _elm_lang$core$Tuple$first(
 							{
 								ctor: '_Tuple2',
 								_0: A3(_user$project$Main$pageErrored, model, _user$project$View_Page$Home, 'Failed to get session state from server'),
-								_1: A2(_elm_lang$core$Debug$log, 'Load Error: ', _p13._0._0._0)
+								_1: A2(_elm_lang$core$Debug$log, 'Load Error: ', _p14._0._0._0)
 							});
 					}
 				case 'BudgetLoaded':
-					if (_p13._0._0.ctor === 'Ok') {
+					if (_p14._0._0.ctor === 'Ok') {
 						return A2(
 							_user$project$Util_ops['=>'],
 							_elm_lang$core$Native_Utils.update(
 								model,
 								{
 									pageState: _user$project$Main$Loaded(
-										_user$project$Main$Budget(_p13._0._0._0))
+										_user$project$Main$Budget(_p14._0._0._0))
 								}),
 							_elm_lang$core$Platform_Cmd$none);
 					} else {
@@ -23942,19 +24317,19 @@ var _user$project$Main$updatePage = F3(
 								model,
 								{
 									pageState: _user$project$Main$Loaded(
-										_user$project$Main$Errored(_p13._0._0._0))
+										_user$project$Main$Errored(_p14._0._0._0))
 								}),
 							_elm_lang$core$Platform_Cmd$none);
 					}
 				case 'ExpenseLoaded':
-					if (_p13._0._0.ctor === 'Ok') {
+					if (_p14._0._0.ctor === 'Ok') {
 						return A2(
 							_user$project$Util_ops['=>'],
 							_elm_lang$core$Native_Utils.update(
 								model,
 								{
 									pageState: _user$project$Main$Loaded(
-										_user$project$Main$Expense(_p13._0._0._0))
+										_user$project$Main$Expense(_p14._0._0._0))
 								}),
 							_elm_lang$core$Platform_Cmd$none);
 					} else {
@@ -23964,19 +24339,19 @@ var _user$project$Main$updatePage = F3(
 								model,
 								{
 									pageState: _user$project$Main$Loaded(
-										_user$project$Main$Errored(_p13._0._0._0))
+										_user$project$Main$Errored(_p14._0._0._0))
 								}),
 							_elm_lang$core$Platform_Cmd$none);
 					}
 				case 'ExpenseDetailLoaded':
-					if (_p13._0._0.ctor === 'Ok') {
+					if (_p14._0._0.ctor === 'Ok') {
 						return A2(
 							_user$project$Util_ops['=>'],
 							_elm_lang$core$Native_Utils.update(
 								model,
 								{
 									pageState: _user$project$Main$Loaded(
-										_user$project$Main$ExpenseDetail(_p13._0._0._0))
+										_user$project$Main$ExpenseDetail(_p14._0._0._0))
 								}),
 							_elm_lang$core$Platform_Cmd$none);
 					} else {
@@ -23986,17 +24361,39 @@ var _user$project$Main$updatePage = F3(
 								model,
 								{
 									pageState: _user$project$Main$Loaded(
-										_user$project$Main$Errored(_p13._0._0._0))
+										_user$project$Main$Errored(_p14._0._0._0))
 								}),
 							_elm_lang$core$Platform_Cmd$none);
 					}
-				case 'TutorialLoaded':
-					if (_p13._0._0.ctor === 'Ok') {
+				case 'HelpLoaded':
+					if (_p14._0._0.ctor === 'Ok') {
 						return A2(
 							_user$project$Util_ops['=>'],
 							_elm_lang$core$Native_Utils.update(
 								model,
-								{tutorialState: _p13._0._0._0}),
+								{
+									pageState: _user$project$Main$Loaded(
+										_user$project$Main$Help(_p14._0._0._0))
+								}),
+							_elm_lang$core$Platform_Cmd$none);
+					} else {
+						return A2(
+							_user$project$Util_ops['=>'],
+							_elm_lang$core$Native_Utils.update(
+								model,
+								{
+									pageState: _user$project$Main$Loaded(
+										_user$project$Main$Errored(_p14._0._0._0))
+								}),
+							_elm_lang$core$Platform_Cmd$none);
+					}
+				case 'TutorialLoaded':
+					if (_p14._0._0.ctor === 'Ok') {
+						return A2(
+							_user$project$Util_ops['=>'],
+							_elm_lang$core$Native_Utils.update(
+								model,
+								{tutorialState: _p14._0._0._0}),
 							_elm_lang$core$Platform_Cmd$none);
 					} else {
 						return A2(_user$project$Util_ops['=>'], model, _elm_lang$core$Platform_Cmd$none);
@@ -24006,67 +24403,67 @@ var _user$project$Main$updatePage = F3(
 						_user$project$Util_ops['=>'],
 						_elm_lang$core$Native_Utils.update(
 							model,
-							{navState: _p13._0._0}),
+							{navState: _p14._0._0}),
 						_elm_lang$core$Platform_Cmd$none);
 				case 'BudgetMsg':
-					if (_p13._1.ctor === 'Budget') {
+					if (_p14._1.ctor === 'Budget') {
 						return A5(
 							toPage,
 							_user$project$Main$Budget,
 							_user$project$Main$BudgetMsg,
 							_user$project$Page_Budget$update(session),
-							_p13._0._0,
-							_p13._1._0);
+							_p14._0._0,
+							_p14._1._0);
 					} else {
-						break _v7_17;
+						break _v8_19;
 					}
 				case 'LoginMsg':
-					if (_p13._1.ctor === 'Login') {
-						var _p14 = A5(toPageWithOut, _user$project$Main$Login, _user$project$Main$LoginMsg, _user$project$Page_Login$update, _p13._0._0, _p13._1._0);
-						var newModel = _p14._0;
-						var cmd = _p14._1;
-						var outMsg = _p14._2;
-						var _p15 = outMsg;
-						if (_p15.ctor === 'Just') {
-							return A3(setSession, newModel, cmd, _p15._0._0);
+					if (_p14._1.ctor === 'Login') {
+						var _p15 = A5(toPageWithOut, _user$project$Main$Login, _user$project$Main$LoginMsg, _user$project$Page_Login$update, _p14._0._0, _p14._1._0);
+						var newModel = _p15._0;
+						var cmd = _p15._1;
+						var outMsg = _p15._2;
+						var _p16 = outMsg;
+						if (_p16.ctor === 'Just') {
+							return A3(setSession, newModel, cmd, _p16._0._0);
 						} else {
 							return {ctor: '_Tuple2', _0: newModel, _1: cmd};
 						}
 					} else {
-						break _v7_17;
+						break _v8_19;
 					}
 				case 'ProfileMsg':
-					if (_p13._1.ctor === 'Profile') {
-						var _p16 = A5(
+					if (_p14._1.ctor === 'Profile') {
+						var _p17 = A5(
 							toPageWithOut,
 							_user$project$Main$Profile,
 							_user$project$Main$ProfileMsg,
 							_user$project$Page_Profile$update(session),
-							_p13._0._0,
-							_p13._1._0);
-						var newModel = _p16._0;
-						var cmd = _p16._1;
-						var outMsg = _p16._2;
-						var _p17 = outMsg;
-						if (_p17.ctor === 'Just') {
-							return A3(setSession, newModel, cmd, _p17._0._0);
+							_p14._0._0,
+							_p14._1._0);
+						var newModel = _p17._0;
+						var cmd = _p17._1;
+						var outMsg = _p17._2;
+						var _p18 = outMsg;
+						if (_p18.ctor === 'Just') {
+							return A3(setSession, newModel, cmd, _p18._0._0);
 						} else {
 							return {ctor: '_Tuple2', _0: newModel, _1: cmd};
 						}
 					} else {
-						break _v7_17;
+						break _v8_19;
 					}
 				case 'ExpenseDetailMsg':
-					if (_p13._1.ctor === 'ExpenseDetail') {
+					if (_p14._1.ctor === 'ExpenseDetail') {
 						return A5(
 							toPage,
 							_user$project$Main$ExpenseDetail,
 							_user$project$Main$ExpenseDetailMsg,
 							_user$project$Page_ExpenseDetail$update(session),
-							_p13._0._0,
-							_p13._1._0);
+							_p14._0._0,
+							_p14._1._0);
 					} else {
-						break _v7_17;
+						break _v8_19;
 					}
 				case 'TutorialMsg':
 					return {
@@ -24074,12 +24471,12 @@ var _user$project$Main$updatePage = F3(
 						_0: _elm_lang$core$Native_Utils.update(
 							model,
 							{
-								tutorialState: A2(_user$project$Page_Tutorial$update, _p13._0._0, model.tutorialState)
+								tutorialState: A2(_user$project$Page_Tutorial$update, _p14._0._0, model.tutorialState)
 							}),
 						_1: _elm_lang$core$Platform_Cmd$none
 					};
 				default:
-					break _v7_17;
+					break _v8_19;
 			}
 		} while(false);
 		return A2(_user$project$Util_ops['=>'], model, _elm_lang$core$Platform_Cmd$none);
@@ -24094,13 +24491,13 @@ var _user$project$Main$update = F2(
 	});
 var _user$project$Main$startupUpdate = F2(
 	function (msg, startModel) {
-		var _p18 = startModel;
-		if (_p18.ctor === 'WaitingForSession') {
-			var _p19 = msg;
-			if ((_p19.ctor === 'SetSession') && (_p19._0.ctor === 'Ok')) {
-				var _p20 = A2(_user$project$Main$init, _p18._0, _p19._0._0);
-				var model = _p20._0;
-				var cmd = _p20._1;
+		var _p19 = startModel;
+		if (_p19.ctor === 'WaitingForSession') {
+			var _p20 = msg;
+			if ((_p20.ctor === 'SetSession') && (_p20._0.ctor === 'Ok')) {
+				var _p21 = A2(_user$project$Main$init, _p19._0, _p20._0._0);
+				var model = _p21._0;
+				var cmd = _p21._1;
 				return {
 					ctor: '_Tuple2',
 					_0: _user$project$Main$HaveSession(model),
@@ -24111,16 +24508,16 @@ var _user$project$Main$startupUpdate = F2(
 					_elm_lang$core$Native_Utils.crash(
 						'Main',
 						{
-							start: {line: 241, column: 24},
-							end: {line: 241, column: 35}
+							start: {line: 258, column: 24},
+							end: {line: 258, column: 35}
 						}),
 					'Got a non-session message during startup',
-					_p19);
+					_p20);
 			}
 		} else {
-			var _p21 = A2(_user$project$Main$update, msg, _p18._0);
-			var newModel = _p21._0;
-			var cmd = _p21._1;
+			var _p22 = A2(_user$project$Main$update, msg, _p19._0);
+			var newModel = _p22._0;
+			var cmd = _p22._1;
 			return {
 				ctor: '_Tuple2',
 				_0: _user$project$Main$HaveSession(newModel),
@@ -24143,9 +24540,9 @@ var _user$project$Main$startupInit = function (location) {
 };
 var _user$project$Main$main = A2(
 	_elm_lang$navigation$Navigation$program,
-	function (_p22) {
+	function (_p23) {
 		return _user$project$Main$SetRoute(
-			_user$project$Route$fromLocation(_p22));
+			_user$project$Route$fromLocation(_p23));
 	},
 	{init: _user$project$Main$startupInit, view: _user$project$Main$startupView, update: _user$project$Main$startupUpdate, subscriptions: _user$project$Main$subscriptions})();
 

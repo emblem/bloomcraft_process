@@ -16,6 +16,7 @@ type ActivePage
     | Expense
     | Login
     | Profile
+    | Help
     | Other
 
 frame : (Navbar.State -> a) -> Navbar.State -> Bool -> Session -> Html a -> ActivePage -> Html a -> Html a
@@ -38,6 +39,7 @@ viewHeader toMsg navState page session isLoading =
                    [ activeLinkIf Profile page [Route.href Route.Profile ] [text (if user.fullname == "" then user.username else user.fullname) ]
                    , activeLinkIf Budget page [Route.href Route.Budget] [text "Income"]
                    , activeLinkIf Expense page [Route.href Route.Expense] [text "Expenses"]
+                   , activeLinkIf Help page [Route.href Route.Help] [text "Help"]
                    ]
 
                Nothing ->

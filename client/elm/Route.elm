@@ -14,6 +14,9 @@ type Route
     | Expense
     | Profile
     | ExpenseDetail Slug
+    | EditExpense Slug
+    | DeleteExpense Slug
+    | Help
 
 route : Parser (Route -> a) a
 route =
@@ -24,6 +27,7 @@ route =
         , Url.map Expense (s "expense")
         , Url.map Profile (s "profile")
         , Url.map ExpenseDetail (s "expense" </> s "view" </> Allocation.slugParser)
+        , Url.map Help (s "help")
         ]
       
 routeToString : Route -> String
@@ -35,6 +39,9 @@ routeToString page =
         Expense -> "/process#expense"
         Profile -> "/process#profile"
         ExpenseDetail slug -> "/process#expense/view/" ++ Allocation.slugToString slug
+        Help -> "/process#help"
+        EditExpense slug -> "/process/expense/edit/" ++ Allocation.slugToString slug
+        DeleteExpense slug -> "/process/expense/delete/" ++ Allocation.slugToString slug
 
 href : Route -> Html.Attribute a
 href route =

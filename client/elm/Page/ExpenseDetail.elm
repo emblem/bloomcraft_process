@@ -28,6 +28,7 @@ type alias Model =
     , personalMax : Maybe (Result String Int)
     , globalMax : Maybe (Result String Int)
     , weight : Maybe (Result String Int)
+    , userIsOwner : Bool
     }
 
 type Msg
@@ -36,7 +37,6 @@ type Msg
     | SetPersonalMax String
     | SubmitVote
     | VoteResponse (Result Http.Error String)
-    | LoadedExpense (Result Http.Error Expense)
 
 init : Allocation.Slug -> Task PageLoadError Model
 init slug =
@@ -50,12 +50,13 @@ init slug =
             in
                 pageLoadError (Page.Other) "Failed to load expense"
 
-        initModel : Expense -> Maybe Vote -> Model
-        initModel expense maybeVote =
+        initModel : (Bool, Expense) -> Maybe Vote -> Model
+        initModel (userIsOwner, expense) maybeVote =
             { expense = expense              
             , weight = maybeVote |> Maybe.andThen .weight |> Maybe.map Ok
             , personalMax = maybeVote |> Maybe.andThen .personalPctMax |> Maybe.map (\x -> Ok (round(100*x)))
             , globalMax = maybeVote |> Maybe.andThen .globalMax |> Maybe.map Ok
+            , userIsOwner = userIsOwner
             }            
     in
         Task.map2 initModel loadExpense loadVote
@@ -70,13 +71,13 @@ view model =
     in
         Grid.container []
             [ Grid.row []
-                  [ Grid.col [ Col.lg6 ] [ expenseView expense ]
+                  [ Grid.col [ Col.lg6 ] [ expenseView model.userIsOwner expense ]
                   , Grid.col [ Col.lg6 ] [ voteView model ]
                   ]
             ]
 
-expenseView : Expense -> Html Msg
-expenseView expense =
+expenseView : Bool -> Expense -> Html Msg
+expenseView showButtons expense =
     Card.config [ Card.attrs [class "mt-2" ]]
         |> Card.headerH4 []
            [ text <| "Expense: " ++ expense.name ]
@@ -85,9 +86,17 @@ expenseView expense =
                  div []
                  [ Alert.info [text expense.detailText]
                  , expenseSummaryTable expense
-                 ]
+                 , if showButtons then editButtons expense else div [] []
+                 ]                 
            ]
         |> Card.view
+
+editButtons : Expense -> Html Msg
+editButtons expense =
+    div []
+        [ Button.linkButton [Button.secondary, Button.attrs [Route.href <| Route.EditExpense expense.slug]] [ text "Edit Expense" ]
+        , Button.linkButton [Button.danger, Button.attrs [class "ml-2", Route.href <| Route.DeleteExpense expense.slug]] [ text "Delete Expense" ]
+        ]
             
 voteView : Model -> Html Msg
 voteView model =
@@ -226,13 +235,6 @@ update session msg model =
             SetPersonalMax str ->
                 ({model | personalMax = maybeToInt str}, Cmd.none)
             
-            VoteResponse (Ok _) -> (model, Cmd.batch
-                                        [ Http.send LoadedExpense (Request.Allocation.expense model.expense.slug)
-                                        , Route.modifyUrl Route.Expense
-                                        ])
+            VoteResponse (Ok _) -> (model, Route.modifyUrl Route.Expense)
                                    
             VoteResponse (Err _) -> (model, Cmd.none)
-
-            LoadedExpense (Ok expense) -> ({model | expense = expense}, Cmd.none)
-                                          
-            LoadedExpense (Err _) -> (model, Cmd.none)

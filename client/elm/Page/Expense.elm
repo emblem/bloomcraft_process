@@ -56,7 +56,7 @@ allocationSummary model =
             ++ toString allocation.numVoters
             ++ " Bloomcraft keyholders have participated so far, you have "
             ++ "$" ++ toString amtPerPerson
-            ++ " to allocate. Use the vote buttons to share your preferences, and the allocation will change to reflect them." 
+            ++ " to allocate. Click \"See Detail\" to share your preferences, and the allocation will change to reflect them." 
     in
         Card.config [ Card.attrs [class "mt-2" ]]
             |> Card.headerH3 []
@@ -103,18 +103,15 @@ expenseDetailsView expenses =
                                                          
         expenseBoxer expense = boxCol
                                [ p [ class "h5" ] [ text expense.name ]
-                               , svg [ viewBox <| "0 0 100 50"
+                               , svg [ viewBox <| "0 0 100 10"
                                      , width "100%" ] [expenseView expense]
-                               , p [class "small mb-0"] [text <| voteResultText expense]                                 
+                               , p [class "small mb-0 text-muted"] [text <| "Currently Allocated: "
+                                                                        ++ toString expense.newAllocatedFunds]
+                               , p [class "small mb-0 text-muted"] [text <| "Requested: "
+                                                                        ++ toString expense.requestedFunds]
                                , hr [ class "m-1"] []
-                               , p [class "small mb-0 text-muted"] [text <| expense.owner
-                                                                        ++ " requested $"
-                                                                        ++ toString expense.requestedFunds
-                                                                        ++ " and is currently allocated $"
-                                                                        ++ toString expense.newAllocatedFunds
-                                                                        ++ "."
-                                                                   ]
-                               , Button.linkButton [ Button.primary, Button.block, Button.attrs [Route.href (Route.ExpenseDetail expense.slug)] ] [ text "See Detail" ]
+                               , p [class "small mb-0"] [text <| voteResultText expense]                                 
+                               , Button.linkButton [ Button.primary, Button.block, Button.attrs [class "mt-3", Route.href (Route.ExpenseDetail expense.slug)] ] [ text "See Detail" ]
                                ]
     in
         Card.config [ Card.attrs [class "mt-2" ]]
@@ -145,12 +142,12 @@ expenseView expense =
     let
         totalFunds = expense.currentAllocatedFunds + expense.newAllocatedFunds
         width = (max expense.requestedFunds totalFunds)
-        pp = {defaultPlotParams | maxValue = toFloat width, height = 50} 
+        pp = {defaultPlotParams | maxValue = toFloat width, height = 10} 
 
         isFunded = (totalFunds >= expense.requestedFunds)
              
         fundColor = case isFunded of
-                        True -> greenColor
+                        True -> blueColor
                         False -> blueColor
 
         greyFundColor  = case isFunded of

@@ -8,7 +8,7 @@ import Route
 
 type alias Model = ()
 
-initialModel : ()
+initialModel : Model
 initialModel =
     ()
 

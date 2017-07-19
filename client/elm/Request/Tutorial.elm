@@ -1,4 +1,4 @@
-module Request.Tutorial exposing (tutorial)
+module Request.Tutorial exposing (tutorial, help)
 
 import Http
 import HttpBuilder
@@ -15,3 +15,11 @@ tutorial route =
         |> HttpBuilder.withQueryParams [("route", Route.routeToString route)]
         |> HttpBuilder.withExpect (Http.expectJson (Decode.field "tutorial" (Decode.nullable Tutorial.decoder)))
         |> HttpBuilder.toRequest
+
+help : Http.Request (List (Tutorial a))
+help =
+    (apiUrl "/help.json")
+        |> HttpBuilder.get
+        |> HttpBuilder.withExpect (Http.expectJson (Decode.field "help" (Decode.list Tutorial.decoder)))
+        |> HttpBuilder.toRequest
+    

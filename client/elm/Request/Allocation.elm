@@ -17,12 +17,17 @@ allocation =
         |> HttpBuilder.withExpect (Http.expectJson (Decode.field "allocation" Allocation.decoder))
         |> HttpBuilder.toRequest
 
-expense : Allocation.Slug -> Http.Request Expense
+expense : Allocation.Slug -> Http.Request (Bool, Expense)
 expense slug =
-    (apiUrl ("/expenses/" ++ Allocation.slugToString slug ++ "/expense.json"))
-        |> HttpBuilder.get
-        |> HttpBuilder.withExpect (Http.expectJson (Decode.field "expense" Allocation.expenseDecoder))
-        |> HttpBuilder.toRequest
+    let
+        decoder = Decode.map2 (,)
+                  (Decode.field "user_is_owner" Decode.bool)
+                  (Decode.field "expense" Allocation.expenseDecoder)
+    in
+        (apiUrl ("/expenses/" ++ Allocation.slugToString slug ++ "/expense.json"))
+            |> HttpBuilder.get
+            |> HttpBuilder.withExpect (Http.expectJson decoder)
+            |> HttpBuilder.toRequest
 
 vote : Allocation.Slug -> Http.Request (Maybe Vote)
 vote slug =

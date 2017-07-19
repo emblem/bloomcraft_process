@@ -2,6 +2,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.forms import ModelMultipleChoiceField, CheckboxSelectMultiple, EmailField, Form
 from registration.forms import RegistrationForm
 from django.utils.translation import ugettext_lazy as _
+from django.utils.safestring import mark_safe
 
 from .models import User, Lease
 
@@ -31,4 +32,7 @@ class CustomRegistrationForm(RegistrationForm):
 
     class Meta:
         model = User
-        fields = ("email", "first_name", "last_name", "lease")
+        fields = ("email", "first_name", "last_name", "lease", 'has_signed_agreements')
+        labels = {'has_signed_agreements': 'I Have Signed the Agreements'}
+        help_texts = {'has_signed_agreements':
+                      mark_safe('Have you signed the <a href="https://bloomcraft.space/agreements/">Bloomcraft Agreements</a>? (You can do it online right now)') }

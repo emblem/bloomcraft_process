@@ -23419,7 +23419,7 @@ var _user$project$Page_ExpenseDetail$voteForm = function (model) {
 								{ctor: '[]'},
 								{
 									ctor: '::',
-									_0: _elm_lang$html$Html$text('How important is this expense?  Higher numbers get funded first. Equal numbers are funded equally.'),
+									_0: _elm_lang$html$Html$text('Rank how important this expense is to you.  Higher numbers get funded before lower numbers. Equal numbers are funded equally.'),
 									_1: {ctor: '[]'}
 								}),
 							_1: {
@@ -23441,19 +23441,15 @@ var _user$project$Page_ExpenseDetail$voteForm = function (model) {
 				ctor: '::',
 				_0: A2(
 					_rundis$elm_bootstrap$Bootstrap_Form$group,
-					gError,
+					pError,
 					{
 						ctor: '::',
 						_0: A2(
 							_rundis$elm_bootstrap$Bootstrap_Form$label,
+							{ctor: '[]'},
 							{
 								ctor: '::',
-								_0: _elm_lang$html$Html_Attributes$for('global_max'),
-								_1: {ctor: '[]'}
-							},
-							{
-								ctor: '::',
-								_0: _elm_lang$html$Html$text('Funding Limit'),
+								_0: _elm_lang$html$Html$text('Funding Limit (Optional)'),
 								_1: {ctor: '[]'}
 							}),
 						_1: {
@@ -23468,7 +23464,7 @@ var _user$project$Page_ExpenseDetail$voteForm = function (model) {
 											{ctor: '[]'},
 											{
 												ctor: '::',
-												_0: _elm_lang$html$Html$text('$'),
+												_0: _elm_lang$html$Html$text('%'),
 												_1: {ctor: '[]'}
 											}),
 										_1: {ctor: '[]'}
@@ -23477,10 +23473,10 @@ var _user$project$Page_ExpenseDetail$voteForm = function (model) {
 										_rundis$elm_bootstrap$Bootstrap_Form_InputGroup$text(
 											{
 												ctor: '::',
-												_0: _rundis$elm_bootstrap$Bootstrap_Form_Input$placeholder(gDef),
+												_0: _rundis$elm_bootstrap$Bootstrap_Form_Input$placeholder(pDef),
 												_1: {
 													ctor: '::',
-													_0: _rundis$elm_bootstrap$Bootstrap_Form_Input$onInput(_user$project$Page_ExpenseDetail$SetGlobalMax),
+													_0: _rundis$elm_bootstrap$Bootstrap_Form_Input$onInput(_user$project$Page_ExpenseDetail$SetPersonalMax),
 													_1: {ctor: '[]'}
 												}
 											})))),
@@ -23491,17 +23487,17 @@ var _user$project$Page_ExpenseDetail$voteForm = function (model) {
 									{ctor: '[]'},
 									{
 										ctor: '::',
-										_0: _elm_lang$html$Html$text('Optional: You will stop funding this expense once its allocation reaches this limit'),
+										_0: _elm_lang$html$Html$text('Optional: You will stop funding this expense once your contribution reaches this percent of your personal share of the surplus'),
 										_1: {ctor: '[]'}
 									}),
 								_1: {
 									ctor: '::',
 									_0: A2(
 										_rundis$elm_bootstrap$Bootstrap_Form$validationText,
-										gHidden,
+										pHidden,
 										{
 											ctor: '::',
-											_0: _elm_lang$html$Html$text(gValTxt),
+											_0: _elm_lang$html$Html$text(pValTxt),
 											_1: {ctor: '[]'}
 										}),
 									_1: {ctor: '[]'}
@@ -23512,122 +23508,53 @@ var _user$project$Page_ExpenseDetail$voteForm = function (model) {
 				_1: {
 					ctor: '::',
 					_0: A2(
-						_rundis$elm_bootstrap$Bootstrap_Form$group,
-						pError,
+						_rundis$elm_bootstrap$Bootstrap_Button$button,
 						{
 							ctor: '::',
-							_0: A2(
-								_rundis$elm_bootstrap$Bootstrap_Form$label,
-								{ctor: '[]'},
-								{
-									ctor: '::',
-									_0: _elm_lang$html$Html$text('Personal Limit'),
-									_1: {ctor: '[]'}
-								}),
+							_0: _rundis$elm_bootstrap$Bootstrap_Button$primary,
 							_1: {
 								ctor: '::',
-								_0: _rundis$elm_bootstrap$Bootstrap_Form_InputGroup$view(
-									A2(
-										_rundis$elm_bootstrap$Bootstrap_Form_InputGroup$predecessors,
-										{
-											ctor: '::',
-											_0: A2(
-												_rundis$elm_bootstrap$Bootstrap_Form_InputGroup$span,
-												{ctor: '[]'},
-												{
-													ctor: '::',
-													_0: _elm_lang$html$Html$text('%'),
-													_1: {ctor: '[]'}
-												}),
-											_1: {ctor: '[]'}
-										},
-										_rundis$elm_bootstrap$Bootstrap_Form_InputGroup$config(
-											_rundis$elm_bootstrap$Bootstrap_Form_InputGroup$text(
-												{
-													ctor: '::',
-													_0: _rundis$elm_bootstrap$Bootstrap_Form_Input$placeholder(pDef),
-													_1: {
-														ctor: '::',
-														_0: _rundis$elm_bootstrap$Bootstrap_Form_Input$onInput(_user$project$Page_ExpenseDetail$SetPersonalMax),
-														_1: {ctor: '[]'}
-													}
-												})))),
+								_0: _rundis$elm_bootstrap$Bootstrap_Button$onClick(_user$project$Page_ExpenseDetail$SubmitVote),
 								_1: {
 									ctor: '::',
-									_0: A2(
-										_rundis$elm_bootstrap$Bootstrap_Form$help,
-										{ctor: '[]'},
-										{
-											ctor: '::',
-											_0: _elm_lang$html$Html$text('Optional: You will stop funding this expense once your contribution reaches this percent of your personal share of the surplus'),
-											_1: {ctor: '[]'}
-										}),
-									_1: {
-										ctor: '::',
-										_0: A2(
-											_rundis$elm_bootstrap$Bootstrap_Form$validationText,
-											pHidden,
-											{
-												ctor: '::',
-												_0: _elm_lang$html$Html$text(pValTxt),
-												_1: {ctor: '[]'}
-											}),
-										_1: {ctor: '[]'}
-									}
+									_0: _rundis$elm_bootstrap$Bootstrap_Button$disabled(disableSubmit),
+									_1: {ctor: '[]'}
 								}
 							}
+						},
+						{
+							ctor: '::',
+							_0: _elm_lang$html$Html$text('Vote'),
+							_1: {ctor: '[]'}
 						}),
 					_1: {
 						ctor: '::',
 						_0: A2(
-							_rundis$elm_bootstrap$Bootstrap_Button$button,
+							_rundis$elm_bootstrap$Bootstrap_Button$linkButton,
 							{
 								ctor: '::',
-								_0: _rundis$elm_bootstrap$Bootstrap_Button$primary,
+								_0: _rundis$elm_bootstrap$Bootstrap_Button$secondary,
 								_1: {
 									ctor: '::',
-									_0: _rundis$elm_bootstrap$Bootstrap_Button$onClick(_user$project$Page_ExpenseDetail$SubmitVote),
-									_1: {
-										ctor: '::',
-										_0: _rundis$elm_bootstrap$Bootstrap_Button$disabled(disableSubmit),
-										_1: {ctor: '[]'}
-									}
+									_0: _rundis$elm_bootstrap$Bootstrap_Button$attrs(
+										{
+											ctor: '::',
+											_0: _elm_lang$html$Html_Attributes$class('ml-3'),
+											_1: {
+												ctor: '::',
+												_0: _user$project$Route$href(_user$project$Route$Expense),
+												_1: {ctor: '[]'}
+											}
+										}),
+									_1: {ctor: '[]'}
 								}
 							},
 							{
 								ctor: '::',
-								_0: _elm_lang$html$Html$text('Vote'),
+								_0: _elm_lang$html$Html$text('Back to Expense Summary'),
 								_1: {ctor: '[]'}
 							}),
-						_1: {
-							ctor: '::',
-							_0: A2(
-								_rundis$elm_bootstrap$Bootstrap_Button$linkButton,
-								{
-									ctor: '::',
-									_0: _rundis$elm_bootstrap$Bootstrap_Button$secondary,
-									_1: {
-										ctor: '::',
-										_0: _rundis$elm_bootstrap$Bootstrap_Button$attrs(
-											{
-												ctor: '::',
-												_0: _elm_lang$html$Html_Attributes$class('ml-3'),
-												_1: {
-													ctor: '::',
-													_0: _user$project$Route$href(_user$project$Route$Expense),
-													_1: {ctor: '[]'}
-												}
-											}),
-										_1: {ctor: '[]'}
-									}
-								},
-								{
-									ctor: '::',
-									_0: _elm_lang$html$Html$text('Back to Expense Summary'),
-									_1: {ctor: '[]'}
-								}),
-							_1: {ctor: '[]'}
-						}
+						_1: {ctor: '[]'}
 					}
 				}
 			}

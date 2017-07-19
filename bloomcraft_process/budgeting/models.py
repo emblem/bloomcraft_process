@@ -65,6 +65,10 @@ class User(AbstractBaseUser, PermissionsMixin):
             'Unselect this instead of deleting accounts.'
         ),
     )
+
+    has_signed_agreements = models.BooleanField(
+        _('agreements'), default=False, help_text=_('Has this user signed the agreements?'))
+    
     date_joined = models.DateTimeField(_('date joined'), default=timezone.now)
 
     objects = UserManager()

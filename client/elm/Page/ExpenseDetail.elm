@@ -132,10 +132,10 @@ voteForm model =
             [ Form.group wError
                   [ Form.label [ for "weight" ] [ text "Importance (0-100)" ]
                   , Input.text [ Input.id "weight", Input.onInput SetWeight, Input.defaultValue wDef ]
-                  , Form.help [] [ text  "How important is this expense?  Higher numbers get funded first. Equal numbers are funded equally." ]
+                  , Form.help [] [ text  "Rank how important this expense is to you.  Higher numbers get funded before lower numbers. Equal numbers are funded equally." ]
                   , Form.validationText wHidden [ text wValTxt ]
                   ]
-            , Form.group gError
+{--            , Form.group gError
                 [ Form.label [ for "global_max" ] [ text "Funding Limit" ]
                 , InputGroup.config (InputGroup.text
                                          [ Input.placeholder gDef
@@ -147,8 +147,9 @@ voteForm model =
                 , Form.help [] [ text "Optional: You will stop funding this expense once its allocation reaches this limit" ]
                 , Form.validationText gHidden [ text gValTxt ]                                        
                 ]
+--}
             , Form.group pError
-                [ Form.label [ ] [ text "Personal Limit" ]
+                [ Form.label [ ] [ text "Funding Limit (Optional)" ]
                 , InputGroup.config (InputGroup.text
                                          [ Input.placeholder pDef
                                          , Input.onInput SetPersonalMax

@@ -23,7 +23,7 @@ route =
         , Url.map Budget (s "budget")
         , Url.map Expense (s "expense")
         , Url.map Profile (s "profile")
-        , Url.map ExpenseDetail (s "expense" </> Allocation.slugParser)
+        , Url.map ExpenseDetail (s "expense" </> s "view" </> Allocation.slugParser)
         ]
       
 routeToString : Route -> String
@@ -34,7 +34,7 @@ routeToString page =
         Budget -> "/process#budget"
         Expense -> "/process#expense"
         Profile -> "/process#profile"
-        ExpenseDetail slug -> "/process#expense/" ++ Allocation.slugToString slug
+        ExpenseDetail slug -> "/process#expense/view/" ++ Allocation.slugToString slug
 
 href : Route -> Html.Attribute a
 href route =

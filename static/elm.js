@@ -18896,7 +18896,7 @@ var _user$project$Route$routeToString = function (page) {
 		default:
 			return A2(
 				_elm_lang$core$Basics_ops['++'],
-				'/process#expense/',
+				'/process#expense/view/',
 				_user$project$Data_Allocation$slugToString(_p0._0));
 	}
 };
@@ -18955,7 +18955,10 @@ var _user$project$Route$route = _evancz$url_parser$UrlParser$oneOf(
 								A2(
 									_evancz$url_parser$UrlParser_ops['</>'],
 									_evancz$url_parser$UrlParser$s('expense'),
-									_user$project$Data_Allocation$slugParser)),
+									A2(
+										_evancz$url_parser$UrlParser_ops['</>'],
+										_evancz$url_parser$UrlParser$s('view'),
+										_user$project$Data_Allocation$slugParser))),
 							_1: {ctor: '[]'}
 						}
 					}
@@ -22013,16 +22016,7 @@ var _user$project$Page_Expense$expenseView = function (expense) {
 	return svg;
 };
 var _user$project$Page_Expense$expenseDetailsView = function (expenses) {
-	var voteResultText = function (expense) {
-		return (_elm_lang$core$Native_Utils.cmp(expense.userNewAllocatedFunds, 0) > 0) ? A2(
-			_elm_lang$core$Basics_ops['++'],
-			' You\'ve allocated $',
-			A2(
-				_elm_lang$core$Basics_ops['++'],
-				_elm_lang$core$Basics$toString(expense.userNewAllocatedFunds),
-				' to this item.')) : '';
-	};
-	var expenseBoxer = function (expense) {
+	var boxCol = function (content) {
 		return A2(
 			_rundis$elm_bootstrap$Bootstrap_Grid$col,
 			{
@@ -22065,131 +22059,144 @@ var _user$project$Page_Expense$expenseDetailsView = function (expenses) {
 									_1: {ctor: '[]'}
 								}
 							},
+							content),
+						_1: {ctor: '[]'}
+					}),
+				_1: {ctor: '[]'}
+			});
+	};
+	var voteResultText = function (expense) {
+		return (_elm_lang$core$Native_Utils.cmp(expense.userNewAllocatedFunds, 0) > 0) ? A2(
+			_elm_lang$core$Basics_ops['++'],
+			' You\'ve allocated $',
+			A2(
+				_elm_lang$core$Basics_ops['++'],
+				_elm_lang$core$Basics$toString(expense.userNewAllocatedFunds),
+				' to this item.')) : '';
+	};
+	var expenseBoxer = function (expense) {
+		return boxCol(
+			{
+				ctor: '::',
+				_0: A2(
+					_elm_lang$html$Html$p,
+					{
+						ctor: '::',
+						_0: _elm_lang$html$Html_Attributes$class('h5'),
+						_1: {ctor: '[]'}
+					},
+					{
+						ctor: '::',
+						_0: _elm_lang$html$Html$text(expense.name),
+						_1: {ctor: '[]'}
+					}),
+				_1: {
+					ctor: '::',
+					_0: A2(
+						_elm_lang$svg$Svg$svg,
+						{
+							ctor: '::',
+							_0: _elm_lang$svg$Svg_Attributes$viewBox('0 0 100 50'),
+							_1: {
+								ctor: '::',
+								_0: _elm_lang$svg$Svg_Attributes$width('100%'),
+								_1: {ctor: '[]'}
+							}
+						},
+						{
+							ctor: '::',
+							_0: _user$project$Page_Expense$expenseView(expense),
+							_1: {ctor: '[]'}
+						}),
+					_1: {
+						ctor: '::',
+						_0: A2(
+							_elm_lang$html$Html$p,
 							{
+								ctor: '::',
+								_0: _elm_lang$html$Html_Attributes$class('small mb-0'),
+								_1: {ctor: '[]'}
+							},
+							{
+								ctor: '::',
+								_0: _elm_lang$html$Html$text(
+									voteResultText(expense)),
+								_1: {ctor: '[]'}
+							}),
+						_1: {
+							ctor: '::',
+							_0: A2(
+								_elm_lang$html$Html$hr,
+								{
+									ctor: '::',
+									_0: _elm_lang$html$Html_Attributes$class('m-1'),
+									_1: {ctor: '[]'}
+								},
+								{ctor: '[]'}),
+							_1: {
 								ctor: '::',
 								_0: A2(
 									_elm_lang$html$Html$p,
 									{
 										ctor: '::',
-										_0: _elm_lang$html$Html_Attributes$class('h5'),
+										_0: _elm_lang$html$Html_Attributes$class('small mb-0 text-muted'),
 										_1: {ctor: '[]'}
 									},
 									{
 										ctor: '::',
-										_0: _elm_lang$html$Html$text(expense.name),
+										_0: _elm_lang$html$Html$text(
+											A2(
+												_elm_lang$core$Basics_ops['++'],
+												expense.owner,
+												A2(
+													_elm_lang$core$Basics_ops['++'],
+													' requested $',
+													A2(
+														_elm_lang$core$Basics_ops['++'],
+														_elm_lang$core$Basics$toString(expense.requestedFunds),
+														A2(
+															_elm_lang$core$Basics_ops['++'],
+															' and is currently allocated $',
+															A2(
+																_elm_lang$core$Basics_ops['++'],
+																_elm_lang$core$Basics$toString(expense.newAllocatedFunds),
+																'.')))))),
 										_1: {ctor: '[]'}
 									}),
 								_1: {
 									ctor: '::',
 									_0: A2(
-										_elm_lang$svg$Svg$svg,
+										_rundis$elm_bootstrap$Bootstrap_Button$linkButton,
 										{
 											ctor: '::',
-											_0: _elm_lang$svg$Svg_Attributes$viewBox('0 0 100 50'),
+											_0: _rundis$elm_bootstrap$Bootstrap_Button$primary,
 											_1: {
 												ctor: '::',
-												_0: _elm_lang$svg$Svg_Attributes$width('100%'),
-												_1: {ctor: '[]'}
-											}
-										},
-										{
-											ctor: '::',
-											_0: _user$project$Page_Expense$expenseView(expense),
-											_1: {ctor: '[]'}
-										}),
-									_1: {
-										ctor: '::',
-										_0: A2(
-											_elm_lang$html$Html$p,
-											{
-												ctor: '::',
-												_0: _elm_lang$html$Html_Attributes$class('small mb-0'),
-												_1: {ctor: '[]'}
-											},
-											{
-												ctor: '::',
-												_0: _elm_lang$html$Html$text(
-													voteResultText(expense)),
-												_1: {ctor: '[]'}
-											}),
-										_1: {
-											ctor: '::',
-											_0: A2(
-												_elm_lang$html$Html$hr,
-												{
-													ctor: '::',
-													_0: _elm_lang$html$Html_Attributes$class('m-1'),
-													_1: {ctor: '[]'}
-												},
-												{ctor: '[]'}),
-											_1: {
-												ctor: '::',
-												_0: A2(
-													_elm_lang$html$Html$p,
-													{
-														ctor: '::',
-														_0: _elm_lang$html$Html_Attributes$class('small mb-0 text-muted'),
-														_1: {ctor: '[]'}
-													},
-													{
-														ctor: '::',
-														_0: _elm_lang$html$Html$text(
-															A2(
-																_elm_lang$core$Basics_ops['++'],
-																expense.owner,
-																A2(
-																	_elm_lang$core$Basics_ops['++'],
-																	' requested $',
-																	A2(
-																		_elm_lang$core$Basics_ops['++'],
-																		_elm_lang$core$Basics$toString(expense.requestedFunds),
-																		A2(
-																			_elm_lang$core$Basics_ops['++'],
-																			' and is currently allocated $',
-																			A2(
-																				_elm_lang$core$Basics_ops['++'],
-																				_elm_lang$core$Basics$toString(expense.newAllocatedFunds),
-																				'.')))))),
-														_1: {ctor: '[]'}
-													}),
+												_0: _rundis$elm_bootstrap$Bootstrap_Button$block,
 												_1: {
 													ctor: '::',
-													_0: A2(
-														_rundis$elm_bootstrap$Bootstrap_Button$linkButton,
+													_0: _rundis$elm_bootstrap$Bootstrap_Button$attrs(
 														{
 															ctor: '::',
-															_0: _rundis$elm_bootstrap$Bootstrap_Button$primary,
-															_1: {
-																ctor: '::',
-																_0: _rundis$elm_bootstrap$Bootstrap_Button$block,
-																_1: {
-																	ctor: '::',
-																	_0: _rundis$elm_bootstrap$Bootstrap_Button$attrs(
-																		{
-																			ctor: '::',
-																			_0: _user$project$Route$href(
-																				_user$project$Route$ExpenseDetail(expense.slug)),
-																			_1: {ctor: '[]'}
-																		}),
-																	_1: {ctor: '[]'}
-																}
-															}
-														},
-														{
-															ctor: '::',
-															_0: _elm_lang$html$Html$text('Vote'),
+															_0: _user$project$Route$href(
+																_user$project$Route$ExpenseDetail(expense.slug)),
 															_1: {ctor: '[]'}
 														}),
 													_1: {ctor: '[]'}
 												}
 											}
-										}
-									}
+										},
+										{
+											ctor: '::',
+											_0: _elm_lang$html$Html$text('Vote'),
+											_1: {ctor: '[]'}
+										}),
+									_1: {ctor: '[]'}
 								}
-							}),
-						_1: {ctor: '[]'}
-					}),
-				_1: {ctor: '[]'}
+							}
+						}
+					}
+				}
 			});
 	};
 	var maxFunds = function (e) {
@@ -22205,7 +22212,56 @@ var _user$project$Page_Expense$expenseDetailsView = function (expenses) {
 					A2(
 						_rundis$elm_bootstrap$Bootstrap_Grid$row,
 						{ctor: '[]'},
-						A2(_elm_lang$core$List$map, expenseBoxer, expenses))),
+						_elm_lang$core$List$concat(
+							{
+								ctor: '::',
+								_0: A2(_elm_lang$core$List$map, expenseBoxer, expenses),
+								_1: {
+									ctor: '::',
+									_0: {
+										ctor: '::',
+										_0: boxCol(
+											{
+												ctor: '::',
+												_0: A2(
+													_elm_lang$html$Html$div,
+													{
+														ctor: '::',
+														_0: _elm_lang$html$Html_Attributes$class('text-center'),
+														_1: {ctor: '[]'}
+													},
+													{
+														ctor: '::',
+														_0: A2(
+															_rundis$elm_bootstrap$Bootstrap_Button$linkButton,
+															{
+																ctor: '::',
+																_0: _rundis$elm_bootstrap$Bootstrap_Button$primary,
+																_1: {
+																	ctor: '::',
+																	_0: _rundis$elm_bootstrap$Bootstrap_Button$attrs(
+																		{
+																			ctor: '::',
+																			_0: _elm_lang$html$Html_Attributes$href('/process/expense/create'),
+																			_1: {ctor: '[]'}
+																		}),
+																	_1: {ctor: '[]'}
+																}
+															},
+															{
+																ctor: '::',
+																_0: _elm_lang$html$Html$text('Propose New Expense'),
+																_1: {ctor: '[]'}
+															}),
+														_1: {ctor: '[]'}
+													}),
+												_1: {ctor: '[]'}
+											}),
+										_1: {ctor: '[]'}
+									},
+									_1: {ctor: '[]'}
+								}
+							}))),
 				_1: {ctor: '[]'}
 			},
 			A3(

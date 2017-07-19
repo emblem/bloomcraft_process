@@ -22,7 +22,7 @@ from budgeting.forms import CustomRegistrationForm
 
 urlpatterns = [
     url(r'^process/admin/', admin.site.urls),    
-    url(r'^process/api/', include('budgeting.urls')),
+    url(r'^process/', include('budgeting.urls')),
     url(r'^process/accounts/register/$',
         budgeting.views.Register.as_view( form_class = CustomRegistrationForm ),
         name='registration_register',

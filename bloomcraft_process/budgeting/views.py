@@ -1,5 +1,6 @@
 from django.views.decorators.csrf import csrf_exempt, ensure_csrf_cookie
 from django.views.decorators.http import require_http_methods
+from django.views.generic.edit import CreateView
 from django.shortcuts import render
 from django.views import View
 from django.http import HttpResponse, JsonResponse
@@ -10,6 +11,7 @@ from django.middleware import csrf
 from django.core import serializers
 import json
 import pprint
+from django.http import HttpResponseRedirect
 
 from .allocation import allocation_to_json, expense_to_json, RankedAllocator
 
@@ -62,6 +64,27 @@ class Register(RegistrationView):
                     
         return new_user
 
+class ExpenseCreationView(CreateView):
+    template_name = 'budgeting/expense_creation.html'
+    success_url = '/process#expense'
+
+    model = AllocationExpense
+    fields = ('name', 'partial_allowed', 'excess_allowed', 'requested_funds', 'detail_text')
+
+    def form_valid(self, form):
+        self.object = form.save(commit = False)
+        self.object.current_allocated_funds = 0
+        self.object.slug = slugify(self.object.name)
+        self.object.owner = self.request.user
+        self.object.save()
+        self.object.allocations.add(current_allocation())
+        self.object.save()        
+        # do something with self.object
+        # remember the import: from django.http import HttpResponseRedirect
+        return HttpResponseRedirect(self.get_success_url())
+
+
+        
         
 
 @require_http_methods(["GET"])

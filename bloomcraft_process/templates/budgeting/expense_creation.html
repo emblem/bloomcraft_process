@@ -1,0 +1,10 @@
+{% extends "form.html" %}
+{% load bootstrap %}
+{% block formtitle %}Propose an expense{% endblock %}
+{% block formcontent %}
+<form method="post">
+  {% csrf_token %}
+  {{ form|bootstrap }}
+  <button class="btn btn-primary" type="submit" value="Submit">Propose</button>
+</form>
+{% endblock %}

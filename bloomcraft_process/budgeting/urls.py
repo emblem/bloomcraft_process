@@ -7,8 +7,7 @@ from . import views
 
 urlpatterns = []
 
-
-urlpatterns += [
+apiurlpatterns = [
     url("^tutorial.json$", views.tutorial_view),
     url("^login.json$", views.login_view),
     url("^logout.json$", views.logout_view),
@@ -19,6 +18,12 @@ urlpatterns += [
     url(r"^expenses/(?P<slug>[-\w]+)/expense.json$", views.expense_view),
     url(r"^expenses/(?P<slug>[-\w]+)/vote.json$", views.vote_view),
 ]
+
+urlpatterns += [
+    url(r'^api/', include(apiurlpatterns)),
+    url(r'^expense/create', views.ExpenseCreationView.as_view()),
+    ]
+
 
 
 

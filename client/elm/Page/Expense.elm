@@ -2,7 +2,7 @@ module Page.Expense exposing (Msg, Model, update, view, init)
 
 import Http
 import Html exposing (Html, text, div, p, a, hr)
-import Html.Attributes exposing (class, style)
+import Html.Attributes exposing (class, style, href)
 import Svg exposing (svg, g, Svg)
 import Svg.Attributes exposing (viewBox, transform, width)
 import Task exposing (Task)
@@ -92,29 +92,30 @@ expenseDetailsView expenses =
                 ++ " to this item."
             else
                 ""
-                    
-        expenseBoxer expense =            
-            Grid.col [ Col.md6, Col.xs6 ]
-                [ div []
-                      [
-                       div [ style [("border-width", "1px"), ("border-style", "solid")
-                                   , ("box-shadow", "2px 3px 6px 3px rgba(0,0,0,0.1)")], class "rounded p-1 mb-2" ]
-                           [ p [ class "h5" ] [ text expense.name ]
-                           , svg [ viewBox <| "0 0 100 50"
-                                , width "100%" ] [expenseView expense]
-                           , p [class "small mb-0"] [text <| voteResultText expense]                                 
-                           , hr [ class "m-1"] []
-                           , p [class "small mb-0 text-muted"] [text <| expense.owner
-                                                                    ++ " requested $"
-                                                                    ++ toString expense.requestedFunds
-                                                                    ++ " and is currently allocated $"
-                                                                    ++ toString expense.newAllocatedFunds
-                                                                    ++ "."
-                                                               ]
-                           , Button.linkButton [ Button.primary, Button.block, Button.attrs [Route.href (Route.ExpenseDetail expense.slug)] ] [ text "Vote" ]
-                           ]
-                      ]
-                ]
+
+        boxCol content = Grid.col [ Col.md6, Col.xs6 ]
+                         [ div []
+                               [ div [ style [("border-width", "1px"), ("border-style", "solid")
+                                             , ("box-shadow", "2px 3px 6px 3px rgba(0,0,0,0.1)")], class "rounded p-1 mb-2" ]
+                                     content
+                               ]
+                         ]
+                                                         
+        expenseBoxer expense = boxCol
+                               [ p [ class "h5" ] [ text expense.name ]
+                               , svg [ viewBox <| "0 0 100 50"
+                                     , width "100%" ] [expenseView expense]
+                               , p [class "small mb-0"] [text <| voteResultText expense]                                 
+                               , hr [ class "m-1"] []
+                               , p [class "small mb-0 text-muted"] [text <| expense.owner
+                                                                        ++ " requested $"
+                                                                        ++ toString expense.requestedFunds
+                                                                        ++ " and is currently allocated $"
+                                                                        ++ toString expense.newAllocatedFunds
+                                                                        ++ "."
+                                                                   ]
+                               , Button.linkButton [ Button.primary, Button.block, Button.attrs [Route.href (Route.ExpenseDetail expense.slug)] ] [ text "Vote" ]
+                               ]
     in
         Card.config [ Card.attrs [class "mt-2" ]]
             |> Card.headerH3 []
@@ -123,7 +124,18 @@ expenseDetailsView expenses =
             |> Card.block []
                [ Card.custom <|                     
                      Grid.row [] <|
-                         List.map expenseBoxer expenses                     
+                         List.concat
+                             [ List.map expenseBoxer expenses
+                             , [ boxCol [ div [class "text-center"]
+                                              [Button.linkButton
+                                                  [ Button.primary
+                                                  , Button.attrs [href "/process/expense/create"]
+                                                  ] [ text "Propose New Expense" ]
+                                              ]
+                                        ]
+                               ]
+                             ]
+                                   
                ]           
             |> Card.view
     

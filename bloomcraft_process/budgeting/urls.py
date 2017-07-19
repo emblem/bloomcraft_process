@@ -17,6 +17,7 @@ apiurlpatterns = [
     url("^session.json$", views.session_view),
     url(r"^expenses/(?P<slug>[-\w]+)/expense.json$", views.expense_view),
     url(r"^expenses/(?P<slug>[-\w]+)/vote.json$", views.vote_view),
+    url(r"^help.json$", views.help_view),
 ]
 
 urlpatterns += [

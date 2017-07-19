@@ -64,6 +64,8 @@ class Register(RegistrationView):
                     
         return new_user
 
+    
+
 class ExpenseCreationView(CreateView):
     template_name = 'budgeting/expense_creation.html'
     success_url = '/process#expense'
@@ -208,6 +210,20 @@ def vote_view(request, slug):
 
         return JsonResponse({"result": "Thanks for voting :)"})
 
+def tutorial_to_json(tutorial):
+    return { "header" : tutorial.header,
+             "body" : tutorial.body }
+    
+
+    
+@require_http_methods(["GET"])
+def help_view(request):
+    help_tutorials = Tutorial.objects.filter( show_on_help_page = True ).order_by( 'header' )
+
+    help_json = [tutorial_to_json(tutorial) for tutorial in help_tutorials]
+    
+    return JsonResponse({"help": help_json})
+    
 @require_http_methods(["GET"])
 def tutorial_view(request):
     no_tutorial_response = {"tutorial" : None}
@@ -222,11 +238,10 @@ def tutorial_view(request):
     except Tutorial.DoesNotExist:
         return JsonResponse(no_tutorial_response)
 
-    tutorial_json = { "header" : tutorial.header,
-                      "body" : tutorial.body }
+    
 
     tutorial.seen_by.add(request.user)
     tutorial.save()
     
-    return JsonResponse({ "tutorial" : tutorial_json })
+    return JsonResponse({ "tutorial" : tutorial_to_json(tutorial) })
     

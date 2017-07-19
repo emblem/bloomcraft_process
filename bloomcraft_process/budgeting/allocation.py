@@ -153,9 +153,12 @@ class RankedAllocator:
             self.amount_remaining_per_user = amount_remaining/voter_count
 
             round_allocation = self.unconstrained_allocation(user_votes, expenses, working_allocation, working_user_allocation)
+
+            #If someone dropped out then increase the share available to everyone who's left.
             if not round_allocation:
-                self.total_per_user = self.total_per_user + amount_remaining/len(user_votes)
-                continue        
+                if len(user_votes):
+                    self.total_per_user = self.total_per_user + amount_remaining/len(user_votes)
+                continue
 
             #Find at what percent of full funding we violate a constraint
             violated_at_percent = self.constrain_allocation(user_votes, expenses, working_allocation, working_user_allocation, round_allocation)

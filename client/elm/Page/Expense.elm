@@ -130,7 +130,7 @@ expenseDetailsView expenses =
                                               [Button.linkButton
                                                   [ Button.primary
                                                   , Button.attrs [href "/process/expense/create"]
-                                                  ] [ text "Propose New Expense" ]
+                                                  ] [ text "New Expense" ]
                                               ]
                                         ]
                                ]

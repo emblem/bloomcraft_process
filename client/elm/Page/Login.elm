@@ -48,7 +48,7 @@ view model =
                        , Input.text [ Input.id "username", Input.onInput SetUsername ]
                        , Form.help []
                            [ text "Don't have an account? "
-                           , a [ href "/process/accounts/register" ] [ text "Register" ]
+                           , a [ href "/process/accounts/register/" ] [ text "Register" ]
                            , text " for a new account"
                            ]
                        ]
@@ -57,7 +57,7 @@ view model =
                        , Input.password [ Input.id "password", Input.onInput SetPassword ]
                        , Form.help []
                            [ text "Forgot your password? "
-                           , a [ href "/process/accounts/password/reset" ] [ text "Reset password" ]
+                           , a [ href "/process/accounts/password/reset/" ] [ text "Reset password" ]
                            , text "."
                            ]
                        ]

@@ -21467,7 +21467,7 @@ var _user$project$Page_Login$view = function (model) {
 															_elm_lang$html$Html$a,
 															{
 																ctor: '::',
-																_0: _elm_lang$html$Html_Attributes$href('/process/accounts/register'),
+																_0: _elm_lang$html$Html_Attributes$href('/process/accounts/register/'),
 																_1: {ctor: '[]'}
 															},
 															{
@@ -21531,7 +21531,7 @@ var _user$project$Page_Login$view = function (model) {
 																_elm_lang$html$Html$a,
 																{
 																	ctor: '::',
-																	_0: _elm_lang$html$Html_Attributes$href('/process/accounts/password/reset'),
+																	_0: _elm_lang$html$Html_Attributes$href('/process/accounts/password/reset/'),
 																	_1: {ctor: '[]'}
 																},
 																{
@@ -22250,7 +22250,7 @@ var _user$project$Page_Expense$expenseDetailsView = function (expenses) {
 															},
 															{
 																ctor: '::',
-																_0: _elm_lang$html$Html$text('Propose New Expense'),
+																_0: _elm_lang$html$Html$text('New Expense'),
 																_1: {ctor: '[]'}
 															}),
 														_1: {ctor: '[]'}

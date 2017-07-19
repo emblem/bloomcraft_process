@@ -1,10 +1,12 @@
+from django.http import HttpResponseForbidden
 from django.views.decorators.csrf import csrf_exempt, ensure_csrf_cookie
 from django.views.decorators.http import require_http_methods
-from django.views.generic.edit import CreateView
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.shortcuts import render
 from django.views import View
 from django.http import HttpResponse, JsonResponse
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.decorators import login_required
 from registration.backends.hmac.views import RegistrationView
 from django.middleware import csrf
@@ -64,15 +66,43 @@ class Register(RegistrationView):
                     
         return new_user
 
-    
+class ExpenseDeleteView(UserPassesTestMixin, DeleteView):
+    template_name = 'budgeting/expense_delete.html'
+    success_url = '/process#expense'
 
-class ExpenseCreationView(CreateView):
+    model = AllocationExpense
+
+    def test_func(self):
+        return self.request.user == self.get_object().owner
+
+    def handle_no_permission(self):
+        return HttpResponseForbidden()
+
+
+    
+class ExpenseEditView(UserPassesTestMixin, UpdateView):
+    template_name = 'budgeting/expense_edit.html'
+    
+    def get_success_url(self):
+        return '/process#expense/view/' + self.kwargs.get('slug')
+
+    def test_func(self):
+        return self.request.user == self.get_object().owner
+
+    def handle_no_permission(self):
+        return HttpResponseForbidden()
+
+    model = AllocationExpense
+    fields = ('name', 'partial_allowed', 'excess_allowed', 'requested_funds', 'detail_text')
+
+    
+class ExpenseCreationView(LoginRequiredMixin, CreateView):
     template_name = 'budgeting/expense_creation.html'
     success_url = '/process#expense'
 
     model = AllocationExpense
     fields = ('name', 'partial_allowed', 'excess_allowed', 'requested_funds', 'detail_text')
-
+    
     def form_valid(self, form):
         self.object = form.save(commit = False)
         self.object.current_allocated_funds = 0
@@ -174,8 +204,8 @@ def expense_view(request, slug):
     expenses = RankedAllocator().allocate_funds(allocation, request.user)
 
     expense = [e for e in expenses if e.slug == slug][0]
-    
-    return JsonResponse({'expense' : expense_to_json(expense)})
+
+    return JsonResponse({'expense' : expense_to_json(expense), 'user_is_owner' : request.user.email == expense.owner.email})
 
 @login_required
 def vote_view(request, slug):

@@ -1,0 +1,11 @@
+{% extends "form.html" %}
+{% load bootstrap %}
+{% block formtitle %}Delete Expense{% endblock %}
+{% block formcontent %}
+<form method="post">
+  {% csrf_token %}
+  <p>Are you sure you want to delete {{object.name}}?</p>
+  <button class="btn btn-danger" type="submit" value="Confirm">Delete</button>
+  <a class="ml-2 btn btn-info" href="/process#expense/view/{{object.slug}}">Cancel</a>
+</form>
+{% endblock %}

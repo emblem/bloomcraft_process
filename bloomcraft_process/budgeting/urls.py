@@ -17,12 +17,14 @@ apiurlpatterns = [
     url("^session.json$", views.session_view),
     url(r"^expenses/(?P<slug>[-\w]+)/expense.json$", views.expense_view),
     url(r"^expenses/(?P<slug>[-\w]+)/vote.json$", views.vote_view),
-    url(r"^help.json$", views.help_view),
+    url(r"^help.json$", views.help_view),    
 ]
 
 urlpatterns += [
     url(r'^api/', include(apiurlpatterns)),
     url(r'^expense/create', views.ExpenseCreationView.as_view()),
+    url(r'^expense/edit/(?P<slug>[-\w]+)', views.ExpenseEditView.as_view()),
+    url(r'^expense/delete/(?P<slug>[-\w]+)', views.ExpenseDeleteView.as_view()),
     ]
 
 

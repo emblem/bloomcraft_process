@@ -1,4 +1,4 @@
-module Request.Allocation exposing (allocation, expense, vote, postVote)
+module Request.Allocation exposing (allocation, expense, vote, postVote, votes, deleteVote)
 
 import Http
 import HttpBuilder
@@ -36,6 +36,25 @@ vote slug =
         |> HttpBuilder.withExpect (Http.expectJson (Decode.field "vote" (Decode.nullable Allocation.voteDecoder)))
         |> HttpBuilder.toRequest
 
+deleteVote : Session -> Allocation.Slug -> Http.Request String
+deleteVote session slug =
+    (apiUrl ("/expenses/" ++ Allocation.slugToString slug ++ "/vote.json"))
+        |> HttpBuilder.delete
+        |> HttpBuilder.withExpect (Http.expectJson <| Decode.field "result" Decode.string)
+        |> withAuthorization session
+        |> HttpBuilder.toRequest
+
+votes : Http.Request (List (Expense, Maybe(Vote)))
+votes =
+    let
+        decoder = Decode.map2 (,) (Decode.field "expense" Allocation.expenseDecoder)
+                  (Decode.field "vote" <| Decode.nullable Allocation.voteDecoder)
+    in
+        (apiUrl "/votes.json")
+            |> HttpBuilder.get
+            |> HttpBuilder.withExpect (Http.expectJson (Decode.field "votes" (Decode.list decoder)))
+            |> HttpBuilder.toRequest
+    
                
 postVote : Session -> Vote -> Allocation.Slug -> Http.Request String
 postVote session vote slug =

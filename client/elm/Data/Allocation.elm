@@ -12,6 +12,7 @@ type alias Allocation =
     { expenses : List Expense
     , amount : Int
     , numVoters : Int
+    , decisionDate : String
     }
 
 type alias Expense =
@@ -28,7 +29,8 @@ type alias Expense =
     }
 
 type alias Vote =
-    { weight : Maybe Int
+    { weight : Int
+    , rank : Int
     , personalMax : Maybe Int
     , personalPctMax : Maybe Float
     , globalMax : Maybe Int
@@ -48,7 +50,8 @@ slugToString (Slug slug) =
 voteDecoder : Decoder Vote
 voteDecoder =
     decode Vote
-        |> required "weight" (nullable int)
+        |> required "weight" int
+        |> required "rank" int
         |> required "personal_abs_max" (nullable int)
         |> required "personal_pct_max" (nullable float)
         |> required "global_abs_max" (nullable int)
@@ -60,7 +63,8 @@ encodeVote vote =
         floatMaybe = encodeMaybe Encode.float
     in
         Encode.object
-            [ "weight" => intMaybe vote.weight
+            [ "weight" => Encode.int vote.weight
+            , "rank" => Encode.int vote.rank
             , "personal_abs_max" => intMaybe vote.personalMax
             , "global_abs_max" => intMaybe vote.globalMax
             , "personal_pct_max" => floatMaybe vote.personalPctMax
@@ -73,6 +77,7 @@ decoder =
         |> required "expenses" (list expenseDecoder)
         |> required "amount" int
         |> required "num_voters" int
+        |> required "decision_date" string
 
 expenseDecoder : Decoder Expense
 expenseDecoder =

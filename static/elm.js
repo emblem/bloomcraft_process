@@ -18645,26 +18645,33 @@ var _user$project$Data_Allocation$encodeVote = function (vote) {
 			_0: A2(
 				_user$project$Util_ops['=>'],
 				'weight',
-				intMaybe(vote.weight)),
+				_elm_lang$core$Json_Encode$int(vote.weight)),
 			_1: {
 				ctor: '::',
 				_0: A2(
 					_user$project$Util_ops['=>'],
-					'personal_abs_max',
-					intMaybe(vote.personalMax)),
+					'rank',
+					_elm_lang$core$Json_Encode$int(vote.rank)),
 				_1: {
 					ctor: '::',
 					_0: A2(
 						_user$project$Util_ops['=>'],
-						'global_abs_max',
-						intMaybe(vote.globalMax)),
+						'personal_abs_max',
+						intMaybe(vote.personalMax)),
 					_1: {
 						ctor: '::',
 						_0: A2(
 							_user$project$Util_ops['=>'],
-							'personal_pct_max',
-							floatMaybe(vote.personalPctMax)),
-						_1: {ctor: '[]'}
+							'global_abs_max',
+							intMaybe(vote.globalMax)),
+						_1: {
+							ctor: '::',
+							_0: A2(
+								_user$project$Util_ops['=>'],
+								'personal_pct_max',
+								floatMaybe(vote.personalPctMax)),
+							_1: {ctor: '[]'}
+						}
 					}
 				}
 			}
@@ -18674,9 +18681,9 @@ var _user$project$Data_Allocation$slugToString = function (_p0) {
 	var _p1 = _p0;
 	return _p1._0;
 };
-var _user$project$Data_Allocation$Allocation = F3(
-	function (a, b, c) {
-		return {expenses: a, amount: b, numVoters: c};
+var _user$project$Data_Allocation$Allocation = F4(
+	function (a, b, c, d) {
+		return {expenses: a, amount: b, numVoters: c, decisionDate: d};
 	});
 var _user$project$Data_Allocation$Expense = function (a) {
 	return function (b) {
@@ -18699,9 +18706,9 @@ var _user$project$Data_Allocation$Expense = function (a) {
 		};
 	};
 };
-var _user$project$Data_Allocation$Vote = F4(
-	function (a, b, c, d) {
-		return {weight: a, personalMax: b, personalPctMax: c, globalMax: d};
+var _user$project$Data_Allocation$Vote = F5(
+	function (a, b, c, d, e) {
+		return {weight: a, rank: b, personalMax: c, personalPctMax: d, globalMax: e};
 	});
 var _user$project$Data_Allocation$voteDecoder = A3(
 	_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
@@ -18717,9 +18724,13 @@ var _user$project$Data_Allocation$voteDecoder = A3(
 			_elm_lang$core$Json_Decode$nullable(_elm_lang$core$Json_Decode$int),
 			A3(
 				_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
-				'weight',
-				_elm_lang$core$Json_Decode$nullable(_elm_lang$core$Json_Decode$int),
-				_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$decode(_user$project$Data_Allocation$Vote)))));
+				'rank',
+				_elm_lang$core$Json_Decode$int,
+				A3(
+					_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
+					'weight',
+					_elm_lang$core$Json_Decode$int,
+					_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$decode(_user$project$Data_Allocation$Vote))))));
 var _user$project$Data_Allocation$Slug = function (a) {
 	return {ctor: 'Slug', _0: a};
 };
@@ -18773,17 +18784,21 @@ var _user$project$Data_Allocation$expenseDecoder = A3(
 										_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$decode(_user$project$Data_Allocation$Expense)))))))))));
 var _user$project$Data_Allocation$decoder = A3(
 	_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
-	'num_voters',
-	_elm_lang$core$Json_Decode$int,
+	'decision_date',
+	_elm_lang$core$Json_Decode$string,
 	A3(
 		_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
-		'amount',
+		'num_voters',
 		_elm_lang$core$Json_Decode$int,
 		A3(
 			_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
-			'expenses',
-			_elm_lang$core$Json_Decode$list(_user$project$Data_Allocation$expenseDecoder),
-			_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$decode(_user$project$Data_Allocation$Allocation))));
+			'amount',
+			_elm_lang$core$Json_Decode$int,
+			A3(
+				_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
+				'expenses',
+				_elm_lang$core$Json_Decode$list(_user$project$Data_Allocation$expenseDecoder),
+				_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$decode(_user$project$Data_Allocation$Allocation)))));
 
 var _user$project$Data_Budget$Budget = F4(
 	function (a, b, c, d) {
@@ -22189,6 +22204,49 @@ var _user$project$Request_Allocation$postVote = F3(
 										_user$project$Data_Allocation$slugToString(slug),
 										'/vote.json'))))))));
 	});
+var _user$project$Request_Allocation$votes = function () {
+	var decoder = A3(
+		_elm_lang$core$Json_Decode$map2,
+		F2(
+			function (v0, v1) {
+				return {ctor: '_Tuple2', _0: v0, _1: v1};
+			}),
+		A2(_elm_lang$core$Json_Decode$field, 'expense', _user$project$Data_Allocation$expenseDecoder),
+		A2(
+			_elm_lang$core$Json_Decode$field,
+			'vote',
+			_elm_lang$core$Json_Decode$nullable(_user$project$Data_Allocation$voteDecoder)));
+	return _lukewestby$elm_http_builder$HttpBuilder$toRequest(
+		A2(
+			_lukewestby$elm_http_builder$HttpBuilder$withExpect,
+			_elm_lang$http$Http$expectJson(
+				A2(
+					_elm_lang$core$Json_Decode$field,
+					'votes',
+					_elm_lang$core$Json_Decode$list(decoder))),
+			_lukewestby$elm_http_builder$HttpBuilder$get(
+				_user$project$Request_Helpers$apiUrl('/votes.json'))));
+}();
+var _user$project$Request_Allocation$deleteVote = F2(
+	function (session, slug) {
+		return _lukewestby$elm_http_builder$HttpBuilder$toRequest(
+			A2(
+				_user$project$Data_Session$withAuthorization,
+				session,
+				A2(
+					_lukewestby$elm_http_builder$HttpBuilder$withExpect,
+					_elm_lang$http$Http$expectJson(
+						A2(_elm_lang$core$Json_Decode$field, 'result', _elm_lang$core$Json_Decode$string)),
+					_lukewestby$elm_http_builder$HttpBuilder$delete(
+						_user$project$Request_Helpers$apiUrl(
+							A2(
+								_elm_lang$core$Basics_ops['++'],
+								'/expenses/',
+								A2(
+									_elm_lang$core$Basics_ops['++'],
+									_user$project$Data_Allocation$slugToString(slug),
+									'/vote.json')))))));
+	});
 var _user$project$Request_Allocation$vote = function (slug) {
 	return _lukewestby$elm_http_builder$HttpBuilder$toRequest(
 		A2(
@@ -22240,23 +22298,21 @@ var _user$project$Request_Allocation$allocation = _lukewestby$elm_http_builder$H
 			_user$project$Request_Helpers$apiUrl('/allocation.json'))));
 
 var _user$project$Page_Expense$init = function () {
-	var initModel = function (allocation) {
-		return {allocation: allocation};
-	};
+	var initModel = F2(
+		function (votes, allocation) {
+			return {allocation: allocation, votes: votes};
+		});
 	var handleLoadError = function (err) {
 		var l = A2(_elm_lang$core$Debug$log, 'Expense Load Err', err);
 		return A2(_user$project$Page_Errored$pageLoadError, _user$project$View_Page$Expense, 'Failed to load expenses');
 	};
+	var loadVotes = _elm_lang$http$Http$toTask(_user$project$Request_Allocation$votes);
 	var loadAllocation = _elm_lang$http$Http$toTask(_user$project$Request_Allocation$allocation);
 	return A2(
 		_elm_lang$core$Task$mapError,
 		handleLoadError,
-		A2(_elm_lang$core$Task$map, initModel, loadAllocation));
+		A3(_elm_lang$core$Task$map2, initModel, loadVotes, loadAllocation));
 }();
-var _user$project$Page_Expense$update = F2(
-	function (msg, model) {
-		return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
-	});
 var _user$project$Page_Expense$expenseView = function (expense) {
 	var totalFunds = expense.currentAllocatedFunds + expense.newAllocatedFunds;
 	var width = A2(_elm_lang$core$Basics$max, expense.requestedFunds, totalFunds);
@@ -22377,15 +22433,6 @@ var _user$project$Page_Expense$expenseDetailsView = function (expenses) {
 				_1: {ctor: '[]'}
 			});
 	};
-	var voteResultText = function (expense) {
-		return (_elm_lang$core$Native_Utils.cmp(expense.userNewAllocatedFunds, 0) > 0) ? A2(
-			_elm_lang$core$Basics_ops['++'],
-			' You\'ve allocated $',
-			A2(
-				_elm_lang$core$Basics_ops['++'],
-				_elm_lang$core$Basics$toString(expense.userNewAllocatedFunds),
-				' to this item.')) : '';
-	};
 	var expenseBoxer = function (expense) {
 		return boxCol(
 			{
@@ -22399,7 +22446,19 @@ var _user$project$Page_Expense$expenseDetailsView = function (expenses) {
 					},
 					{
 						ctor: '::',
-						_0: _elm_lang$html$Html$text(expense.name),
+						_0: A2(
+							_elm_lang$html$Html$a,
+							{
+								ctor: '::',
+								_0: _user$project$Route$href(
+									_user$project$Route$ExpenseDetail(expense.slug)),
+								_1: {ctor: '[]'}
+							},
+							{
+								ctor: '::',
+								_0: _elm_lang$html$Html$text(expense.name),
+								_1: {ctor: '[]'}
+							}),
 						_1: {ctor: '[]'}
 					}),
 				_1: {
@@ -22434,7 +22493,7 @@ var _user$project$Page_Expense$expenseDetailsView = function (expenses) {
 								_0: _elm_lang$html$Html$text(
 									A2(
 										_elm_lang$core$Basics_ops['++'],
-										'Currently Allocated: ',
+										'Currently Allocated: $',
 										_elm_lang$core$Basics$toString(expense.newAllocatedFunds))),
 								_1: {ctor: '[]'}
 							}),
@@ -22452,71 +22511,11 @@ var _user$project$Page_Expense$expenseDetailsView = function (expenses) {
 									_0: _elm_lang$html$Html$text(
 										A2(
 											_elm_lang$core$Basics_ops['++'],
-											'Requested: ',
+											'Requested: $',
 											_elm_lang$core$Basics$toString(expense.requestedFunds))),
 									_1: {ctor: '[]'}
 								}),
-							_1: {
-								ctor: '::',
-								_0: A2(
-									_elm_lang$html$Html$hr,
-									{
-										ctor: '::',
-										_0: _elm_lang$html$Html_Attributes$class('m-1'),
-										_1: {ctor: '[]'}
-									},
-									{ctor: '[]'}),
-								_1: {
-									ctor: '::',
-									_0: A2(
-										_elm_lang$html$Html$p,
-										{
-											ctor: '::',
-											_0: _elm_lang$html$Html_Attributes$class('small mb-0'),
-											_1: {ctor: '[]'}
-										},
-										{
-											ctor: '::',
-											_0: _elm_lang$html$Html$text(
-												voteResultText(expense)),
-											_1: {ctor: '[]'}
-										}),
-									_1: {
-										ctor: '::',
-										_0: A2(
-											_rundis$elm_bootstrap$Bootstrap_Button$linkButton,
-											{
-												ctor: '::',
-												_0: _rundis$elm_bootstrap$Bootstrap_Button$primary,
-												_1: {
-													ctor: '::',
-													_0: _rundis$elm_bootstrap$Bootstrap_Button$block,
-													_1: {
-														ctor: '::',
-														_0: _rundis$elm_bootstrap$Bootstrap_Button$attrs(
-															{
-																ctor: '::',
-																_0: _elm_lang$html$Html_Attributes$class('mt-3'),
-																_1: {
-																	ctor: '::',
-																	_0: _user$project$Route$href(
-																		_user$project$Route$ExpenseDetail(expense.slug)),
-																	_1: {ctor: '[]'}
-																}
-															}),
-														_1: {ctor: '[]'}
-													}
-												}
-											},
-											{
-												ctor: '::',
-												_0: _elm_lang$html$Html$text('See Detail'),
-												_1: {ctor: '[]'}
-											}),
-										_1: {ctor: '[]'}
-									}
-								}
-							}
+							_1: {ctor: '[]'}
 						}
 					}
 				}
@@ -22592,7 +22591,7 @@ var _user$project$Page_Expense$expenseDetailsView = function (expenses) {
 				{ctor: '[]'},
 				{
 					ctor: '::',
-					_0: _elm_lang$html$Html$text('Expense Funding'),
+					_0: _elm_lang$html$Html$text('Expenses'),
 					_1: {ctor: '[]'}
 				},
 				_rundis$elm_bootstrap$Bootstrap_Card$config(
@@ -22623,25 +22622,7 @@ var _user$project$Page_Expense$allocationSummary = function (model) {
 		A2(
 			_elm_lang$core$Basics_ops['++'],
 			_elm_lang$core$Basics$toString(allocation.amount),
-			A2(
-				_elm_lang$core$Basics_ops['++'],
-				' in surplus funds will be allocated.',
-				A2(
-					_elm_lang$core$Basics_ops['++'],
-					' Because ',
-					A2(
-						_elm_lang$core$Basics_ops['++'],
-						_elm_lang$core$Basics$toString(allocation.numVoters),
-						A2(
-							_elm_lang$core$Basics_ops['++'],
-							' Bloomcraft keyholders have participated so far, you have ',
-							A2(
-								_elm_lang$core$Basics_ops['++'],
-								'$',
-								A2(
-									_elm_lang$core$Basics_ops['++'],
-									_elm_lang$core$Basics$toString(amtPerPerson),
-									' to allocate. Click \"See Detail\" to share your preferences, and the allocation will change to reflect them.'))))))));
+			' in surplus funds will be allocated.'));
 	return _rundis$elm_bootstrap$Bootstrap_Card$view(
 		A3(
 			_rundis$elm_bootstrap$Bootstrap_Card$block,
@@ -22726,6 +22707,482 @@ var _user$project$Page_Expense$allocationSummary = function (model) {
 						_1: {ctor: '[]'}
 					}))));
 };
+var _user$project$Page_Expense$Model = F2(
+	function (a, b) {
+		return {allocation: a, votes: b};
+	});
+var _user$project$Page_Expense$VoteResponse = function (a) {
+	return {ctor: 'VoteResponse', _0: a};
+};
+var _user$project$Page_Expense$update = F3(
+	function (session, msg, model) {
+		var _p2 = msg;
+		if (_p2.ctor === 'DeleteVote') {
+			return {
+				ctor: '_Tuple2',
+				_0: model,
+				_1: A2(
+					_elm_lang$http$Http$send,
+					_user$project$Page_Expense$VoteResponse,
+					A2(_user$project$Request_Allocation$deleteVote, session, _p2._0))
+			};
+		} else {
+			if (_p2._0.ctor === 'Ok') {
+				return {
+					ctor: '_Tuple2',
+					_0: model,
+					_1: _user$project$Route$modifyUrl(_user$project$Route$Expense)
+				};
+			} else {
+				return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
+			}
+		}
+	});
+var _user$project$Page_Expense$DeleteVote = function (a) {
+	return {ctor: 'DeleteVote', _0: a};
+};
+var _user$project$Page_Expense$voteView = function (_p3) {
+	var _p4 = _p3;
+	var _p10 = _p4._1;
+	var _p9 = _p4._0;
+	var allocatedAmt = A2(
+		_elm_lang$core$Basics_ops['++'],
+		'$',
+		_elm_lang$core$Basics$toString(_p9.userNewAllocatedFunds));
+	var voteStrings = function (vote) {
+		return {
+			ctor: '::',
+			_0: A2(
+				_rundis$elm_bootstrap$Bootstrap_Table$td,
+				{
+					ctor: '::',
+					_0: _rundis$elm_bootstrap$Bootstrap_Table$cellAttr(
+						_elm_lang$html$Html_Attributes$class('align-middle text-center')),
+					_1: {ctor: '[]'}
+				},
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html$text(
+						_elm_lang$core$Basics$toString(vote.rank)),
+					_1: {ctor: '[]'}
+				}),
+			_1: {
+				ctor: '::',
+				_0: A2(
+					_rundis$elm_bootstrap$Bootstrap_Table$td,
+					{
+						ctor: '::',
+						_0: _rundis$elm_bootstrap$Bootstrap_Table$cellAttr(
+							_elm_lang$html$Html_Attributes$class('align-middle text-center')),
+						_1: {ctor: '[]'}
+					},
+					{
+						ctor: '::',
+						_0: _elm_lang$html$Html$text(
+							_elm_lang$core$Basics$toString(vote.weight)),
+						_1: {ctor: '[]'}
+					}),
+				_1: {
+					ctor: '::',
+					_0: A2(
+						_rundis$elm_bootstrap$Bootstrap_Table$td,
+						{
+							ctor: '::',
+							_0: _rundis$elm_bootstrap$Bootstrap_Table$cellAttr(
+								_elm_lang$html$Html_Attributes$class('align-middle text-center')),
+							_1: {ctor: '[]'}
+						},
+						{
+							ctor: '::',
+							_0: _elm_lang$html$Html$text(
+								function () {
+									var _p5 = vote.personalPctMax;
+									if (_p5.ctor === 'Just') {
+										return A2(
+											_elm_lang$core$Basics_ops['++'],
+											_elm_lang$core$Basics$toString(
+												_elm_lang$core$Basics$round(100 * _p5._0)),
+											'%');
+									} else {
+										return 'None';
+									}
+								}()),
+							_1: {ctor: '[]'}
+						}),
+					_1: {ctor: '[]'}
+				}
+			}
+		};
+	};
+	var voteCells = function () {
+		var _p6 = _p10;
+		if (_p6.ctor === 'Just') {
+			return voteStrings(_p6._0);
+		} else {
+			return {
+				ctor: '::',
+				_0: A2(
+					_rundis$elm_bootstrap$Bootstrap_Table$td,
+					{
+						ctor: '::',
+						_0: _rundis$elm_bootstrap$Bootstrap_Table$cellAttr(
+							_elm_lang$html$Html_Attributes$colspan(3)),
+						_1: {
+							ctor: '::',
+							_0: _rundis$elm_bootstrap$Bootstrap_Table$cellAttr(
+								_elm_lang$html$Html_Attributes$class('align-middle text-center')),
+							_1: {ctor: '[]'}
+						}
+					},
+					{
+						ctor: '::',
+						_0: _elm_lang$html$Html$text('No Vote'),
+						_1: {ctor: '[]'}
+					}),
+				_1: {ctor: '[]'}
+			};
+		}
+	}();
+	return A2(
+		_rundis$elm_bootstrap$Bootstrap_Table$tr,
+		{ctor: '[]'},
+		_elm_lang$core$List$concat(
+			{
+				ctor: '::',
+				_0: {
+					ctor: '::',
+					_0: A2(
+						_rundis$elm_bootstrap$Bootstrap_Table$td,
+						{
+							ctor: '::',
+							_0: _rundis$elm_bootstrap$Bootstrap_Table$cellAttr(
+								_elm_lang$html$Html_Attributes$class('align-middle')),
+							_1: {ctor: '[]'}
+						},
+						{
+							ctor: '::',
+							_0: _elm_lang$html$Html$text(_p9.name),
+							_1: {ctor: '[]'}
+						}),
+					_1: {ctor: '[]'}
+				},
+				_1: {
+					ctor: '::',
+					_0: voteCells,
+					_1: {
+						ctor: '::',
+						_0: {
+							ctor: '::',
+							_0: A2(
+								_rundis$elm_bootstrap$Bootstrap_Table$td,
+								{
+									ctor: '::',
+									_0: _rundis$elm_bootstrap$Bootstrap_Table$cellAttr(
+										_elm_lang$html$Html_Attributes$class('align-middle')),
+									_1: {ctor: '[]'}
+								},
+								{
+									ctor: '::',
+									_0: _elm_lang$html$Html$text(allocatedAmt),
+									_1: {ctor: '[]'}
+								}),
+							_1: {
+								ctor: '::',
+								_0: A2(
+									_rundis$elm_bootstrap$Bootstrap_Table$td,
+									{
+										ctor: '::',
+										_0: _rundis$elm_bootstrap$Bootstrap_Table$cellAttr(
+											_elm_lang$html$Html_Attributes$class('align-middle')),
+										_1: {ctor: '[]'}
+									},
+									{
+										ctor: '::',
+										_0: A2(
+											_elm_lang$html$Html$div,
+											{
+												ctor: '::',
+												_0: _elm_lang$html$Html_Attributes$class('text-left align-middle'),
+												_1: {ctor: '[]'}
+											},
+											_elm_lang$core$List$concat(
+												{
+													ctor: '::',
+													_0: {
+														ctor: '::',
+														_0: A2(
+															_rundis$elm_bootstrap$Bootstrap_Button$linkButton,
+															{
+																ctor: '::',
+																_0: _rundis$elm_bootstrap$Bootstrap_Button$primary,
+																_1: {
+																	ctor: '::',
+																	_0: _rundis$elm_bootstrap$Bootstrap_Button$small,
+																	_1: {
+																		ctor: '::',
+																		_0: _rundis$elm_bootstrap$Bootstrap_Button$attrs(
+																			{
+																				ctor: '::',
+																				_0: _user$project$Route$href(
+																					_user$project$Route$ExpenseDetail(_p9.slug)),
+																				_1: {ctor: '[]'}
+																			}),
+																		_1: {ctor: '[]'}
+																	}
+																}
+															},
+															{
+																ctor: '::',
+																_0: _elm_lang$html$Html$text(
+																	function () {
+																		var _p7 = _p10;
+																		if (_p7.ctor === 'Just') {
+																			return 'Change Vote';
+																		} else {
+																			return 'Vote';
+																		}
+																	}()),
+																_1: {ctor: '[]'}
+															}),
+														_1: {ctor: '[]'}
+													},
+													_1: {
+														ctor: '::',
+														_0: function () {
+															var _p8 = _p10;
+															if (_p8.ctor === 'Just') {
+																return {
+																	ctor: '::',
+																	_0: A2(
+																		_rundis$elm_bootstrap$Bootstrap_Button$button,
+																		{
+																			ctor: '::',
+																			_0: _rundis$elm_bootstrap$Bootstrap_Button$danger,
+																			_1: {
+																				ctor: '::',
+																				_0: _rundis$elm_bootstrap$Bootstrap_Button$small,
+																				_1: {
+																					ctor: '::',
+																					_0: _rundis$elm_bootstrap$Bootstrap_Button$onClick(
+																						_user$project$Page_Expense$DeleteVote(_p9.slug)),
+																					_1: {ctor: '[]'}
+																				}
+																			}
+																		},
+																		{
+																			ctor: '::',
+																			_0: _elm_lang$html$Html$text('Delete Vote'),
+																			_1: {ctor: '[]'}
+																		}),
+																	_1: {ctor: '[]'}
+																};
+															} else {
+																return {ctor: '[]'};
+															}
+														}(),
+														_1: {ctor: '[]'}
+													}
+												})),
+										_1: {ctor: '[]'}
+									}),
+								_1: {ctor: '[]'}
+							}
+						},
+						_1: {ctor: '[]'}
+					}
+				}
+			}));
+};
+var _user$project$Page_Expense$voteTable = function (votes) {
+	var rankWeightOrder = F2(
+		function (_p12, _p11) {
+			var _p13 = _p12;
+			var _p16 = _p13._0;
+			var _p14 = _p11;
+			var _p15 = _p14._0;
+			return _elm_lang$core$Native_Utils.eq(_p16.rank, _p15.rank) ? (_elm_lang$core$Native_Utils.eq(_p15.weight, _p16.weight) ? A2(_elm_lang$core$Basics$compare, _p13._1, _p14._1) : A2(_elm_lang$core$Basics$compare, _p15.weight, _p16.weight)) : A2(_elm_lang$core$Basics$compare, _p16.rank, _p15.rank);
+		});
+	var compareIfBoth = F2(
+		function (_p18, _p17) {
+			var _p19 = _p18;
+			var _p23 = _p19._0;
+			var _p20 = _p17;
+			var _p22 = _p20._0;
+			var _p21 = {ctor: '_Tuple2', _0: _p19._1, _1: _p20._1};
+			if (_p21._0.ctor === 'Just') {
+				if (_p21._1.ctor === 'Just') {
+					return A2(
+						rankWeightOrder,
+						{ctor: '_Tuple2', _0: _p21._0._0, _1: _p23.name},
+						{ctor: '_Tuple2', _0: _p21._1._0, _1: _p22.name});
+				} else {
+					return _elm_lang$core$Basics$LT;
+				}
+			} else {
+				if (_p21._1.ctor === 'Just') {
+					return _elm_lang$core$Basics$GT;
+				} else {
+					return A2(_elm_lang$core$Basics$compare, _p23.name, _p22.name);
+				}
+			}
+		});
+	var sortedVotes = A2(_elm_lang$core$List$sortWith, compareIfBoth, votes);
+	return _rundis$elm_bootstrap$Bootstrap_Table$table(
+		{
+			options: {
+				ctor: '::',
+				_0: _rundis$elm_bootstrap$Bootstrap_Table$striped,
+				_1: {
+					ctor: '::',
+					_0: _rundis$elm_bootstrap$Bootstrap_Table$small,
+					_1: {ctor: '[]'}
+				}
+			},
+			thead: _rundis$elm_bootstrap$Bootstrap_Table$simpleThead(
+				{
+					ctor: '::',
+					_0: A2(
+						_rundis$elm_bootstrap$Bootstrap_Table$th,
+						{ctor: '[]'},
+						{
+							ctor: '::',
+							_0: _elm_lang$html$Html$text('Expense'),
+							_1: {ctor: '[]'}
+						}),
+					_1: {
+						ctor: '::',
+						_0: A2(
+							_rundis$elm_bootstrap$Bootstrap_Table$th,
+							{
+								ctor: '::',
+								_0: _rundis$elm_bootstrap$Bootstrap_Table$cellAttr(
+									_elm_lang$html$Html_Attributes$class('text-center')),
+								_1: {ctor: '[]'}
+							},
+							{
+								ctor: '::',
+								_0: _elm_lang$html$Html$text('Rank'),
+								_1: {ctor: '[]'}
+							}),
+						_1: {
+							ctor: '::',
+							_0: A2(
+								_rundis$elm_bootstrap$Bootstrap_Table$th,
+								{
+									ctor: '::',
+									_0: _rundis$elm_bootstrap$Bootstrap_Table$cellAttr(
+										_elm_lang$html$Html_Attributes$class('text-center')),
+									_1: {ctor: '[]'}
+								},
+								{
+									ctor: '::',
+									_0: _elm_lang$html$Html$text('Weight'),
+									_1: {ctor: '[]'}
+								}),
+							_1: {
+								ctor: '::',
+								_0: A2(
+									_rundis$elm_bootstrap$Bootstrap_Table$th,
+									{
+										ctor: '::',
+										_0: _rundis$elm_bootstrap$Bootstrap_Table$cellAttr(
+											_elm_lang$html$Html_Attributes$class('text-center')),
+										_1: {ctor: '[]'}
+									},
+									{
+										ctor: '::',
+										_0: _elm_lang$html$Html$text('Limit %'),
+										_1: {ctor: '[]'}
+									}),
+								_1: {
+									ctor: '::',
+									_0: A2(
+										_rundis$elm_bootstrap$Bootstrap_Table$th,
+										{ctor: '[]'},
+										{
+											ctor: '::',
+											_0: _elm_lang$html$Html$text('Your Allocation'),
+											_1: {ctor: '[]'}
+										}),
+									_1: {
+										ctor: '::',
+										_0: A2(
+											_rundis$elm_bootstrap$Bootstrap_Table$th,
+											{ctor: '[]'},
+											{ctor: '[]'}),
+										_1: {ctor: '[]'}
+									}
+								}
+							}
+						}
+					}
+				}),
+			tbody: A2(
+				_rundis$elm_bootstrap$Bootstrap_Table$tbody,
+				{ctor: '[]'},
+				A2(_elm_lang$core$List$map, _user$project$Page_Expense$voteView, sortedVotes))
+		});
+};
+var _user$project$Page_Expense$voteSummaryView = function (model) {
+	var voteSummaryText = A2(
+		_elm_lang$core$Basics_ops['++'],
+		'Voting to allocate the current surplus will end at midnight on ',
+		A2(
+			_elm_lang$core$Basics_ops['++'],
+			model.allocation.decisionDate,
+			A2(_elm_lang$core$Basics_ops['++'], '.  Until then, you may update your vote on each expense item as many times as you like.', ' You can vote for as many, or as few, items as you want to.')));
+	return _rundis$elm_bootstrap$Bootstrap_Card$view(
+		A3(
+			_rundis$elm_bootstrap$Bootstrap_Card$block,
+			{ctor: '[]'},
+			{
+				ctor: '::',
+				_0: _rundis$elm_bootstrap$Bootstrap_Card$custom(
+					A2(
+						_elm_lang$html$Html$div,
+						{ctor: '[]'},
+						{
+							ctor: '::',
+							_0: A2(
+								_elm_lang$html$Html$p,
+								{
+									ctor: '::',
+									_0: _elm_lang$html$Html_Attributes$class('lead'),
+									_1: {ctor: '[]'}
+								},
+								{
+									ctor: '::',
+									_0: _elm_lang$html$Html$text(voteSummaryText),
+									_1: {ctor: '[]'}
+								}),
+							_1: {
+								ctor: '::',
+								_0: _user$project$Page_Expense$voteTable(model.votes),
+								_1: {ctor: '[]'}
+							}
+						})),
+				_1: {ctor: '[]'}
+			},
+			A3(
+				_rundis$elm_bootstrap$Bootstrap_Card$headerH3,
+				{ctor: '[]'},
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html$text('Your Current Votes'),
+					_1: {ctor: '[]'}
+				},
+				_rundis$elm_bootstrap$Bootstrap_Card$config(
+					{
+						ctor: '::',
+						_0: _rundis$elm_bootstrap$Bootstrap_Card$attrs(
+							{
+								ctor: '::',
+								_0: _elm_lang$html$Html_Attributes$class('mt-2'),
+								_1: {ctor: '[]'}
+							}),
+						_1: {ctor: '[]'}
+					}))));
+};
 var _user$project$Page_Expense$view = function (model) {
 	return A2(
 		_rundis$elm_bootstrap$Bootstrap_Grid$container,
@@ -22745,12 +23202,12 @@ var _user$project$Page_Expense$view = function (model) {
 						_rundis$elm_bootstrap$Bootstrap_Grid$col,
 						{
 							ctor: '::',
-							_0: _rundis$elm_bootstrap$Bootstrap_Grid_Col$lg6,
+							_0: _rundis$elm_bootstrap$Bootstrap_Grid_Col$lg12,
 							_1: {ctor: '[]'}
 						},
 						{
 							ctor: '::',
-							_0: _user$project$Page_Expense$allocationSummary(model),
+							_0: _user$project$Page_Expense$voteSummaryView(model),
 							_1: {ctor: '[]'}
 						}),
 					_1: {
@@ -22764,20 +23221,29 @@ var _user$project$Page_Expense$view = function (model) {
 							},
 							{
 								ctor: '::',
-								_0: _user$project$Page_Expense$expenseDetailsView(model.allocation.expenses),
+								_0: _user$project$Page_Expense$allocationSummary(model),
 								_1: {ctor: '[]'}
 							}),
-						_1: {ctor: '[]'}
+						_1: {
+							ctor: '::',
+							_0: A2(
+								_rundis$elm_bootstrap$Bootstrap_Grid$col,
+								{
+									ctor: '::',
+									_0: _rundis$elm_bootstrap$Bootstrap_Grid_Col$lg6,
+									_1: {ctor: '[]'}
+								},
+								{
+									ctor: '::',
+									_0: _user$project$Page_Expense$expenseDetailsView(model.allocation.expenses),
+									_1: {ctor: '[]'}
+								}),
+							_1: {ctor: '[]'}
+						}
 					}
 				}),
 			_1: {ctor: '[]'}
 		});
-};
-var _user$project$Page_Expense$Model = function (a) {
-	return {allocation: a};
-};
-var _user$project$Page_Expense$AllocationLoaded = function (a) {
-	return {ctor: 'AllocationLoaded', _0: a};
 };
 
 var _user$project$Page_ExpenseDetail$expenseSummaryTable = function (expense) {
@@ -23113,15 +23579,28 @@ var _user$project$Page_ExpenseDetail$init = function (slug) {
 			var _p1 = _p0;
 			return {
 				expense: _p1._1,
-				weight: A2(
-					_elm_lang$core$Maybe$map,
-					_elm_lang$core$Result$Ok,
-					A2(
-						_elm_lang$core$Maybe$andThen,
-						function (_) {
-							return _.weight;
-						},
-						maybeVote)),
+				weight: _elm_lang$core$Maybe$Just(
+					_elm_lang$core$Result$Ok(
+						A2(
+							_elm_lang$core$Maybe$withDefault,
+							1,
+							A2(
+								_elm_lang$core$Maybe$map,
+								function (_) {
+									return _.weight;
+								},
+								maybeVote)))),
+				rank: _elm_lang$core$Maybe$Just(
+					_elm_lang$core$Result$Ok(
+						A2(
+							_elm_lang$core$Maybe$withDefault,
+							1,
+							A2(
+								_elm_lang$core$Maybe$map,
+								function (_) {
+									return _.rank;
+								},
+								maybeVote)))),
 				personalMax: A2(
 					_elm_lang$core$Maybe$map,
 					function (x) {
@@ -23159,9 +23638,9 @@ var _user$project$Page_ExpenseDetail$init = function (slug) {
 		handleLoadError,
 		A3(_elm_lang$core$Task$map2, initModel, loadExpense, loadVote));
 };
-var _user$project$Page_ExpenseDetail$Model = F5(
-	function (a, b, c, d, e) {
-		return {expense: a, personalMax: b, globalMax: c, weight: d, userIsOwner: e};
+var _user$project$Page_ExpenseDetail$Model = F6(
+	function (a, b, c, d, e, f) {
+		return {expense: a, personalMax: b, globalMax: c, weight: d, rank: e, userIsOwner: f};
 	});
 var _user$project$Page_ExpenseDetail$VoteResponse = function (a) {
 	return {ctor: 'VoteResponse', _0: a};
@@ -23171,17 +23650,19 @@ var _user$project$Page_ExpenseDetail$update = F3(
 		var intToPct = function (val) {
 			return _elm_lang$core$Basics$toFloat(val) / 100;
 		};
-		var makeVote = function (model) {
-			return {
-				weight: A2(_elm_lang$core$Maybe$andThen, _elm_lang$core$Result$toMaybe, model.weight),
-				personalPctMax: A2(
-					_elm_lang$core$Maybe$map,
-					intToPct,
-					A2(_elm_lang$core$Maybe$andThen, _elm_lang$core$Result$toMaybe, model.personalMax)),
-				personalMax: _elm_lang$core$Maybe$Nothing,
-				globalMax: A2(_elm_lang$core$Maybe$andThen, _elm_lang$core$Result$toMaybe, model.globalMax)
-			};
-		};
+		var makeVote = F3(
+			function (model, weight, rank) {
+				return {
+					weight: weight,
+					rank: rank,
+					personalPctMax: A2(
+						_elm_lang$core$Maybe$map,
+						intToPct,
+						A2(_elm_lang$core$Maybe$andThen, _elm_lang$core$Result$toMaybe, model.personalMax)),
+					personalMax: _elm_lang$core$Maybe$Nothing,
+					globalMax: A2(_elm_lang$core$Maybe$andThen, _elm_lang$core$Result$toMaybe, model.globalMax)
+				};
+			});
 		var maybeToInt = function (str) {
 			var _p2 = str;
 			if (_p2 === '') {
@@ -23194,22 +23675,27 @@ var _user$project$Page_ExpenseDetail$update = F3(
 		var _p3 = msg;
 		switch (_p3.ctor) {
 			case 'SubmitVote':
-				return {
-					ctor: '_Tuple2',
-					_0: model,
-					_1: A2(
-						_elm_lang$http$Http$send,
-						_user$project$Page_ExpenseDetail$VoteResponse,
-						A3(
-							_user$project$Request_Allocation$postVote,
-							session,
-							makeVote(model),
-							model.expense.slug))
-				};
+				var _p4 = {ctor: '_Tuple2', _0: model.weight, _1: model.rank};
+				if (((((_p4.ctor === '_Tuple2') && (_p4._0.ctor === 'Just')) && (_p4._0._0.ctor === 'Ok')) && (_p4._1.ctor === 'Just')) && (_p4._1._0.ctor === 'Ok')) {
+					return {
+						ctor: '_Tuple2',
+						_0: model,
+						_1: A2(
+							_elm_lang$http$Http$send,
+							_user$project$Page_ExpenseDetail$VoteResponse,
+							A3(
+								_user$project$Request_Allocation$postVote,
+								session,
+								A3(makeVote, model, _p4._0._0._0, _p4._1._0._0),
+								model.expense.slug))
+					};
+				} else {
+					return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
+				}
 			case 'SetWeight':
-				var _p5 = _p3._0;
-				var _p4 = _p5;
-				if (_p4 === '') {
+				var _p6 = _p3._0;
+				var _p5 = _p6;
+				if (_p5 === '') {
 					return {
 						ctor: '_Tuple2',
 						_0: _elm_lang$core$Native_Utils.update(
@@ -23226,7 +23712,7 @@ var _user$project$Page_ExpenseDetail$update = F3(
 						_0: _elm_lang$core$Native_Utils.update(
 							model,
 							{
-								weight: maybeToInt(_p5)
+								weight: maybeToInt(_p6)
 							}),
 						_1: _elm_lang$core$Platform_Cmd$none
 					};
@@ -23251,6 +23737,16 @@ var _user$project$Page_ExpenseDetail$update = F3(
 						}),
 					_1: _elm_lang$core$Platform_Cmd$none
 				};
+			case 'SetRank':
+				return {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Native_Utils.update(
+						model,
+						{
+							rank: maybeToInt(_p3._0)
+						}),
+					_1: _elm_lang$core$Platform_Cmd$none
+				};
 			default:
 				if (_p3._0.ctor === 'Ok') {
 					return {
@@ -23264,6 +23760,9 @@ var _user$project$Page_ExpenseDetail$update = F3(
 		}
 	});
 var _user$project$Page_ExpenseDetail$SubmitVote = {ctor: 'SubmitVote'};
+var _user$project$Page_ExpenseDetail$SetRank = function (a) {
+	return {ctor: 'SetRank', _0: a};
+};
 var _user$project$Page_ExpenseDetail$SetPersonalMax = function (a) {
 	return {ctor: 'SetPersonalMax', _0: a};
 };
@@ -23274,36 +23773,67 @@ var _user$project$Page_ExpenseDetail$SetWeight = function (a) {
 	return {ctor: 'SetWeight', _0: a};
 };
 var _user$project$Page_ExpenseDetail$voteForm = function (model) {
+	var andSuccess = F2(
+		function (maybeErr, val) {
+			return val && function () {
+				var _p7 = maybeErr;
+				if ((_p7.ctor === 'Just') && (_p7._0.ctor === 'Ok')) {
+					return true;
+				} else {
+					return false;
+				}
+			}();
+		});
+	var orError = F2(
+		function (maybeErr, val) {
+			return val || function () {
+				var _p8 = maybeErr;
+				if ((_p8.ctor === 'Just') && (_p8._0.ctor === 'Err')) {
+					return false;
+				} else {
+					return false;
+				}
+			}();
+		});
 	var disableSubmit = A2(
 		_elm_lang$core$Debug$log,
 		'DIS',
-		function () {
-			var _p6 = {ctor: '_Tuple3', _0: model.weight, _1: model.globalMax, _2: model.personalMax};
-			_v4_3:
-			do {
-				if (_p6.ctor === '_Tuple3') {
-					if ((_p6._0.ctor === 'Just') && (_p6._0._0.ctor === 'Err')) {
-						return true;
-					} else {
-						if ((_p6._1.ctor === 'Just') && (_p6._1._0.ctor === 'Err')) {
-							return true;
-						} else {
-							if ((_p6._2.ctor === 'Just') && (_p6._2._0.ctor === 'Err')) {
-								return true;
-							} else {
-								break _v4_3;
-							}
+		A3(
+			_elm_lang$core$List$foldr,
+			orError,
+			false,
+			{
+				ctor: '::',
+				_0: model.weight,
+				_1: {
+					ctor: '::',
+					_0: model.globalMax,
+					_1: {
+						ctor: '::',
+						_0: model.personalMax,
+						_1: {
+							ctor: '::',
+							_0: model.rank,
+							_1: {ctor: '[]'}
 						}
 					}
-				} else {
-					break _v4_3;
 				}
-			} while(false);
-			return false;
-		}());
+			}) || (!A3(
+			_elm_lang$core$List$foldr,
+			andSuccess,
+			true,
+			{
+				ctor: '::',
+				_0: model.weight,
+				_1: {
+					ctor: '::',
+					_0: model.rank,
+					_1: {ctor: '[]'}
+				}
+			})));
 	var errState = function (result) {
-		var _p7 = result;
-		if (_p7.ctor === 'Nothing') {
+		var _p9 = result;
+		if (_p9.ctor === 'Nothing') {
 			return {
 				ctor: '_Tuple4',
 				_0: {ctor: '[]'},
@@ -23321,12 +23851,12 @@ var _user$project$Page_ExpenseDetail$voteForm = function (model) {
 				}
 			};
 		} else {
-			if (_p7._0.ctor === 'Ok') {
+			if (_p9._0.ctor === 'Ok') {
 				return {
 					ctor: '_Tuple4',
 					_0: {ctor: '[]'},
 					_1: '.',
-					_2: _elm_lang$core$Basics$toString(_p7._0._0),
+					_2: _elm_lang$core$Basics$toString(_p9._0._0),
 					_3: {
 						ctor: '::',
 						_0: _elm_lang$html$Html_Attributes$style(
@@ -23353,21 +23883,26 @@ var _user$project$Page_ExpenseDetail$voteForm = function (model) {
 			}
 		}
 	};
-	var _p8 = errState(model.weight);
-	var wError = _p8._0;
-	var wValTxt = _p8._1;
-	var wDef = _p8._2;
-	var wHidden = _p8._3;
-	var _p9 = errState(model.globalMax);
-	var gError = _p9._0;
-	var gValTxt = _p9._1;
-	var gDef = _p9._2;
-	var gHidden = _p9._3;
-	var _p10 = errState(model.personalMax);
-	var pError = _p10._0;
-	var pValTxt = _p10._1;
-	var pDef = _p10._2;
-	var pHidden = _p10._3;
+	var _p10 = errState(model.weight);
+	var wError = _p10._0;
+	var wValTxt = _p10._1;
+	var wDef = _p10._2;
+	var wHidden = _p10._3;
+	var _p11 = errState(model.globalMax);
+	var gError = _p11._0;
+	var gValTxt = _p11._1;
+	var gDef = _p11._2;
+	var gHidden = _p11._3;
+	var _p12 = errState(model.personalMax);
+	var pError = _p12._0;
+	var pValTxt = _p12._1;
+	var pDef = _p12._2;
+	var pHidden = _p12._3;
+	var _p13 = errState(model.rank);
+	var rError = _p13._0;
+	var rValTxt = _p13._1;
+	var rDef = _p13._2;
+	var rHidden = _p13._3;
 	var viewString = function (maybeVal) {
 		return A2(
 			_elm_lang$core$Maybe$withDefault,
@@ -23381,33 +23916,33 @@ var _user$project$Page_ExpenseDetail$voteForm = function (model) {
 			ctor: '::',
 			_0: A2(
 				_rundis$elm_bootstrap$Bootstrap_Form$group,
-				wError,
+				rError,
 				{
 					ctor: '::',
 					_0: A2(
 						_rundis$elm_bootstrap$Bootstrap_Form$label,
 						{
 							ctor: '::',
-							_0: _elm_lang$html$Html_Attributes$for('weight'),
+							_0: _elm_lang$html$Html_Attributes$for('rank'),
 							_1: {ctor: '[]'}
 						},
 						{
 							ctor: '::',
-							_0: _elm_lang$html$Html$text('Importance (0-100)'),
+							_0: _elm_lang$html$Html$text('Expense Item Rank (1 is the most important)'),
 							_1: {ctor: '[]'}
 						}),
 					_1: {
 						ctor: '::',
-						_0: _rundis$elm_bootstrap$Bootstrap_Form_Input$text(
+						_0: _rundis$elm_bootstrap$Bootstrap_Form_Input$number(
 							{
 								ctor: '::',
-								_0: _rundis$elm_bootstrap$Bootstrap_Form_Input$id('weight'),
+								_0: _rundis$elm_bootstrap$Bootstrap_Form_Input$id('rank'),
 								_1: {
 									ctor: '::',
-									_0: _rundis$elm_bootstrap$Bootstrap_Form_Input$onInput(_user$project$Page_ExpenseDetail$SetWeight),
+									_0: _rundis$elm_bootstrap$Bootstrap_Form_Input$onInput(_user$project$Page_ExpenseDetail$SetRank),
 									_1: {
 										ctor: '::',
-										_0: _rundis$elm_bootstrap$Bootstrap_Form_Input$defaultValue(wDef),
+										_0: _rundis$elm_bootstrap$Bootstrap_Form_Input$defaultValue(rDef),
 										_1: {ctor: '[]'}
 									}
 								}
@@ -23419,17 +23954,17 @@ var _user$project$Page_ExpenseDetail$voteForm = function (model) {
 								{ctor: '[]'},
 								{
 									ctor: '::',
-									_0: _elm_lang$html$Html$text('Rank how important this expense is to you.  Higher numbers get funded before lower numbers. Equal numbers are funded equally.'),
+									_0: _elm_lang$html$Html$text('Rank how important this expense is to you.  Rank 1 items are funded before rank 2 items, which are funded before rank 3 items, and so on.  If two or more items are ranked equally, your funding will be split between them based on the weights you give them.'),
 									_1: {ctor: '[]'}
 								}),
 							_1: {
 								ctor: '::',
 								_0: A2(
 									_rundis$elm_bootstrap$Bootstrap_Form$validationText,
-									wHidden,
+									rHidden,
 									{
 										ctor: '::',
-										_0: _elm_lang$html$Html$text(wValTxt),
+										_0: _elm_lang$html$Html$text(rValTxt),
 										_1: {ctor: '[]'}
 									}),
 								_1: {ctor: '[]'}
@@ -23441,7 +23976,7 @@ var _user$project$Page_ExpenseDetail$voteForm = function (model) {
 				ctor: '::',
 				_0: A2(
 					_rundis$elm_bootstrap$Bootstrap_Form$group,
-					pError,
+					wError,
 					{
 						ctor: '::',
 						_0: A2(
@@ -23449,37 +23984,21 @@ var _user$project$Page_ExpenseDetail$voteForm = function (model) {
 							{ctor: '[]'},
 							{
 								ctor: '::',
-								_0: _elm_lang$html$Html$text('Funding Limit (Optional)'),
+								_0: _elm_lang$html$Html$text('Expense Weight (1-100)'),
 								_1: {ctor: '[]'}
 							}),
 						_1: {
 							ctor: '::',
-							_0: _rundis$elm_bootstrap$Bootstrap_Form_InputGroup$view(
-								A2(
-									_rundis$elm_bootstrap$Bootstrap_Form_InputGroup$predecessors,
-									{
+							_0: _rundis$elm_bootstrap$Bootstrap_Form_Input$number(
+								{
+									ctor: '::',
+									_0: _rundis$elm_bootstrap$Bootstrap_Form_Input$placeholder(wDef),
+									_1: {
 										ctor: '::',
-										_0: A2(
-											_rundis$elm_bootstrap$Bootstrap_Form_InputGroup$span,
-											{ctor: '[]'},
-											{
-												ctor: '::',
-												_0: _elm_lang$html$Html$text('%'),
-												_1: {ctor: '[]'}
-											}),
+										_0: _rundis$elm_bootstrap$Bootstrap_Form_Input$onInput(_user$project$Page_ExpenseDetail$SetWeight),
 										_1: {ctor: '[]'}
-									},
-									_rundis$elm_bootstrap$Bootstrap_Form_InputGroup$config(
-										_rundis$elm_bootstrap$Bootstrap_Form_InputGroup$text(
-											{
-												ctor: '::',
-												_0: _rundis$elm_bootstrap$Bootstrap_Form_Input$placeholder(pDef),
-												_1: {
-													ctor: '::',
-													_0: _rundis$elm_bootstrap$Bootstrap_Form_Input$onInput(_user$project$Page_ExpenseDetail$SetPersonalMax),
-													_1: {ctor: '[]'}
-												}
-											})))),
+									}
+								}),
 							_1: {
 								ctor: '::',
 								_0: A2(
@@ -23487,17 +24006,17 @@ var _user$project$Page_ExpenseDetail$voteForm = function (model) {
 									{ctor: '[]'},
 									{
 										ctor: '::',
-										_0: _elm_lang$html$Html$text('Optional: You will stop funding this expense once your contribution reaches this percent of your personal share of the surplus'),
+										_0: _elm_lang$html$Html$text('You rank one or more items equally, your funding will be split between those items based on their relative weights.  Equally weighted items receive equal funding, while an item with twice the weight of another item will receive twice as much funding.'),
 										_1: {ctor: '[]'}
 									}),
 								_1: {
 									ctor: '::',
 									_0: A2(
 										_rundis$elm_bootstrap$Bootstrap_Form$validationText,
-										pHidden,
+										wHidden,
 										{
 											ctor: '::',
-											_0: _elm_lang$html$Html$text(pValTxt),
+											_0: _elm_lang$html$Html$text(wValTxt),
 											_1: {ctor: '[]'}
 										}),
 									_1: {ctor: '[]'}
@@ -23508,53 +24027,122 @@ var _user$project$Page_ExpenseDetail$voteForm = function (model) {
 				_1: {
 					ctor: '::',
 					_0: A2(
-						_rundis$elm_bootstrap$Bootstrap_Button$button,
+						_rundis$elm_bootstrap$Bootstrap_Form$group,
+						pError,
 						{
 							ctor: '::',
-							_0: _rundis$elm_bootstrap$Bootstrap_Button$primary,
+							_0: A2(
+								_rundis$elm_bootstrap$Bootstrap_Form$label,
+								{ctor: '[]'},
+								{
+									ctor: '::',
+									_0: _elm_lang$html$Html$text('Maximum Funding (Optional)'),
+									_1: {ctor: '[]'}
+								}),
 							_1: {
 								ctor: '::',
-								_0: _rundis$elm_bootstrap$Bootstrap_Button$onClick(_user$project$Page_ExpenseDetail$SubmitVote),
+								_0: _rundis$elm_bootstrap$Bootstrap_Form_InputGroup$view(
+									A2(
+										_rundis$elm_bootstrap$Bootstrap_Form_InputGroup$predecessors,
+										{
+											ctor: '::',
+											_0: A2(
+												_rundis$elm_bootstrap$Bootstrap_Form_InputGroup$span,
+												{ctor: '[]'},
+												{
+													ctor: '::',
+													_0: _elm_lang$html$Html$text('%'),
+													_1: {ctor: '[]'}
+												}),
+											_1: {ctor: '[]'}
+										},
+										_rundis$elm_bootstrap$Bootstrap_Form_InputGroup$config(
+											_rundis$elm_bootstrap$Bootstrap_Form_InputGroup$number(
+												{
+													ctor: '::',
+													_0: _rundis$elm_bootstrap$Bootstrap_Form_Input$placeholder(pDef),
+													_1: {
+														ctor: '::',
+														_0: _rundis$elm_bootstrap$Bootstrap_Form_Input$onInput(_user$project$Page_ExpenseDetail$SetPersonalMax),
+														_1: {ctor: '[]'}
+													}
+												})))),
 								_1: {
 									ctor: '::',
-									_0: _rundis$elm_bootstrap$Bootstrap_Button$disabled(disableSubmit),
-									_1: {ctor: '[]'}
+									_0: A2(
+										_rundis$elm_bootstrap$Bootstrap_Form$help,
+										{ctor: '[]'},
+										{
+											ctor: '::',
+											_0: _elm_lang$html$Html$text('Optional: If you choose a maximum funding limit you will stop funding this expense once your contribution reaches the specified percent of your personal share of the surplus'),
+											_1: {ctor: '[]'}
+										}),
+									_1: {
+										ctor: '::',
+										_0: A2(
+											_rundis$elm_bootstrap$Bootstrap_Form$validationText,
+											pHidden,
+											{
+												ctor: '::',
+												_0: _elm_lang$html$Html$text(pValTxt),
+												_1: {ctor: '[]'}
+											}),
+										_1: {ctor: '[]'}
+									}
 								}
 							}
-						},
-						{
-							ctor: '::',
-							_0: _elm_lang$html$Html$text('Vote'),
-							_1: {ctor: '[]'}
 						}),
 					_1: {
 						ctor: '::',
 						_0: A2(
-							_rundis$elm_bootstrap$Bootstrap_Button$linkButton,
+							_rundis$elm_bootstrap$Bootstrap_Button$button,
 							{
 								ctor: '::',
-								_0: _rundis$elm_bootstrap$Bootstrap_Button$secondary,
+								_0: _rundis$elm_bootstrap$Bootstrap_Button$primary,
 								_1: {
 									ctor: '::',
-									_0: _rundis$elm_bootstrap$Bootstrap_Button$attrs(
-										{
-											ctor: '::',
-											_0: _elm_lang$html$Html_Attributes$class('ml-3'),
-											_1: {
-												ctor: '::',
-												_0: _user$project$Route$href(_user$project$Route$Expense),
-												_1: {ctor: '[]'}
-											}
-										}),
-									_1: {ctor: '[]'}
+									_0: _rundis$elm_bootstrap$Bootstrap_Button$onClick(_user$project$Page_ExpenseDetail$SubmitVote),
+									_1: {
+										ctor: '::',
+										_0: _rundis$elm_bootstrap$Bootstrap_Button$disabled(disableSubmit),
+										_1: {ctor: '[]'}
+									}
 								}
 							},
 							{
 								ctor: '::',
-								_0: _elm_lang$html$Html$text('Back to Expense Summary'),
+								_0: _elm_lang$html$Html$text('Vote'),
 								_1: {ctor: '[]'}
 							}),
-						_1: {ctor: '[]'}
+						_1: {
+							ctor: '::',
+							_0: A2(
+								_rundis$elm_bootstrap$Bootstrap_Button$linkButton,
+								{
+									ctor: '::',
+									_0: _rundis$elm_bootstrap$Bootstrap_Button$secondary,
+									_1: {
+										ctor: '::',
+										_0: _rundis$elm_bootstrap$Bootstrap_Button$attrs(
+											{
+												ctor: '::',
+												_0: _elm_lang$html$Html_Attributes$class('ml-3'),
+												_1: {
+													ctor: '::',
+													_0: _user$project$Route$href(_user$project$Route$Expense),
+													_1: {ctor: '[]'}
+												}
+											}),
+										_1: {ctor: '[]'}
+									}
+								},
+								{
+									ctor: '::',
+									_0: _elm_lang$html$Html$text('Back to Expense Summary'),
+									_1: {ctor: '[]'}
+								}),
+							_1: {ctor: '[]'}
+						}
 					}
 				}
 			}
@@ -24210,7 +24798,7 @@ var _user$project$Main$updatePage = F3(
 			});
 		var session = model.session;
 		var _p14 = {ctor: '_Tuple2', _0: msg, _1: page};
-		_v8_19:
+		_v8_20:
 		do {
 			switch (_p14._0.ctor) {
 				case 'SetRoute':
@@ -24342,7 +24930,7 @@ var _user$project$Main$updatePage = F3(
 							_p14._0._0,
 							_p14._1._0);
 					} else {
-						break _v8_19;
+						break _v8_20;
 					}
 				case 'LoginMsg':
 					if (_p14._1.ctor === 'Login') {
@@ -24357,7 +24945,7 @@ var _user$project$Main$updatePage = F3(
 							return {ctor: '_Tuple2', _0: newModel, _1: cmd};
 						}
 					} else {
-						break _v8_19;
+						break _v8_20;
 					}
 				case 'ProfileMsg':
 					if (_p14._1.ctor === 'Profile') {
@@ -24378,7 +24966,7 @@ var _user$project$Main$updatePage = F3(
 							return {ctor: '_Tuple2', _0: newModel, _1: cmd};
 						}
 					} else {
-						break _v8_19;
+						break _v8_20;
 					}
 				case 'ExpenseDetailMsg':
 					if (_p14._1.ctor === 'ExpenseDetail') {
@@ -24390,7 +24978,19 @@ var _user$project$Main$updatePage = F3(
 							_p14._0._0,
 							_p14._1._0);
 					} else {
-						break _v8_19;
+						break _v8_20;
+					}
+				case 'ExpenseMsg':
+					if (_p14._1.ctor === 'Expense') {
+						return A5(
+							toPage,
+							_user$project$Main$Expense,
+							_user$project$Main$ExpenseMsg,
+							_user$project$Page_Expense$update(session),
+							_p14._0._0,
+							_p14._1._0);
+					} else {
+						break _v8_20;
 					}
 				case 'TutorialMsg':
 					return {
@@ -24403,7 +25003,7 @@ var _user$project$Main$updatePage = F3(
 						_1: _elm_lang$core$Platform_Cmd$none
 					};
 				default:
-					break _v8_19;
+					break _v8_20;
 			}
 		} while(false);
 		return A2(_user$project$Util_ops['=>'], model, _elm_lang$core$Platform_Cmd$none);

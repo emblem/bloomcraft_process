@@ -1,4 +1,4 @@
-from django.http import HttpResponseForbidden
+from django.http import HttpResponseForbidden, HttpResponseNotFound
 from django.views.decorators.csrf import csrf_exempt, ensure_csrf_cookie
 from django.views.decorators.http import require_http_methods
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
@@ -101,8 +101,8 @@ class ExpenseCreationView(LoginRequiredMixin, CreateView):
     success_url = '/process#expense'
 
     model = AllocationExpense
-    fields = ('name', 'partial_allowed', 'excess_allowed', 'requested_funds', 'detail_text')
-    
+    fields = ('name', 'requested_funds', 'partial_allowed', 'excess_allowed', 'detail_text')
+
     def form_valid(self, form):
         self.object = form.save(commit = False)
         self.object.current_allocated_funds = 0
@@ -199,6 +199,25 @@ def allocation_view(request):
     return JsonResponse({'allocation' : allocation_json})
 
 @login_required
+def votes_view(request):
+    allocation = current_allocation()
+    expenses = RankedAllocator().allocate_funds(allocation, request.user)    
+
+    voteList = list()
+    
+    for expense in expenses:
+        voteJson = None
+        try:
+            vote = AllocationVote.objects.get( user = request.user, expense = expense )
+            voteJson = vote.toJson()
+        except AllocationVote.DoesNotExist:
+            pass
+        
+        voteList.append( {"expense" : expense_to_json(expense), "vote" : voteJson })
+
+    return JsonResponse({'votes' : voteList})
+
+@login_required
 def expense_view(request, slug):
     allocation = current_allocation()
     expenses = RankedAllocator().allocate_funds(allocation, request.user)
@@ -222,11 +241,13 @@ def vote_view(request, slug):
 
     if request.method == 'POST':
         newVote = json.loads(request.body.decode('utf-8'))['vote']
+
         expense = AllocationExpense.objects.get(slug=slug)
         vote = AllocationVote(weight = newVote['weight'],
                               personal_abs_max = newVote['personal_abs_max'],
                               global_abs_max = newVote['global_abs_max'],
                               personal_pct_max = newVote['personal_pct_max'],
+                              rank = newVote['rank'],
                               user = request.user,
                               expense = expense)
 
@@ -239,6 +260,16 @@ def vote_view(request, slug):
         vote.save()
 
         return JsonResponse({"result": "Thanks for voting :)"})
+
+    if request.method == 'DELETE':
+        try:
+            expense = AllocationExpense.objects.get(slug = slug)
+            vote = AllocationVote.objects.get(user = request.user, expense = expense)
+            vote.delete()
+        except (AllocationExpense.DoesNotExist, AllocationVote.DoesNotExist):
+            return HttpResponseNotFound()
+
+        return JsonResponse({"result": "success"})
 
 def tutorial_to_json(tutorial):
     return { "header" : tutorial.header,

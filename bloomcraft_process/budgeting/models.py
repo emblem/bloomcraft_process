@@ -165,16 +165,20 @@ class Allocation(models.Model):
 
     
 class AllocationExpense(models.Model):
-    name = models.CharField(max_length=200, unique = True)
+    name = models.CharField(max_length=200, unique = True,
+                            verbose_name = "Name for this expense" )
 
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
     allocations = models.ManyToManyField(Allocation)    
 
-    partial_allowed = models.BooleanField(default = True)
-    excess_allowed = models.BooleanField(default = False)
-    requested_funds = models.IntegerField()
+    partial_allowed = models.BooleanField(default = True,
+                                          verbose_name = "Willing to accept less than the requested amount?")
+    excess_allowed = models.BooleanField(default = False,
+                                         verbose_name = "Willing to accept more than the requested amount?")
+    
+    requested_funds = models.IntegerField(verbose_name = "How much are you requesting?")
     current_allocated_funds = models.IntegerField()
-    detail_text = models.TextField()
+    detail_text = models.TextField(verbose_name = "More information about this expense")
 
     slug = models.SlugField()
 
@@ -193,7 +197,8 @@ class AllocationVote(models.Model):
     user = models.ForeignKey(User, on_delete = models.CASCADE)
     expense = models.ForeignKey(AllocationExpense, on_delete = models.CASCADE)
 
-    weight = models.FloatField()
+    weight = models.FloatField(default=1)
+    rank = models.IntegerField(default=1)
     personal_abs_max = models.IntegerField(blank=True, null=True)
     global_abs_max = models.IntegerField(blank=True, null=True)
 
@@ -208,6 +213,7 @@ class AllocationVote(models.Model):
 
     def toJson(self):
         return { "weight" : self.weight,
+                 "rank" : self.rank,
                  "personal_abs_max" : self.personal_abs_max,
                  "global_abs_max": self.global_abs_max,
                  "personal_pct_max": self.personal_pct_max,

@@ -1,6 +1,8 @@
 from collections import defaultdict
 from math import ceil
 import pprint
+from django.utils.dateformat import format
+from django.conf import settings
 
 flatten = lambda l: [item for sublist in l for item in sublist]
 epsilon = 1e-5
@@ -36,18 +38,18 @@ class RankedAllocator:
         return (allowed_global_allocation, allowed_personal_allocation)
 
     def get_top_open_expense(self, votes, expenses, working_allocation, working_user_allocation):
-        votes = sorted(votes, key=(lambda v: v.weight), reverse=True)
+        votes = sorted(votes, key=(lambda v: v.rank), reverse=False)
         for idx in range(0, len(votes)):
-            votes_with_same_weight = [votes[idx]]
+            votes_with_same_rank = [votes[idx]]
             
             for idx2 in range(idx+1, len(votes)):
-                if votes[idx2].weight == votes[idx].weight:
-                    votes_with_same_weight.append(votes[idx2])
+                if votes[idx2].rank == votes[idx].rank:
+                    votes_with_same_rank.append(votes[idx2])
                 else:
                     break
 
             open_expenses = []
-            for vote in votes_with_same_weight:
+            for vote in votes_with_same_rank:
                 (global_allowed, personal_allowed) = self.get_allowed_additional_allocation(vote, expenses, working_allocation, working_user_allocation)
                 if global_allowed > epsilon and personal_allowed > epsilon:
 #                    print (str(vote) + " " + str(global_allowed) + " personal:" + str(personal_allowed))
@@ -71,8 +73,19 @@ class RankedAllocator:
                 return None
 
             #            print("Top expense for " + user.username + " is " + top_expense.name)
-            for top_expense in top_expenses:
-                round_allocation[user][top_expense] += self.amount_remaining_per_user/len(top_expenses)
+            total_weight = 0
+            for vote in user_votes[user]:
+                if vote.expense in top_expenses:
+                    total_weight += vote.weight
+
+            print("Total Weight for " + str(user) + " is :" + str(total_weight))
+            
+            for vote in user_votes[user]:
+                if vote.expense in top_expenses:
+                    if total_weight > 0:
+                        round_allocation[user][vote.expense] += self.amount_remaining_per_user * (vote.weight / total_weight)
+                    else:
+                        round_allocation[user][vote.expense] += self.amount_remaining_per_user * len(top_expenses)
 
         return round_allocation
 
@@ -174,7 +187,7 @@ class RankedAllocator:
                     working_user_allocation[user][expense] += round_funds
 
                     if round_funds > 0:
-#                        print( user.username + " allocated " + str(round_funds) + " to " + expense.name)
+                        print( user.get_full_name() + " allocated " + str(round_funds) + " to " + expense.name)
                         made_alloc = True
                     amount_remaining -= round_funds
 #            pprint.pprint(working_allocation)
@@ -207,7 +220,8 @@ def allocation_to_json(allocation, expenses):
     allocation_json = {
         'amount' : allocation.amount,
         'num_voters' : allocation.num_voters,
-        'expenses' : [expense_to_json(expense) for expense in expenses]
+        'expenses' : [expense_to_json(expense) for expense in expenses],
+        'decision_date' : format(allocation.decision_date, settings.DATE_FORMAT),
         }
     
     return allocation_json

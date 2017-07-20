@@ -361,8 +361,11 @@ updatePage page msg model =
 
                         Nothing -> (newModel, cmd)
             (ExpenseDetailMsg subMsg, ExpenseDetail subModel) ->
-                    toPage ExpenseDetail ExpenseDetailMsg (ExpenseDetail.update session) subMsg subModel
-
+                toPage ExpenseDetail ExpenseDetailMsg (ExpenseDetail.update session) subMsg subModel
+                
+            (ExpenseMsg subMsg, Expense subModel) ->
+                toPage Expense ExpenseMsg (Expense.update session) subMsg subModel
+                        
             (TutorialMsg subMsg, _) ->
                 ( {model | tutorialState = (Tutorial.update subMsg model.tutorialState)}, Cmd.none )
                     

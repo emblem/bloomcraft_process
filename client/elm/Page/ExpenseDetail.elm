@@ -143,7 +143,7 @@ voteForm model =
             [ Form.group rError
                   [ Form.label [ for "rank" ] [ text "Expense Item Rank (1 is the most important)" ]
                   , Input.number [ Input.id "rank", Input.onInput SetRank, Input.defaultValue rDef ]
-                  , Form.help [] [ text  "Rank how important this expense is to you.  Rank 1 items are funded before rank 2 items, which are funded before rank 3 items, and so on.  If two or more items are ranked equally, your funding will be split between them based on the weights you give them." ]
+                  , Form.help [] [ text  "Rank how important this expense is to you.  Lower ranked items will receive no funding until higher ranked items are fully funded.  If two or more items are ranked equally, your funding will be split between them based on the weights you give them." ]
                   , Form.validationText rHidden [ text rValTxt ]
                   ]
 {--            , Form.group gError
@@ -165,7 +165,7 @@ voteForm model =
                     [ Input.placeholder wDef
                     , Input.onInput SetWeight
                     ]
-                , Form.help [] [ text "You rank one or more items equally, your funding will be split between those items based on their relative weights.  Equally weighted items receive equal funding, while an item with twice the weight of another item will receive twice as much funding." ]
+                , Form.help [] [ text "If you've ranked one or more items equally, your funding will be split between those items based on their relative weights.  Equally weighted items receive equal funding, while an item with twice the weight of another item will receive twice as much funding." ]
                 , Form.validationText wHidden [ text wValTxt ]
                 ]
             , Form.group pError
@@ -177,7 +177,7 @@ voteForm model =
                                     )
                 |> InputGroup.predecessors [ InputGroup.span [] [ text "%" ] ]
                 |> InputGroup.view
-                , Form.help [] [ text "Optional: If you choose a maximum funding limit you will stop funding this expense once your contribution reaches the specified percent of your personal share of the surplus" ]
+                , Form.help [] [ text "Optional: If you choose a maximum funding limit you will stop funding this expense once your contribution reaches the specified percent of your personal share of the surplus." ]
                 , Form.validationText pHidden [ text pValTxt ]
                 ]
             , Button.button [Button.primary, Button.onClick SubmitVote, Button.disabled disableSubmit] [ text "Vote" ]

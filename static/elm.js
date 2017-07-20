@@ -20603,7 +20603,7 @@ var _user$project$Page_Budget$explainerText = function (budget) {
 													'.  Currently the proposed rents will',
 													A2(
 														_elm_lang$core$Basics_ops['++'],
-														(_elm_lang$core$Native_Utils.cmp(income - coreExpense, 0) > 0) ? '' : ' only ',
+														(_elm_lang$core$Native_Utils.cmp(income - coreExpense, 0) > 0) ? ' ' : ' only ',
 														A2(
 															_elm_lang$core$Basics_ops['++'],
 															increaseOrDecrease(income - currentIncome),
@@ -23982,7 +23982,7 @@ var _user$project$Page_ExpenseDetail$voteForm = function (model) {
 								{ctor: '[]'},
 								{
 									ctor: '::',
-									_0: _elm_lang$html$Html$text('Rank how important this expense is to you.  Rank 1 items are funded before rank 2 items, which are funded before rank 3 items, and so on.  If two or more items are ranked equally, your funding will be split between them based on the weights you give them.'),
+									_0: _elm_lang$html$Html$text('Rank how important this expense is to you.  Lower ranked items will receive no funding until higher ranked items are fully funded.  If two or more items are ranked equally, your funding will be split between them based on the weights you give them.'),
 									_1: {ctor: '[]'}
 								}),
 							_1: {
@@ -24034,7 +24034,7 @@ var _user$project$Page_ExpenseDetail$voteForm = function (model) {
 									{ctor: '[]'},
 									{
 										ctor: '::',
-										_0: _elm_lang$html$Html$text('You rank one or more items equally, your funding will be split between those items based on their relative weights.  Equally weighted items receive equal funding, while an item with twice the weight of another item will receive twice as much funding.'),
+										_0: _elm_lang$html$Html$text('If you\'ve ranked one or more items equally, your funding will be split between those items based on their relative weights.  Equally weighted items receive equal funding, while an item with twice the weight of another item will receive twice as much funding.'),
 										_1: {ctor: '[]'}
 									}),
 								_1: {
@@ -24102,7 +24102,7 @@ var _user$project$Page_ExpenseDetail$voteForm = function (model) {
 										{ctor: '[]'},
 										{
 											ctor: '::',
-											_0: _elm_lang$html$Html$text('Optional: If you choose a maximum funding limit you will stop funding this expense once your contribution reaches the specified percent of your personal share of the surplus'),
+											_0: _elm_lang$html$Html$text('Optional: If you choose a maximum funding limit you will stop funding this expense once your contribution reaches the specified percent of your personal share of the surplus.'),
 											_1: {ctor: '[]'}
 										}),
 									_1: {

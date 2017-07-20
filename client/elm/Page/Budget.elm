@@ -175,7 +175,7 @@ explainerText budget =
             ++ ", " ++ changeWord (requiredPctIncrease budget) ++ " of "
             ++ defaultIncreasePct
             ++ ".  Currently the proposed rents will"
-            ++ (if (income-coreExpense) > 0 then "" else " only ")
+            ++ (if (income-coreExpense) > 0 then " " else " only ")
             ++ increaseOrDecrease (income - currentIncome)
             ++ " income by $"
             ++ toString (round (income - currentIncome))

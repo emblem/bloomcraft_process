@@ -48,6 +48,11 @@ view model =
 voteSummaryView : Model -> Html Msg
 voteSummaryView model =
     let
+        summaryText =
+            "This page shows how the $"
+            ++ toString model.allocation.amount
+            ++ " in surplus funds will be allocated."
+
         voteSummaryText = "Voting to allocate the current surplus will end at midnight on "
                           ++ model.allocation.decisionDate
                           ++ ".  Until then, you may update your vote on each expense item as many times as you like."
@@ -60,7 +65,8 @@ voteSummaryView model =
             |> Card.block []
                [ Card.custom <|
                      div [] 
-                     [ p [ class "lead" ] [ text voteSummaryText]
+                     [ p [class "lead"] [text summaryText]
+                     , p [class "lead"] [ text voteSummaryText]
                      , voteTable model.votes
                      ]
                ]           
@@ -163,10 +169,6 @@ allocationSummary model =
                            (ceiling (toFloat allocation.amount/toFloat allocation.numVoters))
                        else
                            allocation.amount        
-        summaryText =
-            "This page shows how the $"
-            ++ toString allocation.amount
-            ++ " in surplus funds will be allocated."
     in
         Card.config [ Card.attrs [class "mt-2" ]]
             |> Card.headerH3 []
@@ -177,7 +179,6 @@ allocationSummary model =
                      div []
                      [ div [ style [("width", "100%"), ("margin", "0 auto")] ]
                            [ svg [ viewBox "-25 -15 150 130" ] [model.allocation |> allocationPieSummary |> pieChart ] ]
-                     , p [ class "lead" ] [ text summaryText]
                      ]
                ]           
             |> Card.view

@@ -21670,7 +21670,7 @@ var _user$project$Page_Help$view = function (model) {
 						_rundis$elm_bootstrap$Bootstrap_Grid$col,
 						{
 							ctor: '::',
-							_0: _rundis$elm_bootstrap$Bootstrap_Grid_Col$lg12,
+							_0: _rundis$elm_bootstrap$Bootstrap_Grid_Col$lg10,
 							_1: {ctor: '[]'}
 						},
 						{
@@ -21698,7 +21698,7 @@ var _user$project$Page_Help$view = function (model) {
 							_rundis$elm_bootstrap$Bootstrap_Grid$col,
 							{
 								ctor: '::',
-								_0: _rundis$elm_bootstrap$Bootstrap_Grid_Col$lg12,
+								_0: _rundis$elm_bootstrap$Bootstrap_Grid_Col$lg10,
 								_1: {ctor: '[]'}
 							},
 							A2(_elm_lang$core$List$map, _user$project$Page_Help$tutorialView, model.content)),
@@ -22644,13 +22644,6 @@ var _user$project$Page_Expense$allocationSummary = function (model) {
 	var allocation = model.allocation;
 	var amtPerPerson = (_elm_lang$core$Native_Utils.cmp(allocation.numVoters, 0) > 0) ? _elm_lang$core$Basics$ceiling(
 		_elm_lang$core$Basics$toFloat(allocation.amount) / _elm_lang$core$Basics$toFloat(allocation.numVoters)) : allocation.amount;
-	var summaryText = A2(
-		_elm_lang$core$Basics_ops['++'],
-		'This page shows how the $',
-		A2(
-			_elm_lang$core$Basics_ops['++'],
-			_elm_lang$core$Basics$toString(allocation.amount),
-			' in surplus funds will be allocated.'));
 	return _rundis$elm_bootstrap$Bootstrap_Card$view(
 		A3(
 			_rundis$elm_bootstrap$Bootstrap_Card$block,
@@ -22696,22 +22689,7 @@ var _user$project$Page_Expense$allocationSummary = function (model) {
 										}),
 									_1: {ctor: '[]'}
 								}),
-							_1: {
-								ctor: '::',
-								_0: A2(
-									_elm_lang$html$Html$p,
-									{
-										ctor: '::',
-										_0: _elm_lang$html$Html_Attributes$class('lead'),
-										_1: {ctor: '[]'}
-									},
-									{
-										ctor: '::',
-										_0: _elm_lang$html$Html$text(summaryText),
-										_1: {ctor: '[]'}
-									}),
-								_1: {ctor: '[]'}
-							}
+							_1: {ctor: '[]'}
 						})),
 				_1: {ctor: '[]'}
 			},
@@ -23159,6 +23137,13 @@ var _user$project$Page_Expense$voteSummaryView = function (model) {
 			_elm_lang$core$Basics_ops['++'],
 			model.allocation.decisionDate,
 			A2(_elm_lang$core$Basics_ops['++'], '.  Until then, you may update your vote on each expense item as many times as you like.', ' You can vote for as many, or as few, items as you want to.')));
+	var summaryText = A2(
+		_elm_lang$core$Basics_ops['++'],
+		'This page shows how the $',
+		A2(
+			_elm_lang$core$Basics_ops['++'],
+			_elm_lang$core$Basics$toString(model.allocation.amount),
+			' in surplus funds will be allocated.'));
 	return _rundis$elm_bootstrap$Bootstrap_Card$view(
 		A3(
 			_rundis$elm_bootstrap$Bootstrap_Card$block,
@@ -23180,13 +23165,28 @@ var _user$project$Page_Expense$voteSummaryView = function (model) {
 								},
 								{
 									ctor: '::',
-									_0: _elm_lang$html$Html$text(voteSummaryText),
+									_0: _elm_lang$html$Html$text(summaryText),
 									_1: {ctor: '[]'}
 								}),
 							_1: {
 								ctor: '::',
-								_0: _user$project$Page_Expense$voteTable(model.votes),
-								_1: {ctor: '[]'}
+								_0: A2(
+									_elm_lang$html$Html$p,
+									{
+										ctor: '::',
+										_0: _elm_lang$html$Html_Attributes$class('lead'),
+										_1: {ctor: '[]'}
+									},
+									{
+										ctor: '::',
+										_0: _elm_lang$html$Html$text(voteSummaryText),
+										_1: {ctor: '[]'}
+									}),
+								_1: {
+									ctor: '::',
+									_0: _user$project$Page_Expense$voteTable(model.votes),
+									_1: {ctor: '[]'}
+								}
 							}
 						})),
 				_1: {ctor: '[]'}

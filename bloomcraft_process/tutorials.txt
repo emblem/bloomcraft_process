@@ -23,7 +23,7 @@ The Expense Page
 
 The expense page is where you can allocate funds to different expenses, and propose new expenses.
 
-You can vote on as many expenses as you want, and you can change your vote at any time.  If you choose not to vote, your share of the allocation will be divided equally between those who do vote.
+You can vote (as an individual keyholder) on as many expenses as you want, and you can change your vote at any time.  If you choose not to vote, your share of the allocation will be divided equally between those who do vote.
 
 Each vote you place has three parts:
 
@@ -31,4 +31,25 @@ Each vote you place has three parts:
 * Weight
 * Optionally, a funding limit
 
-See the help page for details about how these are used to determine allocation of funds.
+See the help page for information about how these are used to determine allocation of funds.
+
+--
+
+How are funds allocated to expenses?
+
+When we have money left over after paying for our core expenses it's allocated based on the votes made by keyholders.  Here's how that process works:
+
+1. The surplus funds are divided evenly between all keyholders.  Each keyholder makes a list of all the items they voted on, ordered by the ranking they chose.
+2. Based on **rank**, each keyholder picks the top item from their list.
+  * If more than one item has the highest rank on the list, all equally ranked items are selected.
+3. Each keyholder takes $1 from their share of the surplus and allocates it to their current top ranked item(s).
+  * If a keyholder has more than one top ranked item, their dollar is divided among those items proportional to the **weight** assigned to each item.
+4. Keyholders cross completed items off their lists.  Items are completed if:
+  * The items have received their requested funds and have indicated they will not accept more than requested.
+  * The keyholders chose to include an optional **limit** in their vote on the item, and that limit has been reached.
+5. The process repeats from step 2, until all funds have been allocated.
+
+Helpful Hints:
+* If you want to split your funds equally between several items, give them all the same rank and the same weight.
+* If there's an item you feel must be funded before any others, give it a rank of 1 and give all other items a lower rank.
+* If all the items you vote on are fully funded before funds are exhausted, any remaining funds will be divided evenly among the other voters.

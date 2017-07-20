@@ -23,11 +23,11 @@ view : Model -> Html Msg
 view model =
     Grid.container []
         [ Grid.row [Row.centerMd]
-          [ Grid.col [ Col.lg12 ]
+          [ Grid.col [ Col.lg10 ]
               [ h3 [] [ text "Help" ]
               , hr [] []
               ]
-          , Grid.col [ Col.lg12 ] <|
+          , Grid.col [ Col.lg10 ] <|
               List.map tutorialView model.content
           ] 
         ]

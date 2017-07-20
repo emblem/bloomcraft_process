@@ -222,16 +222,27 @@ detailSummaryText lease defaultRent=
         rentDiff lease  = lease.proposedRent - lease.currentRent
         moreOrLess val = if val >= 0 then "more" else "less"
         raiseOrLower lease = if rentDiff lease  >= 0 then "raise" else "lower"
+        changeText =
+            raiseOrLower lease
+            ++ " "
+            ++ lease.name
+            ++ "'s monthly rent by $"
+            ++ toString (round <| abs (rentDiff lease))
+            ++ " to $"
+            ++ toString (round lease.proposedRent)
+            ++ "."
+        proposalText = if rentDiff lease == 0 then
+                          "not change "
+                          ++ lease.name
+                          ++ "'s current rent, which is $"
+                          ++ toString (round lease.proposedRent)
+                          ++ "."
+                      else
+                          changeText
     in
         "The current proposal is to "
-        ++ raiseOrLower lease
-        ++ " "
-        ++ lease.name
-        ++ "'s monthly rent by $"
-        ++ toString (round <| abs (rentDiff lease))
-        ++ " to $"
-        ++ toString (round lease.proposedRent)
-        ++ ".  This is $"
+        ++ proposalText
+        ++ " This proposed amount is $"
         ++ toString (round (abs (lease.proposedRent - defaultRent)))
         ++ " "
         ++ moreOrLess (lease.proposedRent - defaultRent)
@@ -273,7 +284,7 @@ changeRentView model budget viewLease =
 
         changeRentButton budget adminLease =
             Alert.info
-                [text "Change proposed rent"
+                [text "Enter new proposed rent"
                 , rentInputView model
                 ]            
     in
@@ -373,10 +384,12 @@ compareRentsByPctChangePlot budget =
         increasePct = requiredPctIncrease budget
                          
         changes = List.map change leases
-        maxChange = Basics.max (increasePct * 1.2) (List.maximum changes |> Maybe.withDefault 0)
+        maxChange = Basics.max (increasePct) (List.maximum changes |> Maybe.withDefault 0)
         minChange = Basics.min 0 (List.minimum changes |> Maybe.withDefault 0)
 
-        barWidth = {defaultPlotParams | minValue = minChange, maxValue = maxChange }
+        gutter = abs (maxChange - minChange)
+
+        barWidth = {defaultPlotParams | minValue = minChange - (0.1*gutter) , maxValue = maxChange + (0.2*gutter) }
         pp = { barWidth | height = 5 }
 
         drawLease pos lease = g [ transform <| "translate (0, " ++ (toString ((toFloat pos)*(pp.height+1))) ++ ")" ]
@@ -400,7 +413,7 @@ compareRentsByPctChangePlot budget =
                   List.concat
                       [ List.indexedMap drawLease leases
                       , [ annotate {barWidth | height = ((toFloat nLease) * (pp.height+1))}
-                              [Text "Default New Rent" , Location Above, Type (Separator increasePct), Size "3px"]
+                              [Text ("Default New Rent (" ++ pctStr increasePct ++ ")") , Location Above, Type (Separator increasePct), Size "3px"]
                         , annotate {barWidth | height = ((toFloat nLease) * (pp.height+1))}
                               [Text "Current Rent", Location Above, Type (Separator 0), Size "3px"]
                         ] 
@@ -426,11 +439,11 @@ viewRent pp lease baseLine =
     in
         g [] <| List.append
               (if val > baseLine then
-                  [ drawBox pp (0, baseLine, blueColor)
+                  [ drawBox pp (-1, baseLine, blueColor)
                   , drawBox pp (baseLine, val, lightBlueColor)
                   ]
               else
-                  [ drawBox pp (0, val, blueColor)                        
+                  [ drawBox pp (-1, val, blueColor)                        
                   , drawBox pp (val, baseLine, lightRedColor)
                   ])
              [ annotate pp [Text <| lease.name {-- ++ ": " ++ pctStr (val-baseLine) --}, Location (Inside Right), Type (TextOnly 0), Size "3px", Color "#FFFFFF"]

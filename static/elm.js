@@ -19982,7 +19982,7 @@ var _user$project$Page_Budget$viewRent = F3(
 					_0: A2(
 						_user$project$View_BarPlot$drawBox,
 						pp,
-						{ctor: '_Tuple3', _0: 0, _1: baseLine, _2: _user$project$View_Colors$blueColor}),
+						{ctor: '_Tuple3', _0: -1, _1: baseLine, _2: _user$project$View_Colors$blueColor}),
 					_1: {
 						ctor: '::',
 						_0: A2(
@@ -19996,7 +19996,7 @@ var _user$project$Page_Budget$viewRent = F3(
 					_0: A2(
 						_user$project$View_BarPlot$drawBox,
 						pp,
-						{ctor: '_Tuple3', _0: 0, _1: val, _2: _user$project$View_Colors$blueColor}),
+						{ctor: '_Tuple3', _0: -1, _1: val, _2: _user$project$View_Colors$blueColor}),
 					_1: {
 						ctor: '::',
 						_0: A2(
@@ -20063,7 +20063,7 @@ var _user$project$Page_Budget$compareRentsByPctChangePlot = function (budget) {
 	var changes = A2(_elm_lang$core$List$map, _user$project$Page_Budget$change, leases);
 	var maxChange = A2(
 		_elm_lang$core$Basics$max,
-		increasePct * 1.2,
+		increasePct,
 		A2(
 			_elm_lang$core$Maybe$withDefault,
 			0,
@@ -20075,9 +20075,10 @@ var _user$project$Page_Budget$compareRentsByPctChangePlot = function (budget) {
 			_elm_lang$core$Maybe$withDefault,
 			0,
 			_elm_lang$core$List$minimum(changes)));
+	var gutter = _elm_lang$core$Basics$abs(maxChange - minChange);
 	var barWidth = _elm_lang$core$Native_Utils.update(
 		_user$project$View_BarPlot$defaultPlotParams,
-		{minValue: minChange, maxValue: maxChange});
+		{minValue: minChange - (0.1 * gutter), maxValue: maxChange + (0.2 * gutter)});
 	var pp = _elm_lang$core$Native_Utils.update(
 		barWidth,
 		{height: 5});
@@ -20147,7 +20148,14 @@ var _user$project$Page_Budget$compareRentsByPctChangePlot = function (budget) {
 										}),
 									{
 										ctor: '::',
-										_0: _user$project$View_BarPlot$Text('Default New Rent'),
+										_0: _user$project$View_BarPlot$Text(
+											A2(
+												_elm_lang$core$Basics_ops['++'],
+												'Default New Rent (',
+												A2(
+													_elm_lang$core$Basics_ops['++'],
+													_user$project$Page_Budget$pctStr(increasePct),
+													')'))),
 										_1: {
 											ctor: '::',
 											_0: _user$project$View_BarPlot$Location(_user$project$View_BarPlot$Above),
@@ -20454,57 +20462,77 @@ var _user$project$Page_Budget$detailSummaryText = F2(
 				rentDiff(lease),
 				0) > -1) ? 'raise' : 'lower';
 		};
+		var changeText = A2(
+			_elm_lang$core$Basics_ops['++'],
+			raiseOrLower(lease),
+			A2(
+				_elm_lang$core$Basics_ops['++'],
+				' ',
+				A2(
+					_elm_lang$core$Basics_ops['++'],
+					lease.name,
+					A2(
+						_elm_lang$core$Basics_ops['++'],
+						'\'s monthly rent by $',
+						A2(
+							_elm_lang$core$Basics_ops['++'],
+							_elm_lang$core$Basics$toString(
+								_elm_lang$core$Basics$round(
+									_elm_lang$core$Basics$abs(
+										rentDiff(lease)))),
+							A2(
+								_elm_lang$core$Basics_ops['++'],
+								' to $',
+								A2(
+									_elm_lang$core$Basics_ops['++'],
+									_elm_lang$core$Basics$toString(
+										_elm_lang$core$Basics$round(lease.proposedRent)),
+									'.')))))));
+		var proposalText = _elm_lang$core$Native_Utils.eq(
+			rentDiff(lease),
+			0) ? A2(
+			_elm_lang$core$Basics_ops['++'],
+			'not change ',
+			A2(
+				_elm_lang$core$Basics_ops['++'],
+				lease.name,
+				A2(
+					_elm_lang$core$Basics_ops['++'],
+					'\'s current rent, which is $',
+					A2(
+						_elm_lang$core$Basics_ops['++'],
+						_elm_lang$core$Basics$toString(
+							_elm_lang$core$Basics$round(lease.proposedRent)),
+						'.')))) : changeText;
 		return _elm_lang$html$Html$text(
 			A2(
 				_elm_lang$core$Basics_ops['++'],
 				'The current proposal is to ',
 				A2(
 					_elm_lang$core$Basics_ops['++'],
-					raiseOrLower(lease),
+					proposalText,
 					A2(
 						_elm_lang$core$Basics_ops['++'],
-						' ',
+						' This proposed amount is $',
 						A2(
 							_elm_lang$core$Basics_ops['++'],
-							lease.name,
+							_elm_lang$core$Basics$toString(
+								_elm_lang$core$Basics$round(
+									_elm_lang$core$Basics$abs(lease.proposedRent - defaultRent))),
 							A2(
 								_elm_lang$core$Basics_ops['++'],
-								'\'s monthly rent by $',
+								' ',
 								A2(
 									_elm_lang$core$Basics_ops['++'],
-									_elm_lang$core$Basics$toString(
-										_elm_lang$core$Basics$round(
-											_elm_lang$core$Basics$abs(
-												rentDiff(lease)))),
+									moreOrLess(lease.proposedRent - defaultRent),
 									A2(
 										_elm_lang$core$Basics_ops['++'],
-										' to $',
+										' than the minimum recommended new rent of $',
 										A2(
 											_elm_lang$core$Basics_ops['++'],
 											_elm_lang$core$Basics$toString(
-												_elm_lang$core$Basics$round(lease.proposedRent)),
-											A2(
-												_elm_lang$core$Basics_ops['++'],
-												'.  This is $',
-												A2(
-													_elm_lang$core$Basics_ops['++'],
-													_elm_lang$core$Basics$toString(
-														_elm_lang$core$Basics$round(
-															_elm_lang$core$Basics$abs(lease.proposedRent - defaultRent))),
-													A2(
-														_elm_lang$core$Basics_ops['++'],
-														' ',
-														A2(
-															_elm_lang$core$Basics_ops['++'],
-															moreOrLess(lease.proposedRent - defaultRent),
-															A2(
-																_elm_lang$core$Basics_ops['++'],
-																' than the minimum recommended new rent of $',
-																A2(
-																	_elm_lang$core$Basics_ops['++'],
-																	_elm_lang$core$Basics$toString(
-																		_elm_lang$core$Basics$round(defaultRent)),
-																	'.')))))))))))))));
+												_elm_lang$core$Basics$round(defaultRent)),
+											'.')))))))));
 	});
 var _user$project$Page_Budget$explainerText = function (budget) {
 	var changeWord = function (val) {
@@ -20824,7 +20852,7 @@ var _user$project$Page_Budget$changeRentView = F3(
 				return _rundis$elm_bootstrap$Bootstrap_Alert$info(
 					{
 						ctor: '::',
-						_0: _elm_lang$html$Html$text('Change proposed rent'),
+						_0: _elm_lang$html$Html$text('Enter new proposed rent'),
 						_1: {
 							ctor: '::',
 							_0: _user$project$Page_Budget$rentInputView(model),

@@ -384,8 +384,8 @@ compareRentsByPctChangePlot budget =
         increasePct = requiredPctIncrease budget
                          
         changes = List.map change leases
-        maxChange = Basics.max (increasePct) (List.maximum changes |> Maybe.withDefault 0)
-        minChange = Basics.min 0 (List.minimum changes |> Maybe.withDefault 0)
+        maxChange = 0.01 + Basics.max (increasePct) (List.maximum changes |> Maybe.withDefault 0)
+        minChange = -0.01 + Basics.min 0 (List.minimum changes |> Maybe.withDefault 0)
 
         gutter = abs (maxChange - minChange)
 
@@ -407,15 +407,21 @@ compareRentsByPctChangePlot budget =
                     
         leases : List Lease
         leases = List.append usersLeases otherLeases
+
+        defaultChange = abs(increasePct) > 0.001
+                 
     in
         svg [ viewBox <| "0 0 120 " ++ (toFloat(nLease) * (pp.height+1) + 10 |> toString), width "100%" ]            
             [ g [transform "translate(20,10)"] <|
                   List.concat
                       [ List.indexedMap drawLease leases
-                      , [ annotate {barWidth | height = ((toFloat nLease) * (pp.height+1))}
+                      , if defaultChange then
+                            [ annotate {barWidth | height = ((toFloat nLease) * (pp.height+1))}
                               [Text ("Default New Rent (" ++ pctStr increasePct ++ ")") , Location Above, Type (Separator increasePct), Size "3px"]
-                        , annotate {barWidth | height = ((toFloat nLease) * (pp.height+1))}
-                              [Text "Current Rent", Location Above, Type (Separator 0), Size "3px"]
+                            ]
+                          else []
+                      , [annotate {barWidth | height = ((toFloat nLease) * (pp.height+1))}
+                            [Text "Current Rent", Location Above, Type (Separator 0), Size "3px"]
                         ] 
                       ]
             ]
@@ -446,7 +452,7 @@ viewRent pp lease baseLine =
                   [ drawBox pp (-1, val, blueColor)                        
                   , drawBox pp (val, baseLine, lightRedColor)
                   ])
-             [ annotate pp [Text <| lease.name {-- ++ ": " ++ pctStr (val-baseLine) --}, Location (Inside Right), Type (TextOnly 0), Size "3px", Color "#FFFFFF"]
+             [ annotate pp [Text <| lease.name {-- ++ ": " ++ pctStr (val-baseLine) --}, Location (Inside Right), Type (TextOnly 0), Size "3px", Color "#000000"]
 --             , annotate pp [Text <| , Location (Inside Right), Type (TextOnly 0), Size "3px"]
              ]            
 

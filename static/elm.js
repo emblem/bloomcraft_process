@@ -20027,7 +20027,7 @@ var _user$project$Page_Budget$viewRent = F3(
 										_0: _user$project$View_BarPlot$Size('3px'),
 										_1: {
 											ctor: '::',
-											_0: _user$project$View_BarPlot$Color('#FFFFFF'),
+											_0: _user$project$View_BarPlot$Color('#000000'),
 											_1: {ctor: '[]'}
 										}
 									}
@@ -20042,6 +20042,9 @@ var _user$project$Page_Budget$compareRentsByPctChangePlot = function (budget) {
 		return lease.name;
 	};
 	var increasePct = _user$project$Page_Budget$requiredPctIncrease(budget);
+	var defaultChange = _elm_lang$core$Native_Utils.cmp(
+		_elm_lang$core$Basics$abs(increasePct),
+		1.0e-3) > 0;
 	var unsortedLeases = budget.leases;
 	var sortedLeases = _elm_lang$core$List$reverse(
 		A2(_elm_lang$core$List$sortBy, _user$project$Page_Budget$change, unsortedLeases));
@@ -20061,14 +20064,14 @@ var _user$project$Page_Budget$compareRentsByPctChangePlot = function (budget) {
 	var otherLeases = _p7._1;
 	var leases = A2(_elm_lang$core$List$append, usersLeases, otherLeases);
 	var changes = A2(_elm_lang$core$List$map, _user$project$Page_Budget$change, leases);
-	var maxChange = A2(
+	var maxChange = 1.0e-2 + A2(
 		_elm_lang$core$Basics$max,
 		increasePct,
 		A2(
 			_elm_lang$core$Maybe$withDefault,
 			0,
 			_elm_lang$core$List$maximum(changes)));
-	var minChange = A2(
+	var minChange = -1.0e-2 + A2(
 		_elm_lang$core$Basics$min,
 		0,
 		A2(
@@ -20137,7 +20140,7 @@ var _user$project$Page_Budget$compareRentsByPctChangePlot = function (budget) {
 						_0: A2(_elm_lang$core$List$indexedMap, drawLease, leases),
 						_1: {
 							ctor: '::',
-							_0: {
+							_0: defaultChange ? {
 								ctor: '::',
 								_0: A2(
 									_user$project$View_BarPlot$annotate,
@@ -20171,7 +20174,11 @@ var _user$project$Page_Budget$compareRentsByPctChangePlot = function (budget) {
 											}
 										}
 									}),
-								_1: {
+								_1: {ctor: '[]'}
+							} : {ctor: '[]'},
+							_1: {
+								ctor: '::',
+								_0: {
 									ctor: '::',
 									_0: A2(
 										_user$project$View_BarPlot$annotate,
@@ -20199,9 +20206,9 @@ var _user$project$Page_Budget$compareRentsByPctChangePlot = function (budget) {
 											}
 										}),
 									_1: {ctor: '[]'}
-								}
-							},
-							_1: {ctor: '[]'}
+								},
+								_1: {ctor: '[]'}
+							}
 						}
 					})),
 			_1: {ctor: '[]'}

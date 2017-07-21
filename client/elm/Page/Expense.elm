@@ -49,14 +49,19 @@ voteSummaryView : Model -> Html Msg
 voteSummaryView model =
     let
         summaryText =
-            "This page shows how the $"
+            "Currently there are no surplus funds.  This page shows how funds would be allocated if rents increased to generate them."
+            ++ " As a placeholder, we've configured the page to allocate $"
             ++ toString model.allocation.amount
-            ++ " in surplus funds will be allocated."
+            ++ " in surplus funds.  When and if a surplus does exist, we'll update this amount to reflect the real value."                
 
         voteSummaryText = "Voting to allocate the current surplus will end at midnight on "
                           ++ model.allocation.decisionDate
                           ++ ".  Until then, you may update your vote on each expense item as many times as you like."
                           ++ " You can vote for as many, or as few, items as you want to."
+        otherVoters = "Right now, "
+                      ++ toString model.allocation.numVoters
+                      ++ " people have participated in allocating funds."
+                      ++ " As more people participate, the share of the surplus you are allocating will decrease."
     in
         Card.config [ Card.attrs [class "mt-2" ]]
             |> Card.headerH3 []
@@ -67,6 +72,7 @@ voteSummaryView model =
                      div [] 
                      [ p [class "lead"] [text summaryText]
                      , p [class "lead"] [ text voteSummaryText]
+                     , p [class "lead"] [ text otherVoters]
                      , voteTable model.votes
                      ]
                ]           
@@ -102,7 +108,7 @@ voteTable votes =
                       , Table.th [Table.cellAttr <| class "text-center"] [ text "Rank" ]
                       , Table.th [Table.cellAttr <| class "text-center"] [ text "Weight" ]
                       , Table.th [Table.cellAttr <| class "text-center"] [ text "Limit %" ]
-                      , Table.th [] [ text "Your Allocation" ]
+                      , Table.th [] [ text "From You" ]
                       , Table.th [] []
                       ]
             , tbody = Table.tbody [] <| List.map voteView sortedVotes

@@ -23114,7 +23114,7 @@ var _user$project$Page_Expense$voteTable = function (votes) {
 										{ctor: '[]'},
 										{
 											ctor: '::',
-											_0: _elm_lang$html$Html$text('Your Allocation'),
+											_0: _elm_lang$html$Html$text('From You'),
 											_1: {ctor: '[]'}
 										}),
 									_1: {
@@ -23137,6 +23137,13 @@ var _user$project$Page_Expense$voteTable = function (votes) {
 		});
 };
 var _user$project$Page_Expense$voteSummaryView = function (model) {
+	var otherVoters = A2(
+		_elm_lang$core$Basics_ops['++'],
+		'Right now, ',
+		A2(
+			_elm_lang$core$Basics_ops['++'],
+			_elm_lang$core$Basics$toString(model.allocation.numVoters),
+			A2(_elm_lang$core$Basics_ops['++'], ' people have participated in allocating funds.', ' As more people participate, the share of the surplus you are allocating will decrease.')));
 	var voteSummaryText = A2(
 		_elm_lang$core$Basics_ops['++'],
 		'Voting to allocate the current surplus will end at midnight on ',
@@ -23146,11 +23153,14 @@ var _user$project$Page_Expense$voteSummaryView = function (model) {
 			A2(_elm_lang$core$Basics_ops['++'], '.  Until then, you may update your vote on each expense item as many times as you like.', ' You can vote for as many, or as few, items as you want to.')));
 	var summaryText = A2(
 		_elm_lang$core$Basics_ops['++'],
-		'This page shows how the $',
+		'Currently there are no surplus funds.  This page shows how funds would be allocated if rents increased to generate them.',
 		A2(
 			_elm_lang$core$Basics_ops['++'],
-			_elm_lang$core$Basics$toString(model.allocation.amount),
-			' in surplus funds will be allocated.'));
+			' As a placeholder, we\'ve configured the page to allocate $',
+			A2(
+				_elm_lang$core$Basics_ops['++'],
+				_elm_lang$core$Basics$toString(model.allocation.amount),
+				' in surplus funds.  When and if a surplus does exist, we\'ll update this amount to reflect the real value.')));
 	return _rundis$elm_bootstrap$Bootstrap_Card$view(
 		A3(
 			_rundis$elm_bootstrap$Bootstrap_Card$block,
@@ -23191,8 +23201,23 @@ var _user$project$Page_Expense$voteSummaryView = function (model) {
 									}),
 								_1: {
 									ctor: '::',
-									_0: _user$project$Page_Expense$voteTable(model.votes),
-									_1: {ctor: '[]'}
+									_0: A2(
+										_elm_lang$html$Html$p,
+										{
+											ctor: '::',
+											_0: _elm_lang$html$Html_Attributes$class('lead'),
+											_1: {ctor: '[]'}
+										},
+										{
+											ctor: '::',
+											_0: _elm_lang$html$Html$text(otherVoters),
+											_1: {ctor: '[]'}
+										}),
+									_1: {
+										ctor: '::',
+										_0: _user$project$Page_Expense$voteTable(model.votes),
+										_1: {ctor: '[]'}
+									}
 								}
 							}
 						})),

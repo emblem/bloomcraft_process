@@ -305,4 +305,34 @@ def tutorial_view(request):
     tutorial.save()
     
     return JsonResponse({ "tutorial" : tutorial_to_json(tutorial) })
-    
+
+@login_required
+def score_vote_view(request, slug):    
+    election = Election.objects.get(slug = slug)
+    if(request.user.election_set.filter(pk = election.pk).exists()):
+        return JsonResponse({ "status" : "already_voted" })
+
+    if request.method == "GET":
+        return JsonResponse({
+            "status" : "can_vote",
+            "candidates" : get_candidates(election)
+        })
+
+    elif request.method == "POST":
+        ballot = json.loads(request.body.decode('utf-8'))['ballot']
+
+        anon_voter = AnonymousVoter(name = new_anon_id())
+
+        votes = []
+        try:
+            for ballot_line in ballot.votes:
+                candidate = Candidate.objects.get(name = ballot_line.candidate)
+                votes.append(ScoreVote(voter = anon_voter, candidate = candidate, score = ballot_line.score))
+        except Exception:
+            return JsonResponse( {"result" : "error", "reason" : "malformed ballot"} )
+            
+        anon_voter.save()
+        for vote in votes:
+            vote.save()            
+                            
+        return JsonResponse({ "result" : "success", "anon_id" : anon_voter.name })    

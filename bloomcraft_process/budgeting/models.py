@@ -7,6 +7,7 @@ from django.template.defaultfilters import slugify
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.validators import ASCIIUsernameValidator, UnicodeUsernameValidator
 from django.core.mail import send_mail
+from django.core.validators import MaxValueValidator, MinValueValidator
 
 import math
 
@@ -230,4 +231,43 @@ class Tutorial(models.Model):
         return str('"' + self.header + '" on "' + self.route + '"')
                  
                  
-                 
+### Voting Stuff, someday this should go in its own module
+
+class Election(models.Model):
+    name = models.CharField(max_length = 200, unique = True)
+    voters = models.ManyToManyField(User, blank = True)
+    slug = models.SlugField()
+    
+    def __str__(self):
+        return self.name
+
+    def save(self, *args, **kwargs):
+        if not self.id:
+            # Newly created object, so set slug
+            self.slug = slugify(self.name)
+
+        super(Election, self).save(*args, **kwargs)
+
+
+class Candidate(models.Model):
+    name = models.CharField(max_length = 200)
+    election = models.ForeignKey(Election, on_delete = models.CASCADE)
+    def __str__(self):
+        return self.name
+
+class AnonymousVoter(models.Model):
+    name = models.CharField(max_length = 200, unique = True)
+    def __str__(self):
+        return self.name
+    
+class ScoreVote(models.Model):
+    voter = models.ForeignKey(AnonymousVoter, on_delete = models.CASCADE)
+    candidate = models.ForeignKey(Candidate, on_delete = models.CASCADE)
+    score = models.IntegerField(
+        default = 0,
+        validators = [
+            MaxValueValidator(10),
+            MinValueValidator(0)
+        ])
+    def __str__(self):
+        return "ScoreVote for " + candidate.name + " by " + voter.name

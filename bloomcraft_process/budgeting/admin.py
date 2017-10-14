@@ -8,6 +8,13 @@ from .forms import *
 class AllocationExpenseAdmin(admin.ModelAdmin):
     prepopulated_fields = {"slug":("name",)}
 
+class CandidateInline(admin.TabularInline):
+    model = Candidate
+    
+class ElectionAdmin(admin.ModelAdmin):
+    prepopulated_fields = {"slug":("name",)}
+    inlines = [CandidateInline]
+    
 class TutorialAdmin(admin.ModelAdmin):
     filter_horizontal = ['seen_by']
 
@@ -50,4 +57,7 @@ admin.site.register(Allocation)
 admin.site.register(AllocationExpense, AllocationExpenseAdmin)
 admin.site.register(AllocationVote)
 admin.site.register(Tutorial, TutorialAdmin)
-
+admin.site.register(Election, ElectionAdmin)
+admin.site.register(ScoreVote)
+admin.site.register(Candidate)
+admin.site.register(AnonymousVoter)

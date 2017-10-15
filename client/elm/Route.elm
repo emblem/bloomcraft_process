@@ -17,6 +17,7 @@ type Route
     | EditExpense Slug
     | DeleteExpense Slug
     | Help
+    | Voting Slug
 
 route : Parser (Route -> a) a
 route =
@@ -27,6 +28,7 @@ route =
         , Url.map Expense (s "expense")
         , Url.map Profile (s "profile")
         , Url.map ExpenseDetail (s "expense" </> s "view" </> Allocation.slugParser)
+        , Url.map Voting (s "election" </> Allocation.slugParser </> s "vote.json")
         , Url.map Help (s "help")
         ]
       
@@ -42,6 +44,7 @@ routeToString page =
         Help -> "/process#help"
         EditExpense slug -> "/process/expense/edit/" ++ Allocation.slugToString slug
         DeleteExpense slug -> "/process/expense/delete/" ++ Allocation.slugToString slug
+        Voting slug -> "process#election/" ++ Allocation.slugToString slug ++ "/vote.json"
 
 href : Route -> Html.Attribute a
 href route =

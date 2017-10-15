@@ -235,6 +235,7 @@ class Tutorial(models.Model):
 
 class Election(models.Model):
     name = models.CharField(max_length = 200, unique = True)
+    detail_text = models.TextField()
     voters = models.ManyToManyField(User, blank = True)
     slug = models.SlugField()
     
@@ -248,10 +249,16 @@ class Election(models.Model):
 
         super(Election, self).save(*args, **kwargs)
 
-
+class Question(models.Model):
+    name = models.CharField(max_length = 200)
+    prompt = models.CharField(max_length = 200)
+    election = models.ForeignKey(Election, on_delete = models.CASCADE)
+    def __str__(self):
+        return self.name
+        
 class Candidate(models.Model):
     name = models.CharField(max_length = 200)
-    election = models.ForeignKey(Election, on_delete = models.CASCADE)
+    question = models.ForeignKey(Question, on_delete = models.CASCADE)
     def __str__(self):
         return self.name
 
@@ -270,4 +277,4 @@ class ScoreVote(models.Model):
             MinValueValidator(0)
         ])
     def __str__(self):
-        return "ScoreVote for " + candidate.name + " by " + voter.name
+        return "ScoreVote for " + self.candidate.name + " by " + self.voter.name

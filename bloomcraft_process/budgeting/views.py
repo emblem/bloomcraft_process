@@ -13,6 +13,9 @@ from django.middleware import csrf
 from django.core import serializers
 import json
 import pprint
+import random
+import string
+
 from django.http import HttpResponseRedirect
 
 from .allocation import allocation_to_json, expense_to_json, RankedAllocator
@@ -306,6 +309,20 @@ def tutorial_view(request):
     
     return JsonResponse({ "tutorial" : tutorial_to_json(tutorial) })
 
+def get_candidates(question):
+    c= [ candidate.name for candidate in question.candidate_set.all() ]
+    random.shuffle(c)
+    return c
+
+def get_questions(election):
+    return [  { "name" : question.name,
+                "prompt" : question.prompt,
+                "candidates" : get_candidates(question) } for question in election.question_set.all() ]
+
+
+def new_anon_id():
+    return ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(10))
+
 @login_required
 def score_vote_view(request, slug):    
     election = Election.objects.get(slug = slug)
@@ -315,24 +332,33 @@ def score_vote_view(request, slug):
     if request.method == "GET":
         return JsonResponse({
             "status" : "can_vote",
-            "candidates" : get_candidates(election)
+            "election" : {
+                "name" : election.name,
+                "slug" : election.slug,
+                "detailText" : election.detail_text,
+                "questions" : get_questions(election)
+            }
         })
 
     elif request.method == "POST":
         ballot = json.loads(request.body.decode('utf-8'))['ballot']
 
-        anon_voter = AnonymousVoter(name = new_anon_id())
+        anon_voter = AnonymousVoter.objects.create(name = new_anon_id())
 
+        questions = Question.objects.filter(election = election)
         votes = []
         try:
-            for ballot_line in ballot.votes:
-                candidate = Candidate.objects.get(name = ballot_line.candidate)
-                votes.append(ScoreVote(voter = anon_voter, candidate = candidate, score = ballot_line.score))
-        except Exception:
+            for vote in ballot['votes']:
+                print(vote)
+                question = election.question_set.get(name = vote['question'])
+                candidate = Candidate.objects.get(question = question, name = vote['candidate'])
+                votes.append(ScoreVote.objects.create(voter = anon_voter, candidate = candidate, score = vote['score']))
+        except Exception as e:
+            raise e
             return JsonResponse( {"result" : "error", "reason" : "malformed ballot"} )
             
         anon_voter.save()
         for vote in votes:
-            vote.save()            
+            vote.save()
                             
         return JsonResponse({ "result" : "success", "anon_id" : anon_voter.name })    

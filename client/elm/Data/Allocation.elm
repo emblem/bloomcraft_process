@@ -1,4 +1,4 @@
-module Data.Allocation exposing (Allocation, Expense, Vote, decoder, expenseDecoder, voteDecoder, Slug, slugParser, slugToString, encodeVote)
+module Data.Allocation exposing (Allocation, Expense, Vote, decoder, expenseDecoder, voteDecoder, Slug, Slug(..), slugParser, slugToString, encodeVote)
 
 import Json.Encode as Encode
 

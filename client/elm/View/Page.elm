@@ -2,6 +2,7 @@ module View.Page exposing (ActivePage(..), frame)
 
 import Html exposing (Html, div, text, span)
 import Html.Attributes exposing (href, class)
+import Data.Allocation exposing (Slug(..))
 
 import Bootstrap.Navbar as Navbar
 import Bootstrap.Grid as Grid
@@ -14,6 +15,7 @@ type ActivePage
     = Home
     | Budget
     | Expense
+    | Voting
     | Login
     | Profile
     | Help
@@ -39,6 +41,7 @@ viewHeader toMsg navState page session isLoading =
                    [ activeLinkIf Profile page [Route.href Route.Profile ] [text (if user.fullname == "" then user.username else user.fullname) ]
                    , activeLinkIf Budget page [Route.href Route.Budget] [text "Income"]
                    , activeLinkIf Expense page [Route.href Route.Expense] [text "Expenses"]
+                   , activeLinkIf Voting page [Route.href (Route.Voting (Slug "october-2017-leasing"))] [text "Voting" ]
                    , activeLinkIf Help page [Route.href Route.Help] [text "Help"]
                    ]
 

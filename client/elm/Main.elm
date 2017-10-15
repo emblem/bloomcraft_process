@@ -14,6 +14,7 @@ import Page.Login as Login
 import Page.Expense as Expense
 import Page.ExpenseDetail as ExpenseDetail
 import Page.Tutorial as Tutorial
+import Page.ScoreVote as ScoreVote
 import Request.Session
 import Route exposing (Route)
 import Task
@@ -32,6 +33,7 @@ type Page
     | Expense Expense.Model
     | ExpenseDetail ExpenseDetail.Model
     | Help Help.Model
+    | ScoreVote ScoreVote.Model
 
 type PageState
     = Loaded Page
@@ -143,6 +145,11 @@ viewPage model isLoading page =
                     |> Html.map HelpMsg
                     |> frame Page.Help
 
+            ScoreVote subModel ->
+                ScoreVote.view subModel
+                    |> Html.map ScoreVoteMsg
+                    |> frame Page.Voting
+
             NotFound ->
                 Html.text "Page Not Found" |> frame Page.Other
 
@@ -175,6 +182,7 @@ type Msg
     | ExpenseDetailLoaded (Result PageLoadError ExpenseDetail.Model)
     | TutorialLoaded (Result PageLoadError Tutorial.Model)
     | HelpLoaded (Result PageLoadError Help.Model)
+    | ScoreVoteLoaded (Result PageLoadError ScoreVote.Model)
     | NavMsg Navbar.State
     | BudgetMsg Budget.Msg
     | LoginMsg Login.Msg
@@ -183,6 +191,7 @@ type Msg
     | ExpenseDetailMsg ExpenseDetail.Msg
     | TutorialMsg Tutorial.Msg
     | HelpMsg Help.Msg
+    | ScoreVoteMsg ScoreVote.Msg
 
 
 
@@ -233,6 +242,13 @@ setRoute maybeRoute model =
                         (model, Route.modifyUrl Route.Login)
                 Just (Route.Help) ->
                     transition HelpLoaded Help.init
+                        
+                Just (Route.Voting slug) ->
+                    if loggedIn then
+                        transition ScoreVoteLoaded (ScoreVote.init slug)
+                    else
+                        (model, Route.modifyUrl Route.Login)
+                            
                 Just _ -> { model | pageState = Loaded NotFound } => Cmd.none
 
             in
@@ -327,7 +343,13 @@ updatePage page msg model =
                 { model | pageState = Loaded (Help subModel) } => Cmd.none
 
             (HelpLoaded (Err error), _) ->
-                { model | pageState = Loaded (Errored error) } => Cmd.none            
+                { model | pageState = Loaded (Errored error) } => Cmd.none
+
+            (ScoreVoteLoaded (Ok subModel), _) ->
+                { model | pageState = Loaded (ScoreVote subModel) } => Cmd.none
+
+            (ScoreVoteLoaded (Err error), _) ->
+                { model | pageState = Loaded (Errored error) } => Cmd.none
 
             (TutorialLoaded (Ok subModel), _) ->
                 { model | tutorialState = subModel } => Cmd.none
@@ -369,6 +391,8 @@ updatePage page msg model =
             (TutorialMsg subMsg, _) ->
                 ( {model | tutorialState = (Tutorial.update subMsg model.tutorialState)}, Cmd.none )
                     
+            (ScoreVoteMsg subMsg, ScoreVote subMdl) ->
+                toPage ScoreVote ScoreVoteMsg (ScoreVote.update session) subMsg subMdl
                         
             --(_, NotFound) ->
             --  model => Cmd.none

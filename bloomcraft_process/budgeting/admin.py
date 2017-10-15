@@ -10,10 +10,16 @@ class AllocationExpenseAdmin(admin.ModelAdmin):
 
 class CandidateInline(admin.TabularInline):
     model = Candidate
+
+class QuestionInline(admin.TabularInline):
+    model = Question
+
+class QuestionAdmin(admin.ModelAdmin):
+    inlines = [CandidateInline]
     
 class ElectionAdmin(admin.ModelAdmin):
     prepopulated_fields = {"slug":("name",)}
-    inlines = [CandidateInline]
+    inlines = [QuestionInline]
     
 class TutorialAdmin(admin.ModelAdmin):
     filter_horizontal = ['seen_by']
@@ -60,4 +66,5 @@ admin.site.register(Tutorial, TutorialAdmin)
 admin.site.register(Election, ElectionAdmin)
 admin.site.register(ScoreVote)
 admin.site.register(Candidate)
+admin.site.register(Question, QuestionAdmin)
 admin.site.register(AnonymousVoter)

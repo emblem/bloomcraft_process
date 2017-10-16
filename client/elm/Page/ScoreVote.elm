@@ -171,9 +171,11 @@ candidateView question candidate defScore =
         [ div [style [("border-width", "1px"), ("border-style", "solid")
                    , ("box-shadow", "2px 3px 6px 3px rgba(0,0,0,0.1)")], class "rounded p-1 mb-2" ]
             [ Form.row []
-                  [ Form.col [ Col.xs3 ] [ div [class "text-right"] [Form.label [ for "score", class "btn text-right"] [ text candidate ] ] ]
-                  , Form.col [ Col.xs9 ] [scoreRadios question candidate defScore]
-                  ]              
+                  [ Form.col [] [ div [class "text-center h3"] [ text candidate ] ] ]
+            , Form.row []
+                  [ Form.col [Col.xs1] []
+                  , Form.col [ Col.xs10 ] [div [class "text-center"] [scoreRadios question candidate defScore] ]
+                  ]
             ]
         ]
             

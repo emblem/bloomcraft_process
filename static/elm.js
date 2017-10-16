@@ -24615,60 +24615,70 @@ var _user$project$Page_ScoreVote$candidateView = F3(
 								ctor: '::',
 								_0: A2(
 									_rundis$elm_bootstrap$Bootstrap_Form$col,
-									{
-										ctor: '::',
-										_0: _rundis$elm_bootstrap$Bootstrap_Grid_Col$xs3,
-										_1: {ctor: '[]'}
-									},
+									{ctor: '[]'},
 									{
 										ctor: '::',
 										_0: A2(
 											_elm_lang$html$Html$div,
 											{
 												ctor: '::',
-												_0: _elm_lang$html$Html_Attributes$class('text-right'),
+												_0: _elm_lang$html$Html_Attributes$class('text-center h3'),
 												_1: {ctor: '[]'}
 											},
 											{
 												ctor: '::',
-												_0: A2(
-													_rundis$elm_bootstrap$Bootstrap_Form$label,
-													{
-														ctor: '::',
-														_0: _elm_lang$html$Html_Attributes$for('score'),
-														_1: {
-															ctor: '::',
-															_0: _elm_lang$html$Html_Attributes$class('btn text-right'),
-															_1: {ctor: '[]'}
-														}
-													},
-													{
-														ctor: '::',
-														_0: _elm_lang$html$Html$text(candidate),
-														_1: {ctor: '[]'}
-													}),
+												_0: _elm_lang$html$Html$text(candidate),
 												_1: {ctor: '[]'}
 											}),
 										_1: {ctor: '[]'}
 									}),
-								_1: {
+								_1: {ctor: '[]'}
+							}),
+						_1: {
+							ctor: '::',
+							_0: A2(
+								_rundis$elm_bootstrap$Bootstrap_Form$row,
+								{ctor: '[]'},
+								{
 									ctor: '::',
 									_0: A2(
 										_rundis$elm_bootstrap$Bootstrap_Form$col,
 										{
 											ctor: '::',
-											_0: _rundis$elm_bootstrap$Bootstrap_Grid_Col$xs9,
+											_0: _rundis$elm_bootstrap$Bootstrap_Grid_Col$xs1,
 											_1: {ctor: '[]'}
 										},
-										{
-											ctor: '::',
-											_0: A3(_user$project$Page_ScoreVote$scoreRadios, question, candidate, defScore),
-											_1: {ctor: '[]'}
-										}),
-									_1: {ctor: '[]'}
-								}
-							}),
-						_1: {ctor: '[]'}
+										{ctor: '[]'}),
+									_1: {
+										ctor: '::',
+										_0: A2(
+											_rundis$elm_bootstrap$Bootstrap_Form$col,
+											{
+												ctor: '::',
+												_0: _rundis$elm_bootstrap$Bootstrap_Grid_Col$xs10,
+												_1: {ctor: '[]'}
+											},
+											{
+												ctor: '::',
+												_0: A2(
+													_elm_lang$html$Html$div,
+													{
+														ctor: '::',
+														_0: _elm_lang$html$Html_Attributes$class('text-center'),
+														_1: {ctor: '[]'}
+													},
+													{
+														ctor: '::',
+														_0: A3(_user$project$Page_ScoreVote$scoreRadios, question, candidate, defScore),
+														_1: {ctor: '[]'}
+													}),
+												_1: {ctor: '[]'}
+											}),
+										_1: {ctor: '[]'}
+									}
+								}),
+							_1: {ctor: '[]'}
+						}
 					}),
 				_1: {ctor: '[]'}
 			});

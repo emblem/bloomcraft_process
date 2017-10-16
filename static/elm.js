@@ -16137,6 +16137,313 @@ var _rundis$elm_bootstrap$Bootstrap_Form_InputGroup$button = F2(
 				}));
 	});
 
+var _rundis$elm_bootstrap$Bootstrap_Form_Radio$defaultOptions = {
+	checked: false,
+	name: _elm_lang$core$Maybe$Nothing,
+	custom: false,
+	inline: false,
+	disabled: false,
+	onClick: _elm_lang$core$Maybe$Nothing,
+	validation: _elm_lang$core$Maybe$Nothing,
+	attributes: {ctor: '[]'}
+};
+var _rundis$elm_bootstrap$Bootstrap_Form_Radio$toAttributes = function (options) {
+	return A2(
+		_elm_lang$core$Basics_ops['++'],
+		{
+			ctor: '::',
+			_0: _elm_lang$html$Html_Attributes$class(
+				options.custom ? 'custom-control-input' : 'form-check-input'),
+			_1: {
+				ctor: '::',
+				_0: _elm_lang$html$Html_Attributes$type_('radio'),
+				_1: {
+					ctor: '::',
+					_0: _elm_lang$html$Html_Attributes$disabled(options.disabled),
+					_1: {
+						ctor: '::',
+						_0: _elm_lang$html$Html_Attributes$checked(options.checked),
+						_1: {ctor: '[]'}
+					}
+				}
+			}
+		},
+		A2(
+			_elm_lang$core$Basics_ops['++'],
+			A2(
+				_elm_lang$core$List$filterMap,
+				_elm_lang$core$Basics$identity,
+				{
+					ctor: '::',
+					_0: A2(_elm_lang$core$Maybe$map, _elm_lang$html$Html_Events$onClick, options.onClick),
+					_1: {
+						ctor: '::',
+						_0: A2(_elm_lang$core$Maybe$map, _elm_lang$html$Html_Attributes$name, options.name),
+						_1: {ctor: '[]'}
+					}
+				}),
+			options.attributes));
+};
+var _rundis$elm_bootstrap$Bootstrap_Form_Radio$applyModifier = F2(
+	function (modifier, options) {
+		var _p0 = modifier;
+		switch (_p0.ctor) {
+			case 'Checked':
+				return _elm_lang$core$Native_Utils.update(
+					options,
+					{checked: _p0._0});
+			case 'Name':
+				return _elm_lang$core$Native_Utils.update(
+					options,
+					{
+						name: _elm_lang$core$Maybe$Just(_p0._0)
+					});
+			case 'Inline':
+				return _elm_lang$core$Native_Utils.update(
+					options,
+					{inline: true});
+			case 'OnClick':
+				return _elm_lang$core$Native_Utils.update(
+					options,
+					{
+						onClick: _elm_lang$core$Maybe$Just(_p0._0)
+					});
+			case 'Custom':
+				return _elm_lang$core$Native_Utils.update(
+					options,
+					{custom: true});
+			case 'Disabled':
+				return _elm_lang$core$Native_Utils.update(
+					options,
+					{disabled: _p0._0});
+			case 'Validation':
+				return _elm_lang$core$Native_Utils.update(
+					options,
+					{
+						validation: _elm_lang$core$Maybe$Just(_p0._0)
+					});
+			default:
+				return _elm_lang$core$Native_Utils.update(
+					options,
+					{
+						attributes: A2(_elm_lang$core$Basics_ops['++'], options.attributes, _p0._0)
+					});
+		}
+	});
+var _rundis$elm_bootstrap$Bootstrap_Form_Radio$view = function (_p1) {
+	var _p2 = _p1;
+	var _p4 = _p2._0;
+	var opts = A3(_elm_lang$core$List$foldl, _rundis$elm_bootstrap$Bootstrap_Form_Radio$applyModifier, _rundis$elm_bootstrap$Bootstrap_Form_Radio$defaultOptions, _p4.options);
+	var validationAttrs = function () {
+		var _p3 = opts.validation;
+		if (_p3.ctor === 'Just') {
+			return {
+				ctor: '::',
+				_0: _rundis$elm_bootstrap$Bootstrap_Form_FormInternal$validationWrapperAttribute(_p3._0),
+				_1: {ctor: '[]'}
+			};
+		} else {
+			return {ctor: '[]'};
+		}
+	}();
+	return opts.custom ? A2(
+		_elm_lang$html$Html$div,
+		A2(
+			_elm_lang$core$Basics_ops['++'],
+			{
+				ctor: '::',
+				_0: _elm_lang$html$Html_Attributes$classList(
+					{
+						ctor: '::',
+						_0: {ctor: '_Tuple2', _0: 'custom-controls-stacked', _1: !opts.inline},
+						_1: {
+							ctor: '::',
+							_0: {ctor: '_Tuple2', _0: 'd-inline-block', _1: opts.inline},
+							_1: {ctor: '[]'}
+						}
+					}),
+				_1: {ctor: '[]'}
+			},
+			validationAttrs),
+		{
+			ctor: '::',
+			_0: A2(
+				_elm_lang$html$Html$label,
+				A2(
+					_elm_lang$core$Basics_ops['++'],
+					{
+						ctor: '::',
+						_0: _elm_lang$html$Html_Attributes$class('custom-control custom-radio'),
+						_1: {ctor: '[]'}
+					},
+					validationAttrs),
+				{
+					ctor: '::',
+					_0: A2(
+						_elm_lang$html$Html$input,
+						_rundis$elm_bootstrap$Bootstrap_Form_Radio$toAttributes(opts),
+						{ctor: '[]'}),
+					_1: {
+						ctor: '::',
+						_0: A2(
+							_elm_lang$html$Html$span,
+							{
+								ctor: '::',
+								_0: _elm_lang$html$Html_Attributes$class('custom-control-indicator'),
+								_1: {ctor: '[]'}
+							},
+							{ctor: '[]'}),
+						_1: {
+							ctor: '::',
+							_0: A2(
+								_elm_lang$html$Html$span,
+								{
+									ctor: '::',
+									_0: _elm_lang$html$Html_Attributes$class('custom-control-description'),
+									_1: {ctor: '[]'}
+								},
+								{
+									ctor: '::',
+									_0: _elm_lang$html$Html$text(_p4.label),
+									_1: {ctor: '[]'}
+								}),
+							_1: {ctor: '[]'}
+						}
+					}
+				}),
+			_1: {ctor: '[]'}
+		}) : A2(
+		_elm_lang$html$Html$div,
+		{
+			ctor: '::',
+			_0: _elm_lang$html$Html_Attributes$classList(
+				{
+					ctor: '::',
+					_0: {ctor: '_Tuple2', _0: 'form-check', _1: true},
+					_1: {
+						ctor: '::',
+						_0: {ctor: '_Tuple2', _0: 'form-check-inline', _1: opts.inline},
+						_1: {
+							ctor: '::',
+							_0: {ctor: '_Tuple2', _0: 'disabled', _1: opts.disabled},
+							_1: {ctor: '[]'}
+						}
+					}
+				}),
+			_1: {ctor: '[]'}
+		},
+		{
+			ctor: '::',
+			_0: A2(
+				_elm_lang$html$Html$label,
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html_Attributes$class('form-check-label'),
+					_1: {ctor: '[]'}
+				},
+				{
+					ctor: '::',
+					_0: A2(
+						_elm_lang$html$Html$input,
+						_rundis$elm_bootstrap$Bootstrap_Form_Radio$toAttributes(opts),
+						{ctor: '[]'}),
+					_1: {
+						ctor: '::',
+						_0: _elm_lang$html$Html$text(
+							A2(_elm_lang$core$Basics_ops['++'], ' ', _p4.label)),
+						_1: {ctor: '[]'}
+					}
+				}),
+			_1: {ctor: '[]'}
+		});
+};
+var _rundis$elm_bootstrap$Bootstrap_Form_Radio$Options = F8(
+	function (a, b, c, d, e, f, g, h) {
+		return {checked: a, name: b, custom: c, disabled: d, inline: e, onClick: f, validation: g, attributes: h};
+	});
+var _rundis$elm_bootstrap$Bootstrap_Form_Radio$Radio = function (a) {
+	return {ctor: 'Radio', _0: a};
+};
+var _rundis$elm_bootstrap$Bootstrap_Form_Radio$create = F2(
+	function (options, label) {
+		return _rundis$elm_bootstrap$Bootstrap_Form_Radio$Radio(
+			{options: options, label: label});
+	});
+var _rundis$elm_bootstrap$Bootstrap_Form_Radio$radio = F2(
+	function (options, label) {
+		return _rundis$elm_bootstrap$Bootstrap_Form_Radio$view(
+			A2(_rundis$elm_bootstrap$Bootstrap_Form_Radio$create, options, label));
+	});
+var _rundis$elm_bootstrap$Bootstrap_Form_Radio$addOption = F2(
+	function (opt, _p5) {
+		var _p6 = _p5;
+		return _rundis$elm_bootstrap$Bootstrap_Form_Radio$Radio(
+			_elm_lang$core$Native_Utils.update(
+				_p6._0,
+				{
+					options: {ctor: '::', _0: opt, _1: _p6._0.options}
+				}));
+	});
+var _rundis$elm_bootstrap$Bootstrap_Form_Radio$Attrs = function (a) {
+	return {ctor: 'Attrs', _0: a};
+};
+var _rundis$elm_bootstrap$Bootstrap_Form_Radio$attrs = function (attrs) {
+	return _rundis$elm_bootstrap$Bootstrap_Form_Radio$Attrs(attrs);
+};
+var _rundis$elm_bootstrap$Bootstrap_Form_Radio$Validation = function (a) {
+	return {ctor: 'Validation', _0: a};
+};
+var _rundis$elm_bootstrap$Bootstrap_Form_Radio$success = _rundis$elm_bootstrap$Bootstrap_Form_Radio$Validation(_rundis$elm_bootstrap$Bootstrap_Form_FormInternal$Success);
+var _rundis$elm_bootstrap$Bootstrap_Form_Radio$warning = _rundis$elm_bootstrap$Bootstrap_Form_Radio$Validation(_rundis$elm_bootstrap$Bootstrap_Form_FormInternal$Warning);
+var _rundis$elm_bootstrap$Bootstrap_Form_Radio$danger = _rundis$elm_bootstrap$Bootstrap_Form_Radio$Validation(_rundis$elm_bootstrap$Bootstrap_Form_FormInternal$Danger);
+var _rundis$elm_bootstrap$Bootstrap_Form_Radio$Disabled = function (a) {
+	return {ctor: 'Disabled', _0: a};
+};
+var _rundis$elm_bootstrap$Bootstrap_Form_Radio$disabled = function (disabled) {
+	return _rundis$elm_bootstrap$Bootstrap_Form_Radio$Disabled(disabled);
+};
+var _rundis$elm_bootstrap$Bootstrap_Form_Radio$Custom = {ctor: 'Custom'};
+var _rundis$elm_bootstrap$Bootstrap_Form_Radio$createCustom = function (options) {
+	return _rundis$elm_bootstrap$Bootstrap_Form_Radio$create(
+		{ctor: '::', _0: _rundis$elm_bootstrap$Bootstrap_Form_Radio$Custom, _1: options});
+};
+var _rundis$elm_bootstrap$Bootstrap_Form_Radio$custom = F2(
+	function (options, label) {
+		return _rundis$elm_bootstrap$Bootstrap_Form_Radio$view(
+			A2(_rundis$elm_bootstrap$Bootstrap_Form_Radio$createCustom, options, label));
+	});
+var _rundis$elm_bootstrap$Bootstrap_Form_Radio$OnClick = function (a) {
+	return {ctor: 'OnClick', _0: a};
+};
+var _rundis$elm_bootstrap$Bootstrap_Form_Radio$onClick = function (toMsg) {
+	return _rundis$elm_bootstrap$Bootstrap_Form_Radio$OnClick(toMsg);
+};
+var _rundis$elm_bootstrap$Bootstrap_Form_Radio$Name = function (a) {
+	return {ctor: 'Name', _0: a};
+};
+var _rundis$elm_bootstrap$Bootstrap_Form_Radio$name = function (name) {
+	return _rundis$elm_bootstrap$Bootstrap_Form_Radio$Name(name);
+};
+var _rundis$elm_bootstrap$Bootstrap_Form_Radio$radioList = F2(
+	function (groupName, radios) {
+		return A2(
+			_elm_lang$core$List$map,
+			function (_p7) {
+				return _rundis$elm_bootstrap$Bootstrap_Form_Radio$view(
+					_rundis$elm_bootstrap$Bootstrap_Form_Radio$addOption(
+						_rundis$elm_bootstrap$Bootstrap_Form_Radio$name(groupName))(_p7));
+			},
+			radios);
+	});
+var _rundis$elm_bootstrap$Bootstrap_Form_Radio$Inline = {ctor: 'Inline'};
+var _rundis$elm_bootstrap$Bootstrap_Form_Radio$inline = _rundis$elm_bootstrap$Bootstrap_Form_Radio$Inline;
+var _rundis$elm_bootstrap$Bootstrap_Form_Radio$Checked = function (a) {
+	return {ctor: 'Checked', _0: a};
+};
+var _rundis$elm_bootstrap$Bootstrap_Form_Radio$checked = function (isCheck) {
+	return _rundis$elm_bootstrap$Bootstrap_Form_Radio$Checked(isCheck);
+};
+
 var _rundis$elm_bootstrap$Bootstrap_Grid$renderCol = function (column) {
 	var _p0 = column;
 	switch (_p0.ctor) {
@@ -18834,27 +19141,26 @@ var _user$project$Data_Budget$decoder = function () {
 }();
 
 var _user$project$Data_Election$encodeBallot = function (ballot) {
-	var encodeVote = function (_p0) {
-		var _p1 = _p0;
+	var encodeVote = function (vote) {
 		return _elm_lang$core$Json_Encode$object(
 			{
 				ctor: '::',
 				_0: A2(
 					_user$project$Util_ops['=>'],
 					'question',
-					_elm_lang$core$Json_Encode$string(_p1._0.name)),
+					_elm_lang$core$Json_Encode$string(vote.question)),
 				_1: {
 					ctor: '::',
 					_0: A2(
 						_user$project$Util_ops['=>'],
 						'candidate',
-						_elm_lang$core$Json_Encode$string(_p1._1)),
+						_elm_lang$core$Json_Encode$string(vote.candidate)),
 					_1: {
 						ctor: '::',
 						_0: A2(
 							_user$project$Util_ops['=>'],
 							'score',
-							_elm_lang$core$Json_Encode$int(_p1._2)),
+							_elm_lang$core$Json_Encode$int(vote.score)),
 						_1: {ctor: '[]'}
 					}
 				}
@@ -18869,6 +19175,30 @@ var _user$project$Data_Election$encodeBallot = function (ballot) {
 			_1: {ctor: '[]'}
 		});
 };
+var _user$project$Data_Election$voteConfirmDecoder = function () {
+	var decodeResponse = function (status) {
+		var _p0 = status;
+		switch (_p0) {
+			case 'success':
+				return A2(
+					_elm_lang$core$Json_Decode$map,
+					_elm_lang$core$Result$Ok,
+					A2(_elm_lang$core$Json_Decode$field, 'anon_id', _elm_lang$core$Json_Decode$string));
+			case 'error':
+				return A2(
+					_elm_lang$core$Json_Decode$map,
+					_elm_lang$core$Result$Err,
+					A2(_elm_lang$core$Json_Decode$field, 'reason', _elm_lang$core$Json_Decode$string));
+			default:
+				return _elm_lang$core$Json_Decode$fail(
+					A2(_elm_lang$core$Basics_ops['++'], 'Unknown status code: ', status));
+		}
+	};
+	return A2(
+		_elm_lang$core$Json_Decode$andThen,
+		decodeResponse,
+		A2(_elm_lang$core$Json_Decode$field, 'status', _elm_lang$core$Json_Decode$string));
+}();
 var _user$project$Data_Election$Question = F3(
 	function (a, b, c) {
 		return {name: a, prompt: b, candidates: c};
@@ -18896,7 +19226,7 @@ var _user$project$Data_Election$decoder = A3(
 	_elm_lang$core$Json_Decode$list(_user$project$Data_Election$questionDecoder),
 	A3(
 		_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
-		'detailText',
+		'detail_text',
 		_elm_lang$core$Json_Decode$string,
 		A3(
 			_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
@@ -18907,9 +19237,88 @@ var _user$project$Data_Election$decoder = A3(
 				'name',
 				_elm_lang$core$Json_Decode$string,
 				_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$decode(_user$project$Data_Election$Election)))));
+var _user$project$Data_Election$electionResponseDecoder = function () {
+	var decodeResponse = function (status) {
+		var _p1 = status;
+		switch (_p1) {
+			case 'success':
+				return A2(
+					_elm_lang$core$Json_Decode$map,
+					_elm_lang$core$Result$Ok,
+					A2(_elm_lang$core$Json_Decode$field, 'election', _user$project$Data_Election$decoder));
+			case 'not_allowed':
+				return A2(
+					_elm_lang$core$Json_Decode$map,
+					_elm_lang$core$Result$Err,
+					A2(_elm_lang$core$Json_Decode$field, 'reason', _elm_lang$core$Json_Decode$string));
+			default:
+				return _elm_lang$core$Json_Decode$fail(
+					A2(_elm_lang$core$Basics_ops['++'], 'Unknown status code: ', status));
+		}
+	};
+	return A2(
+		_elm_lang$core$Json_Decode$andThen,
+		decodeResponse,
+		A2(_elm_lang$core$Json_Decode$field, 'status', _elm_lang$core$Json_Decode$string));
+}();
+var _user$project$Data_Election$Vote = F3(
+	function (a, b, c) {
+		return {question: a, candidate: b, score: c};
+	});
 var _user$project$Data_Election$Ballot = function (a) {
 	return {votes: a};
 };
+var _user$project$Data_Election$ballotDecoder = function () {
+	var voteDecoder = A3(
+		_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
+		'score',
+		_elm_lang$core$Json_Decode$int,
+		A3(
+			_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
+			'candidate',
+			_elm_lang$core$Json_Decode$string,
+			A3(
+				_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
+				'question',
+				_elm_lang$core$Json_Decode$string,
+				_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$decode(_user$project$Data_Election$Vote))));
+	return A2(
+		_elm_lang$core$Json_Decode$map,
+		_user$project$Data_Election$Ballot,
+		_elm_lang$core$Json_Decode$list(voteDecoder));
+}();
+var _user$project$Data_Election$BallotForm = F2(
+	function (a, b) {
+		return {election: a, ballot: b};
+	});
+var _user$project$Data_Election$voteResponseDecoder = function () {
+	var decodeResponse = function (status) {
+		var _p2 = status;
+		switch (_p2) {
+			case 'success':
+				return A2(
+					_elm_lang$core$Json_Decode$map,
+					_elm_lang$core$Result$Ok,
+					A3(
+						_elm_lang$core$Json_Decode$map2,
+						_user$project$Data_Election$BallotForm,
+						A2(_elm_lang$core$Json_Decode$field, 'election', _user$project$Data_Election$decoder),
+						A2(_elm_lang$core$Json_Decode$field, 'ballot', _user$project$Data_Election$ballotDecoder)));
+			case 'error':
+				return A2(
+					_elm_lang$core$Json_Decode$map,
+					_elm_lang$core$Result$Err,
+					A2(_elm_lang$core$Json_Decode$field, 'reason', _elm_lang$core$Json_Decode$string));
+			default:
+				return _elm_lang$core$Json_Decode$fail(
+					A2(_elm_lang$core$Basics_ops['++'], 'Unknown status code: ', status));
+		}
+	};
+	return A2(
+		_elm_lang$core$Json_Decode$andThen,
+		decodeResponse,
+		A2(_elm_lang$core$Json_Decode$field, 'status', _elm_lang$core$Json_Decode$string));
+}();
 
 var _user$project$Data_User$User = F2(
 	function (a, b) {
@@ -23877,6 +24286,37 @@ var _user$project$Page_Tutorial$view = function (model) {
 						_rundis$elm_bootstrap$Bootstrap_Modal$config(_user$project$Page_Tutorial$ModalMsg))))));
 };
 
+var _user$project$Request_Election$confirmVote = F2(
+	function (session, slug) {
+		var body = _elm_lang$core$Json_Encode$object(
+			{
+				ctor: '::',
+				_0: A2(
+					_user$project$Util_ops['=>'],
+					'submit',
+					_elm_lang$core$Json_Encode$string('confirmed')),
+				_1: {ctor: '[]'}
+			});
+		return _lukewestby$elm_http_builder$HttpBuilder$toRequest(
+			A2(
+				_user$project$Data_Session$withAuthorization,
+				session,
+				A2(
+					_lukewestby$elm_http_builder$HttpBuilder$withJsonBody,
+					body,
+					A2(
+						_lukewestby$elm_http_builder$HttpBuilder$withExpect,
+						_elm_lang$http$Http$expectJson(_user$project$Data_Election$voteConfirmDecoder),
+						_lukewestby$elm_http_builder$HttpBuilder$post(
+							_user$project$Request_Helpers$apiUrl(
+								A2(
+									_elm_lang$core$Basics_ops['++'],
+									'/election/',
+									A2(
+										_elm_lang$core$Basics_ops['++'],
+										_user$project$Data_Allocation$slugToString(slug),
+										'/vote.json'))))))));
+	});
 var _user$project$Request_Election$postVote = F3(
 	function (session, ballot, slug) {
 		var ballotJson = _user$project$Data_Election$encodeBallot(ballot);
@@ -23895,8 +24335,7 @@ var _user$project$Request_Election$postVote = F3(
 					body,
 					A2(
 						_lukewestby$elm_http_builder$HttpBuilder$withExpect,
-						_elm_lang$http$Http$expectJson(
-							A2(_elm_lang$core$Json_Decode$field, 'result', _elm_lang$core$Json_Decode$string)),
+						_elm_lang$http$Http$expectJson(_user$project$Data_Election$voteResponseDecoder),
 						_lukewestby$elm_http_builder$HttpBuilder$post(
 							_user$project$Request_Helpers$apiUrl(
 								A2(
@@ -23911,8 +24350,7 @@ var _user$project$Request_Election$election = function (slug) {
 	return _lukewestby$elm_http_builder$HttpBuilder$toRequest(
 		A2(
 			_lukewestby$elm_http_builder$HttpBuilder$withExpect,
-			_elm_lang$http$Http$expectJson(
-				A2(_elm_lang$core$Json_Decode$field, 'election', _user$project$Data_Election$decoder)),
+			_elm_lang$http$Http$expectJson(_user$project$Data_Election$electionResponseDecoder),
 			_lukewestby$elm_http_builder$HttpBuilder$get(
 				_user$project$Request_Helpers$apiUrl(
 					A2(
@@ -23924,14 +24362,166 @@ var _user$project$Request_Election$election = function (slug) {
 							'/vote.json'))))));
 };
 
+var _user$project$Page_ScoreVote$getScore = F3(
+	function (ballot, question, candidate) {
+		var votes = A2(
+			_elm_lang$core$List$filter,
+			function (v) {
+				return _elm_lang$core$Native_Utils.eq(v.question, question.name) && _elm_lang$core$Native_Utils.eq(v.candidate, candidate);
+			},
+			ballot.votes);
+		return A2(
+			_elm_lang$core$Maybe$withDefault,
+			0,
+			A2(
+				_elm_lang$core$Maybe$map,
+				function (_) {
+					return _.score;
+				},
+				_elm_lang$core$List$head(votes)));
+	});
+var _user$project$Page_ScoreVote$voteView = function (vote) {
+	return A2(
+		_elm_lang$html$Html$p,
+		{ctor: '[]'},
+		{
+			ctor: '::',
+			_0: _elm_lang$html$Html$text(
+				A2(
+					_elm_lang$core$Basics_ops['++'],
+					vote.question,
+					A2(
+						_elm_lang$core$Basics_ops['++'],
+						': ',
+						A2(
+							_elm_lang$core$Basics_ops['++'],
+							vote.candidate,
+							A2(
+								_elm_lang$core$Basics_ops['++'],
+								': ',
+								_elm_lang$core$Basics$toString(vote.score)))))),
+			_1: {ctor: '[]'}
+		});
+};
+var _user$project$Page_ScoreVote$viewCard = F3(
+	function (title, infobox, content) {
+		return _rundis$elm_bootstrap$Bootstrap_Card$view(
+			A3(
+				_rundis$elm_bootstrap$Bootstrap_Card$block,
+				{ctor: '[]'},
+				{
+					ctor: '::',
+					_0: _rundis$elm_bootstrap$Bootstrap_Card$custom(
+						A2(
+							_elm_lang$html$Html$div,
+							{ctor: '[]'},
+							{
+								ctor: '::',
+								_0: _rundis$elm_bootstrap$Bootstrap_Alert$info(
+									{
+										ctor: '::',
+										_0: infobox,
+										_1: {ctor: '[]'}
+									}),
+								_1: content
+							})),
+					_1: {ctor: '[]'}
+				},
+				A3(
+					_rundis$elm_bootstrap$Bootstrap_Card$headerH4,
+					{ctor: '[]'},
+					{
+						ctor: '::',
+						_0: _elm_lang$html$Html$text(title),
+						_1: {ctor: '[]'}
+					},
+					_rundis$elm_bootstrap$Bootstrap_Card$config(
+						{
+							ctor: '::',
+							_0: _rundis$elm_bootstrap$Bootstrap_Card$attrs(
+								{
+									ctor: '::',
+									_0: _elm_lang$html$Html_Attributes$class('mt-2'),
+									_1: {ctor: '[]'}
+								}),
+							_1: {ctor: '[]'}
+						}))));
+	});
+var _user$project$Page_ScoreVote$viewResponse = function (response) {
+	var _p0 = response;
+	if (_p0.ctor === 'Ok') {
+		return A3(
+			_user$project$Page_ScoreVote$viewCard,
+			'Vote Submitted',
+			_elm_lang$html$Html$text('Your vote was received.  Please record your unique anonymous voter ID.  This is the only opportunity you will have to record this ID.  It cannot be retrieved later.'),
+			{
+				ctor: '::',
+				_0: A2(
+					_elm_lang$html$Html$p,
+					{ctor: '[]'},
+					{
+						ctor: '::',
+						_0: _elm_lang$html$Html$text('Anonymous Voter ID:'),
+						_1: {
+							ctor: '::',
+							_0: A2(
+								_elm_lang$html$Html$h2,
+								{
+									ctor: '::',
+									_0: _elm_lang$html$Html_Attributes$class('text-center'),
+									_1: {ctor: '[]'}
+								},
+								{
+									ctor: '::',
+									_0: _elm_lang$html$Html$text(_p0._0),
+									_1: {ctor: '[]'}
+								}),
+							_1: {ctor: '[]'}
+						}
+					}),
+				_1: {ctor: '[]'}
+			});
+	} else {
+		return A3(
+			_user$project$Page_ScoreVote$viewCard,
+			'Vote NOT Submitted',
+			_elm_lang$html$Html$text(_p0._0),
+			{ctor: '[]'});
+	}
+};
+var _user$project$Page_ScoreVote$viewNotAllowed = function (reason) {
+	return A3(
+		_user$project$Page_ScoreVote$viewCard,
+		'Sorry, you cannot vote at this time',
+		_elm_lang$html$Html$text(reason),
+		{ctor: '[]'});
+};
+var _user$project$Page_ScoreVote$NotAllowed = function (a) {
+	return {ctor: 'NotAllowed', _0: a};
+};
+var _user$project$Page_ScoreVote$ConfirmVote = function (a) {
+	return {ctor: 'ConfirmVote', _0: a};
+};
+var _user$project$Page_ScoreVote$Response = function (a) {
+	return {ctor: 'Response', _0: a};
+};
+var _user$project$Page_ScoreVote$Ballot = function (a) {
+	return {ctor: 'Ballot', _0: a};
+};
 var _user$project$Page_ScoreVote$init = function (slug) {
-	var initModel = function (election) {
-		return {
-			election: election,
-			ballot: {
-				votes: {ctor: '[]'}
-			}
-		};
+	var initModel = function (response) {
+		var _p1 = response;
+		if (_p1.ctor === 'Ok') {
+			return _user$project$Page_ScoreVote$Ballot(
+				{
+					election: _p1._0,
+					ballot: {
+						votes: {ctor: '[]'}
+					}
+				});
+		} else {
+			return _user$project$Page_ScoreVote$NotAllowed(_p1._0);
+		}
 	};
 	var handleLoadError = function (err) {
 		var l = A2(_elm_lang$core$Debug$log, 'Expense Load Err', err);
@@ -23944,126 +24534,199 @@ var _user$project$Page_ScoreVote$init = function (slug) {
 		handleLoadError,
 		A2(_elm_lang$core$Task$map, initModel, loadElection));
 };
-var _user$project$Page_ScoreVote$Model = F2(
-	function (a, b) {
-		return {election: a, ballot: b};
+var _user$project$Page_ScoreVote$UpdateScore = function (a) {
+	return {ctor: 'UpdateScore', _0: a};
+};
+var _user$project$Page_ScoreVote$scoreRadios = F3(
+	function (q, c, defScore) {
+		var makeRadio = function (score) {
+			return A2(
+				_rundis$elm_bootstrap$Bootstrap_Form_Radio$create,
+				{
+					ctor: '::',
+					_0: _rundis$elm_bootstrap$Bootstrap_Form_Radio$onClick(
+						_user$project$Page_ScoreVote$UpdateScore(
+							A3(_user$project$Data_Election$Vote, q.name, c, score))),
+					_1: {
+						ctor: '::',
+						_0: _rundis$elm_bootstrap$Bootstrap_Form_Radio$inline,
+						_1: {
+							ctor: '::',
+							_0: _rundis$elm_bootstrap$Bootstrap_Form_Radio$checked(
+								_elm_lang$core$Native_Utils.eq(score, defScore)),
+							_1: {ctor: '[]'}
+						}
+					}
+				},
+				_elm_lang$core$Basics$toString(score));
+		};
+		var radios = A2(
+			_elm_lang$core$List$map,
+			makeRadio,
+			A2(_elm_lang$core$List$range, 0, 10));
+		return A2(
+			_elm_lang$html$Html$div,
+			{ctor: '[]'},
+			A2(
+				_rundis$elm_bootstrap$Bootstrap_Form_Radio$radioList,
+				A2(
+					_elm_lang$core$Basics_ops['++'],
+					'score_radios',
+					A2(_elm_lang$core$Basics_ops['++'], q.name, c)),
+				radios));
 	});
-var _user$project$Page_ScoreVote$UpdateScore = F3(
-	function (a, b, c) {
-		return {ctor: 'UpdateScore', _0: a, _1: b, _2: c};
-	});
-var _user$project$Page_ScoreVote$candidateView = F2(
-	function (question, model) {
+var _user$project$Page_ScoreVote$candidateView = F3(
+	function (question, candidate, defScore) {
 		return A2(
 			_rundis$elm_bootstrap$Bootstrap_Form$group,
 			{ctor: '[]'},
 			{
 				ctor: '::',
 				_0: A2(
-					_rundis$elm_bootstrap$Bootstrap_Form$label,
+					_elm_lang$html$Html$div,
 					{
 						ctor: '::',
-						_0: _elm_lang$html$Html_Attributes$for('score'),
-						_1: {ctor: '[]'}
-					},
-					{
-						ctor: '::',
-						_0: _elm_lang$html$Html$text(model),
-						_1: {ctor: '[]'}
-					}),
-				_1: {
-					ctor: '::',
-					_0: _rundis$elm_bootstrap$Bootstrap_Form_Input$number(
-						{
-							ctor: '::',
-							_0: _rundis$elm_bootstrap$Bootstrap_Form_Input$id('score'),
-							_1: {
-								ctor: '::',
-								_0: _rundis$elm_bootstrap$Bootstrap_Form_Input$onInput(
-									A2(_user$project$Page_ScoreVote$UpdateScore, question, model)),
-								_1: {
-									ctor: '::',
-									_0: _rundis$elm_bootstrap$Bootstrap_Form_Input$defaultValue('0'),
-									_1: {ctor: '[]'}
-								}
-							}
-						}),
-					_1: {
-						ctor: '::',
-						_0: A2(
-							_rundis$elm_bootstrap$Bootstrap_Form$help,
-							{ctor: '[]'},
+						_0: _elm_lang$html$Html_Attributes$style(
 							{
 								ctor: '::',
-								_0: _elm_lang$html$Html$text('Rate this candidate using a whole number between 0 and 10.'),
-								_1: {ctor: '[]'}
+								_0: {ctor: '_Tuple2', _0: 'border-width', _1: '1px'},
+								_1: {
+									ctor: '::',
+									_0: {ctor: '_Tuple2', _0: 'border-style', _1: 'solid'},
+									_1: {
+										ctor: '::',
+										_0: {ctor: '_Tuple2', _0: 'box-shadow', _1: '2px 3px 6px 3px rgba(0,0,0,0.1)'},
+										_1: {ctor: '[]'}
+									}
+								}
 							}),
 						_1: {
 							ctor: '::',
-							_0: function () {
-								var _p0 = _elm_lang$core$Maybe$Nothing;
-								if (_p0.ctor === 'Just') {
-									return A2(
-										_rundis$elm_bootstrap$Bootstrap_Form$validationText,
-										{ctor: '[]'},
-										{
-											ctor: '::',
-											_0: _elm_lang$html$Html$text(_p0._0),
-											_1: {ctor: '[]'}
-										});
-								} else {
-									return A2(
-										_rundis$elm_bootstrap$Bootstrap_Form$validationText,
-										{ctor: '[]'},
-										{ctor: '[]'});
-								}
-							}(),
+							_0: _elm_lang$html$Html_Attributes$class('rounded p-1 mb-2'),
 							_1: {ctor: '[]'}
 						}
-					}
-				}
+					},
+					{
+						ctor: '::',
+						_0: A2(
+							_rundis$elm_bootstrap$Bootstrap_Form$row,
+							{ctor: '[]'},
+							{
+								ctor: '::',
+								_0: A2(
+									_rundis$elm_bootstrap$Bootstrap_Form$col,
+									{
+										ctor: '::',
+										_0: _rundis$elm_bootstrap$Bootstrap_Grid_Col$xs3,
+										_1: {ctor: '[]'}
+									},
+									{
+										ctor: '::',
+										_0: A2(
+											_elm_lang$html$Html$div,
+											{
+												ctor: '::',
+												_0: _elm_lang$html$Html_Attributes$class('text-right'),
+												_1: {ctor: '[]'}
+											},
+											{
+												ctor: '::',
+												_0: A2(
+													_rundis$elm_bootstrap$Bootstrap_Form$label,
+													{
+														ctor: '::',
+														_0: _elm_lang$html$Html_Attributes$for('score'),
+														_1: {
+															ctor: '::',
+															_0: _elm_lang$html$Html_Attributes$class('btn text-right'),
+															_1: {ctor: '[]'}
+														}
+													},
+													{
+														ctor: '::',
+														_0: _elm_lang$html$Html$text(candidate),
+														_1: {ctor: '[]'}
+													}),
+												_1: {ctor: '[]'}
+											}),
+										_1: {ctor: '[]'}
+									}),
+								_1: {
+									ctor: '::',
+									_0: A2(
+										_rundis$elm_bootstrap$Bootstrap_Form$col,
+										{
+											ctor: '::',
+											_0: _rundis$elm_bootstrap$Bootstrap_Grid_Col$xs9,
+											_1: {ctor: '[]'}
+										},
+										{
+											ctor: '::',
+											_0: A3(_user$project$Page_ScoreVote$scoreRadios, question, candidate, defScore),
+											_1: {ctor: '[]'}
+										}),
+									_1: {ctor: '[]'}
+								}
+							}),
+						_1: {ctor: '[]'}
+					}),
+				_1: {ctor: '[]'}
 			});
 	});
-var _user$project$Page_ScoreVote$questionForm = function (model) {
-	return A2(
-		_rundis$elm_bootstrap$Bootstrap_Form$form,
-		{ctor: '[]'},
-		A2(
-			_elm_lang$core$List$map,
-			_user$project$Page_ScoreVote$candidateView(model),
-			model.candidates));
-};
-var _user$project$Page_ScoreVote$questionView = function (model) {
-	return _rundis$elm_bootstrap$Bootstrap_Card$view(
-		A3(
-			_rundis$elm_bootstrap$Bootstrap_Card$block,
+var _user$project$Page_ScoreVote$questionForm = F2(
+	function (ballot, question) {
+		var scoreForCandidate = function (c) {
+			return A3(_user$project$Page_ScoreVote$getScore, ballot, question, c);
+		};
+		return A2(
+			_rundis$elm_bootstrap$Bootstrap_Form$form,
 			{ctor: '[]'},
-			{
-				ctor: '::',
-				_0: _rundis$elm_bootstrap$Bootstrap_Card$custom(
-					_user$project$Page_ScoreVote$questionForm(model)),
-				_1: {ctor: '[]'}
-			},
+			A2(
+				_elm_lang$core$List$map,
+				function (c) {
+					return A3(
+						_user$project$Page_ScoreVote$candidateView,
+						question,
+						c,
+						scoreForCandidate(c));
+				},
+				question.candidates));
+	});
+var _user$project$Page_ScoreVote$questionView = F2(
+	function (ballot, question) {
+		return _rundis$elm_bootstrap$Bootstrap_Card$view(
 			A3(
-				_rundis$elm_bootstrap$Bootstrap_Card$headerH4,
+				_rundis$elm_bootstrap$Bootstrap_Card$block,
 				{ctor: '[]'},
 				{
 					ctor: '::',
-					_0: _elm_lang$html$Html$text(
-						A2(_elm_lang$core$Basics_ops['++'], 'Question: ', model.prompt)),
+					_0: _rundis$elm_bootstrap$Bootstrap_Card$custom(
+						A2(_user$project$Page_ScoreVote$questionForm, ballot, question)),
 					_1: {ctor: '[]'}
 				},
-				_rundis$elm_bootstrap$Bootstrap_Card$config(
+				A3(
+					_rundis$elm_bootstrap$Bootstrap_Card$headerH4,
+					{ctor: '[]'},
 					{
 						ctor: '::',
-						_0: _rundis$elm_bootstrap$Bootstrap_Card$attrs(
-							{
-								ctor: '::',
-								_0: _elm_lang$html$Html_Attributes$class('mt-2'),
-								_1: {ctor: '[]'}
-							}),
+						_0: _elm_lang$html$Html$text(
+							A2(_elm_lang$core$Basics_ops['++'], 'Question: ', question.prompt)),
 						_1: {ctor: '[]'}
-					}))));
+					},
+					_rundis$elm_bootstrap$Bootstrap_Card$config(
+						{
+							ctor: '::',
+							_0: _rundis$elm_bootstrap$Bootstrap_Card$attrs(
+								{
+									ctor: '::',
+									_0: _elm_lang$html$Html_Attributes$class('mt-2'),
+									_1: {ctor: '[]'}
+								}),
+							_1: {ctor: '[]'}
+						}))));
+	});
+var _user$project$Page_ScoreVote$VoteConfirmResponse = function (a) {
+	return {ctor: 'VoteConfirmResponse', _0: a};
 };
 var _user$project$Page_ScoreVote$VoteResponse = function (a) {
 	return {ctor: 'VoteResponse', _0: a};
@@ -24071,20 +24734,16 @@ var _user$project$Page_ScoreVote$VoteResponse = function (a) {
 var _user$project$Page_ScoreVote$update = F3(
 	function (session, msg, model) {
 		var updateBallot = F2(
-			function (_p1, oldBallot) {
-				var _p2 = _p1;
-				var _p6 = _p2._0;
-				var _p5 = _p2._1;
-				var notOldScore = function (_p3) {
-					var _p4 = _p3;
-					return (!_elm_lang$core$Native_Utils.eq(_p4._0.name, _p6.name)) || (!_elm_lang$core$Native_Utils.eq(_p4._1, _p5));
+			function (vote, oldBallot) {
+				var notOldScore = function (v) {
+					return (!_elm_lang$core$Native_Utils.eq(v.question, vote.question)) || (!_elm_lang$core$Native_Utils.eq(v.candidate, vote.candidate));
 				};
 				return _elm_lang$core$Native_Utils.update(
 					oldBallot,
 					{
 						votes: {
 							ctor: '::',
-							_0: {ctor: '_Tuple3', _0: _p6, _1: _p5, _2: _p2._2},
+							_0: vote,
 							_1: A2(_elm_lang$core$List$filter, notOldScore, oldBallot.votes)
 						}
 					});
@@ -24093,53 +24752,120 @@ var _user$project$Page_ScoreVote$update = F3(
 			return _elm_lang$core$Basics$toFloat(val) / 100;
 		};
 		var maybeToInt = function (str) {
-			var _p7 = str;
-			if (_p7 === '') {
+			var _p2 = str;
+			if (_p2 === '') {
 				return _elm_lang$core$Maybe$Nothing;
 			} else {
 				return _elm_lang$core$Maybe$Just(
 					_elm_lang$core$String$toInt(str));
 			}
 		};
-		var _p8 = msg;
-		switch (_p8.ctor) {
-			case 'SubmitVote':
-				return {
-					ctor: '_Tuple2',
-					_0: model,
-					_1: A2(
-						_elm_lang$http$Http$send,
-						_user$project$Page_ScoreVote$VoteResponse,
-						A3(_user$project$Request_Election$postVote, session, model.ballot, model.election.slug))
-				};
-			case 'UpdateScore':
-				var _p9 = _elm_lang$core$String$toInt(_p8._2);
-				if (_p9.ctor === 'Ok') {
-					return {
-						ctor: '_Tuple2',
-						_0: _elm_lang$core$Native_Utils.update(
-							model,
-							{
-								ballot: A2(
-									updateBallot,
-									{ctor: '_Tuple3', _0: _p8._0, _1: _p8._1, _2: _p9._0},
-									model.ballot)
-							}),
-						_1: _elm_lang$core$Platform_Cmd$none
-					};
-				} else {
-					return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
+		return A2(
+			_elm_lang$core$Debug$log,
+			_elm_lang$core$Basics$toString(
+				{ctor: '_Tuple2', _0: model, _1: msg}),
+			function () {
+				var _p3 = model;
+				switch (_p3.ctor) {
+					case 'Ballot':
+						var _p6 = _p3._0;
+						var _p4 = msg;
+						switch (_p4.ctor) {
+							case 'ReviewVote':
+								return {
+									ctor: '_Tuple2',
+									_0: model,
+									_1: A2(
+										_elm_lang$http$Http$send,
+										_user$project$Page_ScoreVote$VoteResponse,
+										A3(_user$project$Request_Election$postVote, session, _p6.ballot, _p6.election.slug))
+								};
+							case 'UpdateScore':
+								return {
+									ctor: '_Tuple2',
+									_0: _user$project$Page_ScoreVote$Ballot(
+										_elm_lang$core$Native_Utils.update(
+											_p6,
+											{
+												ballot: A2(updateBallot, _p4._0, _p6.ballot)
+											})),
+									_1: _elm_lang$core$Platform_Cmd$none
+								};
+							case 'VoteResponse':
+								if (_p4._0.ctor === 'Ok') {
+									var _p5 = _p4._0._0;
+									if (_p5.ctor === 'Ok') {
+										return {
+											ctor: '_Tuple2',
+											_0: _user$project$Page_ScoreVote$ConfirmVote(_p5._0),
+											_1: _elm_lang$core$Platform_Cmd$none
+										};
+									} else {
+										return {
+											ctor: '_Tuple2',
+											_0: _user$project$Page_ScoreVote$NotAllowed(_p5._0),
+											_1: _elm_lang$core$Platform_Cmd$none
+										};
+									}
+								} else {
+									return {
+										ctor: '_Tuple2',
+										_0: _user$project$Page_ScoreVote$NotAllowed(
+											A2(
+												_elm_lang$core$Basics_ops['++'],
+												'Failed to submit vote: ',
+												_elm_lang$core$Basics$toString(_p4._0._0))),
+										_1: _elm_lang$core$Platform_Cmd$none
+									};
+								}
+							default:
+								return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
+						}
+					case 'Response':
+						return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
+					case 'ConfirmVote':
+						var _p8 = _p3._0;
+						var _p7 = msg;
+						_v6_3:
+						do {
+							switch (_p7.ctor) {
+								case 'SubmitVote':
+									return {
+										ctor: '_Tuple2',
+										_0: model,
+										_1: A2(
+											_elm_lang$http$Http$send,
+											_user$project$Page_ScoreVote$VoteConfirmResponse,
+											A2(_user$project$Request_Election$confirmVote, session, _p8.election.slug))
+									};
+								case 'CancelVote':
+									return {
+										ctor: '_Tuple2',
+										_0: _user$project$Page_ScoreVote$Ballot(_p8),
+										_1: _elm_lang$core$Platform_Cmd$none
+									};
+								case 'VoteConfirmResponse':
+									if (_p7._0.ctor === 'Ok') {
+										return {
+											ctor: '_Tuple2',
+											_0: _user$project$Page_ScoreVote$Response(_p7._0._0),
+											_1: _elm_lang$core$Platform_Cmd$none
+										};
+									} else {
+										break _v6_3;
+									}
+								default:
+									break _v6_3;
+							}
+						} while(false);
+						return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
+					default:
+						return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
 				}
-			default:
-				if (_p8._0.ctor === 'Ok') {
-					return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
-				} else {
-					return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
-				}
-		}
+			}());
 	});
-var _user$project$Page_ScoreVote$SubmitVote = {ctor: 'SubmitVote'};
-var _user$project$Page_ScoreVote$electionView = function (election) {
+var _user$project$Page_ScoreVote$ReviewVote = {ctor: 'ReviewVote'};
+var _user$project$Page_ScoreVote$electionView = function (ballotForm) {
 	return _rundis$elm_bootstrap$Bootstrap_Card$view(
 		A3(
 			_rundis$elm_bootstrap$Bootstrap_Card$block,
@@ -24155,7 +24881,7 @@ var _user$project$Page_ScoreVote$electionView = function (election) {
 							_0: _rundis$elm_bootstrap$Bootstrap_Alert$info(
 								{
 									ctor: '::',
-									_0: _elm_lang$html$Html$text(election.detailText),
+									_0: _elm_lang$html$Html$text(ballotForm.election.detailText),
 									_1: {ctor: '[]'}
 								}),
 							_1: {
@@ -24163,7 +24889,10 @@ var _user$project$Page_ScoreVote$electionView = function (election) {
 								_0: A2(
 									_elm_lang$html$Html$div,
 									{ctor: '[]'},
-									A2(_elm_lang$core$List$map, _user$project$Page_ScoreVote$questionView, election.questions)),
+									A2(
+										_elm_lang$core$List$map,
+										_user$project$Page_ScoreVote$questionView(ballotForm.ballot),
+										ballotForm.election.questions)),
 								_1: {
 									ctor: '::',
 									_0: A2(
@@ -24173,13 +24902,13 @@ var _user$project$Page_ScoreVote$electionView = function (election) {
 											_0: _rundis$elm_bootstrap$Bootstrap_Button$primary,
 											_1: {
 												ctor: '::',
-												_0: _rundis$elm_bootstrap$Bootstrap_Button$onClick(_user$project$Page_ScoreVote$SubmitVote),
+												_0: _rundis$elm_bootstrap$Bootstrap_Button$onClick(_user$project$Page_ScoreVote$ReviewVote),
 												_1: {ctor: '[]'}
 											}
 										},
 										{
 											ctor: '::',
-											_0: _elm_lang$html$Html$text('Vote'),
+											_0: _elm_lang$html$Html$text('Review Vote'),
 											_1: {ctor: '[]'}
 										}),
 									_1: {ctor: '[]'}
@@ -24194,7 +24923,7 @@ var _user$project$Page_ScoreVote$electionView = function (election) {
 				{
 					ctor: '::',
 					_0: _elm_lang$html$Html$text(
-						A2(_elm_lang$core$Basics_ops['++'], 'Current Election: ', election.name)),
+						A2(_elm_lang$core$Basics_ops['++'], 'Current Election: ', ballotForm.election.name)),
 					_1: {ctor: '[]'}
 				},
 				_rundis$elm_bootstrap$Bootstrap_Card$config(
@@ -24209,8 +24938,109 @@ var _user$project$Page_ScoreVote$electionView = function (election) {
 						_1: {ctor: '[]'}
 					}))));
 };
+var _user$project$Page_ScoreVote$CancelVote = {ctor: 'CancelVote'};
+var _user$project$Page_ScoreVote$SubmitVote = {ctor: 'SubmitVote'};
+var _user$project$Page_ScoreVote$confirmView = function (ballotForm) {
+	return A3(
+		_user$project$Page_ScoreVote$viewCard,
+		'Confirm your vote.',
+		A2(
+			_elm_lang$html$Html$div,
+			{ctor: '[]'},
+			{
+				ctor: '::',
+				_0: A2(
+					_elm_lang$html$Html$p,
+					{ctor: '[]'},
+					{
+						ctor: '::',
+						_0: _elm_lang$html$Html$text('Your ratings are shown below.  Please review them, then select an option below.'),
+						_1: {ctor: '[]'}
+					}),
+				_1: {
+					ctor: '::',
+					_0: A2(
+						_elm_lang$html$Html$p,
+						{ctor: '[]'},
+						{
+							ctor: '::',
+							_0: _elm_lang$html$Html$text('One you submit your vote it cannot be altered.'),
+							_1: {ctor: '[]'}
+						}),
+					_1: {ctor: '[]'}
+				}
+			}),
+		_elm_lang$core$List$concat(
+			{
+				ctor: '::',
+				_0: A2(
+					_elm_lang$core$List$map,
+					_user$project$Page_ScoreVote$voteView,
+					A2(
+						_elm_lang$core$List$sortBy,
+						function (v) {
+							return A2(_elm_lang$core$Basics_ops['++'], v.question, v.candidate);
+						},
+						ballotForm.ballot.votes)),
+				_1: {
+					ctor: '::',
+					_0: {
+						ctor: '::',
+						_0: A2(
+							_rundis$elm_bootstrap$Bootstrap_Button$button,
+							{
+								ctor: '::',
+								_0: _rundis$elm_bootstrap$Bootstrap_Button$primary,
+								_1: {
+									ctor: '::',
+									_0: _rundis$elm_bootstrap$Bootstrap_Button$onClick(_user$project$Page_ScoreVote$SubmitVote),
+									_1: {ctor: '[]'}
+								}
+							},
+							{
+								ctor: '::',
+								_0: _elm_lang$html$Html$text('Submit Vote'),
+								_1: {ctor: '[]'}
+							}),
+						_1: {
+							ctor: '::',
+							_0: A2(
+								_rundis$elm_bootstrap$Bootstrap_Button$button,
+								{
+									ctor: '::',
+									_0: _rundis$elm_bootstrap$Bootstrap_Button$secondary,
+									_1: {
+										ctor: '::',
+										_0: _rundis$elm_bootstrap$Bootstrap_Button$onClick(_user$project$Page_ScoreVote$CancelVote),
+										_1: {ctor: '[]'}
+									}
+								},
+								{
+									ctor: '::',
+									_0: _elm_lang$html$Html$text('Change Vote'),
+									_1: {ctor: '[]'}
+								}),
+							_1: {ctor: '[]'}
+						}
+					},
+					_1: {ctor: '[]'}
+				}
+			}));
+};
 var _user$project$Page_ScoreVote$view = function (model) {
-	var election = model.election;
+	var content = function () {
+		var _p9 = model;
+		switch (_p9.ctor) {
+			case 'Ballot':
+				return _user$project$Page_ScoreVote$electionView(_p9._0);
+			case 'Response':
+				return _user$project$Page_ScoreVote$viewResponse(_p9._0);
+			case 'NotAllowed':
+				return _user$project$Page_ScoreVote$viewNotAllowed(_p9._0);
+			default:
+				return _user$project$Page_ScoreVote$confirmView(_p9._0);
+		}
+	}();
 	return A2(
 		_rundis$elm_bootstrap$Bootstrap_Grid$container,
 		{ctor: '[]'},
@@ -24225,12 +25055,12 @@ var _user$project$Page_ScoreVote$view = function (model) {
 						_rundis$elm_bootstrap$Bootstrap_Grid$col,
 						{
 							ctor: '::',
-							_0: _rundis$elm_bootstrap$Bootstrap_Grid_Col$lg8,
+							_0: _rundis$elm_bootstrap$Bootstrap_Grid_Col$xs10,
 							_1: {ctor: '[]'}
 						},
 						{
 							ctor: '::',
-							_0: _user$project$Page_ScoreVote$electionView(election),
+							_0: content,
 							_1: {ctor: '[]'}
 						}),
 					_1: {ctor: '[]'}

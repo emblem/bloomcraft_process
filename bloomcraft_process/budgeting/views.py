@@ -1,3 +1,4 @@
+from django.db import transaction
 from django.http import HttpResponseForbidden, HttpResponseNotFound
 from django.views.decorators.csrf import csrf_exempt, ensure_csrf_cookie
 from django.views.decorators.http import require_http_methods
@@ -11,6 +12,7 @@ from django.contrib.auth.decorators import login_required
 from registration.backends.hmac.views import RegistrationView
 from django.middleware import csrf
 from django.core import serializers
+from django.utils import timezone
 import json
 import pprint
 import random
@@ -323,42 +325,73 @@ def get_questions(election):
 def new_anon_id():
     return ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(10))
 
+def election_to_json(election):
+    return {
+        "name" : election.name,
+        "slug" : election.slug,
+        "detail_text" : election.detail_text,
+        "questions" : get_questions(election)
+        }
+
 @login_required
-def score_vote_view(request, slug):    
-    election = Election.objects.get(slug = slug)
+@transaction.atomic
+def score_vote_view(request, slug):
+    try:
+        election = Election.objects.get(slug = slug)
+    except Election.DoesNotExist:
+        return JsonResponse({ "status" : "not_allowed",
+                              "reason" : "No elections are currently defined" })
+        
+    if not election.is_live:
+        return JsonResponse({ "status" : "not_allowed",
+                              "reason": "There is currently no active election" })
+
+    if election.start_time > timezone.now():
+        return JsonResponse({ "status" : "not_allowed",
+                              "reason": "The " + election.name + " election has not started yet.  It begins " + election.start_time.strftime("%A, %d. %B %Y %I:%M%p %Z") })
+
+    if election.end_time < timezone.now():
+        return JsonResponse({ "status" : "not_allowed",
+                              "reason": "The " + election.name + " election has ended.  It ended " + election.end_time.strftime("%A, %d. %B %Y %I:%M%p %Z") })
+    
     if(request.user.election_set.filter(pk = election.pk).exists()):
-        return JsonResponse({ "status" : "already_voted" })
+        return JsonResponse({ "status" : "not_allowed",
+                              "reason": "It appears you've already voted in this election. Please contact stuart@bloomcraft.space if you believe this is incorrect."})
 
     if request.method == "GET":
-        return JsonResponse({
-            "status" : "can_vote",
-            "election" : {
-                "name" : election.name,
-                "slug" : election.slug,
-                "detailText" : election.detail_text,
-                "questions" : get_questions(election)
-            }
-        })
+        return JsonResponse({'status' : 'success',
+                             'election' : election_to_json(election)})
 
     elif request.method == "POST":
-        ballot = json.loads(request.body.decode('utf-8'))['ballot']
-
-        anon_voter = AnonymousVoter.objects.create(name = new_anon_id())
-
+        body = json.loads(request.body.decode('utf-8'))
+        if 'submit' in body and body['submit'] == 'confirmed':
+            for av in serializers.deserialize("json", request.session['ballot']['anon_id']):
+                anon_voter = av
+            anon_voter.save()
+            pprint.pprint(anon_voter.object.pk)
+            for vote in serializers.deserialize("json", request.session['ballot']['votes']):
+                vote.object.voter = anon_voter.object
+                vote.save()
+            election.voters.add(request.user)            
+            return JsonResponse({ "status" : "success", "anon_id" : anon_voter.object.name })
+            
+        ballot = body['ballot']
+        anon_voter = AnonymousVoter(name = new_anon_id())
         questions = Question.objects.filter(election = election)
         votes = []
+        
         try:
             for vote in ballot['votes']:
                 print(vote)
                 question = election.question_set.get(name = vote['question'])
                 candidate = Candidate.objects.get(question = question, name = vote['candidate'])
-                votes.append(ScoreVote.objects.create(voter = anon_voter, candidate = candidate, score = vote['score']))
+                votes.append(ScoreVote(voter = anon_voter, candidate = candidate, score = vote['score']))
         except Exception as e:
             raise e
-            return JsonResponse( {"result" : "error", "reason" : "malformed ballot"} )
-            
-        anon_voter.save()
-        for vote in votes:
-            vote.save()
-                            
-        return JsonResponse({ "result" : "success", "anon_id" : anon_voter.name })    
+            return JsonResponse( {"status" : "error", "reason" : "malformed ballot"} )
+        request.session['ballot'] = { 'votes' : serializers.serialize("json",votes),
+                                      'anon_id' : serializers.serialize("json", [anon_voter]) }
+        return JsonResponse( {
+            'status' : 'success',
+            'election' : election_to_json(election),
+            'ballot' : [{'question' : v.candidate.question.name, 'candidate' : v.candidate.name, 'score' : v.score } for v in votes ] })

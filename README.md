@@ -9,4 +9,4 @@ Django backend : bloomcraft_process/*
 Elm client : client/elm/*
 
 cd bloomcraft_process; python manage.py runserver
-cd client; brunch
+cd client; brunch w

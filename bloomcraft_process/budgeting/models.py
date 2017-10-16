@@ -238,6 +238,9 @@ class Election(models.Model):
     detail_text = models.TextField()
     voters = models.ManyToManyField(User, blank = True)
     slug = models.SlugField()
+    is_live = models.BooleanField()
+    start_time = models.DateTimeField()
+    end_time = models.DateTimeField()
     
     def __str__(self):
         return self.name
@@ -277,4 +280,4 @@ class ScoreVote(models.Model):
             MinValueValidator(0)
         ])
     def __str__(self):
-        return "ScoreVote for " + self.candidate.name + " by " + self.voter.name
+        return "ScoreVote for " + self.candidate.question.name + "/" + self.candidate.name + " by " + self.voter.name

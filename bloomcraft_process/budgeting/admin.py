@@ -23,7 +23,7 @@ class QuestionAdmin(admin.ModelAdmin):
 class ElectionAdmin(admin.ModelAdmin):
     prepopulated_fields = {"slug":("name",)}
     inlines = [QuestionInline]
-    readonly_fields = ('voter_summary', 'score_summary', 'voter_summary')
+    readonly_fields = ('voter_summary', 'score_summary', 'vote_summary')
 
     def voter_summary(self, instance):
         voters = [(voter.first_name + " " + voter.last_name,) for voter in instance.voters.all()]
@@ -51,7 +51,7 @@ class ElectionAdmin(admin.ModelAdmin):
             
         return format_html(result)
 
-    def voter_summary(self, instance):
+    def vote_summary(self, instance):
         votes = ScoreVote.objects.filter(candidate__question__election = instance).order_by('voter','candidate__question', 'candidate')
         vote_data = [(vote.voter.name, vote.candidate.question.name, vote.candidate.name, vote.score) for vote in votes]
         return format_html_join(mark_safe("<br/>"), "{} : {} : {} : {}", vote_data)
@@ -59,7 +59,7 @@ class ElectionAdmin(admin.ModelAdmin):
 
     voter_summary.short_description = "Who Voted"
     score_summary.short_description = "Results"
-    voter_summary.short_description = "Anonymous Votes"
+    vote_summary.short_description = "Anonymous Votes"
     
 class TutorialAdmin(admin.ModelAdmin):
     filter_horizontal = ['seen_by']

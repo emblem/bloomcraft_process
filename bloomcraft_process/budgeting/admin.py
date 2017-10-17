@@ -1,9 +1,12 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from django.utils.translation import ugettext_lazy as _
+from django.utils.html import format_html_join, format_html
+from django.utils.safestring import mark_safe
 from .models import *
 from .forms import *
 # Register your models here.
+import pprint
 
 class AllocationExpenseAdmin(admin.ModelAdmin):
     prepopulated_fields = {"slug":("name",)}
@@ -20,6 +23,36 @@ class QuestionAdmin(admin.ModelAdmin):
 class ElectionAdmin(admin.ModelAdmin):
     prepopulated_fields = {"slug":("name",)}
     inlines = [QuestionInline]
+    readonly_fields = ('voter_summary', 'score_summary')
+
+    def voter_summary(self, instance):
+        voters = [(voter.first_name + " " + voter.last_name,) for voter in instance.voters.all()]
+        return format_html_join(mark_safe('<br/>'), '{}', voters)
+
+    def question_summary(self, question):
+        print (question.name)
+        result = mark_safe( "<strong>" ) + question.name + mark_safe( "</strong>" )
+        print(result)
+        scores = []
+        for candidate in question.candidate_set.all():
+            score = sum([vote.score for vote in candidate.scorevote_set.all()])
+            print(score)
+            scores.append( (candidate.name, score) )
+
+        result += mark_safe("<ul>")
+        result += format_html_join('\n', "<li> {} : {} </li>", scores)
+        result += mark_safe("</ul>")
+        return result
+    
+    def score_summary(self, instance):
+        result = ""        
+        for question in instance.question_set.all():
+            result += self.question_summary(question)
+            
+        return format_html(result)
+
+    voter_summary.short_description = "Who Voted"
+    score_summary.short_description = "Results"
     
 class TutorialAdmin(admin.ModelAdmin):
     filter_horizontal = ['seen_by']

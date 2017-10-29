@@ -280,7 +280,7 @@ startupUpdate msg startModel =
             
 update : Msg -> Model -> (Model, Cmd Msg)
 update msg model =
-    updatePage (getPage model.pageState) msg model
+    updatePage (getPage model.pageState) (Debug.log "Message: " msg) model
 
         
 updatePage : Page -> Msg -> Model -> ( Model, Cmd Msg )

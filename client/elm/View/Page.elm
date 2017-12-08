@@ -41,7 +41,7 @@ viewHeader toMsg navState page session isLoading =
                    [ activeLinkIf Profile page [Route.href Route.Profile ] [text (if user.fullname == "" then user.username else user.fullname) ]
                    , activeLinkIf Budget page [Route.href Route.Budget] [text "Income"]
                    , activeLinkIf Expense page [Route.href Route.Expense] [text "Expenses"]
-                   , activeLinkIf Voting page [Route.href (Route.Voting (Slug "october-2017-leasing"))] [text "Voting" ]
+                   , activeLinkIf Voting page [Route.href (Route.Voting (Slug "december-2017-staff"))] [text "Voting" ]
                    , activeLinkIf Help page [Route.href Route.Help] [text "Help"]
                    ]
 
